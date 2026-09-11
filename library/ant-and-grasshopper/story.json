@@ -1,0 +1,418 @@
+{
+ "slug": "ant-and-grasshopper",
+ "title": "The Ant and the Grasshopper",
+ "tradition": "aesop",
+ "source": {
+  "work": "Aesop's Fables",
+  "author": "Aesop (trad.)",
+  "rights": "public-domain"
+ },
+ "retelling": {
+  "level": "ls-phase2-set4",
+  "checklist": {
+   "setup": true,
+   "want": true,
+   "action": true,
+   "consequence": true,
+   "feeling": true
+  }
+ },
+ "level": "ls-phase2-set4",
+ "pages": [
+  {
+   "art": "🐜",
+   "magic": [
+    "sun"
+   ],
+   "tokens": [
+    {
+     "t": "All",
+     "ms": 100
+    },
+    {
+     "t": "summer,",
+     "ms": 466
+    },
+    {
+     "t": "an",
+     "ms": 1241
+    },
+    {
+     "t": "ant",
+     "ms": 1485
+    },
+    {
+     "t": "carried",
+     "ms": 1716
+    },
+    {
+     "t": "seeds",
+     "ms": 2178
+    },
+    {
+     "t": "to",
+     "ms": 2627
+    },
+    {
+     "t": "her",
+     "ms": 2776
+    },
+    {
+     "t": "nest.",
+     "ms": 2966
+    },
+    {
+     "t": "She",
+     "ms": 4438
+    },
+    {
+     "t": "worked",
+     "ms": 4737
+    },
+    {
+     "t": "in",
+     "ms": 5213
+    },
+    {
+     "t": "the",
+     "ms": 5376
+    },
+    {
+     "t": "hot",
+     "ms": 5484
+    },
+    {
+     "t": "sun.",
+     "ms": 5810
+    }
+   ],
+   "audio": "p1.m4a",
+   "audioMs": 7200
+  },
+  {
+   "art": "🦗",
+   "magic": [
+    "sat"
+   ],
+   "tokens": [
+    {
+     "t": "A",
+     "ms": 100
+    },
+    {
+     "t": "grasshopper",
+     "ms": 290
+    },
+    {
+     "t": "sat",
+     "ms": 1132
+    },
+    {
+     "t": "in",
+     "ms": 1540
+    },
+    {
+     "t": "the",
+     "ms": 1689
+    },
+    {
+     "t": "grass",
+     "ms": 1784
+    },
+    {
+     "t": "and",
+     "ms": 2246
+    },
+    {
+     "t": "sang.",
+     "ms": 2477
+    },
+    {
+     "t": "“Come",
+     "ms": 3922
+    },
+    {
+     "t": "and",
+     "ms": 4275
+    },
+    {
+     "t": "play!”",
+     "ms": 4520
+    },
+    {
+     "t": "he",
+     "ms": 5185
+    },
+    {
+     "t": "called.",
+     "ms": 5389
+    }
+   ],
+   "audio": "p2.m4a",
+   "audioMs": 6860
+  },
+  {
+   "art": "🐜",
+   "tokens": [
+    {
+     "t": "“I",
+     "ms": 100
+    },
+    {
+     "t": "must",
+     "ms": 330
+    },
+    {
+     "t": "get",
+     "ms": 657
+    },
+    {
+     "t": "food",
+     "ms": 888
+    },
+    {
+     "t": "for",
+     "ms": 1214
+    },
+    {
+     "t": "winter,”",
+     "ms": 1445
+    },
+    {
+     "t": "said",
+     "ms": 2165
+    },
+    {
+     "t": "the",
+     "ms": 2545
+    },
+    {
+     "t": "ant,",
+     "ms": 2722
+    },
+    {
+     "t": "and",
+     "ms": 3292
+    },
+    {
+     "t": "she",
+     "ms": 3537
+    },
+    {
+     "t": "kept",
+     "ms": 3686
+    },
+    {
+     "t": "working.",
+     "ms": 4053
+    }
+   ],
+   "audio": "p3.m4a",
+   "audioMs": 5570
+  },
+  {
+   "art": "❄️",
+   "tokens": [
+    {
+     "t": "Then",
+     "ms": 100
+    },
+    {
+     "t": "winter",
+     "ms": 453
+    },
+    {
+     "t": "came.",
+     "ms": 806
+    },
+    {
+     "t": "Snow",
+     "ms": 2223
+    },
+    {
+     "t": "covered",
+     "ms": 2699
+    },
+    {
+     "t": "the",
+     "ms": 3215
+    },
+    {
+     "t": "grass.",
+     "ms": 3324
+    },
+    {
+     "t": "The",
+     "ms": 4886
+    },
+    {
+     "t": "grasshopper",
+     "ms": 5117
+    },
+    {
+     "t": "had",
+     "ms": 5933
+    },
+    {
+     "t": "no",
+     "ms": 6164
+    },
+    {
+     "t": "food.",
+     "ms": 6395
+    }
+   ],
+   "audio": "p4.m4a",
+   "audioMs": 7800
+  },
+  {
+   "art": "🐜",
+   "magic": [
+    "got"
+   ],
+   "tokens": [
+    {
+     "t": "He",
+     "ms": 100
+    },
+    {
+     "t": "knocked",
+     "ms": 344
+    },
+    {
+     "t": "on",
+     "ms": 779
+    },
+    {
+     "t": "the",
+     "ms": 983
+    },
+    {
+     "t": "ant’s",
+     "ms": 1159
+    },
+    {
+     "t": "door.",
+     "ms": 1540
+    },
+    {
+     "t": "The",
+     "ms": 2944
+    },
+    {
+     "t": "ant",
+     "ms": 3202
+    },
+    {
+     "t": "shared",
+     "ms": 3446
+    },
+    {
+     "t": "her",
+     "ms": 3800
+    },
+    {
+     "t": "seeds,",
+     "ms": 4003
+    },
+    {
+     "t": "and",
+     "ms": 4710
+    },
+    {
+     "t": "he",
+     "ms": 4968
+    },
+    {
+     "t": "got",
+     "ms": 5104
+    },
+    {
+     "t": "warm.",
+     "ms": 5444
+    }
+   ],
+   "audio": "p5.m4a",
+   "audioMs": 6860
+  },
+  {
+   "art": "🦗",
+   "tokens": [
+    {
+     "t": "Next",
+     "ms": 100
+    },
+    {
+     "t": "summer,",
+     "ms": 589
+    },
+    {
+     "t": "the",
+     "ms": 1309
+    },
+    {
+     "t": "grasshopper",
+     "ms": 1485
+    },
+    {
+     "t": "helped",
+     "ms": 2355
+    },
+    {
+     "t": "the",
+     "ms": 2735
+    },
+    {
+     "t": "ant",
+     "ms": 2926
+    },
+    {
+     "t": "dig",
+     "ms": 3170
+    },
+    {
+     "t": "and",
+     "ms": 3483
+    },
+    {
+     "t": "carry.",
+     "ms": 3727
+    }
+   ],
+   "audio": "p6.m4a",
+   "audioMs": 5230
+  }
+ ],
+ "moral": {
+  "spoken": "Do the work now, and later you will be glad.",
+  "line": "I can dig.",
+  "audio": "moral.m4a",
+  "audioMs": 4130
+ },
+ "prompts": {
+  "yes:sun": {
+   "audio": "yes-sun.m4a",
+   "ms": 3260
+  },
+  "word:sun": {
+   "audio": "word-sun.m4a",
+   "ms": 1660
+  },
+  "yes:sat": {
+   "audio": "yes-sat.m4a",
+   "ms": 3310
+  },
+  "word:sat": {
+   "audio": "word-sat.m4a",
+   "ms": 1700
+  },
+  "yes:got": {
+   "audio": "yes-got.m4a",
+   "ms": 3260
+  },
+  "word:got": {
+   "audio": "word-got.m4a",
+   "ms": 1660
+  }
+ }
+}

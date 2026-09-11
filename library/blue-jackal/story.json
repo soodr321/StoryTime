@@ -1,0 +1,470 @@
+{
+ "slug": "blue-jackal",
+ "title": "The Blue Jackal",
+ "tradition": "panchatantra",
+ "source": {
+  "work": "Panchatantra",
+  "author": "Vishnu Sharma (trad.), retold from Arthur Ryder’s 1925 translation",
+  "rights": "public-domain"
+ },
+ "retelling": {
+  "level": "ls-phase2-set4",
+  "checklist": {
+   "setup": true,
+   "want": true,
+   "action": true,
+   "consequence": true,
+   "feeling": true
+  }
+ },
+ "level": "ls-phase2-set4",
+ "pages": [
+  {
+   "art": "🐕",
+   "magic": [
+    "get"
+   ],
+   "tokens": [
+    {
+     "t": "A",
+     "ms": 100
+    },
+    {
+     "t": "hungry",
+     "ms": 290
+    },
+    {
+     "t": "jackal",
+     "ms": 779
+    },
+    {
+     "t": "crept",
+     "ms": 1254
+    },
+    {
+     "t": "into",
+     "ms": 1662
+    },
+    {
+     "t": "a",
+     "ms": 1988
+    },
+    {
+     "t": "town",
+     "ms": 2070
+    },
+    {
+     "t": "to",
+     "ms": 2464
+    },
+    {
+     "t": "get",
+     "ms": 2586
+    },
+    {
+     "t": "food.",
+     "ms": 2871
+    },
+    {
+     "t": "Some",
+     "ms": 4289
+    },
+    {
+     "t": "dogs",
+     "ms": 4764
+    },
+    {
+     "t": "saw",
+     "ms": 5213
+    },
+    {
+     "t": "him.",
+     "ms": 5457
+    }
+   ],
+   "audio": "p1.m4a",
+   "audioMs": 6790
+  },
+  {
+   "art": "🪣",
+   "magic": [
+    "pot"
+   ],
+   "tokens": [
+    {
+     "t": "He",
+     "ms": 100
+    },
+    {
+     "t": "ran",
+     "ms": 344
+    },
+    {
+     "t": "and",
+     "ms": 738
+    },
+    {
+     "t": "fell",
+     "ms": 928
+    },
+    {
+     "t": "into",
+     "ms": 1227
+    },
+    {
+     "t": "a",
+     "ms": 1540
+    },
+    {
+     "t": "big",
+     "ms": 1621
+    },
+    {
+     "t": "pot",
+     "ms": 1947
+    },
+    {
+     "t": "of",
+     "ms": 2233
+    },
+    {
+     "t": "blue",
+     "ms": 2409
+    },
+    {
+     "t": "dye.",
+     "ms": 2681
+    },
+    {
+     "t": "He",
+     "ms": 4058
+    },
+    {
+     "t": "came",
+     "ms": 4289
+    },
+    {
+     "t": "out",
+     "ms": 4628
+    },
+    {
+     "t": "blue",
+     "ms": 4927
+    },
+    {
+     "t": "all",
+     "ms": 5253
+    },
+    {
+     "t": "over!",
+     "ms": 5620
+    }
+   ],
+   "audio": "p2.m4a",
+   "audioMs": 7100
+  },
+  {
+   "art": "🦊",
+   "tokens": [
+    {
+     "t": "Back",
+     "ms": 100
+    },
+    {
+     "t": "in",
+     "ms": 629
+    },
+    {
+     "t": "the",
+     "ms": 765
+    },
+    {
+     "t": "forest,",
+     "ms": 860
+    },
+    {
+     "t": "the",
+     "ms": 1703
+    },
+    {
+     "t": "animals",
+     "ms": 1907
+    },
+    {
+     "t": "had",
+     "ms": 2436
+    },
+    {
+     "t": "never",
+     "ms": 2667
+    },
+    {
+     "t": "seen",
+     "ms": 3021
+    },
+    {
+     "t": "a",
+     "ms": 3347
+    },
+    {
+     "t": "blue",
+     "ms": 3442
+    },
+    {
+     "t": "animal.",
+     "ms": 3809
+    },
+    {
+     "t": "They",
+     "ms": 5348
+    },
+    {
+     "t": "were",
+     "ms": 5647
+    },
+    {
+     "t": "scared.",
+     "ms": 5824
+    }
+   ],
+   "audio": "p3.m4a",
+   "audioMs": 7370
+  },
+  {
+   "art": "👑",
+   "tokens": [
+    {
+     "t": "“I",
+     "ms": 100
+    },
+    {
+     "t": "am",
+     "ms": 426
+    },
+    {
+     "t": "your",
+     "ms": 534
+    },
+    {
+     "t": "king,”",
+     "ms": 765
+    },
+    {
+     "t": "the",
+     "ms": 1350
+    },
+    {
+     "t": "jackal",
+     "ms": 1513
+    },
+    {
+     "t": "said.",
+     "ms": 1988
+    },
+    {
+     "t": "The",
+     "ms": 3392
+    },
+    {
+     "t": "lion",
+     "ms": 3623
+    },
+    {
+     "t": "and",
+     "ms": 4126
+    },
+    {
+     "t": "the",
+     "ms": 4370
+    },
+    {
+     "t": "tiger",
+     "ms": 4465
+    },
+    {
+     "t": "bowed",
+     "ms": 4941
+    },
+    {
+     "t": "to",
+     "ms": 5240
+    },
+    {
+     "t": "him.",
+     "ms": 5376
+    }
+   ],
+   "audio": "p4.m4a",
+   "audioMs": 6700
+  },
+  {
+   "art": "🌙",
+   "magic": [
+    "did"
+   ],
+   "tokens": [
+    {
+     "t": "One",
+     "ms": 100
+    },
+    {
+     "t": "night,",
+     "ms": 548
+    },
+    {
+     "t": "the",
+     "ms": 1132
+    },
+    {
+     "t": "other",
+     "ms": 1350
+    },
+    {
+     "t": "jackals",
+     "ms": 1716
+    },
+    {
+     "t": "howled",
+     "ms": 2260
+    },
+    {
+     "t": "at",
+     "ms": 2681
+    },
+    {
+     "t": "the",
+     "ms": 2898
+    },
+    {
+     "t": "moon.",
+     "ms": 3007
+    },
+    {
+     "t": "The",
+     "ms": 4397
+    },
+    {
+     "t": "blue",
+     "ms": 4615
+    },
+    {
+     "t": "jackal",
+     "ms": 4954
+    },
+    {
+     "t": "did",
+     "ms": 5416
+    },
+    {
+     "t": "too.",
+     "ms": 5661
+    }
+   ],
+   "audio": "p5.m4a",
+   "audioMs": 7010
+  },
+  {
+   "art": "🐕",
+   "tokens": [
+    {
+     "t": "The",
+     "ms": 100
+    },
+    {
+     "t": "animals",
+     "ms": 385
+    },
+    {
+     "t": "heard",
+     "ms": 969
+    },
+    {
+     "t": "him.",
+     "ms": 1336
+    },
+    {
+     "t": "“He",
+     "ms": 2672
+    },
+    {
+     "t": "is",
+     "ms": 2998
+    },
+    {
+     "t": "just",
+     "ms": 3175
+    },
+    {
+     "t": "a",
+     "ms": 3569
+    },
+    {
+     "t": "jackal!”",
+     "ms": 3650
+    },
+    {
+     "t": "they",
+     "ms": 4479
+    },
+    {
+     "t": "said,",
+     "ms": 4723
+    },
+    {
+     "t": "and",
+     "ms": 5403
+    },
+    {
+     "t": "they",
+     "ms": 5675
+    },
+    {
+     "t": "chased",
+     "ms": 5810
+    },
+    {
+     "t": "him",
+     "ms": 6259
+    },
+    {
+     "t": "away.",
+     "ms": 6490
+    }
+   ],
+   "audio": "p6.m4a",
+   "audioMs": 7940
+  }
+ ],
+ "moral": {
+  "spoken": "Pretending to be someone you are not does not last.",
+  "line": "It is not a dog.",
+  "audio": "moral.m4a",
+  "audioMs": 4320
+ },
+ "prompts": {
+  "yes:get": {
+   "audio": "yes-get.m4a",
+   "ms": 3260
+  },
+  "word:get": {
+   "audio": "word-get.m4a",
+   "ms": 1660
+  },
+  "yes:pot": {
+   "audio": "yes-pot.m4a",
+   "ms": 3220
+  },
+  "word:pot": {
+   "audio": "word-pot.m4a",
+   "ms": 1630
+  },
+  "yes:did": {
+   "audio": "yes-did.m4a",
+   "ms": 3220
+  },
+  "word:did": {
+   "audio": "word-did.m4a",
+   "ms": 1630
+  }
+ }
+}

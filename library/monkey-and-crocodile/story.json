@@ -1,0 +1,541 @@
+{
+ "slug": "monkey-and-crocodile",
+ "title": "The Monkey and the Crocodile",
+ "tradition": "panchatantra",
+ "source": {
+  "work": "Panchatantra",
+  "author": "Vishnu Sharma (trad.), retold from Arthur Ryder’s 1925 translation",
+  "rights": "public-domain"
+ },
+ "retelling": {
+  "level": "ls-phase2-set4",
+  "checklist": {
+   "setup": true,
+   "want": true,
+   "action": true,
+   "consequence": true,
+   "feeling": true
+  }
+ },
+ "level": "ls-phase2-set4",
+ "pages": [
+  {
+   "art": "🐒",
+   "magic": [
+    "sat"
+   ],
+   "tokens": [
+    {
+     "t": "A",
+     "ms": 100
+    },
+    {
+     "t": "monkey",
+     "ms": 290
+    },
+    {
+     "t": "lived",
+     "ms": 765
+    },
+    {
+     "t": "in",
+     "ms": 1119
+    },
+    {
+     "t": "a",
+     "ms": 1268
+    },
+    {
+     "t": "tree",
+     "ms": 1350
+    },
+    {
+     "t": "by",
+     "ms": 1716
+    },
+    {
+     "t": "the",
+     "ms": 1961
+    },
+    {
+     "t": "river.",
+     "ms": 2070
+    },
+    {
+     "t": "He",
+     "ms": 3487
+    },
+    {
+     "t": "sat",
+     "ms": 3772
+    },
+    {
+     "t": "and",
+     "ms": 4221
+    },
+    {
+     "t": "ate",
+     "ms": 4425
+    },
+    {
+     "t": "sweet",
+     "ms": 4655
+    },
+    {
+     "t": "fruit",
+     "ms": 5036
+    },
+    {
+     "t": "all",
+     "ms": 5471
+    },
+    {
+     "t": "day.",
+     "ms": 5756
+    }
+   ],
+   "audio": "p1.m4a",
+   "audioMs": 7100
+  },
+  {
+   "art": "🐊",
+   "tokens": [
+    {
+     "t": "A",
+     "ms": 100
+    },
+    {
+     "t": "crocodile",
+     "ms": 290
+    },
+    {
+     "t": "swam",
+     "ms": 1091
+    },
+    {
+     "t": "by.",
+     "ms": 1472
+    },
+    {
+     "t": "The",
+     "ms": 2876
+    },
+    {
+     "t": "monkey",
+     "ms": 3107
+    },
+    {
+     "t": "gave",
+     "ms": 3596
+    },
+    {
+     "t": "him",
+     "ms": 3881
+    },
+    {
+     "t": "fruit,",
+     "ms": 4071
+    },
+    {
+     "t": "and",
+     "ms": 4832
+    },
+    {
+     "t": "they",
+     "ms": 5117
+    },
+    {
+     "t": "became",
+     "ms": 5253
+    },
+    {
+     "t": "friends.",
+     "ms": 5729
+    }
+   ],
+   "audio": "p2.m4a",
+   "audioMs": 7300
+  },
+  {
+   "art": "🐊",
+   "tokens": [
+    {
+     "t": "The",
+     "ms": 100
+    },
+    {
+     "t": "crocodile’s",
+     "ms": 317
+    },
+    {
+     "t": "wife",
+     "ms": 1132
+    },
+    {
+     "t": "wanted",
+     "ms": 1526
+    },
+    {
+     "t": "the",
+     "ms": 2042
+    },
+    {
+     "t": "monkey’s",
+     "ms": 2151
+    },
+    {
+     "t": "heart.",
+     "ms": 2790
+    },
+    {
+     "t": "“Bring",
+     "ms": 4275
+    },
+    {
+     "t": "him",
+     "ms": 4669
+    },
+    {
+     "t": "to",
+     "ms": 4927
+    },
+    {
+     "t": "me,”",
+     "ms": 5063
+    },
+    {
+     "t": "she",
+     "ms": 5566
+    },
+    {
+     "t": "said.",
+     "ms": 5838
+    }
+   ],
+   "audio": "p3.m4a",
+   "audioMs": 7270
+  },
+  {
+   "art": "🐊",
+   "magic": [
+    "got"
+   ],
+   "tokens": [
+    {
+     "t": "The",
+     "ms": 100
+    },
+    {
+     "t": "crocodile",
+     "ms": 317
+    },
+    {
+     "t": "said,",
+     "ms": 1078
+    },
+    {
+     "t": "“Come",
+     "ms": 1689
+    },
+    {
+     "t": "to",
+     "ms": 1988
+    },
+    {
+     "t": "my",
+     "ms": 2124
+    },
+    {
+     "t": "house.”",
+     "ms": 2355
+    },
+    {
+     "t": "The",
+     "ms": 3895
+    },
+    {
+     "t": "monkey",
+     "ms": 4112
+    },
+    {
+     "t": "got",
+     "ms": 4615
+    },
+    {
+     "t": "on",
+     "ms": 4954
+    },
+    {
+     "t": "his",
+     "ms": 5131
+    },
+    {
+     "t": "back.",
+     "ms": 5362
+    }
+   ],
+   "audio": "p4.m4a",
+   "audioMs": 6820
+  },
+  {
+   "art": "🐒",
+   "tokens": [
+    {
+     "t": "In",
+     "ms": 100
+    },
+    {
+     "t": "the",
+     "ms": 330
+    },
+    {
+     "t": "middle",
+     "ms": 439
+    },
+    {
+     "t": "of",
+     "ms": 847
+    },
+    {
+     "t": "the",
+     "ms": 996
+    },
+    {
+     "t": "river,",
+     "ms": 1105
+    },
+    {
+     "t": "the",
+     "ms": 1744
+    },
+    {
+     "t": "crocodile",
+     "ms": 1907
+    },
+    {
+     "t": "told",
+     "ms": 2640
+    },
+    {
+     "t": "the",
+     "ms": 3034
+    },
+    {
+     "t": "truth.",
+     "ms": 3157
+    },
+    {
+     "t": "The",
+     "ms": 4628
+    },
+    {
+     "t": "monkey",
+     "ms": 4873
+    },
+    {
+     "t": "thought",
+     "ms": 5362
+    },
+    {
+     "t": "fast.",
+     "ms": 5729
+    }
+   ],
+   "audio": "p5.m4a",
+   "audioMs": 7270
+  },
+  {
+   "art": "🐒",
+   "magic": [
+    "ran"
+   ],
+   "tokens": [
+    {
+     "t": "“My",
+     "ms": 100
+    },
+    {
+     "t": "heart",
+     "ms": 439
+    },
+    {
+     "t": "is",
+     "ms": 779
+    },
+    {
+     "t": "in",
+     "ms": 942
+    },
+    {
+     "t": "the",
+     "ms": 1078
+    },
+    {
+     "t": "tree!”",
+     "ms": 1186
+    },
+    {
+     "t": "he",
+     "ms": 1893
+    },
+    {
+     "t": "said.",
+     "ms": 2110
+    },
+    {
+     "t": "The",
+     "ms": 3541
+    },
+    {
+     "t": "crocodile",
+     "ms": 3759
+    },
+    {
+     "t": "turned",
+     "ms": 4452
+    },
+    {
+     "t": "back,",
+     "ms": 4832
+    },
+    {
+     "t": "and",
+     "ms": 5444
+    },
+    {
+     "t": "the",
+     "ms": 5675
+    },
+    {
+     "t": "monkey",
+     "ms": 5770
+    },
+    {
+     "t": "jumped",
+     "ms": 6272
+    },
+    {
+     "t": "up",
+     "ms": 6639
+    },
+    {
+     "t": "and",
+     "ms": 6897
+    },
+    {
+     "t": "ran.",
+     "ms": 7169
+    }
+   ],
+   "audio": "p6.m4a",
+   "audioMs": 8520
+  },
+  {
+   "art": "🐒",
+   "tokens": [
+    {
+     "t": "Safe",
+     "ms": 100
+    },
+    {
+     "t": "in",
+     "ms": 589
+    },
+    {
+     "t": "his",
+     "ms": 725
+    },
+    {
+     "t": "tree,",
+     "ms": 969
+    },
+    {
+     "t": "the",
+     "ms": 1499
+    },
+    {
+     "t": "monkey",
+     "ms": 1676
+    },
+    {
+     "t": "said,",
+     "ms": 2138
+    },
+    {
+     "t": "“A",
+     "ms": 2803
+    },
+    {
+     "t": "friend",
+     "ms": 2966
+    },
+    {
+     "t": "who",
+     "ms": 3374
+    },
+    {
+     "t": "tricks",
+     "ms": 3578
+    },
+    {
+     "t": "you",
+     "ms": 4013
+    },
+    {
+     "t": "is",
+     "ms": 4230
+    },
+    {
+     "t": "no",
+     "ms": 4434
+    },
+    {
+     "t": "friend",
+     "ms": 4705
+    },
+    {
+     "t": "at",
+     "ms": 5181
+    },
+    {
+     "t": "all.”",
+     "ms": 5426
+    }
+   ],
+   "audio": "p7.m4a",
+   "audioMs": 6790
+  }
+ ],
+ "moral": {
+  "spoken": "Think fast and stay calm when someone tries to trick you.",
+  "line": "I can run.",
+  "audio": "moral.m4a",
+  "audioMs": 4580
+ },
+ "prompts": {
+  "yes:sat": {
+   "audio": "yes-sat.m4a",
+   "ms": 3310
+  },
+  "word:sat": {
+   "audio": "word-sat.m4a",
+   "ms": 1700
+  },
+  "yes:got": {
+   "audio": "yes-got.m4a",
+   "ms": 3260
+  },
+  "word:got": {
+   "audio": "word-got.m4a",
+   "ms": 1660
+  },
+  "yes:ran": {
+   "audio": "yes-ran.m4a",
+   "ms": 3290
+  },
+  "word:ran": {
+   "audio": "word-ran.m4a",
+   "ms": 1680
+  }
+ }
+}

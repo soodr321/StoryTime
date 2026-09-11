@@ -38,7 +38,7 @@ export type Ev =
   | { type: "HOME" };
 
 export const storyMachine = setup({
-  types: { context: {} as Ctx, events: {} as Ev, input: {} as { story: Story } },
+  types: { context: {} as Ctx, events: {} as Ev, input: {} as { story: Story; page?: number; results?: WordResult[] } },
   guards: {
     hasNextPage: ({ context }) => context.page + 1 < context.story.pages.length,
   },
@@ -57,7 +57,7 @@ export const storyMachine = setup({
   },
 }).createMachine({
   id: "story",
-  context: ({ input }) => ({ story: input.story, page: 0, token: -1, magic: null, mode: "sight", results: [] }),
+  context: ({ input }) => ({ story: input.story, page: input.page ?? 0, token: -1, magic: null, mode: "sight", results: input.results ?? [] }),
   initial: "idle",
   on: { HOME: ".idle" },
   states: {

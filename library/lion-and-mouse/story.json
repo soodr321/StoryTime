@@ -1,0 +1,549 @@
+{
+ "slug": "lion-and-mouse",
+ "title": "The Lion and the Mouse",
+ "tradition": "aesop",
+ "source": {
+  "work": "Aesop's Fables",
+  "author": "Aesop (trad.)",
+  "rights": "public-domain"
+ },
+ "retelling": {
+  "level": "ls-phase2-set4",
+  "checklist": {
+   "setup": true,
+   "want": true,
+   "action": true,
+   "consequence": true,
+   "feeling": true
+  }
+ },
+ "level": "ls-phase2-set4",
+ "pages": [
+  {
+   "art": "🦁",
+   "tokens": [
+    {
+     "t": "A",
+     "ms": 100
+    },
+    {
+     "t": "big",
+     "ms": 290
+    },
+    {
+     "t": "lion",
+     "ms": 575
+    },
+    {
+     "t": "was",
+     "ms": 969
+    },
+    {
+     "t": "asleep",
+     "ms": 1214
+    },
+    {
+     "t": "under",
+     "ms": 1744
+    },
+    {
+     "t": "a",
+     "ms": 2097
+    },
+    {
+     "t": "tree.",
+     "ms": 2165
+    },
+    {
+     "t": "A",
+     "ms": 3596
+    },
+    {
+     "t": "little",
+     "ms": 3772
+    },
+    {
+     "t": "mouse",
+     "ms": 4166
+    },
+    {
+     "t": "ran",
+     "ms": 4601
+    },
+    {
+     "t": "over",
+     "ms": 4914
+    },
+    {
+     "t": "his",
+     "ms": 5253
+    },
+    {
+     "t": "paw.",
+     "ms": 5511
+    }
+   ],
+   "audio": "p1.m4a",
+   "audioMs": 6820
+  },
+  {
+   "art": "🦁",
+   "tokens": [
+    {
+     "t": "The",
+     "ms": 100
+    },
+    {
+     "t": "lion",
+     "ms": 317
+    },
+    {
+     "t": "woke",
+     "ms": 752
+    },
+    {
+     "t": "up",
+     "ms": 1037
+    },
+    {
+     "t": "and",
+     "ms": 1254
+    },
+    {
+     "t": "caught",
+     "ms": 1458
+    },
+    {
+     "t": "the",
+     "ms": 1744
+    },
+    {
+     "t": "mouse",
+     "ms": 1879
+    },
+    {
+     "t": "in",
+     "ms": 2287
+    },
+    {
+     "t": "his",
+     "ms": 2423
+    },
+    {
+     "t": "paw.",
+     "ms": 2667
+    },
+    {
+     "t": "“I",
+     "ms": 3949
+    },
+    {
+     "t": "will",
+     "ms": 4248
+    },
+    {
+     "t": "eat",
+     "ms": 4479
+    },
+    {
+     "t": "you!”",
+     "ms": 4737
+    },
+    {
+     "t": "he",
+     "ms": 5280
+    },
+    {
+     "t": "said.",
+     "ms": 5511
+    }
+   ],
+   "audio": "p2.m4a",
+   "audioMs": 6960
+  },
+  {
+   "art": "🐭",
+   "tokens": [
+    {
+     "t": "“Please",
+     "ms": 100
+    },
+    {
+     "t": "let",
+     "ms": 589
+    },
+    {
+     "t": "me",
+     "ms": 860
+    },
+    {
+     "t": "go,”",
+     "ms": 1023
+    },
+    {
+     "t": "said",
+     "ms": 1526
+    },
+    {
+     "t": "the",
+     "ms": 1907
+    },
+    {
+     "t": "mouse.",
+     "ms": 2002
+    },
+    {
+     "t": "“One",
+     "ms": 3514
+    },
+    {
+     "t": "day",
+     "ms": 3949
+    },
+    {
+     "t": "I",
+     "ms": 4139
+    },
+    {
+     "t": "will",
+     "ms": 4370
+    },
+    {
+     "t": "help",
+     "ms": 4547
+    },
+    {
+     "t": "you.”",
+     "ms": 4900
+    },
+    {
+     "t": "The",
+     "ms": 6136
+    },
+    {
+     "t": "lion",
+     "ms": 6367
+    },
+    {
+     "t": "laughed,",
+     "ms": 6802
+    },
+    {
+     "t": "but",
+     "ms": 7482
+    },
+    {
+     "t": "he",
+     "ms": 7699
+    },
+    {
+     "t": "let",
+     "ms": 7835
+    },
+    {
+     "t": "her",
+     "ms": 8093
+    },
+    {
+     "t": "go.",
+     "ms": 8256
+    }
+   ],
+   "audio": "p3.m4a",
+   "audioMs": 9530
+  },
+  {
+   "art": "🕸️",
+   "magic": [
+    "net"
+   ],
+   "tokens": [
+    {
+     "t": "Days",
+     "ms": 100
+    },
+    {
+     "t": "later,",
+     "ms": 521
+    },
+    {
+     "t": "hunters",
+     "ms": 1254
+    },
+    {
+     "t": "set",
+     "ms": 1879
+    },
+    {
+     "t": "a",
+     "ms": 2178
+    },
+    {
+     "t": "net.",
+     "ms": 2246
+    },
+    {
+     "t": "The",
+     "ms": 3650
+    },
+    {
+     "t": "lion",
+     "ms": 3867
+    },
+    {
+     "t": "ran",
+     "ms": 4316
+    },
+    {
+     "t": "into",
+     "ms": 4615
+    },
+    {
+     "t": "it",
+     "ms": 4954
+    },
+    {
+     "t": "and",
+     "ms": 5104
+    },
+    {
+     "t": "got",
+     "ms": 5294
+    },
+    {
+     "t": "stuck.",
+     "ms": 5566
+    }
+   ],
+   "audio": "p4.m4a",
+   "audioMs": 6980
+  },
+  {
+   "art": "🐭",
+   "magic": [
+    "ran"
+   ],
+   "tokens": [
+    {
+     "t": "He",
+     "ms": 100
+    },
+    {
+     "t": "roared.",
+     "ms": 358
+    },
+    {
+     "t": "The",
+     "ms": 1734
+    },
+    {
+     "t": "little",
+     "ms": 1938
+    },
+    {
+     "t": "mouse",
+     "ms": 2319
+    },
+    {
+     "t": "heard",
+     "ms": 2672
+    },
+    {
+     "t": "him",
+     "ms": 2998
+    },
+    {
+     "t": "and",
+     "ms": 3351
+    },
+    {
+     "t": "ran",
+     "ms": 3650
+    },
+    {
+     "t": "to",
+     "ms": 3935
+    },
+    {
+     "t": "the",
+     "ms": 4058
+    },
+    {
+     "t": "net.",
+     "ms": 4153
+    }
+   ],
+   "audio": "p5.m4a",
+   "audioMs": 5540
+  },
+  {
+   "art": "🐭",
+   "magic": [
+    "cut"
+   ],
+   "tokens": [
+    {
+     "t": "She",
+     "ms": 100
+    },
+    {
+     "t": "bit",
+     "ms": 358
+    },
+    {
+     "t": "and",
+     "ms": 657
+    },
+    {
+     "t": "bit",
+     "ms": 833
+    },
+    {
+     "t": "with",
+     "ms": 1105
+    },
+    {
+     "t": "her",
+     "ms": 1322
+    },
+    {
+     "t": "tiny",
+     "ms": 1499
+    },
+    {
+     "t": "teeth.",
+     "ms": 1934
+    },
+    {
+     "t": "She",
+     "ms": 3365
+    },
+    {
+     "t": "cut",
+     "ms": 3677
+    },
+    {
+     "t": "the",
+     "ms": 3949
+    },
+    {
+     "t": "ropes",
+     "ms": 4071
+    },
+    {
+     "t": "one",
+     "ms": 4520
+    },
+    {
+     "t": "by",
+     "ms": 4832
+    },
+    {
+     "t": "one.",
+     "ms": 5077
+    }
+   ],
+   "audio": "p6.m4a",
+   "audioMs": 6460
+  },
+  {
+   "art": "🦁",
+   "tokens": [
+    {
+     "t": "The",
+     "ms": 100
+    },
+    {
+     "t": "net",
+     "ms": 317
+    },
+    {
+     "t": "fell",
+     "ms": 629
+    },
+    {
+     "t": "open.",
+     "ms": 983
+    },
+    {
+     "t": "The",
+     "ms": 2482
+    },
+    {
+     "t": "lion",
+     "ms": 2699
+    },
+    {
+     "t": "was",
+     "ms": 3120
+    },
+    {
+     "t": "free.",
+     "ms": 3378
+    },
+    {
+     "t": "“You",
+     "ms": 4791
+    },
+    {
+     "t": "were",
+     "ms": 5090
+    },
+    {
+     "t": "right,",
+     "ms": 5280
+    },
+    {
+     "t": "little",
+     "ms": 5878
+    },
+    {
+     "t": "friend,”",
+     "ms": 6232
+    },
+    {
+     "t": "he",
+     "ms": 6884
+    },
+    {
+     "t": "said.",
+     "ms": 7115
+    }
+   ],
+   "audio": "p7.m4a",
+   "audioMs": 8540
+  }
+ ],
+ "moral": {
+  "spoken": "Even someone small can help someone big.",
+  "line": "I can cut it.",
+  "audio": "moral.m4a",
+  "audioMs": 3860
+ },
+ "prompts": {
+  "yes:net": {
+   "audio": "yes-net.m4a",
+   "ms": 3260
+  },
+  "word:net": {
+   "audio": "word-net.m4a",
+   "ms": 1660
+  },
+  "yes:ran": {
+   "audio": "yes-ran.m4a",
+   "ms": 3290
+  },
+  "word:ran": {
+   "audio": "word-ran.m4a",
+   "ms": 1680
+  },
+  "yes:cut": {
+   "audio": "yes-cut.m4a",
+   "ms": 3190
+  },
+  "word:cut": {
+   "audio": "word-cut.m4a",
+   "ms": 1580
+  }
+ }
+}
