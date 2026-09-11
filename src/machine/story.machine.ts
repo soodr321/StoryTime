@@ -6,7 +6,7 @@
 import { assign, setup } from "xstate";
 import type { Story } from "../lib/content/types";
 
-export type VerdictMode = "independent" | "sounded" | "modelled" | "skipped";
+export type VerdictMode = "first_try" | "prompted" | "modelled" | "skipped";
 /** id = `${page}:${word}` so a word repeated on a later page gets its own turn */
 export interface WordResult { id?: string; word: string; ok: boolean; mode: VerdictMode }
 
@@ -27,7 +27,7 @@ export type Ev =
   | { type: "NARRATION_DONE" }
   | { type: "MAGIC_REACHED"; word: string }
   | { type: "SOUND_TAPPED" }
-  | { type: "YES" }
+  | { type: "YES"; verdict?: "first_try" | "prompted" }
   | { type: "NOT_YET" }
   | { type: "MODEL_DONE" }
   | { type: "SKIP" }
@@ -44,21 +44,21 @@ export const storyMachine = setup({
     hasNextPage: ({ context }) => context.page + 1 < context.story.pages.length,
   },
   actions: {
-    nextPage: assign({ page: ({ context }) => context.page + 1, token: -1, magic: null, mode: "independent" }),
+    nextPage: assign({ page: ({ context }) => context.page + 1, token: -1, magic: null, mode: "first_try" }),
     setToken: assign({ token: ({ event }) => (event.type === "TOKEN" ? event.index : -1) }),
-    openMagic: assign({ magic: ({ event }) => (event.type === "MAGIC_REACHED" ? event.word : null), mode: "independent" }),
-    sounded: assign({ mode: ({ context }) => (context.mode === "modelled" ? "modelled" : "sounded") }),
+    openMagic: assign({ magic: ({ event }) => (event.type === "MAGIC_REACHED" ? event.word : null), mode: "first_try" }),
+    sounded: assign({ mode: ({ context }) => context.mode }),   // tile taps play sounds; they never decide the label
     modelled: assign({ mode: "modelled" }),
     record: assign({
       results: ({ context, event }) => [
         ...context.results,
-        { id: `${context.page}:${context.magic ?? ""}`, word: context.magic ?? "", ok: event.type === "YES", mode: event.type === "SKIP" ? "skipped" : context.mode },
+        { id: `${context.page}:${context.magic ?? ""}`, word: context.magic ?? "", ok: event.type === "YES", mode: event.type === "SKIP" ? "skipped" : context.mode === "modelled" ? "modelled" : event.type === "YES" && event.verdict ? event.verdict : context.mode },
       ],
     }),
   },
 }).createMachine({
   id: "story",
-  context: ({ input }) => ({ story: input.story, page: input.page ?? 0, token: -1, magic: null, mode: "independent", results: input.results ?? [] }),
+  context: ({ input }) => ({ story: input.story, page: input.page ?? 0, token: -1, magic: null, mode: "first_try", results: input.results ?? [] }),
   initial: "idle",
   on: { HOME: ".idle" },
   states: {

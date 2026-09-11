@@ -31,6 +31,7 @@ export async function unlock(): Promise<void> {
   const kicks: Promise<unknown>[] = [];
   for (const a of [narration, clip]) { try { a.src = silent; kicks.push(a.play().then(() => a.pause())); } catch { /* still counts as gestured on most engines */ } }
   try { window.speechSynthesis?.speak(new SpeechSynthesisUtterance("")); } catch { /* no speech engine */ }
+  try { const { unlockBlendAudio } = await import("../blend"); unlockBlendAudio(); } catch { /* no web audio */ }
   unlocked = true;
   await withTimeout(Promise.allSettled(kicks), 400);
 }

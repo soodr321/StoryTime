@@ -24,8 +24,8 @@ function WeekStrip({ days }: { days: number[] }) {
   return <div className="week" aria-label="stories this week">{cells.map((c, i) => <span key={i} className={"day" + (c.on ? " on" : "") + (c.isToday ? " today" : "")}>{c.on ? "★" : c.label}</span>)}</div>;
 }
 
-export function HomeScreen({ onStart, onLibrary, onSwitch, onWarmUp }: { onStart: (story: Story, mode: Mode, resume: boolean) => void; onLibrary: () => void; onSwitch: () => void; onWarmUp: () => void }) {
-  const { activeKid: kid, todayFor, repeatToday, session, stories, progress, settings, setSession, review } = useFamily();
+export function HomeScreen({ onStart, onLibrary, onSwitch, onWarmUp, onTeach }: { onStart: (story: Story, mode: Mode, resume: boolean) => void; onLibrary: () => void; onSwitch: () => void; onWarmUp: () => void; onTeach: () => void }) {
+  const { activeKid: kid, todayFor, repeatToday, session, stories, progress, settings, setSession, review, advanceReady, nights, storiesFor } = useFamily();
   const resumable = session ? stories.find((s) => s.slug === session.slug) ?? null : null;
   const today = kid ? resumable ?? todayFor(kid) : null;
   useEffect(() => { if (today) void precache(today); }, [today]);
@@ -39,9 +39,12 @@ export function HomeScreen({ onStart, onLibrary, onSwitch, onWarmUp }: { onStart
   return (
     <main className="home-screen">
       <button className="who" onClick={onSwitch}><span>{kid.avatar}</span> {kid.name} · <u>switch</u></button>
-      <WeekStrip days={days} />
+      <div className="row between" style={{ width: "min(100%, 420px)" }}><WeekStrip days={days} /><span className="nights">night <b>{Math.min(30, nights + 1)}</b> of 30</span></div>
+      {!listener && advanceReady && kid.gpcs.length < LS_PHASE2_ORDER.length && (
+        <button className="readycard" onClick={onTeach}><b>Ready for a new sound: {LS_PHASE2_ORDER[kid.gpcs.length]}</b><small>Two smooth sessions and a word built. 90 seconds to teach it — you decide when.</small></button>
+      )}
       {!listener && kid.gpcs.length < LS_PHASE2_ORDER.length && (
-        <div className="nextsound"><span className="legend">Next sound to teach:</span> <button className="soundbtn" onClick={() => void playClip(soundAsset(GRAPHEME_SOUND[LS_PHASE2_ORDER[kid.gpcs.length]].clip)).done.catch(() => {})}>{LS_PHASE2_ORDER[kid.gpcs.length]} 🔊</button> <span className="legend">the sound, not the letter name · tick it in ⚙︎ once taught</span></div>
+        <div className="nextsound"><span className="legend">Next sound:</span> <button className="soundbtn" onClick={() => void playClip(soundAsset(GRAPHEME_SOUND[LS_PHASE2_ORDER[kid.gpcs.length]].clip)).done.catch(() => {})}>{LS_PHASE2_ORDER[kid.gpcs.length]} 🔊</button> <button className="linkbtn" onClick={onTeach}>teach it (90 s) →</button></div>
       )}
 
       {doneTonight ? (
@@ -87,6 +90,7 @@ export function HomeScreen({ onStart, onLibrary, onSwitch, onWarmUp }: { onStart
       ) : (
         <p className="note">No story fits {kid.name}'s sounds yet. A grown-up can add sounds in Settings.</p>
       )}
+      {today && !resumable && !doneTonight && (() => { const alt = storiesFor(kid).find((s) => s.slug !== today.slug && !progress[s.slug]) ?? storiesFor(kid).find((s) => s.slug !== today.slug); return alt ? <button className="linkbtn" onClick={() => onStart(alt, "listen", false)}>or {kid.name} picks: {alt.pages[0].art} {alt.title} →</button> : null; })()}
       <button className="linkbtn" onClick={onLibrary}>📚 Bookshelf · {finished} finished</button>
     </main>
   );

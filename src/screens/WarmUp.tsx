@@ -7,7 +7,7 @@ import { useFamily } from "../lib/family";
 import { learnerOf } from "../lib/store";
 import { MagicPanel } from "../components/MagicPanel";
 import { checkWord } from "../lib/phonics/validator";
-import { dotted, playBlend } from "../lib/blend";
+import { stretched, playBlend } from "../lib/blend";
 import { unlock } from "../lib/audio/player";
 
 export function WarmUpScreen({ onDone }: { onDone: () => void }) {
@@ -16,20 +16,20 @@ export function WarmUpScreen({ onDone }: { onDone: () => void }) {
   const reader = settings.tonight ?? settings.readers[0] ?? "Grown-up";
   const [i, setI] = useState(0);
   const [modelling, setModelling] = useState(false);
-  const [tapped, setTapped] = useState(false);
+  const [sweep, setSweep] = useState(0);
   const [caption, setCaption] = useState("Warm-up: a few words from last time.");
   const [results, setResults] = useState<{ word: string; ok: boolean; mode: string }[]>([]);
   const words = review.map((r) => r.word);
   const word = words[i];
 
   const record = async (ok: boolean, mode: string) => {
-    const next = [...results, { word, ok, mode }]; setResults(next); setTapped(false);
+    const next = [...results, { word, ok, mode }]; setResults(next);
     if (i + 1 < words.length) setI(i + 1); else { await reviewDone(next); onDone(); }
   };
   const together = async () => {
     setModelling(true); const gs = checkWord(word, learner).graphemes;
-    setCaption(`${dotted(gs)} … ${word}. Now say the sounds, then blend.`);
-    await playBlend(gs); setModelling(false);
+    setCaption(`${stretched(gs)} … now you: slide through it.`);
+    await playBlend(gs, { onProgress: setSweep }); setModelling(false); setSweep(0);
   };
 
   if (!kid || !word) return <main className="home-screen"><p className="note">Nothing to warm up today.</p><button className="yes" onClick={onDone}>Start the story</button></main>;
@@ -41,9 +41,9 @@ export function WarmUpScreen({ onDone }: { onDone: () => void }) {
         <button className="linkbtn" onClick={() => { void unlock(); onDone(); }}>skip to the story →</button>
       </main>
       <MagicPanel
-        word={word} learner={learner} modelling={modelling} kid={kid.name} reader={reader} kicker={`Warm-up word · ${kid.name}'s turn`}
-        onSound={() => setTapped(true)}
-        onYes={() => record(true, tapped ? "sounded" : "independent")}
+        word={word} learner={learner} modelling={modelling} sweep={sweep} kid={kid.name} reader={reader} kicker={`Warm-up word · ${kid.name}'s turn`}
+        onSound={() => {}}
+        onYes={(v) => record(true, v)}
         onTogether={together}
         onSkip={() => record(false, "skipped")}
       />

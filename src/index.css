@@ -206,3 +206,22 @@ textarea { width: 100%; line-height: 1.5; }
 .nextsound { font-size: 15px; } .nextsound b { font-family: var(--print); font-size: 22px; background: var(--magic); color: var(--magic-ink); padding: 2px 10px; border-radius: 8px; }
 .warm { align-items: center; text-align: center; }
 .soundbtn { font-family: var(--print); font-size: 22px; background: var(--magic); color: var(--magic-ink); padding: 4px 12px; border-radius: 10px; min-height: 44px; }
+
+/* ===== loop 2 (teacher) ===== */
+.tiles-wrap { position: relative; }
+.sweep { height: 6px; margin: 2px 12px 8px; background: var(--line); border-radius: 3px; overflow: hidden; }
+.sweep i { display: block; height: 100%; background: var(--accent); transition: width .05s linear, opacity .3s; }
+.yes.soft { background: #e6f0dc; }
+.adultnote { margin: 4px 0 0; font-size: 12px; color: var(--muted); font-family: system-ui, sans-serif; text-align: center; line-height: 1.4; }
+.boxes { display: flex; gap: 10px; justify-content: center; margin: 8px 0; }
+.box { width: 64px; height: 64px; border: 3px dashed var(--line); border-radius: 12px; font-family: var(--print); font-size: 34px; background: #fff; }
+.box.filled { border-style: solid; border-color: var(--accent); background: #fff3e8; }
+.tiles.bank { flex-wrap: wrap; }
+.tile.small { min-width: 48px; height: 56px; font-size: 28px; opacity: 1; flex: 0 0 auto; padding: 0 10px; }
+.bigsound { display: flex; flex-direction: column; align-items: center; margin: 0 auto; width: 160px; height: 160px; border-radius: 28px; background: var(--magic); color: var(--magic-ink); font-family: var(--print); font-size: 84px; font-weight: 600; }
+.bigsound small { font-size: 13px; font-family: system-ui, sans-serif; font-weight: 400; color: #8a4f78; }
+.tracebox { font-family: var(--print); font-size: 120px; text-align: center; color: var(--magic-ink); background: repeating-linear-gradient(0deg, transparent, transparent 38px, var(--line) 38px, var(--line) 40px); border-radius: 18px; line-height: 1.3; }
+.teach .script { text-align: left; }
+.readycard { width: min(100%, 420px); background: var(--card); border: 2px dashed var(--accent); border-radius: 18px; padding: 12px 16px; display: flex; flex-direction: column; gap: 4px; text-align: left; }
+.nights { font-family: system-ui, sans-serif; font-size: 14px; color: var(--muted); }
+.nights b { font-family: var(--print); font-size: 20px; color: var(--ink); }

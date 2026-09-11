@@ -21,24 +21,24 @@ describe("storyMachine", () => {
     a.send({ type: "NARRATION_DONE" }); expect(a.getSnapshot().context.page).toBe(1);
     a.send({ type: "MAGIC_REACHED", word: "sat" }); expect(a.getSnapshot().value).toBe("magicWord");
     a.send({ type: "SOUND_TAPPED" });
-    a.send({ type: "YES" }); expect(a.getSnapshot().value).toBe("reread");
-    expect(a.getSnapshot().context.results).toEqual([{ id: "1:sat", word: "sat", ok: true, mode: "sounded" }]);
+    a.send({ type: "YES", verdict: "prompted" }); expect(a.getSnapshot().value).toBe("reread");
+    expect(a.getSnapshot().context.results).toEqual([{ id: "1:sat", word: "sat", ok: true, mode: "prompted" }]);
     a.send({ type: "REREAD_DONE" }); expect(a.getSnapshot().value).toBe("moral");
     a.send({ type: "LINE_YES" }); expect(a.getSnapshot().value).toBe("done");
     a.send({ type: "HOME" }); expect(a.getSnapshot().value).toBe("idle");
   });
-  it("records an independent read when no sounds were tapped", () => {
+  it("records the adult's judgement, not tap behaviour", () => {
     const a = createActor(storyMachine, { input: { story } }).start();
-    a.send({ type: "START" }); a.send({ type: "NARRATION_DONE" }); a.send({ type: "MAGIC_REACHED", word: "sat" }); a.send({ type: "YES" });
-    expect(a.getSnapshot().context.results[0].mode).toBe("independent");
+    a.send({ type: "START" }); a.send({ type: "NARRATION_DONE" }); a.send({ type: "MAGIC_REACHED", word: "sat" }); a.send({ type: "SOUND_TAPPED" }); a.send({ type: "YES", verdict: "first_try" });
+    expect(a.getSnapshot().context.results[0].mode).toBe("first_try");
   });
   it("ignores taps while modelling and records modelled on a later yes", () => {
     const a = createActor(storyMachine, { input: { story } }).start();
     a.send({ type: "START" }); a.send({ type: "NARRATION_DONE" }); a.send({ type: "MAGIC_REACHED", word: "sat" });
     a.send({ type: "NOT_YET" }); expect(a.getSnapshot().value).toBe("modelling");
     a.send({ type: "YES" }); expect(a.getSnapshot().value).toBe("modelling");
-    a.send({ type: "MODEL_DONE" }); a.send({ type: "SOUND_TAPPED" }); a.send({ type: "YES" });
-    expect(a.getSnapshot().context.results[0].mode).toBe("modelled");
+    a.send({ type: "MODEL_DONE" }); a.send({ type: "SOUND_TAPPED" }); a.send({ type: "YES", verdict: "first_try" });
+    expect(a.getSnapshot().context.results[0].mode).toBe("modelled");   // a modelled word stays modelled whatever ✓ is pressed
   });
   it("read mode: RESUME returns to the same page, PAGE_NEXT advances", () => {
     const a = createActor(storyMachine, { input: { story } }).start();

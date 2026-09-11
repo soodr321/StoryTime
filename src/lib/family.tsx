@@ -4,7 +4,7 @@ import type { Story } from "./content/types";
 import { LIBRARY, fits } from "./library";
 import {
   defaultKids, learnerOf, loadAllSessions, loadCustomStories, loadKids, loadProgress, loadSettings,
-  recordFinish, saveCustomStories, saveKids, saveSession, saveSettings, scheduleReview, loadReview, dueReview, type ReviewItem,
+  recordFinish, recordEncoding, readyToAdvance, saveCustomStories, saveKids, saveSession, saveSettings, scheduleReview, loadReview, dueReview, type ReviewItem,
   type Kid, type Session, type Settings, type StoryProgress,
 } from "./store";
 
@@ -20,6 +20,9 @@ interface Family {
   progress: Record<string, StoryProgress>;
   review: ReviewItem[];                 // words due for a quick warm-up today
   reviewDone: (results: { word: string; ok: boolean; mode: string }[]) => Promise<void>;
+  encodingDone: (slug: string, word: string, ok: boolean) => Promise<void>;
+  advanceReady: boolean;
+  nights: number;
   stories: Story[];                       // library + family stories
   storiesFor: (kid: Kid) => Story[];      // those the kid can do
   todayFor: (kid: Kid) => Story | null;   // a shaky story again, else next unfinished that fits, else least recently finished
@@ -89,6 +92,9 @@ export function FamilyProvider({ children }: { children: ReactNode }) {
   const session = activeKid ? sessions[activeKid.id] ?? null : null;
   const value: Family = {
     ready, fatal, kids, settings, customs, sessions, session, activeKid, progress, review, stories, storiesFor, todayFor, repeatToday: !!shaky && activeKid?.role !== "listener",
+    encodingDone: async (slug, word, ok) => { if (!activeKid) return; await recordEncoding(activeKid.id, slug, word, ok); setProgress(await loadProgress(activeKid.id)); },
+    advanceReady: readyToAdvance(progress, review.length),
+    nights: new Set(Object.values(progress).flatMap((p) => p.history ?? []).map((t) => new Date(t).toDateString())).size,
     reviewDone: async (results) => { if (!activeKid) return; await scheduleReview(activeKid.id, results); setReview(dueReview(await loadReview(activeKid.id))); },
     setActiveKid: (id) => updateSettings({ activeKid: id }),
     updateKid: (kid) => mutateKids((prev) => prev.map((k) => (k.id === kid.id ? kid : k))),

@@ -20,8 +20,7 @@ export function SettingsScreen({ onBack, onAddStory }: { onBack: () => void; onA
       {activeKid && words.length > 0 && (
         <section className="pc">
           <h3>{activeKid.name} so far</h3>
-          <p className="legend">{Object.keys(progress).length} stories · {words.filter((r) => r.ok).length} magic words blended: {count("independent")} independently, {count("sounded")} with the tiles, {count("modelled")} after help · {words.filter((r) => !r.ok).length} for tomorrow</p>
-          {count("independent") >= 3 && count("sounded") === 0 && <p className="legend">Tip: if a word comes out instantly, ask for the sounds once (“say the sounds, then blend”) so it stays decoding, not guessing.</p>}
+          <p className="legend">{Object.keys(progress).length} stories · {words.filter((r) => r.ok).length} magic words blended: {count("first_try")} first try, {count("prompted")} after a nudge, {count("modelled")} after a model · {words.filter((r) => !r.ok).length} for tomorrow · {Object.values(progress).flatMap((p) => p.encoding ?? []).filter((e) => e.ok).length} words built</p>
         </section>
       )}
       <section className="pc">

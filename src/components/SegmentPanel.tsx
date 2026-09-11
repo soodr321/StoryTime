@@ -1,0 +1,50 @@
+import { useMemo, useState } from "react";
+import { GRAPHEME_SOUND } from "../lib/phonics/learner";
+import { checkWord, type LearnerModel } from "../lib/phonics/validator";
+import { playClip } from "../lib/audio/player";
+import { soundAsset } from "../lib/library";
+import { speakText } from "../lib/audio/speech";
+import { playBlend } from "../lib/blend";
+
+/**
+ * One-word dictation (30–45 s) after the read-back: the word is hidden; the grown-up says it;
+ * the child counts the sounds, then drags-by-tapping taught grapheme tiles into the sound boxes,
+ * sweeps and reads it back. Adult records "spelled it" or "try together"; on ✗ the app models
+ * oral segmentation once and the child rebuilds. Encoding evidence is stored separately.
+ */
+export function SegmentPanel({ word, learner, kid, reader, listen, onDone }: { word: string; learner: LearnerModel; kid: string; reader: string; listen: boolean; onDone: (ok: boolean) => void }) {
+  const target = useMemo(() => checkWord(word, learner).graphemes, [word, learner]);
+  const bank = useMemo(() => { const set = new Set([...target, ...learner.gpcs.slice(-6)]); return [...set].slice(0, 8); }, [target, learner]);
+  const [boxes, setBoxes] = useState<string[]>([]);
+  const [modelled, setModelled] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const full = boxes.length === target.length;
+  const correct = full && boxes.every((g, i) => g === target[i]);
+
+  const sayWord = () => { if (listen) speakText(word, {}); };
+  const model = async () => {
+    setBusy(true); setModelled(true);
+    for (const g of target) { try { await playClip(soundAsset(GRAPHEME_SOUND[g].clip)).done; } catch { /* clip missing */ } await new Promise((r) => setTimeout(r, 250)); }
+    setBoxes([]); setBusy(false);
+  };
+  const readBack = async () => { setBusy(true); await playBlend(boxes); setBusy(false); };
+
+  return (
+    <section className="panel" role="dialog" aria-label="Build the word">
+      <div className="kicker">Build it · {kid}'s turn</div>
+      <h2 className="panel-h">{reader} says the word. {kid} counts the sounds on fingers, then builds it.</h2>
+      <div className="row center"><button className="small" onClick={sayWord}>🔊 say the word</button><span className="legend">(the word stays hidden)</span></div>
+      <div className="boxes">{target.map((_, i) => <button key={i} className={"box" + (boxes[i] ? " filled" : "")} onClick={() => setBoxes(boxes.slice(0, i))}>{boxes[i] ?? ""}</button>)}</div>
+      <div className="tiles bank">{bank.map((g) => <button key={g} className="tile small" disabled={full || busy} onClick={() => { void playClip(soundAsset(GRAPHEME_SOUND[g].clip)).done.catch(() => {}); setBoxes([...boxes, g]); }}>{g}</button>)}</div>
+      {full && <div className="row center"><button className="small" disabled={busy} onClick={readBack}>▶ sweep and read it back</button></div>}
+      <div className="verdict grownup">
+        <div className="hint"><span className="tag">{reader}</span> {full ? (correct ? `That spells ${word}. Did ${kid} read it back?` : `Not ${word} yet — try together?`) : "Let them pick the tiles."}</div>
+        <div className="btns">
+          <button className="no" disabled={busy} onClick={model}>Try together</button>
+          <button className="yes" disabled={!correct || busy} onClick={() => onDone(!modelled)}>✓ Spelled it</button>
+        </div>
+        <button className="skip" onClick={() => onDone(false)}>skip building today →</button>
+      </div>
+    </section>
+  );
+}

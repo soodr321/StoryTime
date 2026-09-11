@@ -28,6 +28,7 @@ export interface StoryProgress {
   lastFinished?: number;
   history?: number[];       // every completion, for the week strip
   results: WordResult[];    // most recent run
+  encoding?: { word: string; ok: boolean; at: number }[];   // dictation evidence, separate from reading
 }
 export interface Session {
   kidId: string;
@@ -62,6 +63,20 @@ export async function recordFinish(kidId: string, slug: string, results: { word:
   const prev = all[slug];
   all[slug] = { slug, timesFinished: (prev?.timesFinished ?? 0) + 1, lastFinished: Date.now(), history: [...(prev?.history ?? (prev?.lastFinished ? [prev.lastFinished] : [])), Date.now()].slice(-60), results: results.map((r) => ({ ...r, at: Date.now() })) };
   await set(progressKey(kidId), all);
+}
+
+export async function recordEncoding(kidId: string, slug: string, word: string, ok: boolean): Promise<void> {
+  const all = await loadProgress(kidId); const p = all[slug]; if (!p) return;
+  p.encoding = [...(p.encoding ?? []), { word, ok, at: Date.now() }].slice(-30); await set(progressKey(kidId), all);
+}
+
+/** Recommend (never perform) advancing to the next sound: two recent sessions with ≥80% first-try/prompted blending, nothing due, and one successful build. */
+export function readyToAdvance(progress: Record<string, StoryProgress>, due: number): boolean {
+  const recent = Object.values(progress).filter((p) => p.results.length).sort((a, b) => (b.lastFinished ?? 0) - (a.lastFinished ?? 0)).slice(0, 2);
+  if (recent.length < 2 || due > 0) return false;
+  const allOk = recent.every((p) => p.results.filter((r) => r.ok && r.mode !== "modelled").length / p.results.length >= 0.8);
+  const built = Object.values(progress).some((p) => (p.encoding ?? []).some((e) => e.ok));
+  return allOk && built;
 }
 
 export async function loadSession(kidId: string): Promise<Session | null> { return (await get<Session>(sessionKey(kidId))) ?? null; }

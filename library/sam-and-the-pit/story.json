@@ -3,7 +3,7 @@
  "title": "Sam and the Pit",
  "tradition": "classic",
  "source": {
-  "work": "Original decodable story (StoryTime)",
+  "work": "Original shared-reading story (decodable targets only)",
   "author": "StoryTime",
   "rights": "public-domain"
  },
@@ -40,31 +40,71 @@
     },
     {
      "t": "brown",
-     "ms": 1322
+     "ms": 1282
     },
     {
-     "t": "dog.",
-     "ms": 1730
+     "t": "dog",
+     "ms": 1689
     },
     {
-     "t": "Sam",
-     "ms": 3107
+     "t": "who",
+     "ms": 2056
     },
     {
      "t": "loves",
-     "ms": 3609
+     "ms": 2219
     },
     {
      "t": "to",
-     "ms": 3949
+     "ms": 2600
     },
     {
      "t": "dig.",
-     "ms": 4085
+     "ms": 2749
+    },
+    {
+     "t": "Dad",
+     "ms": 4098
+    },
+    {
+     "t": "was",
+     "ms": 4615
+    },
+    {
+     "t": "digging",
+     "ms": 4846
+    },
+    {
+     "t": "in",
+     "ms": 5213
+    },
+    {
+     "t": "the",
+     "ms": 5335
+    },
+    {
+     "t": "garden,",
+     "ms": 5444
+    },
+    {
+     "t": "so",
+     "ms": 6164
+    },
+    {
+     "t": "Sam",
+     "ms": 6408
+    },
+    {
+     "t": "dug",
+     "ms": 6789
+    },
+    {
+     "t": "too.",
+     "ms": 7101
     }
    ],
    "audio": "p1.m4a",
-   "audioMs": 5420
+   "audioMs": 8450
   },
   {
    "art": "🕳️",
@@ -73,68 +113,68 @@
    ],
    "tokens": [
     {
-     "t": "One",
+     "t": "Sam",
      "ms": 100
     },
     {
-     "t": "day",
-     "ms": 534
-    },
-    {
-     "t": "Sam",
-     "ms": 738
-    },
-    {
      "t": "dug",
-     "ms": 1037
+     "ms": 561
     },
     {
      "t": "a",
-     "ms": 1390
+     "ms": 874
     },
     {
-     "t": "big",
-     "ms": 1472
+     "t": "pit.",
+     "ms": 955
     },
     {
-     "t": "pit",
-     "ms": 1757
+     "t": "He",
+     "ms": 2305
     },
     {
-     "t": "in",
-     "ms": 2056
-    },
-    {
-     "t": "the",
-     "ms": 2192
-    },
-    {
-     "t": "garden.",
-     "ms": 2301
-    },
-    {
-     "t": "It",
-     "ms": 3800
-    },
-    {
-     "t": "went",
-     "ms": 4044
-    },
-    {
-     "t": "down",
-     "ms": 4357
+     "t": "dug",
+     "ms": 2536
     },
     {
      "t": "and",
-     "ms": 4710
+     "ms": 2930
     },
     {
-     "t": "down.",
+     "t": "dug",
+     "ms": 3134
+    },
+    {
+     "t": "until",
+     "ms": 3528
+    },
+    {
+     "t": "the",
+     "ms": 3922
+    },
+    {
+     "t": "pit",
+     "ms": 4044
+    },
+    {
+     "t": "was",
+     "ms": 4289
+    },
+    {
+     "t": "deeper",
+     "ms": 4506
+    },
+    {
+     "t": "than",
      "ms": 4886
+    },
+    {
+     "t": "Sam!",
+     "ms": 5145
     }
    ],
    "audio": "p2.m4a",
-   "audioMs": 6290
+   "audioMs": 6580
   },
   {
    "art": "🐕",
@@ -159,56 +199,64 @@
      "ms": 2169
     },
     {
-     "t": "Sam",
-     "ms": 2577
+     "t": "he",
+     "ms": 2509
     },
     {
      "t": "sat",
-     "ms": 2971
+     "ms": 2726
     },
     {
      "t": "at",
-     "ms": 3365
+     "ms": 3134
     },
     {
      "t": "the",
-     "ms": 3541
+     "ms": 3310
     },
     {
-     "t": "bottom.",
-     "ms": 3650
+     "t": "bottom",
+     "ms": 3419
     },
     {
-     "t": "It",
-     "ms": 5145
+     "t": "and",
+     "ms": 3908
+    },
+    {
+     "t": "looked",
+     "ms": 4166
+    },
+    {
+     "t": "up.",
+     "ms": 4452
+    },
+    {
+     "t": "The",
+     "ms": 5729
+    },
+    {
+     "t": "top",
+     "ms": 5973
     },
     {
      "t": "was",
-     "ms": 5389
-    },
-    {
-     "t": "too",
-     "ms": 5661
-    },
-    {
-     "t": "deep",
-     "ms": 5865
-    },
-    {
-     "t": "to",
-     "ms": 6191
-    },
-    {
-     "t": "jump",
      "ms": 6340
     },
     {
-     "t": "out!",
-     "ms": 6680
+     "t": "very",
+     "ms": 6612
+    },
+    {
+     "t": "far",
+     "ms": 7020
+    },
+    {
+     "t": "away.",
+     "ms": 7400
     }
    ],
    "audio": "p3.m4a",
-   "audioMs": 8090
+   "audioMs": 8830
   },
   {
    "art": "😟",
@@ -218,40 +266,80 @@
      "ms": 100
     },
     {
-     "t": "barked",
-     "ms": 602
+     "t": "tried",
+     "ms": 534
     },
     {
-     "t": "and",
-     "ms": 1023
+     "t": "to",
+     "ms": 928
     },
     {
-     "t": "barked.",
-     "ms": 1214
+     "t": "climb",
+     "ms": 1078
     },
     {
-     "t": "Nobody",
-     "ms": 2631
+     "t": "out.",
+     "ms": 1513
     },
     {
-     "t": "came.",
-     "ms": 3229
+     "t": "His",
+     "ms": 2835
     },
     {
-     "t": "Sam",
+     "t": "paws",
+     "ms": 3147
+    },
+    {
+     "t": "scraped",
+     "ms": 3514
+    },
+    {
+     "t": "the",
+     "ms": 4017
+    },
+    {
+     "t": "soft",
+     "ms": 4153
+    },
+    {
+     "t": "earth,",
      "ms": 4628
     },
     {
-     "t": "felt",
-     "ms": 5077
+     "t": "and",
+     "ms": 5308
     },
     {
-     "t": "sad.",
-     "ms": 5457
+     "t": "it",
+     "ms": 5579
+    },
+    {
+     "t": "slid",
+     "ms": 5715
+    },
+    {
+     "t": "back",
+     "ms": 6096
+    },
+    {
+     "t": "down",
+     "ms": 6422
+    },
+    {
+     "t": "on",
+     "ms": 6816
+    },
+    {
+     "t": "his",
+     "ms": 7020
+    },
+    {
+     "t": "nose.",
+     "ms": 7264
     }
    ],
    "audio": "p4.m4a",
-   "audioMs": 6890
+   "audioMs": 8740
   },
   {
    "art": "👨",
@@ -260,56 +348,76 @@
    ],
    "tokens": [
     {
-     "t": "At",
+     "t": "Sam",
      "ms": 100
     },
     {
-     "t": "last",
-     "ms": 371
+     "t": "barked,",
+     "ms": 589
+    },
+    {
+     "t": "“Woof!",
+     "ms": 1268
+    },
+    {
+     "t": "Woof!”",
+     "ms": 2713
     },
     {
      "t": "Dad",
-     "ms": 792
+     "ms": 4248
     },
     {
-     "t": "heard",
-     "ms": 1146
+     "t": "put",
+     "ms": 4778
     },
     {
-     "t": "him.",
-     "ms": 1499
+     "t": "down",
+     "ms": 5009
     },
     {
-     "t": "Dad",
-     "ms": 2848
+     "t": "his",
+     "ms": 5376
+    },
+    {
+     "t": "spade,",
+     "ms": 5566
     },
     {
      "t": "reached",
-     "ms": 3405
+     "ms": 6300
     },
     {
-     "t": "in",
-     "ms": 3895
+     "t": "into",
+     "ms": 6802
+    },
+    {
+     "t": "the",
+     "ms": 7060
+    },
+    {
+     "t": "pit,",
+     "ms": 7169
     },
     {
      "t": "and",
-     "ms": 4098
+     "ms": 7699
     },
     {
      "t": "lifted",
-     "ms": 4261
+     "ms": 7971
     },
     {
      "t": "Sam",
-     "ms": 4710
+     "ms": 8473
     },
     {
-     "t": "up.",
-     "ms": 5022
+     "t": "out.",
+     "ms": 8786
     }
    ],
    "audio": "p5.m4a",
-   "audioMs": 6290
+   "audioMs": 10150
   },
   {
    "art": "😴",
@@ -335,46 +443,70 @@
     },
     {
      "t": "Sam",
-     "ms": 1580
+     "ms": 1553
     },
     {
-     "t": "had",
+     "t": "gave",
      "ms": 1907
     },
     {
+     "t": "Dad",
+     "ms": 2219
+    },
+    {
      "t": "a",
-     "ms": 2138
+     "ms": 2572
     },
     {
-     "t": "long",
-     "ms": 2205
-    },
-    {
-     "t": "nap",
+     "t": "lick.",
      "ms": 2640
     },
     {
+     "t": "Then",
+     "ms": 3963
+    },
+    {
+     "t": "he",
+     "ms": 4316
+    },
+    {
+     "t": "had",
+     "ms": 4533
+    },
+    {
+     "t": "a",
+     "ms": 4751
+    },
+    {
+     "t": "long",
+     "ms": 4819
+    },
+    {
+     "t": "nap",
+     "ms": 5267
+    },
+    {
      "t": "in",
-     "ms": 2980
+     "ms": 5607
     },
     {
      "t": "the",
-     "ms": 3116
+     "ms": 5729
     },
     {
      "t": "sun.",
-     "ms": 3225
+     "ms": 5838
     }
    ],
    "audio": "p6.m4a",
-   "audioMs": 4630
+   "audioMs": 7250
   }
  ],
  "moral": {
-  "spoken": "When you are stuck, call for help, and someone will come.",
+  "spoken": "When you are stuck, call out, and someone who loves you will come.",
   "line": "Sam sat in a pit.",
   "audio": "moral.m4a",
-  "audioMs": 4780
+  "audioMs": 5210
  },
  "prompts": {
   "yes:pit": {
