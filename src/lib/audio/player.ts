@@ -11,8 +11,11 @@ function make(): HTMLAudioElement {
   const a = document.createElement("audio");
   a.setAttribute("playsinline", "");
   a.preload = "auto";
+  a.style.display = "none";
+  document.body.appendChild(a); // detached media elements can be collected mid-play
   return a;
 }
+const withTimeout = <T,>(p: Promise<T>, ms: number) => Promise.race([p, new Promise<void>((r) => setTimeout(r, ms))]);
 
 /** Call from a user gesture (the Start tap). Safe to call repeatedly. */
 export async function unlock(): Promise<void> {
@@ -21,7 +24,7 @@ export async function unlock(): Promise<void> {
   if (unlocked) return;
   const silent = "data:audio/mp4;base64,AAAAHGZ0eXBNNEEgAAAAAE00QSBpc29tbXA0MgAAAAhmcmVlAAAAAG1kYXQ=";
   for (const a of [narration, clip]) {
-    try { a.src = silent; await a.play(); a.pause(); } catch { /* element still counts as gestured on most engines */ }
+    try { a.src = silent; await withTimeout(a.play(), 400); a.pause(); } catch { /* element still counts as gestured on most engines */ }
   }
   unlocked = true;
 }
@@ -39,8 +42,10 @@ function playOn(el: HTMLAudioElement, src: string): Playing {
   el.currentTime = 0;
   let resolve!: () => void, reject!: (e: unknown) => void;
   const done = new Promise<void>((res, rej) => { resolve = res; reject = rej; });
-  const cleanup = () => { el.onended = null; el.onerror = null; };
+  const cleanup = () => { el.onended = null; el.onerror = null; el.ontimeupdate = null; };
   el.onended = () => { cleanup(); resolve(); };
+  // safety net: some engines drop `ended` after a stall; treat reaching the end as ended
+  el.ontimeupdate = () => { if (el.duration && el.currentTime >= el.duration - 0.05) { cleanup(); el.pause(); resolve(); } };
   el.onerror = () => { cleanup(); reject(new Error(`audio failed: ${src}`)); };
   void el.play().catch((e) => { cleanup(); reject(e); });
   return { done, stop: () => { el.pause(); cleanup(); resolve(); }, el };
