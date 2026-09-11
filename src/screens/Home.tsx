@@ -1,5 +1,6 @@
 import { useFamily } from "../lib/family";
-import { TRADITION_LABEL } from "../lib/library";
+import { TRADITION_LABEL, storyAsset } from "../lib/library";
+import { useEffect } from "react";
 import type { Story } from "../lib/content/types";
 import { Art } from "../components/Art";
 
@@ -7,19 +8,35 @@ export type Mode = "listen" | "read";
 
 const sameDay = (a: number, b: number) => new Date(a).toDateString() === new Date(b).toDateString();
 
+/** Warm the audio cache for a story so it plays in the car / on the plane. Best effort. */
+async function precache(story: Story) {
+  if (story.tradition === "family") return;
+  const files = [...story.pages.map((p) => p.audio), story.moral.audio, ...Object.values(story.prompts ?? {}).map((p) => p.audio)].filter(Boolean) as string[];
+  await Promise.allSettled(files.map((f) => fetch(storyAsset(story, f), { cache: "force-cache" })));
+}
+
+function WeekStrip({ days }: { days: number[] }) {
+  const today = new Date(); const cells = [] as { label: string; on: boolean; isToday: boolean }[];
+  for (let i = 6; i >= 0; i--) { const d = new Date(today); d.setDate(today.getDate() - i); cells.push({ label: d.toLocaleDateString(undefined, { weekday: "narrow" }), on: days.some((t) => sameDay(t, d.getTime())), isToday: i === 0 }); }
+  return <div className="week" aria-label="stories this week">{cells.map((c, i) => <span key={i} className={"day" + (c.on ? " on" : "") + (c.isToday ? " today" : "")}>{c.on ? "★" : c.label}</span>)}</div>;
+}
+
 export function HomeScreen({ onStart, onLibrary, onSwitch }: { onStart: (story: Story, mode: Mode, resume: boolean) => void; onLibrary: () => void; onSwitch: () => void }) {
   const { activeKid: kid, todayFor, session, stories, progress, settings, setSession } = useFamily();
-  if (!kid) return null;
   const resumable = session ? stories.find((s) => s.slug === session.slug) ?? null : null;
-  const today = resumable ?? todayFor(kid);
+  const today = kid ? resumable ?? todayFor(kid) : null;
+  useEffect(() => { if (today) void precache(today); }, [today]);
+  if (!kid) return null;
   const finished = Object.keys(progress).length;
   const listener = kid.role === "listener";
   const lastFinished = Math.max(0, ...Object.values(progress).map((p) => p.lastFinished ?? 0));
   const doneTonight = settings.bedtime && lastFinished > 0 && sameDay(lastFinished, Date.now()) && !resumable;
+  const days = Object.values(progress).map((p) => p.lastFinished ?? 0).filter(Boolean);
 
   return (
     <main className="home-screen">
       <button className="who" onClick={onSwitch}><span>{kid.avatar}</span> {kid.name} · <u>switch</u></button>
+      <WeekStrip days={days} />
 
       {doneTonight ? (
         <div className="closing">

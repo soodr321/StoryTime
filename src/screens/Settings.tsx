@@ -6,12 +6,21 @@ import { Art } from "../components/Art";
 const AVATARS = ["🦁", "🐣", "🐯", "🦊", "🐼", "🐸", "🦄", "🐬", "🐢", "🐝", "🌟", "🚀"];
 
 export function SettingsScreen({ onBack, onAddStory }: { onBack: () => void; onAddStory: () => void }) {
-  const { kids, updateKid, addKid, removeKid, settings, updateSettings, customs, removeCustom } = useFamily();
+  const { kids, updateKid, addKid, removeKid, settings, updateSettings, customs, removeCustom, activeKid, progress } = useFamily();
+  const words = Object.values(progress).flatMap((p) => p.results);
+  const count = (m: string) => words.filter((r) => r.ok && r.mode === m).length;
   const [readerDraft, setReaderDraft] = useState("");
   return (
     <main className="settings">
       <div className="row"><button className="linkbtn" onClick={onBack}>← Back</button><div className="kicker">Grown-up settings</div></div>
 
+      {activeKid && words.length > 0 && (
+        <section className="pc">
+          <h3>{activeKid.name} so far</h3>
+          <p className="legend">{Object.keys(progress).length} stories · {words.filter((r) => r.ok).length} magic words read: {count("sight")} on sight, {count("sounded")} sounded out, {count("modelled")} after help · {words.filter((r) => !r.ok).length} skipped</p>
+          {count("sight") >= 3 && count("sounded") === 0 && <p className="legend">Tip: lots of sight reads and no sounding out — try “Say it together” once so the sounds stay fresh.</p>}
+        </section>
+      )}
       <section className="pc">
         <h3>Children</h3>
         {kids.map((k) => <KidEditor key={k.id} kid={k} onChange={updateKid} onRemove={kids.length > 1 ? () => removeKid(k.id) : undefined} />)}

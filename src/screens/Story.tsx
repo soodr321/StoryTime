@@ -74,13 +74,16 @@ export function StoryScreen({ story, mode, resume, onHome }: { story: Story; mod
     const reachMagic = () => { stopped = true; send({ type: "TOKEN", index: magicIdx }); send({ type: "MAGIC_REACHED", word: normalise(p.tokens[magicIdx].t) }); };
 
     if (p.audio) {
-      const stopMs = magicIdx >= 0 ? p.tokens[magicIdx].ms : Infinity;
       const pl = playNarration(storyAsset(story, p.audio)); pl.el.playbackRate = rate; playing.current = pl;
+      // a parent recording has no word timings: spread the words evenly over the clip once its length is known
+      const timed = p.tokens.some((t) => t.ms > 0);
+      const tokMs = (i: number) => (timed ? p.tokens[i].ms : (isFinite(pl.el.duration) && pl.el.duration > 0 ? (pl.el.duration * 1000 * i) / p.tokens.length : Infinity));
+      const stopMsAt = () => (magicIdx >= 0 ? tokMs(magicIdx) : Infinity);
       let raf = 0, last = -1;
       const tick = () => {
-        const ms = pl.el.currentTime * 1000;
+        const ms = pl.el.currentTime * 1000; const stopMs = stopMsAt();
         if (ms >= stopMs) { pl.stop(); reachMagic(); return; }
-        let i = -1; for (let k = 0; k < p.tokens.length; k++) if (p.tokens[k].ms <= ms) i = k;
+        let i = -1; for (let k = 0; k < p.tokens.length; k++) if (tokMs(k) <= ms) i = k;
         if (i !== last) { last = i; send({ type: "TOKEN", index: i }); }
         raf = requestAnimationFrame(tick);
       };
@@ -286,6 +289,7 @@ function Done({ story, results, bedtime, kid, onHome }: { story: Story; results:
       {results.length > 0 && <p>{ok} of {results.length} magic words read</p>}
       {results.length > 0 && <ul className="results">{results.map((r, i) => <li key={r.word + i} className={r.ok ? "ok" : "no"}>{r.word}{r.ok ? "" : " · tomorrow"}</li>)}</ul>}
       <p className="show">{bedtime ? `Lights low. One real book, then sleep.` : results.length ? `Now go find someone and read them your ${results.length === 1 ? "magic word" : "magic words"}, ${kid}!` : `Great listening, ${kid}!`}</p>
+      {!bedtime && results.some((r) => r.ok) && <p className="bigwords">{results.filter((r) => r.ok).map((r) => <span key={r.word}>{r.word}</span>)}</p>}
       <div className="btns"><button className="yes" onClick={onHome}>Done</button></div>
     </main>
   );

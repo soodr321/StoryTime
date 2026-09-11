@@ -5,7 +5,8 @@
  *   4. Pick an emoji or a camera-roll photo for each page (photos are shrunk to ≤640px JPEG and stored locally, never uploaded).  5. Moral + read-back line, checked live.
  * Narration uses on-device speech; no server, works offline.
  */
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
+import { canRecord, startRecording, type Recorder } from "../lib/audio/record";
 import { useFamily } from "../lib/family";
 import { learnerOf, uid } from "../lib/store";
 import { checkLine, checkMagicWord, normalise } from "../lib/phonics/validator";
@@ -36,6 +37,14 @@ export function AddStoryScreen({ onDone }: { onDone: () => void }) {
   const [line, setLine] = useState("");
   const [arts, setArts] = useState<Record<number, string>>({});
   const [magic, setMagic] = useState<Record<number, string | null>>({});
+  const [rec, setRec] = useState<Record<number, { dataUrl: string; ms: number }>>({});
+  const [recording, setRecording] = useState<number | null>(null);
+  const recRef = useRef<Recorder | null>(null);
+  const toggleRec = async (i: number) => {
+    if (recording === i) { const r = await recRef.current?.stop(); recRef.current = null; setRecording(null); if (r) setRec({ ...rec, [i]: r }); return; }
+    if (recording !== null) return;
+    try { recRef.current = await startRecording(); setRecording(i); } catch { setPhotoErr("Microphone not allowed. You can still save the story; it will use the phone's voice."); }
+  };
 
   // one line per page; a pasted paragraph is split at sentence ends so a tired parent never sees a silent disabled Save
   const pages = useMemo(() => text.split(/\n+/).flatMap((l) => l.split(/(?<!\b[A-Z][a-z]{0,2})(?<=[.!?”"])\s+(?=[A-Z“"])/)).map((s) => s.trim()).filter(Boolean), [text]);
@@ -51,7 +60,7 @@ export function AddStoryScreen({ onDone }: { onDone: () => void }) {
       source: { work: "Family story", rights: "owner" },
       retelling: { level: `${kid.gpcs.length} sounds`, checklist: { setup: true, want: true, action: true, consequence: true, feeling: true } },
       level: "custom",
-      pages: pages.map((p, i) => ({ art: arts[i] ?? "📖", tokens: p.split(/\s+/).map((t) => ({ t, ms: 0 })), ...(chosen(i) ? { magic: [chosen(i)!] } : {}) })),
+      pages: pages.map((p, i) => ({ art: arts[i] ?? "📖", tokens: p.split(/\s+/).map((t) => ({ t, ms: 0 })), ...(chosen(i) ? { magic: [chosen(i)!] } : {}), ...(rec[i] ? { audio: rec[i].dataUrl, audioMs: rec[i].ms } : {}) })),
       moral: { spoken: moral.trim(), line: line.trim() },
     };
     if (await addCustom(story)) onDone();
@@ -67,7 +76,7 @@ export function AddStoryScreen({ onDone }: { onDone: () => void }) {
         <label className="lbl">The story — one sentence per line, one line per page
           <textarea rows={7} value={text} onChange={(e) => setText(e.target.value)} placeholder={"Nani had a big mango tree.\nVeer sat under it with his cat.\nA mango fell. Plop!\n…"} />
         </label>
-        <p className="legend">Tip: a first-time reader manages 5–8 pages. Write the rich version — the app only asks {kid.name} to read the magic words.</p>
+        <p className="legend">Tip: a first-time reader manages 5–8 pages. Write the rich version — the app only asks {kid.name} to read the magic words. Record each page in your own voice and it becomes Nani reading, offline.</p>
       </section>
 
       {pages.length > 0 && (
@@ -86,6 +95,14 @@ export function AddStoryScreen({ onDone }: { onDone: () => void }) {
                 {arts[i]?.startsWith("data:") && <img className="thumb" src={arts[i]} alt="" />}
                 {photoErr && <span className="legend bad">{photoErr}</span>}
               </div>
+              {canRecord() && (
+                <div className="row wrap">
+                  <span className="legend">Voice:</span>
+                  <button className={"tog rec" + (recording === i ? " live" : rec[i] ? " on" : "")} onClick={() => toggleRec(i)}>{recording === i ? "■ stop" : rec[i] ? "🎤 re-record" : "🎤 record this page"}</button>
+                  {rec[i] && recording !== i && <span className="legend">✓ {Math.round(rec[i].ms / 1000)}s in your voice</span>}
+                  {!rec[i] && recording !== i && <span className="legend">or leave it: the phone reads it</span>}
+                </div>
+              )}
               <div className="row wrap">
                 <span className="legend">Magic word:</span>
                 {candidates[i].length === 0 && <span className="legend">none decodable on this page — fine, {kid.name} listens.</span>}
