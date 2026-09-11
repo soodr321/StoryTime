@@ -25,12 +25,24 @@ export function normalise(word: string): string {
   return (word ?? "").toLowerCase().replace(/[^a-z]/g, "");
 }
 
+/**
+ * Multi-letter graphemes English children are taught later (Letters & Sounds phases 3–5).
+ * A word containing one of these that the child has NOT been taught is not decodable letter by
+ * letter — "mango" is not m-a-n-g-o, "tree" is not t-r-e-e — so it is rejected even when every
+ * single letter is known. This is the cheap stand-in for a pronunciation lexicon.
+ */
+export const LATER_GRAPHEMES = ["ng", "sh", "ch", "th", "qu", "wh", "ph", "ai", "ee", "igh", "oa", "oo", "ar", "or", "ur", "ow", "oi", "ear", "air", "ure", "er", "ay", "ou", "ie", "ea", "oy", "ir", "ue", "aw", "ew", "oe", "au", "ey", "tch", "dge", "wr", "kn", "ck", "ff", "ll", "ss", "zz"];
+
 export function checkWord(word: string, learner: LearnerModel): CheckResult {
   const w = normalise(word);
   if (!w) return { ok: false, word: w, graphemes: [], reasons: ["empty word"] };
 
   const tricky = new Set(learner.tricky.map(normalise));
   if (tricky.has(w)) return { ok: true, kind: "tricky", word: w, graphemes: [w] };
+
+  const taught = new Set(learner.gpcs.map(normalise));
+  const later = LATER_GRAPHEMES.filter((g) => !taught.has(g)).sort((a, b) => b.length - a.length).find((g) => w.includes(g));
+  if (later) return { ok: false, word: w, graphemes: [], reasons: [`"${later}" in "${w}" is one sound that has not been taught yet`] };
 
   const gpcs = [...new Set(learner.gpcs.map(normalise).filter(Boolean))].sort(
     (a, b) => b.length - a.length,

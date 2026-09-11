@@ -24,7 +24,7 @@ describe("checkWord", () => {
   it("rejects untaught letters with an actionable reason", () => {
     const r = checkWord("crow", L);
     expect(r.ok).toBe(false);
-    if (!r.ok) expect(r.reasons[0]).toMatch(/"w".*not a taught sound/);
+    if (!r.ok) expect(r.reasons[0]).toMatch(/"ow".*not been taught/);
   });
   it("fails closed on empty input", () => {
     expect(checkWord("", L).ok).toBe(false);
@@ -34,7 +34,15 @@ describe("checkWord", () => {
     const r = checkWord("the", L);
     expect(r.ok && r.kind === "tricky").toBe(true);
     const none = checkWord("the", { gpcs: ["t", "h", "e"], tricky: [] });
-    expect(none.ok && none.kind === "decodable").toBe(true); // th-e would be a mis-teach: that is why tricky is a locked set
+    expect(none.ok).toBe(false); // never t-h-e: "th" is one sound, and "the" is an exception word
+  });
+  it("rejects words that hide an untaught digraph even when every letter is known", () => {
+    for (const w of ["mango", "tree", "under", "ship", "book", "car"]) expect(checkWord(w, L).ok, w).toBe(false);
+    const r = checkWord("mango", L); if (!r.ok) expect(r.reasons[0]).toMatch(/"ng"/);
+  });
+  it("still accepts ck words when ck is taught, and rejects them when it is not", () => {
+    expect(checkWord("trick", L).ok).toBe(true);
+    expect(checkWord("sock", { gpcs: ["s", "o", "c", "k"], tricky: [] }).ok).toBe(false);
   });
   it("is case-insensitive (sentence case is display-only)", () => {
     expect(checkWord("It", L).ok).toBe(true);
