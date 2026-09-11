@@ -225,3 +225,8 @@ textarea { width: 100%; line-height: 1.5; }
 .readycard { width: min(100%, 420px); background: var(--card); border: 2px dashed var(--accent); border-radius: 18px; padding: 12px 16px; display: flex; flex-direction: column; gap: 4px; text-align: left; }
 .nights { font-family: system-ui, sans-serif; font-size: 14px; color: var(--muted); }
 .nights b { font-family: var(--print); font-size: 20px; color: var(--ink); }
+
+.tokwrap { display: inline; }
+.w.listener-tap { padding: 1px 3px; margin: 0; }
+.champion { width: min(100%, 420px); background: #fff3e8; border: 2px solid var(--accent); border-radius: 18px; padding: 14px 16px; display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center; }
+.champion span { font-size: 44px; } .champion b { font-size: 20px; } .champion small { color: var(--muted); font-family: system-ui, sans-serif; }

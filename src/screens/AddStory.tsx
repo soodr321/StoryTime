@@ -55,6 +55,7 @@ export function AddStoryScreen({ onDone }: { onDone: () => void }) {
   const keys = useMemo(() => { const seen: Record<string, number> = {}; return pages.map((p) => { seen[p] = (seen[p] ?? 0) + 1; return seen[p] > 1 ? `${p}#${seen[p]}` : p; }); }, [pages]);
   // names (capitalised mid-sentence) are never magic words; possessives are stripped; nothing is auto-picked
   const candidates = useMemo(() => pages.map((p) => { const toks = p.split(/\s+/); return [...new Set(toks.filter((t, i) => !(i > 0 && /^[A-Z]/.test(t))).map((t) => normalise(t)).filter((w) => w.length >= 2 && checkMagicWord(w, learner).ok))]; }), [pages, learner]);
+  const examples = useMemo(() => ["sat", "tap", "pat", "sip", "pin", "tin", "map", "nap", "dad", "dig", "dog", "pot", "cot", "kid", "sock", "duck", "pen", "red", "cup", "run", "hat", "bed", "fan", "leg"].filter((w) => checkMagicWord(w, learner).ok).slice(0, 4), [learner]);
   const lineCheck = useMemo(() => (line.trim() ? checkLine(line, learner) : null), [line, learner]);
   const chosen = (i: number) => magic[keys[i]] ?? null;
   const artOf = (i: number) => arts[keys[i]];
@@ -112,7 +113,7 @@ export function AddStoryScreen({ onDone }: { onDone: () => void }) {
               )}
               <div className="row wrap">
                 <span className="legend">Magic word:</span>
-                {candidates[i].length === 0 && <span className="legend">none decodable on this page — fine, {kid.name} listens.</span>}
+                {candidates[i].length === 0 && <span className="legend">none here yet — try adding one of: <b>{examples.join(", ")}</b> so {kid.name} gets a turn on this page.</span>}
                 {candidates[i].map((w) => <button key={w} className={"tog" + (chosen(i) === w ? " on" : "")} onClick={() => setMagic((prev) => ({ ...prev, [keys[i]]: chosen(i) === w ? null : w }))}>{w}</button>)}
                 {candidates[i].length > 0 && <span className="legend">{chosen(i) ? "" : "tap one, or none"}</span>}
               </div>

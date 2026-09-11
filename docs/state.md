@@ -10,3 +10,4 @@
 - GPT v7 #5 "curated pronunciation lexicon": not in one night; instead the validator fails closed on contractions, silent-e (split digraph) and untaught digraphs, which covers the phase-2 word bank.
 - GPT v7 #6 "forced alignment for parent recordings": mitigated by stopping ~350 ms before the estimated magic-word boundary; real alignment is a later phase.
 - GPT teacher L1 #9 dictation/segmenting task: "Next sound to teach" card added; a dictation activity is queued for a later loop.
+- Gemini loop 2 #9 "A trick is sad." — rejected: `tr` is an adjacent-consonant cluster (phase 4); the CVC-only rule from Grok loop 1 stands. Line stays "It is sad."

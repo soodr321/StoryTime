@@ -40,7 +40,11 @@ export function HomeScreen({ onStart, onLibrary, onSwitch, onWarmUp, onTeach }: 
     <main className="home-screen">
       <button className="who" onClick={onSwitch}><span>{kid.avatar}</span> {kid.name} · <u>switch</u></button>
       <div className="row between" style={{ width: "min(100%, 420px)" }}><WeekStrip days={days} /><span className="nights">night <b>{Math.min(30, nights + 1)}</b> of 30</span></div>
-      {!listener && advanceReady && kid.gpcs.length < LS_PHASE2_ORDER.length && (
+      {!listener && nights >= 30 && <div className="champion"><span>🏅</span><b>30 nights of reading!</b><small>{kid.name} is a Reading Champion. Keep the ritual: one story, then a real book.</small></div>}
+      {!listener && kid.gpcs.length < 4 && (
+        <button className="readycard" onClick={onTeach}><b>Teach today's sound: {LS_PHASE2_ORDER[kid.gpcs.length]}</b><small>90 seconds. After four sounds the first story unlocks.</small></button>
+      )}
+      {!listener && advanceReady && kid.gpcs.length >= 4 && kid.gpcs.length < LS_PHASE2_ORDER.length && (
         <button className="readycard" onClick={onTeach}><b>Ready for a new sound: {LS_PHASE2_ORDER[kid.gpcs.length]}</b><small>Two smooth sessions and a word built. 90 seconds to teach it — you decide when.</small></button>
       )}
       {!listener && advanceReady && kid.gpcs.length < LS_PHASE2_ORDER.length && (
@@ -88,7 +92,7 @@ export function HomeScreen({ onStart, onLibrary, onSwitch, onWarmUp, onTeach }: 
           )}
         </>
       ) : (
-        <p className="note">No story fits {kid.name}'s sounds yet. A grown-up can add sounds in Settings.</p>
+        <p className="note">{kid.gpcs.length < 4 ? `Four sounds, then the first story. ${4 - kid.gpcs.length} to go.` : `No story fits ${kid.name}'s sounds yet. A grown-up can add sounds in Settings.`}</p>
       )}
       {today && !resumable && !doneTonight && !repeatToday && review.length === 0 && (() => { const alt = storiesFor(kid).find((s) => s.slug !== today.slug && !progress[s.slug]) ?? storiesFor(kid).find((s) => s.slug !== today.slug); return alt ? <button className="linkbtn" onClick={() => onStart(alt, "listen", false)}>or {kid.name} picks: {alt.pages[0].art} {alt.title} →</button> : null; })()}
       <button className="linkbtn" onClick={review.length > 0 && !listener ? onWarmUp : onLibrary}>📚 Bookshelf · {finished} finished{review.length > 0 && !listener ? " · after the warm-up" : ""}</button>

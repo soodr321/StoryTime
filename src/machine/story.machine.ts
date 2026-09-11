@@ -7,7 +7,7 @@ import { assign, setup } from "xstate";
 import type { Story } from "../lib/content/types";
 
 export type VerdictMode = "first_try" | "prompted" | "modelled" | "skipped";
-/** id = `${page}:${word}` so a word repeated on a later page gets its own turn */
+/** id = `${page}:${tokenIndex}` so every occurrence of a magic word gets its own turn */
 export interface WordResult { id?: string; word: string; ok: boolean; mode: VerdictMode }
 
 export interface Ctx {
@@ -15,8 +15,9 @@ export interface Ctx {
   page: number;
   /** index of the token currently highlighted, or -1 */
   token: number;
-  /** which magic word (normalised) is open, if any */
+  /** which magic word (normalised) is open, if any, and its token index */
   magic: string | null;
+  magicIdx: number;
   mode: VerdictMode;
   results: WordResult[];
 }
@@ -25,7 +26,7 @@ export type Ev =
   | { type: "START" }
   | { type: "TOKEN"; index: number }
   | { type: "NARRATION_DONE" }
-  | { type: "MAGIC_REACHED"; word: string }
+  | { type: "MAGIC_REACHED"; word: string; index: number }
   | { type: "SOUND_TAPPED" }
   | { type: "YES"; verdict?: "first_try" | "prompted" }
   | { type: "NOT_YET" }
@@ -46,19 +47,19 @@ export const storyMachine = setup({
   actions: {
     nextPage: assign({ page: ({ context }) => context.page + 1, token: -1, magic: null, mode: "first_try" }),
     setToken: assign({ token: ({ event }) => (event.type === "TOKEN" ? event.index : -1) }),
-    openMagic: assign({ magic: ({ event }) => (event.type === "MAGIC_REACHED" ? event.word : null), mode: "first_try" }),
+    openMagic: assign({ magic: ({ event }) => (event.type === "MAGIC_REACHED" ? event.word : null), magicIdx: ({ event }) => (event.type === "MAGIC_REACHED" ? event.index : -1), mode: "first_try" }),
     sounded: assign({ mode: ({ context }) => context.mode }),   // tile taps play sounds; they never decide the label
     modelled: assign({ mode: "modelled" }),
     record: assign({
       results: ({ context, event }) => [
         ...context.results,
-        { id: `${context.page}:${context.magic ?? ""}`, word: context.magic ?? "", ok: event.type === "YES", mode: event.type === "SKIP" ? "skipped" : context.mode === "modelled" ? "modelled" : event.type === "YES" && event.verdict ? event.verdict : context.mode },
+        { id: `${context.page}:${context.magicIdx}`, word: context.magic ?? "", ok: event.type === "YES", mode: event.type === "SKIP" ? "skipped" : context.mode === "modelled" ? "modelled" : event.type === "YES" && event.verdict ? event.verdict : context.mode },
       ],
     }),
   },
 }).createMachine({
   id: "story",
-  context: ({ input }) => ({ story: input.story, page: input.page ?? 0, token: -1, magic: null, mode: "first_try", results: input.results ?? [] }),
+  context: ({ input }) => ({ story: input.story, page: input.page ?? 0, token: -1, magic: null, magicIdx: -1, mode: "first_try", results: input.results ?? [] }),
   initial: "idle",
   on: { HOME: ".idle" },
   states: {

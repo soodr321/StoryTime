@@ -14,7 +14,11 @@ import { playBlend } from "../lib/blend";
  */
 export function SegmentPanel({ word, learner, kid, reader, listen, onDone }: { word: string; learner: LearnerModel; kid: string; reader: string; listen: boolean; onDone: (ok: boolean) => void }) {
   const target = useMemo(() => checkWord(word, learner).graphemes, [word, learner]);
-  const bank = useMemo(() => { const set = new Set([...target, ...learner.gpcs.slice(-6)]); return [...set].slice(0, 8); }, [target, learner]);
+  const bank = useMemo(() => {
+    const vowels = ["a", "e", "i", "o", "u"].filter((v) => learner.gpcs.includes(v) && !target.includes(v));
+    const set = new Set([...target, ...vowels.slice(0, 1), ...learner.gpcs.slice(-6)]);   // a distractor vowel forces listening to the middle sound
+    return [...set].slice(0, 8).sort(() => 0.5 - Math.random());
+  }, [target, learner]);
   const [boxes, setBoxes] = useState<string[]>([]);
   const [modelled, setModelled] = useState(false);
   const [counted, setCounted] = useState(false);   // boxes appear only after the child has counted on fingers
