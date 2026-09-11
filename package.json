@@ -11,7 +11,9 @@
     "typecheck": "tsc -b --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "audio": "python3 scripts/gen-audio.py"
+    "audio": "python3 scripts/gen-audio.py",
+    "deploy:pages": "zsh scripts/deploy-pages.sh",
+    "deploy:vercel": "zsh scripts/deploy-vercel.sh"
   },
   "dependencies": {
     "@fontsource/baloo-2": "^5.3.0",

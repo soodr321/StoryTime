@@ -3,7 +3,7 @@
 **Design:** direction A "warm storybook" applied 2026-09-11 (commit a925b31): Baloo 2 + Literata self-hosted, paper ground, glow hero card, SVG icons and fox/crow mascots, stars, tonight strip, done badge. Canvas: https://claude.ai/code/artifact/d29dd5ae-7522-48b2-b17e-993f2af20b54 · working files in design/.
 **Version:** v18 · 26 commits · 111 tests green · https://github.com/soodr321/StoryTime
 **Stable URL:** https://soodr321.github.io/StoryTime/
-**Latest Vercel (temporary, expires ~1 h unless claimed):** https://temporary-speedy-banjo-bia3yp0.vercel.app — claim: https://vercel.com/claim-deployment?code=eeb8ff5e-e6d3-46c2-9090-34e5311f8b8c
+**Vercel (production, public):** https://storytime-coral.vercel.app — project "storytime" in the owner's account, deployment protection off; redeploy with `npm run deploy:vercel`.
 **Reviews folded in (14):** engineering — Gemini v2, Grok v3, Gemini v5, Grok v6, GPT-5.6 v7; teacher loops — loop 1 GPT/Grok/Gemini, loop 2 GPT/Grok/Gemini, loop 3 GPT/Grok/Gemini. Transcripts in docs/reviews/.
 
 ## What changed per loop (K–1 phonics teacher lens)
