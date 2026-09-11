@@ -8,9 +8,9 @@ export type Verdict = "first_try" | "prompted";
 
 /**
  * The child's word card. Plain letters, no picture: "Start here and slide through the word."
- * The grown-up records their own judgement (first try / after a prompt / needs a model / skip);
- * tile taps only play sounds and never decide the label. A sweep under the graphemes shows
- * the voice sliding through during a model.
+ * Progressive disclosure for the grown-up: first only "First try" / "Needs help"; after "Needs help"
+ * one precise nudge, then "After a nudge" / "Show me" / skip. Tile taps only play sounds and never
+ * decide the label. A sweep under the graphemes shows the voice sliding through during a model.
  */
 export function MagicPanel({ word, learner, modelling, modelledOnce, sweep, kid, reader, kicker, onSound, onYes, onTogether, onSkip }: {
   word: string; learner: LearnerModel; modelling: boolean; modelledOnce?: boolean; sweep?: number; kid: string; reader: string; kicker?: string;
@@ -18,8 +18,9 @@ export function MagicPanel({ word, learner, modelling, modelledOnce, sweep, kid,
 }) {
   const gs = useMemo(() => checkWord(word, learner).graphemes, [word, learner]);
   const [said, setSaid] = useState(0);
-  const [lookAgain, setLookAgain] = useState(0);
-  useEffect(() => { setSaid(0); }, [word, modelling, lookAgain]);
+  const [help, setHelp] = useState(false);
+  useEffect(() => { setSaid(0); setHelp(false); }, [word]);
+  useEffect(() => { if (modelledOnce) setHelp(true); }, [modelledOnce]);
   const tap = (i: number) => {
     if (modelling) return;
     void playClip(soundAsset(GRAPHEME_SOUND[gs[i]].clip)).done.catch(() => {});
@@ -40,23 +41,36 @@ export function MagicPanel({ word, learner, modelling, modelledOnce, sweep, kid,
         <div className="sweep" aria-hidden><i style={{ width: `${Math.round((sweep ?? 0) * 100)}%`, opacity: modelling ? 1 : 0 }} /></div>
       </div>
       <div className="verdict grownup">
-        <div className="hint"><span className="tag">{reader}</span> wait 5 seconds. Did {kid} say it as <b>one word</b>?</div>
-        {modelledOnce ? (
-          <div className="btns"><button className="yes soft" disabled={modelling} onClick={() => onYes("prompted")}>✓ Slid through it after the model</button></div>
+        {!help ? (
+          <>
+            <div className="hint"><span className="tag">{reader}</span> wait 5 seconds. Did {kid} say it as <b>one word</b>?</div>
+            <div className="btns">
+              <button className="no" disabled={modelling} onClick={() => setHelp(true)}>Needs help</button>
+              <button className="yes" disabled={modelling} onClick={() => onYes("first_try")}>✓ First try</button>
+            </div>
+          </>
+        ) : modelledOnce ? (
+          <>
+            <div className="hint"><span className="tag">{reader}</span> now {kid} slides through it alone.</div>
+            <div className="btns">
+              <button className="no" disabled={modelling} onClick={onTogether}>Show me again</button>
+              <button className="yes soft" disabled={modelling} onClick={() => onYes("prompted")}>✓ Slid through it after the model</button>
+            </div>
+          </>
         ) : (
-          <div className="btns">
-            <button className="yes" disabled={modelling} onClick={() => onYes("first_try")}>✓ First try</button>
-            <button className="yes soft" disabled={modelling} onClick={() => onYes("prompted")}>✓ After a nudge</button>
-          </div>
+          <>
+            <div className="hint"><span className="tag">{reader}</span> one nudge, then wait: point to the first letter and say <em>“Start here… slide.”</em> Nothing more.</div>
+            <div className="btns">
+              <button className="no" disabled={modelling} onClick={onTogether}>Show me: slide through it</button>
+              <button className="yes soft" disabled={modelling} onClick={() => onYes("prompted")}>✓ After a nudge</button>
+            </div>
+          </>
         )}
-        <div className="btns">
-          <button className="no" disabled={modelling} onClick={onTogether}>Show me: slide through it</button>
-        </div>
         <div className="row center">
-          <button className="skip" disabled={modelling} onClick={() => setLookAgain((n) => n + 1)}>look again — start here ↺</button>
-          {onSkip && <button className="skip" disabled={modelling} onClick={onSkip}>skip for today →</button>}
+          <button className="skip" disabled={modelling} onClick={() => setSaid(0)}>look again — start here ↺</button>
+          {help && onSkip && <button className="skip" disabled={modelling} onClick={onSkip}>skip for today →</button>}
         </div>
-        <p className="adultnote">Sounds, not letter names · don't give the first sound · no guessing from the picture · any accent is fine · ✓ only after the whole word.</p>
+        {help && <p className="adultnote">Sounds, not letter names · don't give the first sound · no guessing from the picture · any accent is fine · ✓ only after the whole word.</p>}
       </div>
     </section>
   );

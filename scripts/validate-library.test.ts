@@ -59,6 +59,7 @@ describe.each(slugs)("library/%s", (slug) => {
         const r = checkMagicWord(w, level);
         expect(r.ok, `${w}: ${!r.ok ? r.reasons.join("; ") : ""}`).toBe(true);
         expect(text).toContain(normalise(w));
+        // when a magic word repeats on a page ("tap, tap, tap") only its first occurrence is the target
       }
     }
   });

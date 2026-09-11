@@ -70,11 +70,18 @@ export async function recordEncoding(kidId: string, slug: string, word: string, 
   p.encoding = [...(p.encoding ?? []), { word, ok, at: Date.now() }].slice(-30); await set(progressKey(kidId), all);
 }
 
-/** Recommend (never perform) advancing to the next sound: two recent sessions with ≥80% FIRST-TRY blending, nothing due, and one successful build in the last week. */
-export function readyToAdvance(progress: Record<string, StoryProgress>, due: number, now = Date.now()): boolean {
-  const recent = Object.values(progress).filter((p) => p.results.length).sort((a, b) => (b.lastFinished ?? 0) - (a.lastFinished ?? 0)).slice(0, 2);
-  if (recent.length < 2 || due > 0) return false;
-  const allOk = recent.every((p) => p.results.filter((r) => r.ok && r.mode === "first_try").length / p.results.length >= 0.8);
+/** One finished reading session (the same story twice counts twice), stamped with how many sounds the child knew. */
+export interface Attempt { at: number; slug: string; gpcCount: number; firstTryRate: number; words: number }
+const attemptsKey = (kidId: string) => `st:attempts:${kidId}`;
+export async function loadAttempts(kidId: string): Promise<Attempt[]> { return (await get(attemptsKey(kidId))) ?? []; }
+export async function recordAttempt(kidId: string, a: Attempt): Promise<void> { const all = await loadAttempts(kidId); await set(attemptsKey(kidId), [...all, a].slice(-200)); }
+
+/** Recommend (never perform) the next sound: two sessions since the last sound was taught, each ≥80% first-try, nothing due, one successful build this week. */
+export function readyToAdvance(attempts: Attempt[], gpcCount: number, progress: Record<string, StoryProgress>, due: number, now = Date.now()): boolean {
+  const sinceTeach = attempts.filter((a) => a.gpcCount === gpcCount && a.words > 0);
+  if (sinceTeach.length < 2 || due > 0) return false;
+  const last2 = sinceTeach.slice(-2);
+  const allOk = last2.every((a) => a.firstTryRate >= 0.8);
   const built = Object.values(progress).some((p) => (p.encoding ?? []).some((e) => e.ok && now - e.at < 7 * DAY));
   return allOk && built;
 }
@@ -92,12 +99,14 @@ export function learnerOf(kid: Kid): LearnerModel { return { gpcs: kid.gpcs, tri
 export interface ReviewItem { word: string; due: number; interval: number; last: "ok" | "help" | "skip" }
 const reviewKey = (kidId: string) => `st:review:${kidId}`;
 const DAY = 86_400_000;
+/** "Tomorrow" means the next morning, not 24 hours later: a word missed at 7 pm is due at 5 am. */
+export function nextMorning(from = Date.now()): number { const d = new Date(from); d.setDate(d.getDate() + 1); d.setHours(5, 0, 0, 0); return d.getTime(); }
 export async function loadReview(kidId: string): Promise<Record<string, ReviewItem>> { return (await get(reviewKey(kidId))) ?? {}; }
 export async function scheduleReview(kidId: string, results: { word: string; ok: boolean; mode: string }[]): Promise<void> {
   const all = await loadReview(kidId); const now = Date.now();
   for (const r of results) {
     const prev = all[r.word];
-    if (!r.ok || r.mode === "modelled" || r.mode === "prompted") all[r.word] = { word: r.word, due: now + DAY, interval: 1, last: r.ok ? "help" : "skip" };   // only a first-try blend counts as known
+    if (!r.ok || r.mode === "modelled" || r.mode === "prompted") all[r.word] = { word: r.word, due: nextMorning(now), interval: 1, last: r.ok ? "help" : "skip" };   // only a first-try blend counts as known
     else { const interval = Math.min(14, (prev?.interval ?? 1) * 3); all[r.word] = { word: r.word, due: now + interval * DAY, interval, last: "ok" }; }
   }
   await set(reviewKey(kidId), all);

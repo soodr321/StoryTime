@@ -45,7 +45,7 @@ export function HomeScreen({ onStart, onLibrary, onSwitch, onWarmUp, onTeach }: 
         <button className="readycard" onClick={onTeach}><b>Teach today's sound: {LS_PHASE2_ORDER[kid.gpcs.length]}</b><small>90 seconds. After four sounds the first story unlocks.</small></button>
       )}
       {!listener && advanceReady && kid.gpcs.length >= 4 && kid.gpcs.length < LS_PHASE2_ORDER.length && (
-        <button className="readycard" onClick={onTeach}><b>Ready for a new sound: {LS_PHASE2_ORDER[kid.gpcs.length]}</b><small>Two smooth sessions and a word built. 90 seconds to teach it — you decide when.</small></button>
+        <button className="readycard" onClick={onTeach}><b>Ready for the next sound-spelling: {LS_PHASE2_ORDER[kid.gpcs.length]}</b><small>Two smooth sessions and a word built. 90 seconds to teach it — you decide when.</small></button>
       )}
       {!listener && advanceReady && kid.gpcs.length < LS_PHASE2_ORDER.length && (
         <div className="nextsound"><span className="legend">Next sound:</span> <button className="soundbtn" onClick={() => void playClip(soundAsset(GRAPHEME_SOUND[LS_PHASE2_ORDER[kid.gpcs.length]].clip)).done.catch(() => {})}>{LS_PHASE2_ORDER[kid.gpcs.length]} 🔊</button> <button className="linkbtn" onClick={onTeach}>teach it (90 s) →</button></div>

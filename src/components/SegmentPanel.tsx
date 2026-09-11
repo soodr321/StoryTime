@@ -16,7 +16,7 @@ export function SegmentPanel({ word, learner, kid, reader, listen, onDone }: { w
   const target = useMemo(() => checkWord(word, learner).graphemes, [word, learner]);
   const bank = useMemo(() => {
     const vowels = ["a", "e", "i", "o", "u"].filter((v) => learner.gpcs.includes(v) && !target.includes(v));
-    const set = new Set([...target, ...vowels.slice(0, 1), ...learner.gpcs.slice(-6)]);   // a distractor vowel forces listening to the middle sound
+    const set = new Set([...target, ...vowels.slice(0, 1), ...learner.gpcs.slice(-6)]);   // a distractor vowel when one is taught; otherwise consonant foils only
     return [...set].slice(0, 8).sort(() => 0.5 - Math.random());
   }, [target, learner]);
   const [boxes, setBoxes] = useState<string[]>([]);
@@ -38,7 +38,7 @@ export function SegmentPanel({ word, learner, kid, reader, listen, onDone }: { w
   return (
     <section className="panel" role="dialog" aria-label="Build the word">
       <div className="kicker">Build it · {kid}'s turn</div>
-      <h2 className="panel-h">{reader} says the word. {kid} counts the sounds on fingers, then builds it.</h2>
+      <h2 className="panel-h">{reader} says the word. {kid} counts the sounds on fingers, then builds it{learner.gpcs.filter((g) => "aeiou".includes(g)).length > 1 ? " — listen for the middle sound" : ""}.</h2>
       <div className="row center"><button className="small" onClick={sayWord}>🔊 say the word</button><span className="legend">(the word stays hidden)</span></div>
       {!counted ? (
         <div className="row center"><span className="legend">How many sounds? Fingers up.</span><button className="small" onClick={() => setCounted(true)}>they held up {target.length} ✓</button></div>

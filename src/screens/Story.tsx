@@ -70,7 +70,9 @@ export function StoryScreen({ story, mode, resume, onHome }: { story: Story; mod
 
   /** first magic token on this page whose occurrence (page:word) has not been graded */
   const doneIds = useMemo(() => new Set(ctx.results.map((r) => r.id ?? "")), [ctx.results]);
-  const pendingMagicIdx = useCallback((p: Page, pageNo: number) => (listener ? -1 : p.tokens.findIndex((t, i) => (p.magic ?? []).includes(normalise(t.t)) && !doneIds.has(`${pageNo}:${i}`))), [listener, doneIds]);
+  /** the target is the FIRST occurrence of each magic word on the page; later repeats are read by the narrator */
+  const targetIdx = (p: Page, w: string) => p.tokens.findIndex((t) => normalise(t.t) === w);
+  const pendingMagicIdx = useCallback((p: Page, pageNo: number) => { if (listener) return -1; for (const w of p.magic ?? []) { const i = targetIdx(p, w); if (i >= 0 && !doneIds.has(`${pageNo}:${i}`)) return i; } return -1; }, [listener, doneIds]);
 
   const narratePage = useCallback(async (p: Page, pageNo: number, opts: { stopAtMagic: boolean; onDone: () => void }): Promise<void> => {
     const magicIdx = opts.stopAtMagic ? pendingMagicIdx(p, pageNo) : -1;
@@ -192,7 +194,7 @@ export function StoryScreen({ story, mode, resume, onHome }: { story: Story; mod
         />
       )}
 
-      {state === "moral" && <Moral story={story} learner={learner} listener={listener} kid={kid.name} reader={reader} listen={listen} setCaption={setCaption} buildWord={ctx.results.find((r) => r.ok)?.word ?? null} onBuilt={(w, ok) => void fam.encodingDone(story.slug, w, ok)} onYes={() => send({ type: "LINE_YES" })} />}
+      {state === "moral" && <Moral story={story} learner={learner} listener={listener} kid={kid.name} reader={reader} listen={listen} setCaption={setCaption} buildWord={ctx.results.find((r) => r.ok && r.mode === "first_try")?.word ?? null} onBuilt={(w, ok) => void fam.encodingDone(story.slug, w, ok)} onYes={() => send({ type: "LINE_YES" })} />}
       {state === "done" && <Done story={story} results={ctx.results} bedtime={bedtime} kid={kid.name} learner={learner} onHome={home} />}
 
       <div className="cap" aria-live="polite">{caption}</div>
@@ -207,7 +209,8 @@ function StoryView({ page, pageNo, total, token, results, readMode, listener, re
   onRetry: () => void; onMagicTap: (w: string, i: number) => void; onWordTap: (tok: string) => void; onNext: () => void;
 }) {
   const resAt = (i: number) => results.find((r) => r.id === `${pageNo}:${i}`);
-  const pending = listener ? [] : page.tokens.map((t, i) => ({ t, i })).filter(({ t, i }) => (page.magic ?? []).includes(normalise(t.t)) && !resAt(i));
+  const firstIdx = new Set((page.magic ?? []).map((w) => page.tokens.findIndex((t) => normalise(t.t) === w)));
+  const pending = listener ? [] : [...firstIdx].filter((i) => i >= 0 && !resAt(i));
   // trailing punctuation sits outside the highlight: the child decodes letters, not full stops
   const split = (tok: string) => { const m = tok.match(/^(.*?[A-Za-z])([^A-Za-z]*)$/); return m ? [m[1], m[2]] : [tok, ""]; };
   const last = pageNo + 1 >= total;
@@ -220,7 +223,7 @@ function StoryView({ page, pageNo, total, token, results, readMode, listener, re
         <p className="sentence">
           {page.tokens.map((t, i) => {
             const n = normalise(t.t);
-            const magic = !listener && (page.magic ?? []).includes(n);
+            const magic = !listener && firstIdx.has(i);
             const res = magic ? resAt(i) : undefined;
             const cls = ["w", i === token ? "now" : "", i < token ? "read" : "", magic ? "magic" : "", magic && res ? (res.ok ? "done" : "skipped") : ""].join(" ");
             const [core, punct] = split(t.t);
@@ -238,7 +241,7 @@ function StoryView({ page, pageNo, total, token, results, readMode, listener, re
         )}
         {listener && !readMode && !stalled && (
           <div className="readbar">
-            <span className="script">{pageHeld ? "Tap any word to hear it again." : "Listen…"}</span>
+            <span className="script">{pageHeld ? <><b>{reader}</b>: {["“What happened on this page?”", "“Point to the picture. What is it?”", "“Which word did you like? Tap it.”", "“What do you think happens next?”"][pageNo % 4]}</> : "Listen…"}</span>
             <button className="next" disabled={!pageHeld} onClick={onNext}>{last ? "The end →" : "Next page →"}</button>
           </div>
         )}
