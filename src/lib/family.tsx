@@ -72,8 +72,10 @@ export function FamilyProvider({ children }: { children: ReactNode }) {
   }, [storiesFor, progress]);
 
   // functional updates: two edits in one tick (welcome screen) must not clobber each other
-  const mutateKids = (f: (prev: Kid[]) => Kid[]) => setKids((prev) => { const n = f(prev); void saveKids(n).catch(() => fail("Couldn't save on this device.")); return n; });
-  const updateSettings = useCallback((p: Partial<Settings>) => { setSettingsState((s) => { const n = { ...s, ...p }; void saveSettings(n); return n; }); }, []);
+  const mutateKids = (f: (prev: Kid[]) => Kid[]) => setKids(f);
+  useEffect(() => { if (ready) void saveKids(kids).catch(() => fail("Couldn't save on this device.")); }, [kids, ready]);
+  const updateSettings = useCallback((p: Partial<Settings>) => setSettingsState((s) => ({ ...s, ...p })), []);
+  useEffect(() => { if (ready) void saveSettings(settings).catch(() => fail("Couldn't save settings on this device.")); }, [settings, ready]);
 
   const session = activeKid ? sessions[activeKid.id] ?? null : null;
   const value: Family = {

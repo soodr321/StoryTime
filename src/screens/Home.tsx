@@ -31,7 +31,7 @@ export function HomeScreen({ onStart, onLibrary, onSwitch }: { onStart: (story: 
   const listener = kid.role === "listener";
   const lastFinished = Math.max(0, ...Object.values(progress).map((p) => p.lastFinished ?? 0));
   const doneTonight = settings.bedtime && lastFinished > 0 && sameDay(lastFinished, Date.now()) && !resumable;
-  const days = Object.values(progress).map((p) => p.lastFinished ?? 0).filter(Boolean);
+  const days = Object.values(progress).flatMap((p) => p.history ?? (p.lastFinished ? [p.lastFinished] : []));
 
   return (
     <main className="home-screen">

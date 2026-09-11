@@ -77,7 +77,8 @@ export function StoryScreen({ story, mode, resume, onHome }: { story: Story; mod
       const pl = playNarration(storyAsset(story, p.audio)); pl.el.playbackRate = rate; playing.current = pl;
       // a parent recording has no word timings: spread the words evenly over the clip once its length is known
       const timed = p.tokens.some((t) => t.ms > 0);
-      const tokMs = (i: number) => (timed ? p.tokens[i].ms : (isFinite(pl.el.duration) && pl.el.duration > 0 ? (pl.el.duration * 1000 * i) / p.tokens.length : Infinity));
+      const durMs = () => (isFinite(pl.el.duration) && pl.el.duration > 0 ? pl.el.duration * 1000 : p.audioMs ?? Infinity);   // Chrome webm recordings report Infinity
+      const tokMs = (i: number) => (timed ? p.tokens[i].ms : durMs() !== Infinity ? (durMs() * i) / p.tokens.length : Infinity);
       const stopMsAt = () => (magicIdx >= 0 ? tokMs(magicIdx) : Infinity);
       let raf = 0, last = -1;
       const tick = () => {
@@ -102,7 +103,7 @@ export function StoryScreen({ story, mode, resume, onHome }: { story: Story; mod
       if (magicIdx >= 0) { reachMagic(); return; }
     }
     if (!stopped && magicIdx >= 0) { reachMagic(); return; }   // magic word ends the page and the clock check missed it
-    if (!stopped) { send({ type: "TOKEN", index: p.tokens.length }); opts.onDone(); }
+    if (!stopped) { send({ type: "TOKEN", index: p.tokens.length }); if (magicIdx < 0 && opts.stopAtMagic) await new Promise((r) => setTimeout(r, 1400)); opts.onDone(); }   // a beat to look at the picture
   }, [send, story, rate, pendingMagicIdx]);
 
   useEffect(() => {
@@ -266,7 +267,7 @@ function Moral({ story, learner, listener, onYes }: { story: Story; learner: Lea
           <div className="kicker">Now you read your line</div>
           <p className="line">
             {line.results.map((r, i) => (
-              <button key={i} className={"lw " + (r.ok && r.kind === "tricky" ? "tricky" : "magic")} onClick={() => { if (r.ok && r.kind === "decodable") for (const g of r.graphemes) void playClip(soundAsset(GRAPHEME_SOUND[g].clip)); else speakText(words[i], {}); }}>
+              <button key={i} className={"lw " + (r.ok && r.kind === "tricky" ? "tricky" : "magic")} onClick={async () => { if (r.ok && r.kind === "decodable") { for (const g of r.graphemes) { try { await playClip(soundAsset(GRAPHEME_SOUND[g].clip)).done; } catch { /* clip missing */ } } } else speakText(words[i], {}); }}>
                 {words[i]}
               </button>
             ))}
@@ -288,7 +289,7 @@ function Done({ story, results, bedtime, kid, onHome }: { story: Story; results:
       <h2>{story.title}</h2>
       {results.length > 0 && <p>{ok} of {results.length} magic words read</p>}
       {results.length > 0 && <ul className="results">{results.map((r, i) => <li key={r.word + i} className={r.ok ? "ok" : "no"}>{r.word}{r.ok ? "" : " · tomorrow"}</li>)}</ul>}
-      <p className="show">{bedtime ? `Lights low. One real book, then sleep.` : results.length ? `Now go find someone and read them your ${results.length === 1 ? "magic word" : "magic words"}, ${kid}!` : `Great listening, ${kid}!`}</p>
+      <p className="show">{bedtime ? `Lights low. One real book, then sleep.` : results.some((r) => r.ok) ? `Now go find someone and read them your ${results.length === 1 ? "magic word" : "magic words"}, ${kid}!` : `Great listening, ${kid}!`}</p>
       {!bedtime && results.some((r) => r.ok) && <p className="bigwords">{results.filter((r) => r.ok).map((r) => <span key={r.word}>{r.word}</span>)}</p>}
       <div className="btns"><button className="yes" onClick={onHome}>Done</button></div>
     </main>

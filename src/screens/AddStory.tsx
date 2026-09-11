@@ -35,13 +35,15 @@ export function AddStoryScreen({ onDone }: { onDone: () => void }) {
   const [text, setText] = useState("");
   const [moral, setMoral] = useState("");
   const [line, setLine] = useState("");
-  const [arts, setArts] = useState<Record<number, string>>({});
-  const [magic, setMagic] = useState<Record<number, string | null>>({});
-  const [rec, setRec] = useState<Record<number, { dataUrl: string; ms: number }>>({});
+  // media and magic-word choices are keyed by the page TEXT, so inserting a sentence above does not shift them
+  const [arts, setArts] = useState<Record<string, string>>({});
+  const [magic, setMagic] = useState<Record<string, string | null>>({});
+  const [rec, setRec] = useState<Record<string, { dataUrl: string; ms: number }>>({});
   const [recording, setRecording] = useState<number | null>(null);
   const recRef = useRef<Recorder | null>(null);
   const toggleRec = async (i: number) => {
-    if (recording === i) { const r = await recRef.current?.stop(); recRef.current = null; setRecording(null); if (r) setRec({ ...rec, [i]: r }); return; }
+    const key = pages[i];
+    if (recording === i) { const r = await recRef.current?.stop(); recRef.current = null; setRecording(null); if (r) setRec({ ...rec, [key]: r }); return; }
     if (recording !== null) return;
     try { recRef.current = await startRecording(); setRecording(i); } catch { setPhotoErr("Microphone not allowed. You can still save the story; it will use the phone's voice."); }
   };
@@ -51,7 +53,9 @@ export function AddStoryScreen({ onDone }: { onDone: () => void }) {
   // names (capitalised mid-sentence) are never magic words; possessives are stripped; nothing is auto-picked
   const candidates = useMemo(() => pages.map((p) => { const toks = p.split(/\s+/); return [...new Set(toks.filter((t, i) => !(i > 0 && /^[A-Z]/.test(t))).map((t) => normalise(t.replace(/[’']s$/, ""))).filter((w) => w.length >= 2 && checkMagicWord(w, learner).ok))]; }), [pages, learner]);
   const lineCheck = useMemo(() => (line.trim() ? checkLine(line, learner) : null), [line, learner]);
-  const chosen = (i: number) => magic[i] ?? null;
+  const chosen = (i: number) => magic[pages[i]] ?? null;
+  const artOf = (i: number) => arts[pages[i]];
+  const recOf = (i: number) => rec[pages[i]];
   const ready = title.trim() && pages.length >= 2 && moral.trim() && lineCheck?.ok && pages.every((_, i) => arts[i] || true);
 
   const save = async () => {
@@ -60,7 +64,7 @@ export function AddStoryScreen({ onDone }: { onDone: () => void }) {
       source: { work: "Family story", rights: "owner" },
       retelling: { level: `${kid.gpcs.length} sounds`, checklist: { setup: true, want: true, action: true, consequence: true, feeling: true } },
       level: "custom",
-      pages: pages.map((p, i) => ({ art: arts[i] ?? "📖", tokens: p.split(/\s+/).map((t) => ({ t, ms: 0 })), ...(chosen(i) ? { magic: [chosen(i)!] } : {}), ...(rec[i] ? { audio: rec[i].dataUrl, audioMs: rec[i].ms } : {}) })),
+      pages: pages.map((p, i) => ({ art: artOf(i) ?? "📖", tokens: p.split(/\s+/).map((t) => ({ t, ms: 0 })), ...(chosen(i) ? { magic: [chosen(i)!] } : {}), ...(recOf(i) ? { audio: recOf(i).dataUrl, audioMs: recOf(i).ms } : {}) })),
       moral: { spoken: moral.trim(), line: line.trim() },
     };
     if (await addCustom(story)) onDone();
@@ -90,23 +94,23 @@ export function AddStoryScreen({ onDone }: { onDone: () => void }) {
               </div>
               <div className="row wrap">
                 <span className="legend">Picture:</span>
-                {EMOJI.map((e) => <button key={e} className={"emo" + (arts[i] === e ? " on" : "")} onClick={() => setArts({ ...arts, [i]: e })}>{e}</button>)}
-                <label className="emo photo" title="photo from your camera roll">📷<input type="file" accept="image/*" hidden onChange={async (e) => { const f = e.target.files?.[0]; if (!f) return; const d = await shrink(f); if (d) { setArts({ ...arts, [i]: d }); setPhotoErr(null); } else setPhotoErr("Couldn't use that photo. Try a JPEG or PNG."); }} /></label>
-                {arts[i]?.startsWith("data:") && <img className="thumb" src={arts[i]} alt="" />}
+                {EMOJI.map((e) => <button key={e} className={"emo" + (artOf(i) === e ? " on" : "")} onClick={() => setArts({ ...arts, [p]: e })}>{e}</button>)}
+                <label className="emo photo" title="photo from your camera roll">📷<input type="file" accept="image/*" hidden onChange={async (e) => { const f = e.target.files?.[0]; if (!f) return; const d = await shrink(f); if (d) { setArts({ ...arts, [p]: d }); setPhotoErr(null); } else setPhotoErr("Couldn't use that photo. Try a JPEG or PNG."); }} /></label>
+                {artOf(i)?.startsWith("data:") && <img className="thumb" src={artOf(i)} alt="" />}
                 {photoErr && <span className="legend bad">{photoErr}</span>}
               </div>
               {canRecord() && (
                 <div className="row wrap">
                   <span className="legend">Voice:</span>
-                  <button className={"tog rec" + (recording === i ? " live" : rec[i] ? " on" : "")} onClick={() => toggleRec(i)}>{recording === i ? "■ stop" : rec[i] ? "🎤 re-record" : "🎤 record this page"}</button>
-                  {rec[i] && recording !== i && <span className="legend">✓ {Math.round(rec[i].ms / 1000)}s in your voice</span>}
-                  {!rec[i] && recording !== i && <span className="legend">or leave it: the phone reads it</span>}
+                  <button className={"tog rec" + (recording === i ? " live" : recOf(i) ? " on" : "")} onClick={() => toggleRec(i)}>{recording === i ? "■ stop" : recOf(i) ? "🎤 re-record" : "🎤 record this page"}</button>
+                  {recOf(i) && recording !== i && <span className="legend">✓ {Math.round(recOf(i).ms / 1000)}s in your voice</span>}
+                  {!recOf(i) && recording !== i && <span className="legend">or leave it: the phone reads it</span>}
                 </div>
               )}
               <div className="row wrap">
                 <span className="legend">Magic word:</span>
                 {candidates[i].length === 0 && <span className="legend">none decodable on this page — fine, {kid.name} listens.</span>}
-                {candidates[i].map((w) => <button key={w} className={"tog" + (chosen(i) === w ? " on" : "")} onClick={() => setMagic({ ...magic, [i]: chosen(i) === w ? null : w })}>{w}</button>)}
+                {candidates[i].map((w) => <button key={w} className={"tog" + (chosen(i) === w ? " on" : "")} onClick={() => setMagic({ ...magic, [p]: chosen(i) === w ? null : w })}>{w}</button>)}
                 {candidates[i].length > 0 && <span className="legend">{chosen(i) ? "" : "tap one, or none"}</span>}
               </div>
             </div>

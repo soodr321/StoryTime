@@ -26,6 +26,7 @@ export interface StoryProgress {
   slug: string;
   timesFinished: number;
   lastFinished?: number;
+  history?: number[];       // every completion, for the week strip
   results: WordResult[];    // most recent run
 }
 export interface Session {
@@ -59,7 +60,7 @@ export async function loadProgress(kidId: string): Promise<Record<string, StoryP
 export async function recordFinish(kidId: string, slug: string, results: { word: string; ok: boolean; mode: string }[]): Promise<void> {
   const all = await loadProgress(kidId);
   const prev = all[slug];
-  all[slug] = { slug, timesFinished: (prev?.timesFinished ?? 0) + 1, lastFinished: Date.now(), results: results.map((r) => ({ ...r, at: Date.now() })) };
+  all[slug] = { slug, timesFinished: (prev?.timesFinished ?? 0) + 1, lastFinished: Date.now(), history: [...(prev?.history ?? (prev?.lastFinished ? [prev.lastFinished] : [])), Date.now()].slice(-60), results: results.map((r) => ({ ...r, at: Date.now() })) };
   await set(progressKey(kidId), all);
 }
 

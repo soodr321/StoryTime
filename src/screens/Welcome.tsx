@@ -13,7 +13,7 @@ const LEVELS_UI = [
 const AVATARS = ["🦁", "🐯", "🦊", "🐼", "🐸", "🦄", "🐬", "🚀"];
 
 export function WelcomeScreen({ onDone }: { onDone: () => void }) {
-  const { kids, updateKid, addKid, updateSettings } = useFamily();
+  const { kids, updateKid, addKid, removeKid, updateSettings } = useFamily();
   const [name, setName] = useState("");
   const [avatar, setAvatar] = useState("🦁");
   const [level, setLevel] = useState(2);
@@ -26,6 +26,7 @@ export function WelcomeScreen({ onDone }: { onDone: () => void }) {
     updateKid({ ...reader, name: name.trim() || reader.name, avatar, gpcs: ALL_GPCS.slice(0, n), tricky: n >= 8 ? ALL_TRICKY.slice(0, n >= 16 ? 5 : 3) : [] });
     const little = kids.find((k) => k.role === "listener");
     if (sibling.trim()) { if (little) updateKid({ ...little, name: sibling.trim() }); else addKid({ id: uid(), name: sibling.trim(), avatar: "🐣", gpcs: ALL_GPCS.slice(0, 4), tricky: [], role: "listener", createdAt: Date.now() }); }
+    else if (little) removeKid(little.id);   // no phantom "Little one"
     updateSettings({ readers: grownup.trim() ? [grownup.trim()] : [], tonight: grownup.trim() || undefined, onboarded: true, activeKid: reader.id });
     onDone();
   };
