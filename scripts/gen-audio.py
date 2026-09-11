@@ -93,7 +93,7 @@ async def build_story(slug):
     src.write_text(json.dumps(story, ensure_ascii=False, indent=1))  # tokens + timings are part of the contract
 
 SHARED = {
-    "yours": "Veer, this one is yours.",
+    "yours": "This one is yours. Can you read it?",
     "fast": "Now say it fast.",
     "notyet": "That's okay. Listen to me blend it, then you try.",
     "yourturn": "Your turn.",
