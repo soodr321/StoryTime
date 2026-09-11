@@ -2,6 +2,10 @@
  * One global <audio> element for narration (unlocked on the first user tap and
  * reused by swapping src — iOS blocks new elements created off-gesture) and one
  * singleton element for short clips (phonemes, prompts) so rapid taps never stack.
+ *
+ * Each play() returns a Playing whose listeners are its own: a superseded track's
+ * late `play()` rejection ("interrupted by a new load request") must never touch
+ * the listeners of the track that replaced it.
  */
 let narration: HTMLAudioElement | null = null;
 let clip: HTMLAudioElement | null = null;
@@ -40,15 +44,20 @@ function playOn(el: HTMLAudioElement, src: string): Playing {
   el.pause();
   el.src = src;
   el.currentTime = 0;
+  let settled = false;
   let resolve!: () => void, reject!: (e: unknown) => void;
   const done = new Promise<void>((res, rej) => { resolve = res; reject = rej; });
-  const cleanup = () => { el.onended = null; el.onerror = null; el.ontimeupdate = null; };
-  el.onended = () => { cleanup(); resolve(); };
+  const off = () => { el.removeEventListener("ended", onEnded); el.removeEventListener("error", onError); el.removeEventListener("timeupdate", onTime); };
+  const finish = () => { if (settled) return; settled = true; off(); resolve(); };
+  const onEnded = () => finish();
+  const onError = () => { if (!settled) { settled = true; off(); reject(new Error(`audio failed: ${src}`)); } };
   // safety net: some engines drop `ended` after a stall; treat reaching the end as ended
-  el.ontimeupdate = () => { if (el.duration && el.currentTime >= el.duration - 0.05) { cleanup(); el.pause(); resolve(); } };
-  el.onerror = () => { cleanup(); reject(new Error(`audio failed: ${src}`)); };
-  void el.play().catch((e) => { cleanup(); reject(e); });
-  return { done, stop: () => { el.pause(); cleanup(); resolve(); }, el };
+  const onTime = () => { if (el.duration && el.currentTime >= el.duration - 0.05) { el.pause(); finish(); } };
+  el.addEventListener("ended", onEnded);
+  el.addEventListener("error", onError);
+  el.addEventListener("timeupdate", onTime);
+  void el.play().catch((e) => { if (!settled) { settled = true; off(); reject(e); } });
+  return { done, stop: () => { if (settled) return; el.pause(); finish(); }, el };
 }
 
 export function playNarration(src: string): Playing {

@@ -24,7 +24,8 @@ describe("storyMachine", () => {
     a.send({ type: "YES" }); expect(a.getSnapshot().value).toBe("reread");
     expect(a.getSnapshot().context.results).toEqual([{ word: "sat", ok: true, mode: "sounded" }]);
     a.send({ type: "REREAD_DONE" }); expect(a.getSnapshot().value).toBe("moral");
-    a.send({ type: "LINE_YES" }); expect(a.getSnapshot().status).toBe("done");
+    a.send({ type: "LINE_YES" }); expect(a.getSnapshot().value).toBe("done");
+    a.send({ type: "HOME" }); expect(a.getSnapshot().value).toBe("idle");
   });
   it("records a sight read when no sounds were tapped", () => {
     const a = createActor(storyMachine, { input: { story } }).start();
@@ -38,6 +39,13 @@ describe("storyMachine", () => {
     a.send({ type: "YES" }); expect(a.getSnapshot().value).toBe("modelling");
     a.send({ type: "MODEL_DONE" }); a.send({ type: "SOUND_TAPPED" }); a.send({ type: "YES" });
     expect(a.getSnapshot().context.results[0].mode).toBe("modelled");
+  });
+  it("read mode: RESUME returns to the same page, PAGE_NEXT advances", () => {
+    const a = createActor(storyMachine, { input: { story } }).start();
+    a.send({ type: "START" }); a.send({ type: "PAGE_NEXT" }); expect(a.getSnapshot().context.page).toBe(1);
+    a.send({ type: "MAGIC_REACHED", word: "sat" }); a.send({ type: "YES" }); expect(a.getSnapshot().value).toBe("reread");
+    a.send({ type: "RESUME" }); expect(a.getSnapshot().value).toBe("narrating"); expect(a.getSnapshot().context.page).toBe(1);
+    a.send({ type: "PAGE_NEXT" }); expect(a.getSnapshot().value).toBe("moral");
   });
   it("HOME from anywhere returns to idle", () => {
     const a = createActor(storyMachine, { input: { story } }).start();

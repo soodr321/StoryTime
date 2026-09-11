@@ -22,6 +22,9 @@ async function prompts(): Promise<Prompts> {
 
 export default function App() {
   const [snap, send] = useMachine(storyMachine, { input: { story: STORY } });
+  /** "listen": Nani reads with karaoke. "read": audio off — the child (or grown-up) reads; sounds still play on tile taps. */
+  const [mode, setMode] = useState<"listen" | "read">("listen");
+  const modeRef = useRef(mode); modeRef.current = mode;
   const ctx = snap.context;
   const state = snap.value as string;
   const page: Page | undefined = STORY.pages[ctx.page];
@@ -66,41 +69,51 @@ export default function App() {
 
   // drive the machine's audio-bound states
   useEffect(() => {
+    const listen = modeRef.current === "listen";
     if (state === "narrating" && page) {
+      if (!listen) return;                      // read mode: the page waits for Next
       let live = true;
-      void narratePage(page, { stopAtMagic: true, onDone: () => live && send({ type: "NARRATION_DONE" }) });
+      void narratePage(page, { stopAtMagic: true, onDone: () => { if (live) send({ type: "NARRATION_DONE" }); } });
       return () => { live = false; };
     }
     if (state === "reread" && page) {
+      if (!listen) { send({ type: "RESUME" }); return; }
       let live = true;
       void narratePage(page, { stopAtMagic: false, onDone: () => live && send({ type: "REREAD_DONE" }) });
       return () => { live = false; };
     }
-    if (state === "magicWord" && ctx.mode === "sight") {
+    if (state === "magicWord" && ctx.mode === "sight" && listen) {
       void speakPrompt("yours", "… this one is yours.");
     }
     if (state === "moral") {
+      if (!listen) { setCaption("Read the line together, then tap ✓."); return; }
       void (async () => { if (STORY.moral.audio) await speak(BASE + STORY.moral.audio, STORY.moral.spoken); await speakPrompt("line", "Now you. Read your line."); })();
     }
-    if (state === "done") { void speakPrompt("done", "Beautiful reading. This story goes on your shelf."); }
+    if (state === "done") { if (listen) void speakPrompt("done", "Beautiful reading. This story goes on your shelf."); else setCaption("Beautiful reading."); }
     if (state === "idle") { stopAll(); setCaption(""); }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state, ctx.page]);
 
-  const start = async () => { await unlock(); send({ type: "START" }); };
+  const start = async (m: "listen" | "read") => { setMode(m); modeRef.current = m; await unlock(); send({ type: "START" }); };
+  const listen = mode === "listen";
 
   return (
     <div className="app">
       <header className="top">
         <button className="home" onClick={() => send({ type: "HOME" })} aria-label="Home">⌂</button>
         <div className="title">{state === "idle" ? "StoryTime" : STORY.title}</div>
-        <div className="lvl" title="taught sounds">{learner.gpcs.length} sounds</div>
+        <div className="lvl" title="mode">{state === "idle" ? `${learner.gpcs.length} sounds` : listen ? "🔊 Nani reads" : "📖 I read"}</div>
       </header>
 
       {state === "idle" && <Home onStart={start} />}
 
       {(state === "narrating" || state === "reread" || state === "magicWord" || state === "modelling") && page && (
-        <StoryView page={page} pageNo={ctx.page} total={STORY.pages.length} token={ctx.token} results={ctx.results} />
+        <StoryView
+          page={page} pageNo={ctx.page} total={STORY.pages.length} token={listen ? ctx.token : -1} results={ctx.results}
+          readMode={!listen}
+          onMagicTap={(w) => state === "narrating" && send({ type: "MAGIC_REACHED", word: w })}
+          onNext={() => state === "narrating" && send({ type: "PAGE_NEXT" })}
+        />
       )}
 
       {(state === "magicWord" || state === "modelling") && ctx.magic && (
@@ -108,16 +121,15 @@ export default function App() {
           word={ctx.magic}
           modelling={state === "modelling"}
           onSound={() => send({ type: "SOUND_TAPPED" })}
-          onYes={async () => { send({ type: "YES" }); await speakPrompt(`yes:${ctx.magic}`, `Yes! ${ctx.magic}.`); }}
+          onYes={async () => { const w = ctx.magic!; if (listen) await speakPrompt(`yes:${w}`, `Yes! ${w}.`); else setCaption(`Yes! ${w}.`); send({ type: "YES" }); }}
           onNotYet={async () => {
             send({ type: "NOT_YET" });
-            await speakPrompt("notyet", "That's okay. Listen to me blend it, then you try.");
+            if (listen) await speakPrompt("notyet", "That's okay. Listen to me blend it, then you try."); else setCaption("Blend it together slowly, then try again.");
             for (const g of checkWord(ctx.magic!, learner).graphemes) { const s = GRAPHEME_SOUND[g]; try { await playClip(`/sounds/${s.clip}.m4a`).done; } catch { /* placeholder missing */ } }
-            await speakPrompt(`word:${ctx.magic}`, ctx.magic!);
-            await speakPrompt("yourturn", "Your turn.");
+            if (listen) { await speakPrompt(`word:${ctx.magic}`, ctx.magic!); await speakPrompt("yourturn", "Your turn."); }
             send({ type: "MODEL_DONE" });
           }}
-          onSkip={async () => { send({ type: "SKIP" }); await speakPrompt("practise", `${ctx.magic}. We'll practise it tomorrow.`); }}
+          onSkip={async () => { const w = ctx.magic!; if (listen) await speakPrompt("practise", `${w}. We'll practise it tomorrow.`); else setCaption(`${w}. We'll practise it tomorrow.`); send({ type: "SKIP" }); }}
         />
       )}
 
@@ -129,21 +141,27 @@ export default function App() {
   );
 }
 
-function Home({ onStart }: { onStart: () => void }) {
+function Home({ onStart }: { onStart: (m: "listen" | "read") => void }) {
+  const n = STORY.pages.filter((p) => p.magic?.length).length;
   return (
     <main className="home-screen">
       <div className="kicker">Today's story</div>
-      <button className="big-tile" onClick={onStart}>
+      <div className="big-tile" role="group" aria-label={STORY.title}>
         <span className="art">🦊</span>
         <span className="t">{STORY.title}</span>
-        <span className="s">{STORY.pages.filter((p) => p.magic?.length).length} magic words · tap to start</span>
-      </button>
-      <p className="note">Nani reads the story. You read the magic words.<br />A grown-up sits beside you.</p>
+        <span className="s">{n} magic words</span>
+      </div>
+      <div className="modes">
+        <button className="mode" onClick={() => onStart("listen")}><span className="mi">🔊</span><b>Nani reads</b><small>Karaoke story. You read the magic words.</small></button>
+        <button className="mode" onClick={() => onStart("read")}><span className="mi">📖</span><b>I read</b><small>Sound off. Read it yourself or with a grown-up.</small></button>
+      </div>
+      <p className="note">A grown-up sits beside you and taps ✓ or ✗.</p>
     </main>
   );
 }
 
-function StoryView({ page, pageNo, total, token, results }: { page: Page; pageNo: number; total: number; token: number; results: { word: string; ok: boolean }[] }) {
+function StoryView({ page, pageNo, total, token, results, readMode, onMagicTap, onNext }: { page: Page; pageNo: number; total: number; token: number; results: { word: string; ok: boolean }[]; readMode: boolean; onMagicTap: (w: string) => void; onNext: () => void }) {
+  const pending = (page.magic ?? []).filter((m) => !results.some((r) => r.word === m));
   return (
     <main className="story">
       <div className="art-box"><span>{page.art}</span></div>
@@ -155,9 +173,16 @@ function StoryView({ page, pageNo, total, token, results }: { page: Page; pageNo
             const magic = (page.magic ?? []).includes(n);
             const res = results.find((r) => r.word === n);
             const cls = ["w", i === token ? "now" : "", i < token ? "read" : "", magic ? "magic" : "", magic && res ? (res.ok ? "done" : "skipped") : ""].join(" ");
+            if (readMode && magic && !res) return <button key={i} className={cls + " tap"} onClick={() => onMagicTap(n)}>{t.t} </button>;
             return <span key={i} className={cls}>{t.t} </span>;
           })}
         </p>
+        {readMode && (
+          <div className="readbar">
+            <span className="hintline">{pending.length ? "Tap the pink word when it's time to read it." : "Read the page, then go on."}</span>
+            <button className="next" disabled={pending.length > 0} onClick={onNext}>{pageNo + 1 < total ? "Next page →" : "The end →"}</button>
+          </div>
+        )}
       </div>
     </main>
   );

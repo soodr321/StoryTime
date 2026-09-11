@@ -26,6 +26,17 @@ main { flex: 1; display: flex; flex-direction: column; padding: 8px 14px 14px; g
 .big-tile .t { font-size: 28px; font-weight: 600; }
 .big-tile .s { color: var(--muted); font-size: 16px; }
 .note { color: var(--muted); font-size: 16px; line-height: 1.5; }
+.modes { display: flex; gap: 12px; width: min(100%, 420px); }
+.mode { flex: 1; background: var(--card); border: 2px solid var(--line); border-radius: 18px; padding: 14px 10px; display: flex; flex-direction: column; align-items: center; gap: 4px; min-height: 110px; }
+.mode .mi { font-size: 30px; }
+.mode b { font-size: 18px; }
+.mode small { color: var(--muted); font-size: 13px; font-family: system-ui, sans-serif; line-height: 1.3; }
+.mode:first-child { border-color: var(--accent); box-shadow: 0 6px 0 #f1c9a8; }
+.w.tap { border: 0; font: inherit; }
+.readbar { margin-top: auto; display: flex; flex-direction: column; gap: 8px; align-items: stretch; padding-top: 12px; }
+.hintline { color: var(--muted); font-size: 14px; font-family: system-ui, sans-serif; text-align: center; }
+.next { min-height: 56px; border-radius: 14px; background: var(--accent); color: #fff; font-size: 20px; }
+.text-card { display: flex; flex-direction: column; }
 
 /* STORY */
 .story { gap: 10px; }

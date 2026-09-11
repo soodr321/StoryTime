@@ -9,8 +9,8 @@ shared narrator prompts, into public/library/<slug>/ and public/prompts/.
 Voice: edge-tts en-IN-NeerjaNeural ($0, word boundaries built in). Audio is a
 deploy-time artefact: public/library/**/*.m4a is gitignored. Recorded phoneme
 clips live in public/sounds/ and are committed; this script only creates
-placeholder clips for graphemes that have no recording yet (marked in
-public/sounds/manifest.json so the app can show "placeholder").
+nothing under public/sounds/ — phoneme clips are real recordings fetched by
+scripts/fetch-phonemes.py (Wikimedia Commons IPA set, CC BY-SA).
 
 Requires: pip install edge-tts ; ffmpeg on PATH (or imageio-ffmpeg).
 """
@@ -102,22 +102,12 @@ SHARED = {
     "done": "Beautiful reading. This story goes on your shelf.",
     "pick": "Pick today's story. One tap.",
 }
-SOUNDS = {"s": "sss", "a": "a", "t": "t", "p": "p", "i": "i", "n": "nnn", "m": "mmm", "d": "d", "g": "g", "o": "o", "k": "k",
-          "e": "e", "u": "u", "r": "rrr", "h": "h", "b": "b", "f": "fff", "l": "lll"}
-
 async def build_shared():
     out = PUB / "prompts"; out.mkdir(parents=True, exist_ok=True); man = {}
     for k, text in SHARED.items():
         ms, _ = await tts(text, out / f"{k}.m4a"); man[k] = {"audio": f"{k}.m4a", "ms": ms}
     (out / "manifest.json").write_text(json.dumps(man, indent=1))
-    snd = PUB / "sounds"; snd.mkdir(parents=True, exist_ok=True)
-    mpath = snd / "manifest.json"; sman = json.loads(mpath.read_text()) if mpath.exists() else {}
-    for g, text in SOUNDS.items():
-        f = snd / f"{g}.m4a"
-        if f.exists() and sman.get(g, {}).get("recorded"): continue
-        ms, _ = await tts(text, f, rate="-25%"); sman[g] = {"audio": f"{g}.m4a", "ms": ms, "recorded": False}
-    mpath.write_text(json.dumps(sman, indent=1))
-    print("  shared prompts + placeholder sounds done (recorded=false until a parent records them)")
+    print("  shared prompts done (phoneme clips come from scripts/fetch-phonemes.py, not TTS)")
 
 async def main():
     slugs = sys.argv[1:] or [p.name for p in LIB.iterdir() if (p / "story.json").exists()]

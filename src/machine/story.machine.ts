@@ -31,6 +31,8 @@ export type Ev =
   | { type: "MODEL_DONE" }
   | { type: "SKIP" }
   | { type: "REREAD_DONE" }
+  | { type: "RESUME" }
+  | { type: "PAGE_NEXT" }
   | { type: "PAGE_DONE" }
   | { type: "LINE_YES" }
   | { type: "HOME" };
@@ -65,6 +67,7 @@ export const storyMachine = setup({
         TOKEN: { actions: "setToken" },
         MAGIC_REACHED: { target: "magicWord", actions: "openMagic" },
         NARRATION_DONE: [{ guard: "hasNextPage", target: "narrating", actions: "nextPage", reenter: true }, { target: "moral" }],
+        PAGE_NEXT: [{ guard: "hasNextPage", target: "narrating", actions: "nextPage", reenter: true }, { target: "moral" }],
       },
     },
     magicWord: {
@@ -85,9 +88,11 @@ export const storyMachine = setup({
       on: {
         TOKEN: { actions: "setToken" },
         REREAD_DONE: [{ guard: "hasNextPage", target: "narrating", actions: "nextPage" }, { target: "moral" }],
+        // read mode: no re-read audio; stay on the page until the grown-up taps Next
+        RESUME: { target: "narrating", reenter: true },
       },
     },
     moral: { on: { LINE_YES: "done" } },
-    done: { type: "final" },
+    done: { on: { START: "narrating" } },   // not `final`: a final root state would stop the actor and swallow HOME
   },
 });

@@ -13,7 +13,8 @@ grown-up has marked as taught. The grown-up sits beside the child and grades wit
 ```bash
 npm install
 pip install edge-tts            # narration voice ($0). ffmpeg on PATH or `pip install imageio-ffmpeg`
-npm run audio                   # generates public/library/**, public/prompts/**, placeholder public/sounds/**
+python3 scripts/fetch-phonemes.py   # once: real phoneme recordings → public/sounds/ (committed)
+npm run audio                   # narration + prompts → public/library/**, public/prompts/** (deploy-time)
 npm run dev
 ```
 
@@ -27,7 +28,7 @@ magic words and read-back line must be decodable at its level; timings must be m
 - `src/machine/` — XState story session machine
 - `src/lib/audio/` — one global narration element, one clip singleton (iOS-safe)
 - `library/<slug>/story.json` — stories; `scripts/gen-audio.py` fills tokens + timings and writes audio
-- `public/sounds/` — phoneme clips. Placeholders are synthesized; record real ones and set `recorded: true` in the manifest.
+- `public/sounds/` — phoneme clips: the Wikimedia Commons IPA recordings (real human voice, **CC BY-SA 3.0**, attribution per clip in `manifest.json`), fetched by `scripts/fetch-phonemes.py`. A neural voice cannot say a bare consonant, so TTS is never used for sounds.
 
 ## Deploy
 
