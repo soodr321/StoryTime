@@ -158,7 +158,10 @@ export function StoryScreen({ story, mode, resume, onHome }: { story: Story; mod
     send({ type: "NOT_YET" });
     if (listen) await speakPrompt("notyet", "That's okay. Listen: I'll slide through the sounds, then you try."); else setCaption(`${reader}: keep your voice going, slide through the sounds. Do NOT say the whole word.`);
     if (!alive()) return;
-    setCaption(stretched(gs) + " …"); await playBlend(gs, { alive, rate, onProgress: setSweep }); setSweep(0);
+    setCaption(stretched(gs) + " …");
+    if (listen) await playBlend(gs, { alive, rate, onProgress: setSweep });
+    else { const n = gs.length * 12; for (let i = 1; i <= n; i++) { await new Promise((r) => setTimeout(r, 70)); if (!alive()) return; setSweep(i / n); } }   // sound off: the app must not talk over the grown-up
+    setSweep(0);
     if (!alive()) return;
     // never say the whole word here: the child must blend it, not echo it
     if (listen) await speakPrompt("yourturn", "Your turn: start here and slide through the word."); else setCaption(`Now ${kid.name}: start at the first sound and slide through the word.`);
@@ -190,7 +193,7 @@ export function StoryScreen({ story, mode, resume, onHome }: { story: Story; mod
           onSound={() => send({ type: "SOUND_TAPPED" })}
           onYes={async (v: Verdict) => { const w = ctx.magic!; if (listen) await speakPrompt(`yes:${w}`, `Yes! ${w}.`); else setCaption(`Yes! ${w}.`); send({ type: "YES", verdict: v }); }}
           onTogether={together}
-          onSkip={async () => { const w = ctx.magic!; setCaption("We'll practise it tomorrow."); await playBlend(checkWord(w, learner).graphemes, { rate }); if (listen) await speakPrompt("practise", "We'll practise it tomorrow."); send({ type: "SKIP" }); }}
+          onSkip={async () => { const w = ctx.magic!; setCaption("We'll practise it tomorrow." + (listen ? "" : ` ${reader}, read the word for them once.`)); if (listen) { await playBlend(checkWord(w, learner).graphemes, { rate }); await speakPrompt("practise", "We'll practise it tomorrow."); } send({ type: "SKIP" }); }}
         />
       )}
 
@@ -212,7 +215,7 @@ function StoryView({ page, pageNo, total, token, results, readMode, listener, re
   const firstIdx = new Set((page.magic ?? []).map((w) => page.tokens.findIndex((t) => normalise(t.t) === w)));
   const pending = listener ? [] : [...firstIdx].filter((i) => i >= 0 && !resAt(i));
   // trailing punctuation sits outside the highlight: the child decodes letters, not full stops
-  const split = (tok: string) => { const m = tok.match(/^(.*?[A-Za-z])([^A-Za-z]*)$/); return m ? [m[1], m[2]] : [tok, ""]; };
+  const split = (tok: string) => { const m = tok.match(/^([^A-Za-z]*)([A-Za-z]+(?:['’][A-Za-z]+)?)([^A-Za-z]*)$/); return m ? [m[1], m[2], m[3]] : ["", tok, ""]; };
   const last = pageNo + 1 >= total;
   return (
     <main className="story">
@@ -226,10 +229,11 @@ function StoryView({ page, pageNo, total, token, results, readMode, listener, re
             const magic = !listener && firstIdx.has(i);
             const res = magic ? resAt(i) : undefined;
             const cls = ["w", i === token ? "now" : "", i < token ? "read" : "", magic ? "magic" : "", magic && res ? (res.ok ? "done" : "skipped") : ""].join(" ");
-            const [core, punct] = split(t.t);
-            if (readMode && magic && !res) return <span key={i} className="tokwrap"><button className={cls + " tap"} onClick={() => onMagicTap(n, i)}>{core}</button>{punct} </span>;
-            if (listener) return <span key={i} className="tokwrap"><button className={cls + " listener-tap"} onClick={() => onWordTap(t.t)}>{core}</button>{punct} </span>;   // read mode: grey words are the grown-up's, never tap-to-hear
-            return <span key={i} className="tokwrap"><span className={cls}>{core}</span>{punct} </span>;
+            const [lead, core0, punct] = split(t.t);
+            const core = magic ? core0.toLowerCase() : core0;   // a magic word is shown in the letterforms the child was taught
+            if (readMode && magic && !res) return <span key={i} className="tokwrap">{lead}<button className={cls + " tap"} onClick={() => onMagicTap(n, i)}>{core}</button>{punct} </span>;
+            if (listener) return <span key={i} className="tokwrap">{lead}<button className={cls + " listener-tap"} onClick={() => onWordTap(t.t)}>{core}</button>{punct} </span>;   // read mode: grey words are the grown-up's, never tap-to-hear
+            return <span key={i} className="tokwrap">{lead}<span className={cls}>{core}</span>{punct} </span>;
           })}
         </p>
         {stalled && <div className="readbar"><button className="next" onClick={onRetry}>▶ Try again</button></div>}
@@ -257,7 +261,9 @@ function StoryView({ page, pageNo, total, token, results, readMode, listener, re
  */
 function Moral({ story, learner, listener, kid, reader, listen, setCaption, buildWord, onBuilt, onYes }: { story: Story; learner: LearnerModel; listener: boolean; kid: string; reader: string; listen: boolean; setCaption: (s: string) => void; buildWord: string | null; onBuilt: (w: string, ok: boolean) => void; onYes: () => void }) {
   const line = checkLine(story.moral.line, learner);
-  const words = story.moral.line.split(/\s+/).map((w, i) => (line.results[i]?.ok && line.results[i].kind === "decodable" ? w.toLowerCase() : w));   // decodables in the letterforms taught; tricky words as taught
+  const raw = story.moral.line.split(/\s+/);
+  const parts = raw.map((w, i) => { const m = w.match(/^([^A-Za-z]*)([A-Za-z]+)([^A-Za-z]*)$/); const r = line.results[i]; const core = m ? m[2] : w; const shown = r?.ok ? (r.kind === "tricky" ? (r.word === "i" ? "I" : r.word) : core.toLowerCase()) : core; return { lead: m ? m[1] : "", core: shown, punct: m ? m[3] : "" }; });   // taught letterforms; punctuation outside
+  const words = parts.map((p) => p.core);
   const [stage, setStage] = useState<"try" | "help" | "word" | "reread" | "build">("try");
   // after the read-back: one-word dictation on a word the child just blended (skipped when none)
   const finishLine = () => { if (buildWord) { setStage("build"); setCaption(`${reader}: say "${buildWord}". ${kid} counts the sounds, then builds it.`); } else onYes(); };
@@ -290,11 +296,11 @@ function Moral({ story, learner, listener, kid, reader, listen, setCaption, buil
           <div className="kicker">{stage === "try" ? `${kid} reads the whole line` : stage === "help" ? "tap the word that needs help" : stage === "word" ? `${kid} blends that word` : "now the whole line again, smoothly"}</div>
           <p className="line">
             {line.results.map((r, i) => {
-              const parts = r.ok && r.kind === "tricky" ? (TRICKY_PARTS[r.word] ?? `|${r.word}`).split("|") : null;
+              const tp = r.ok && r.kind === "tricky" ? (TRICKY_PARTS[r.word] ?? `|${r.word}`).split("|") : null;
               return (
-                <button key={i} className={"lw " + (r.ok && r.kind === "tricky" ? "tricky" : "magic") + (helped === i ? " helped" : "")} disabled={stage === "try"} onClick={() => help(i)}>
-                  {parts ? <><span>{words[i].slice(0, parts[0].length)}</span><u className="odd">{words[i].slice(parts[0].length)}</u></> : words[i]}
-                </button>
+                <span key={i} className="tokwrap">{parts[i].lead}<button className={"lw " + (r.ok && r.kind === "tricky" ? "tricky" : "magic") + (helped === i ? " helped" : "")} disabled={stage === "try"} onClick={() => help(i)}>
+                  {tp ? <><span>{words[i].slice(0, tp[0].length)}</span><u className="odd">{words[i].slice(tp[0].length)}</u></> : words[i]}
+                </button>{parts[i].punct}</span>
               );
             })}
           </p>

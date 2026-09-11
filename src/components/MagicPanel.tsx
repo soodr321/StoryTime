@@ -43,7 +43,7 @@ export function MagicPanel({ word, learner, modelling, modelledOnce, sweep, kid,
       <div className="verdict grownup">
         {!help ? (
           <>
-            <div className="hint"><span className="tag">{reader}</span> wait 5 seconds. Did {kid} say it as <b>one word</b>?</div>
+            <div className="hint"><span className="tag">{reader}</span> wait 5 seconds. Did {kid} say it as <b>one word</b>? <small className="legend">(stuck on a sound? tap that letter — never say its name)</small></div>
             <div className="btns">
               <button className="no" disabled={modelling} onClick={() => setHelp(true)}>Needs help</button>
               <button className="yes" disabled={modelling} onClick={() => onYes("first_try")}>✓ First try</button>
