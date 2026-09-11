@@ -271,10 +271,7 @@
     }
    ],
    "audio": "p4.m4a",
-   "audioMs": 6260,
-   "magic": [
-    "stop"
-   ]
+   "audioMs": 6260
   },
   {
    "art": "🐢",
@@ -404,7 +401,7 @@
  ],
  "moral": {
   "spoken": "Slow and steady wins the race.",
-  "line": "I did not stop.",
+  "line": "I did not nap.",
   "audio": "moral.m4a",
   "audioMs": 3190
  },

@@ -123,7 +123,7 @@ export function AddStoryScreen({ onDone }: { onDone: () => void }) {
 
       <section className="pc">
         <label className="lbl">Moral, said by the grown-up <input value={moral} onChange={(e) => setMoral(e.target.value)} placeholder="Wait for the mango to fall by itself." /></label>
-        <label className="lbl">{kid.name}'s line to read back <input value={line} onChange={(e) => setLine(e.target.value)} placeholder="It is a mango." /></label>
+        <label className="lbl">{kid.name}'s line to read back <input value={line} onChange={(e) => setLine(e.target.value)} placeholder={kid.tricky.includes("is") ? "It is sad." : kid.gpcs.length >= 8 ? "Sam sat in a pit." : "Pat sat."} /></label>
         {lineCheck && (
           <p className={"legend " + (lineCheck.ok ? "ok" : "bad")}>
             {lineCheck.ok ? "✓ every word is readable at this level" : lineCheck.results.filter((r) => !r.ok).map((r) => !r.ok && r.reasons.join("; ")).join(" · ")}

@@ -26,7 +26,8 @@ export function WelcomeScreen({ onDone }: { onDone: () => void }) {
   const finish = () => {
     const reader = kids.find((k) => k.role === "reader") ?? kids[0];
     const n = LEVELS_UI[level].n;
-    updateKid({ ...reader, name: name.trim() || reader.name, avatar, gpcs: ALL_GPCS.slice(0, n), tricky: n >= 8 ? ALL_TRICKY.slice(0, n >= 16 ? 5 : 3) : [] });
+    const tricky = n >= 23 ? ALL_TRICKY : n >= 16 ? ALL_TRICKY.slice(0, 5) : n >= 12 ? ALL_TRICKY.slice(0, 4) : n >= 8 ? ALL_TRICKY.slice(0, 3) : [];   // mirrors LEVELS exactly
+    updateKid({ ...reader, name: name.trim() || reader.name, avatar, gpcs: ALL_GPCS.slice(0, n), tricky });
     const little = kids.find((k) => k.role === "listener");
     if (sibling.trim()) { if (little) updateKid({ ...little, name: sibling.trim() }); else addKid({ id: uid(), name: sibling.trim(), avatar: "🐣", gpcs: ALL_GPCS.slice(0, 4), tricky: [], role: "listener", createdAt: Date.now() }); }
     else if (little) removeKid(little.id);   // no phantom "Little one"

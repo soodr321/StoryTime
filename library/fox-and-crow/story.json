@@ -252,10 +252,7 @@
     }
    ],
    "audio": "p4.m4a",
-   "audioMs": 9650,
-   "magic": [
-    "must"
-   ]
+   "audioMs": 9650
   },
   {
    "art": "🐦",
@@ -450,7 +447,7 @@
  ],
  "moral": {
   "spoken": "Someone who praises you just to get something is not a friend.",
-  "line": "It is a trick.",
+  "line": "It is sad.",
   "audio": "moral.m4a",
   "audioMs": 4970
  },

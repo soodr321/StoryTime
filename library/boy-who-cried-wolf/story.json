@@ -84,10 +84,7 @@
     }
    ],
    "audio": "p1.m4a",
-   "audioMs": 6620,
-   "magic": [
-    "and"
-   ]
+   "audioMs": 6620
   },
   {
    "art": "🐺",
@@ -384,7 +381,7 @@
  ],
  "moral": {
   "spoken": "If you keep telling lies, people will not believe you when it matters.",
-  "line": "It is not a trick.",
+  "line": "It is a sad kid.",
   "audio": "moral.m4a",
   "audioMs": 5520
  },

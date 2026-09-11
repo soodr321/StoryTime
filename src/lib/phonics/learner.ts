@@ -20,6 +20,7 @@ export const TRICKY_PARTS: Record<string, string> = { the: "th|e", a: "|a", I: "
 
 /** Named levels: how far along the order a child is. */
 export const LEVELS: Record<string, LearnerModel> = {
+  "ls-phase2-set1": { gpcs: LS_PHASE2_ORDER.slice(0, 4) as unknown as string[], tricky: [] },
   "ls-phase2-set2": { gpcs: LS_PHASE2_ORDER.slice(0, 8) as unknown as string[], tricky: ["the", "a", "I"] },
   "ls-phase2-set3": { gpcs: LS_PHASE2_ORDER.slice(0, 12) as unknown as string[], tricky: ["the", "a", "I", "is"] },
   "ls-phase2-set4": { gpcs: LS_PHASE2_ORDER.slice(0, 16) as unknown as string[], tricky: ["the", "a", "I", "is", "to"] },

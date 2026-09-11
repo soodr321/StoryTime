@@ -1,0 +1,402 @@
+{
+ "slug": "pat-and-the-tap",
+ "title": "Pat and the Tap",
+ "tradition": "classic",
+ "source": {
+  "work": "Original decodable story (StoryTime)",
+  "author": "StoryTime",
+  "rights": "public-domain"
+ },
+ "retelling": {
+  "level": "ls-phase2-set1",
+  "checklist": {
+   "setup": true,
+   "want": true,
+   "action": true,
+   "consequence": true,
+   "feeling": true
+  }
+ },
+ "level": "ls-phase2-set1",
+ "pages": [
+  {
+   "art": "🧒",
+   "tokens": [
+    {
+     "t": "Pat",
+     "ms": 100
+    },
+    {
+     "t": "is",
+     "ms": 494
+    },
+    {
+     "t": "a",
+     "ms": 643
+    },
+    {
+     "t": "little",
+     "ms": 711
+    },
+    {
+     "t": "girl",
+     "ms": 1119
+    },
+    {
+     "t": "with",
+     "ms": 1499
+    },
+    {
+     "t": "a",
+     "ms": 1662
+    },
+    {
+     "t": "big",
+     "ms": 1730
+    },
+    {
+     "t": "red",
+     "ms": 2042
+    },
+    {
+     "t": "hat.",
+     "ms": 2287
+    },
+    {
+     "t": "Today",
+     "ms": 3691
+    },
+    {
+     "t": "she",
+     "ms": 4180
+    },
+    {
+     "t": "is",
+     "ms": 4492
+    },
+    {
+     "t": "thirsty.",
+     "ms": 4683
+    }
+   ],
+   "audio": "p1.m4a",
+   "audioMs": 6290
+  },
+  {
+   "art": "🚰",
+   "magic": [
+    "tap"
+   ],
+   "tokens": [
+    {
+     "t": "In",
+     "ms": 100
+    },
+    {
+     "t": "the",
+     "ms": 344
+    },
+    {
+     "t": "garden",
+     "ms": 453
+    },
+    {
+     "t": "there",
+     "ms": 942
+    },
+    {
+     "t": "is",
+     "ms": 1186
+    },
+    {
+     "t": "a",
+     "ms": 1322
+    },
+    {
+     "t": "tap.",
+     "ms": 1390
+    },
+    {
+     "t": "Drip,",
+     "ms": 2794
+    },
+    {
+     "t": "drip,",
+     "ms": 3419
+    },
+    {
+     "t": "drip,",
+     "ms": 3990
+    },
+    {
+     "t": "goes",
+     "ms": 4574
+    },
+    {
+     "t": "the",
+     "ms": 4995
+    },
+    {
+     "t": "tap.",
+     "ms": 5131
+    }
+   ],
+   "audio": "p2.m4a",
+   "audioMs": 6530
+  },
+  {
+   "art": "🧒",
+   "magic": [
+    "sat"
+   ],
+   "tokens": [
+    {
+     "t": "Pat",
+     "ms": 100
+    },
+    {
+     "t": "sat",
+     "ms": 466
+    },
+    {
+     "t": "down",
+     "ms": 779
+    },
+    {
+     "t": "on",
+     "ms": 1132
+    },
+    {
+     "t": "the",
+     "ms": 1295
+    },
+    {
+     "t": "step",
+     "ms": 1404
+    },
+    {
+     "t": "and",
+     "ms": 1839
+    },
+    {
+     "t": "looked",
+     "ms": 2097
+    },
+    {
+     "t": "at",
+     "ms": 2436
+    },
+    {
+     "t": "the",
+     "ms": 2640
+    },
+    {
+     "t": "tap.",
+     "ms": 2749
+    }
+   ],
+   "audio": "p3.m4a",
+   "audioMs": 4150
+  },
+  {
+   "art": "💧",
+   "tokens": [
+    {
+     "t": "She",
+     "ms": 100
+    },
+    {
+     "t": "turned",
+     "ms": 412
+    },
+    {
+     "t": "it.",
+     "ms": 792
+    },
+    {
+     "t": "Whoosh!",
+     "ms": 2074
+    },
+    {
+     "t": "Water",
+     "ms": 3677
+    },
+    {
+     "t": "splashed",
+     "ms": 4153
+    },
+    {
+     "t": "everywhere",
+     "ms": 4723
+    },
+    {
+     "t": "and",
+     "ms": 5498
+    },
+    {
+     "t": "Pat",
+     "ms": 5715
+    },
+    {
+     "t": "got",
+     "ms": 6001
+    },
+    {
+     "t": "wet!",
+     "ms": 6340
+    }
+   ],
+   "audio": "p4.m4a",
+   "audioMs": 7730
+  },
+  {
+   "art": "😆",
+   "magic": [
+    "pat"
+   ],
+   "tokens": [
+    {
+     "t": "Pat",
+     "ms": 100
+    },
+    {
+     "t": "laughed.",
+     "ms": 480
+    },
+    {
+     "t": "She",
+     "ms": 1870
+    },
+    {
+     "t": "gave",
+     "ms": 2155
+    },
+    {
+     "t": "the",
+     "ms": 2468
+    },
+    {
+     "t": "tap",
+     "ms": 2604
+    },
+    {
+     "t": "a",
+     "ms": 2971
+    },
+    {
+     "t": "little",
+     "ms": 3039
+    },
+    {
+     "t": "pat",
+     "ms": 3419
+    },
+    {
+     "t": "and",
+     "ms": 3854
+    },
+    {
+     "t": "turned",
+     "ms": 4071
+    },
+    {
+     "t": "it",
+     "ms": 4384
+    },
+    {
+     "t": "off.",
+     "ms": 4547
+    }
+   ],
+   "audio": "p5.m4a",
+   "audioMs": 5860
+  },
+  {
+   "art": "☀️",
+   "tokens": [
+    {
+     "t": "Then",
+     "ms": 100
+    },
+    {
+     "t": "she",
+     "ms": 453
+    },
+    {
+     "t": "sat",
+     "ms": 684
+    },
+    {
+     "t": "in",
+     "ms": 1105
+    },
+    {
+     "t": "the",
+     "ms": 1241
+    },
+    {
+     "t": "sun",
+     "ms": 1350
+    },
+    {
+     "t": "to",
+     "ms": 1676
+    },
+    {
+     "t": "dry.",
+     "ms": 1811
+    },
+    {
+     "t": "What",
+     "ms": 3283
+    },
+    {
+     "t": "a",
+     "ms": 3609
+    },
+    {
+     "t": "funny",
+     "ms": 3664
+    },
+    {
+     "t": "morning!",
+     "ms": 4071
+    }
+   ],
+   "audio": "p6.m4a",
+   "audioMs": 5620
+  }
+ ],
+ "moral": {
+  "spoken": "Be gentle with a tap, and it will be gentle with you.",
+  "line": "Pat sat.",
+  "audio": "moral.m4a",
+  "audioMs": 4630
+ },
+ "prompts": {
+  "yes:tap": {
+   "audio": "yes-tap.m4a",
+   "ms": 3140
+  },
+  "word:tap": {
+   "audio": "word-tap.m4a",
+   "ms": 1540
+  },
+  "yes:sat": {
+   "audio": "yes-sat.m4a",
+   "ms": 3310
+  },
+  "word:sat": {
+   "audio": "word-sat.m4a",
+   "ms": 1700
+  },
+  "yes:pat": {
+   "audio": "yes-pat.m4a",
+   "ms": 3190
+  },
+  "word:pat": {
+   "audio": "word-pat.m4a",
+   "ms": 1580
+  }
+ }
+}

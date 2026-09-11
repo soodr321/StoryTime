@@ -3,6 +3,9 @@ import { TRADITION_LABEL, storyAsset } from "../lib/library";
 import { useEffect } from "react";
 import type { Story } from "../lib/content/types";
 import { Art } from "../components/Art";
+import { playClip } from "../lib/audio/player";
+import { soundAsset } from "../lib/library";
+import { GRAPHEME_SOUND, LS_PHASE2_ORDER } from "../lib/phonics/learner";
 
 export type Mode = "listen" | "read";
 
@@ -22,7 +25,7 @@ function WeekStrip({ days }: { days: number[] }) {
 }
 
 export function HomeScreen({ onStart, onLibrary, onSwitch, onWarmUp }: { onStart: (story: Story, mode: Mode, resume: boolean) => void; onLibrary: () => void; onSwitch: () => void; onWarmUp: () => void }) {
-  const { activeKid: kid, todayFor, session, stories, progress, settings, setSession, review } = useFamily();
+  const { activeKid: kid, todayFor, repeatToday, session, stories, progress, settings, setSession, review } = useFamily();
   const resumable = session ? stories.find((s) => s.slug === session.slug) ?? null : null;
   const today = kid ? resumable ?? todayFor(kid) : null;
   useEffect(() => { if (today) void precache(today); }, [today]);
@@ -37,11 +40,8 @@ export function HomeScreen({ onStart, onLibrary, onSwitch, onWarmUp }: { onStart
     <main className="home-screen">
       <button className="who" onClick={onSwitch}><span>{kid.avatar}</span> {kid.name} · <u>switch</u></button>
       <WeekStrip days={days} />
-      {!listener && review.length > 0 && !resumable && !doneTonight && (
-        <button className="warmcard" onClick={onWarmUp}><b>Warm-up first</b><span>{review.map((r) => r.word).join(" · ")}</span><small>1 minute · words from last time</small></button>
-      )}
-      {!listener && kid.gpcs.length < 23 && (
-        <div className="nextsound"><span className="legend">Next sound to teach:</span> <b>{["s","a","t","p","i","n","m","d","g","o","c","k","ck","e","u","r","h","b","f","ff","l","ll","ss"][kid.gpcs.length]}</b> <span className="legend">(tick it in ⚙︎ once taught)</span></div>
+      {!listener && kid.gpcs.length < LS_PHASE2_ORDER.length && (
+        <div className="nextsound"><span className="legend">Next sound to teach:</span> <button className="soundbtn" onClick={() => void playClip(soundAsset(GRAPHEME_SOUND[LS_PHASE2_ORDER[kid.gpcs.length]].clip)).done.catch(() => {})}>{LS_PHASE2_ORDER[kid.gpcs.length]} 🔊</button> <span className="legend">the sound, not the letter name · tick it in ⚙︎ once taught</span></div>
       )}
 
       {doneTonight ? (
@@ -53,7 +53,7 @@ export function HomeScreen({ onStart, onLibrary, onSwitch, onWarmUp }: { onStart
         </div>
       ) : today ? (
         <>
-          <div className="kicker">{resumable ? "Carry on where you stopped" : finished ? "Today's story" : "Your first story"}</div>
+          <div className="kicker">{resumable ? "Carry on where you stopped" : repeatToday ? "Same story — smoother today" : finished ? "Today's story" : "Your first story"}</div>
           <div className="big-tile" role="group" aria-label={today.title}>
             <span className="art"><Art art={today.pages[0].art} /></span>
             <span className="t">{today.title}</span>
@@ -68,6 +68,8 @@ export function HomeScreen({ onStart, onLibrary, onSwitch, onWarmUp }: { onStart
                 <span className="mi">↺</span><b>Start over</b><small>Pick a mode again</small>
               </button>
             </div>
+          ) : review.length > 0 && !listener ? (
+            <button className="warmcard" onClick={onWarmUp}><b>Warm-up first</b><span>{review.map((r) => r.word).join(" · ")}</span><small>1 minute · words from last time, then the story</small></button>
           ) : (
             <div className="modes">
               <button className="mode" onClick={() => onStart(today, "listen", false)}>

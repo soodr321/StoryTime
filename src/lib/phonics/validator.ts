@@ -13,6 +13,8 @@ export interface LearnerModel {
   gpcs: string[];
   /** Exception words taught as wholes. Locked set; parent may delay, never reclassify. */
   tricky: string[];
+  /** true once adjacent-consonant blends (Phase 4) have been taught */
+  clusters?: boolean;
 }
 
 export type CheckResult =
@@ -67,9 +69,20 @@ export function checkWord(word: string, learner: LearnerModel): CheckResult {
   return { ok: true, kind: "decodable", word: w, graphemes: out };
 }
 
-/** A magic word must be decodable, not tricky: the child sounds it out. */
+const VOWELS = new Set(["a", "e", "i", "o", "u"]);
+/** Phase 2 blends CVC only. Adjacent consonants (must, trick, and) are Phase 4. */
+export function isCvcShaped(graphemes: string[]): boolean {
+  if (graphemes.length > 3) return false;
+  for (let i = 1; i < graphemes.length; i++) if (!VOWELS.has(graphemes[i]) && !VOWELS.has(graphemes[i - 1])) return false;
+  return true;
+}
+
+/** A magic word must be decodable, not tricky, and blendable at this stage: the child sounds it out. */
 export function checkMagicWord(word: string, learner: LearnerModel): CheckResult {
   const r = checkWord(word, learner);
+  if (r.ok && r.kind === "decodable" && !learner.clusters && !isCvcShaped(r.graphemes)) {
+    return { ok: false, word: r.word, graphemes: r.graphemes, reasons: [`"${r.word}" has adjacent consonants (${r.graphemes.join("-")}); stick to three sounds like sat, got, sad until blends are taught`] };
+  }
   if (r.ok && r.kind === "tricky") {
     return {
       ok: false,
@@ -86,6 +99,6 @@ export function checkLine(line: string, learner: LearnerModel): { ok: boolean; r
   const results = line
     .split(/\s+/)
     .filter((t) => normalise(t))
-    .map((t) => checkWord(t, learner));
+    .map((t) => { const r = checkWord(t, learner); return r.ok && r.kind === "decodable" && !learner.clusters && !isCvcShaped(r.graphemes) ? { ok: false as const, word: r.word, graphemes: r.graphemes, reasons: [`"${r.word}" has adjacent consonants; not yet`] } : r; });
   return { ok: results.length > 0 && results.every((r) => r.ok), results };
 }

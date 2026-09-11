@@ -2,6 +2,9 @@ import { useState } from "react";
 import { useFamily } from "../lib/family";
 import { ALL_GPCS, ALL_TRICKY, uid, type Kid } from "../lib/store";
 import { Art } from "../components/Art";
+import { playClip } from "../lib/audio/player";
+import { soundAsset } from "../lib/library";
+import { GRAPHEME_SOUND } from "../lib/phonics/learner";
 
 const AVATARS = ["🦁", "🐣", "🐯", "🦊", "🐼", "🐸", "🦄", "🐬", "🐢", "🐝", "🌟", "🚀"];
 
@@ -67,9 +70,9 @@ function KidEditor({ kid, onChange, onRemove }: { kid: Kid; onChange: (k: Kid) =
         {onRemove && <button className="linkbtn" onClick={onRemove}>remove</button>}
       </div>
       <p className="legend">Sounds taught so far: <select value={known} onChange={(e) => onChange({ ...kid, gpcs: ALL_GPCS.slice(0, +e.target.value) })} aria-label="level">{[4, 8, 12, 16, 23].map((n) => <option key={n} value={n}>{ALL_GPCS.slice(0, n).join(" ")}</option>)}</select></p>
-      <p className="legend">Or tap the last sound you've taught:</p>
+      <p className="legend">Or tap the last sound you've taught (you'll hear it — the sound, never the letter name):</p>
       <div className="chips">
-        {ALL_GPCS.map((g, i) => <button key={g} className={"tog" + (i < known ? " on" : "")} onClick={() => onChange({ ...kid, gpcs: ALL_GPCS.slice(0, i + 1) })}>{g}</button>)}
+        {ALL_GPCS.map((g, i) => <button key={g} className={"tog" + (i < known ? " on" : "")} title="tap: hear the sound and set as taught" onClick={() => { void playClip(soundAsset(GRAPHEME_SOUND[g].clip)).done.catch(() => {}); onChange({ ...kid, gpcs: ALL_GPCS.slice(0, i + 1) }); }}>{g}</button>)}
       </div>
       <p className="legend">Tricky words taught. Most of each word is regular; the app shows the regular part and marks only the odd bit (the → th + e). Only tick ones you have taught.</p>
       <div className="chips">

@@ -132,8 +132,9 @@ export function StoryScreen({ story, mode, resume, onHome }: { story: Story; mod
     }
     if (state === "done") {
       if (!finishedRef.current) { finishedRef.current = true; void fam.finish(kid.id, story.slug, ctx.results); }
-      const okCount = ctx.results.filter((r) => r.ok).length;
-      if (listen && okCount > 0) void speakPrompt("done", "Beautiful reading. This story goes on your shelf."); else setCaption(okCount ? "Beautiful reading." : "Good listening. Those words come back tomorrow.");
+      const okWords = ctx.results.filter((r) => r.ok).map((r) => r.word);
+      const said = okWords.length ? `You blended ${okWords.join(", ")}.` : "Good listening. Those words come back tomorrow.";
+      setCaption(said); if (listen) { const h = speakText(said, { rate }); playing.current = h; }
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state, ctx.page, retry]);
@@ -153,7 +154,8 @@ export function StoryScreen({ story, mode, resume, onHome }: { story: Story; mod
     if (!alive()) return;
     setCaption(dotted(gs) + " …"); await playBlend(gs, { alive });
     if (!alive()) return;
-    if (listen) { await speakPrompt(`word:${word}`, word); if (!alive()) return; await speakPrompt("yourturn", "Your turn: say the sounds, then blend."); } else setCaption(`${word}. Now ${kid.name}: say the sounds, then blend.`);
+    // never say the whole word here: the child must blend it, not echo it
+    if (listen) await speakPrompt("yourturn", "Your turn: say the sounds, then blend."); else setCaption(`Now ${kid.name}: say the sounds, then blend.`);
     if (alive()) send({ type: "MODEL_DONE" });
   };
 
@@ -216,7 +218,7 @@ function StoryView({ page, pageNo, total, token, results, readMode, listener, re
             const res = magic ? resFor(n) : undefined;
             const cls = ["w", i === token ? "now" : "", i < token ? "read" : "", magic ? "magic" : "", magic && res ? (res.ok ? "done" : "skipped") : ""].join(" ");
             if (readMode && magic && !res) return <button key={i} className={cls + " tap"} onClick={() => onMagicTap(n)}>{t.t} </button>;
-            if (listener || readMode) return <button key={i} className={cls + " tap"} onClick={() => onWordTap(t.t)}>{t.t} </button>;
+            if (listener) return <button key={i} className={cls + " tap"} onClick={() => onWordTap(t.t)}>{t.t} </button>;   // read mode: grey words are the grown-up's, never tap-to-hear
             return <span key={i} className={cls}>{t.t} </span>;
           })}
         </p>
@@ -302,7 +304,7 @@ function Done({ story, results, bedtime, kid, learner, onHome }: { story: Story;
   const line = (r: WordResult) => {
     const gs = checkWord(r.word, learner).graphemes.join("-");
     if (!r.ok) return `${r.word} · tomorrow`;
-    if (r.mode === "independent") return `${r.word} · read it straight off`;
+    if (r.mode === "independent") return `${r.word} · blended it by yourself`;
     if (r.mode === "sounded") return `${r.word} · blended ${gs}`;
     return `${r.word} · tried again and blended it`;
   };

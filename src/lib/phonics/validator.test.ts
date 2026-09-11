@@ -58,6 +58,11 @@ describe("checkWord", () => {
 });
 
 describe("checkMagicWord", () => {
+  it("rejects adjacent-consonant words at phase 2 (must, trick, and, stop)", () => {
+    for (const w of ["must", "trick", "and", "stop", "tricks"]) expect(checkMagicWord(w, L).ok, w).toBe(false);
+    for (const w of ["sat", "got", "sad", "it", "sock"]) expect(checkMagicWord(w, L).ok, w).toBe(true);
+    expect(checkMagicWord("trick", { ...L, clusters: true }).ok).toBe(true);
+  });
   it("refuses tricky words as magic words", () => {
     const r = checkMagicWord("is", L);
     expect(r.ok).toBe(false);
@@ -69,9 +74,10 @@ describe("checkMagicWord", () => {
 
 describe("checkLine", () => {
   it("passes the Fox and Crow read-back line", () => {
-    const r = checkLine("It is a trick.", L);
+    const r = checkLine("It is sad.", L);
     expect(r.ok).toBe(true);
-    expect(r.results.map((x) => (x.ok ? x.kind : "bad"))).toEqual(["decodable", "tricky", "tricky", "decodable"]);
+    expect(r.results.map((x) => (x.ok ? x.kind : "bad"))).toEqual(["decodable", "tricky", "decodable"]);
+    expect(checkLine("It is a trick.", L).ok).toBe(false);
   });
   it("fails a line with an untaught grapheme", () => {
     expect(checkLine("It is a con job.", L).ok).toBe(false);

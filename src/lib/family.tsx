@@ -22,7 +22,8 @@ interface Family {
   reviewDone: (results: { word: string; ok: boolean; mode: string }[]) => Promise<void>;
   stories: Story[];                       // library + family stories
   storiesFor: (kid: Kid) => Story[];      // those the kid can do
-  todayFor: (kid: Kid) => Story | null;   // next unfinished that fits, else least recently finished
+  todayFor: (kid: Kid) => Story | null;   // a shaky story again, else next unfinished that fits, else least recently finished
+  repeatToday: boolean;
   setActiveKid: (id: string) => void;
   updateKid: (kid: Kid) => void;
   addKid: (kid: Kid) => void;
@@ -69,12 +70,15 @@ export function FamilyProvider({ children }: { children: ReactNode }) {
 
   const stories = useMemo(() => [...customs, ...LIBRARY], [customs]);
   const storiesFor = useCallback((kid: Kid) => (kid.role === "listener" ? stories : stories.filter((s) => fits(s, learnerOf(kid)))), [stories]);
+  /** The most recent finish had a helped or skipped word → read the same story again tomorrow, smoother. */
+  const shaky = useMemo(() => { const last = Object.values(progress).sort((a, b) => (b.lastFinished ?? 0) - (a.lastFinished ?? 0))[0]; return last && last.results.some((r) => !r.ok || r.mode === "modelled") ? last.slug : null; }, [progress]);
   const todayFor = useCallback((kid: Kid) => {
     const list = storiesFor(kid); if (!list.length) return null;
+    if (shaky && kid.role !== "listener") { const s = list.find((x) => x.slug === shaky); if (s) return s; }
     const unfinished = list.filter((s) => !progress[s.slug]);
     if (unfinished.length) return unfinished[0];
     return [...list].sort((a, b) => (progress[a.slug]?.lastFinished ?? 0) - (progress[b.slug]?.lastFinished ?? 0))[0];
-  }, [storiesFor, progress]);
+  }, [storiesFor, progress, shaky]);
 
   // functional updates: two edits in one tick (welcome screen) must not clobber each other
   const mutateKids = (f: (prev: Kid[]) => Kid[]) => setKids(f);
@@ -84,7 +88,7 @@ export function FamilyProvider({ children }: { children: ReactNode }) {
 
   const session = activeKid ? sessions[activeKid.id] ?? null : null;
   const value: Family = {
-    ready, fatal, kids, settings, customs, sessions, session, activeKid, progress, review, stories, storiesFor, todayFor,
+    ready, fatal, kids, settings, customs, sessions, session, activeKid, progress, review, stories, storiesFor, todayFor, repeatToday: !!shaky && activeKid?.role !== "listener",
     reviewDone: async (results) => { if (!activeKid) return; await scheduleReview(activeKid.id, results); setReview(dueReview(await loadReview(activeKid.id))); },
     setActiveKid: (id) => updateSettings({ activeKid: id }),
     updateKid: (kid) => mutateKids((prev) => prev.map((k) => (k.id === kid.id ? kid : k))),
