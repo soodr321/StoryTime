@@ -43,20 +43,22 @@ export function AddStoryScreen({ onDone }: { onDone: () => void }) {
   const recRef = useRef<Recorder | null>(null);
   useEffect(() => () => { void recRef.current?.stop(); }, []);   // leaving the screen releases the microphone
   const toggleRec = async (i: number) => {
-    const key = pages[i];
-    if (recording === i) { const r = await recRef.current?.stop(); recRef.current = null; setRecording(null); if (r) setRec((prev) => ({ ...prev, [key]: r })); else setPhotoErr("That recording was empty. Try again and speak a little longer."); return; }
+    const key = keys[i];
+    if (recording === i) { let r: { dataUrl: string; ms: number } | null = null; try { r = (await recRef.current?.stop()) ?? null; } finally { recRef.current = null; setRecording(null); } if (r) setRec((prev) => ({ ...prev, [key]: r })); else setPhotoErr("That recording was empty. Try again and speak a little longer."); return; }
     if (recording !== null) return;
     try { recRef.current = await startRecording(); setRecording(i); } catch { setPhotoErr("Microphone not allowed. You can still save the story; it will use the phone's voice."); }
   };
 
   // one line per page; a pasted paragraph is split at sentence ends so a tired parent never sees a silent disabled Save
   const pages = useMemo(() => text.split(/\n+/).flatMap((l) => l.split(/(?<!\b[A-Z][a-z]{0,2})(?<=[.!?”"])\s+(?=[A-Z“"])/)).map((s) => s.trim()).filter(Boolean), [text]);
+  // media key: page text plus its occurrence number, so two identical lines ("Run!") stay separate
+  const keys = useMemo(() => { const seen: Record<string, number> = {}; return pages.map((p) => { seen[p] = (seen[p] ?? 0) + 1; return seen[p] > 1 ? `${p}#${seen[p]}` : p; }); }, [pages]);
   // names (capitalised mid-sentence) are never magic words; possessives are stripped; nothing is auto-picked
   const candidates = useMemo(() => pages.map((p) => { const toks = p.split(/\s+/); return [...new Set(toks.filter((t, i) => !(i > 0 && /^[A-Z]/.test(t))).map((t) => normalise(t.replace(/[’']s$/, ""))).filter((w) => w.length >= 2 && checkMagicWord(w, learner).ok))]; }), [pages, learner]);
   const lineCheck = useMemo(() => (line.trim() ? checkLine(line, learner) : null), [line, learner]);
-  const chosen = (i: number) => magic[pages[i]] ?? null;
-  const artOf = (i: number) => arts[pages[i]];
-  const recOf = (i: number) => rec[pages[i]];
+  const chosen = (i: number) => magic[keys[i]] ?? null;
+  const artOf = (i: number) => arts[keys[i]];
+  const recOf = (i: number) => rec[keys[i]];
   const ready = title.trim() && pages.length >= 2 && moral.trim() && lineCheck?.ok && pages.every((_, i) => arts[i] || true);
 
   const save = async () => {
@@ -95,8 +97,8 @@ export function AddStoryScreen({ onDone }: { onDone: () => void }) {
               </div>
               <div className="row wrap">
                 <span className="legend">Picture:</span>
-                {EMOJI.map((e) => <button key={e} className={"emo" + (artOf(i) === e ? " on" : "")} onClick={() => setArts((prev) => ({ ...prev, [p]: e }))}>{e}</button>)}
-                <label className="emo photo" title="photo from your camera roll">📷<input type="file" accept="image/*" hidden onChange={async (e) => { const f = e.target.files?.[0]; if (!f) return; const d = await shrink(f); if (d) { setArts((prev) => ({ ...prev, [p]: d })); setPhotoErr(null); } else setPhotoErr("Couldn't use that photo. Try a JPEG or PNG."); }} /></label>
+                {EMOJI.map((e) => <button key={e} className={"emo" + (artOf(i) === e ? " on" : "")} onClick={() => setArts((prev) => ({ ...prev, [keys[i]]: e }))}>{e}</button>)}
+                <label className="emo photo" title="photo from your camera roll">📷<input type="file" accept="image/*" hidden onChange={async (e) => { const f = e.target.files?.[0]; if (!f) return; const d = await shrink(f); if (d) { setArts((prev) => ({ ...prev, [keys[i]]: d })); setPhotoErr(null); } else setPhotoErr("Couldn't use that photo. Try a JPEG or PNG."); }} /></label>
                 {artOf(i)?.startsWith("data:") && <img className="thumb" src={artOf(i)} alt="" />}
                 {photoErr && <span className="legend bad">{photoErr}</span>}
               </div>
@@ -111,7 +113,7 @@ export function AddStoryScreen({ onDone }: { onDone: () => void }) {
               <div className="row wrap">
                 <span className="legend">Magic word:</span>
                 {candidates[i].length === 0 && <span className="legend">none decodable on this page — fine, {kid.name} listens.</span>}
-                {candidates[i].map((w) => <button key={w} className={"tog" + (chosen(i) === w ? " on" : "")} onClick={() => setMagic((prev) => ({ ...prev, [p]: chosen(i) === w ? null : w }))}>{w}</button>)}
+                {candidates[i].map((w) => <button key={w} className={"tog" + (chosen(i) === w ? " on" : "")} onClick={() => setMagic((prev) => ({ ...prev, [keys[i]]: chosen(i) === w ? null : w }))}>{w}</button>)}
                 {candidates[i].length > 0 && <span className="legend">{chosen(i) ? "" : "tap one, or none"}</span>}
               </div>
             </div>

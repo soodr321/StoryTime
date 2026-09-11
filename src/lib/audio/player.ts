@@ -27,11 +27,12 @@ export async function unlock(): Promise<void> {
   clip ??= make();
   if (unlocked) return;
   const silent = "data:audio/mp4;base64,AAAAHGZ0eXBNNEEgAAAAAE00QSBpc29tbXA0MgAAAAhmcmVlAAAAAG1kYXQ=";
-  for (const a of [narration, clip]) {
-    try { a.src = silent; await withTimeout(a.play(), 400); a.pause(); } catch { /* element still counts as gestured on most engines */ }
-  }
-  try { window.speechSynthesis?.speak(new SpeechSynthesisUtterance("")); } catch { /* no speech engine */ }   // iOS: unlock Web Speech in the same gesture
+  // every engine must be kicked synchronously inside the tap; awaiting one first can spend the user activation
+  const kicks: Promise<unknown>[] = [];
+  for (const a of [narration, clip]) { try { a.src = silent; kicks.push(a.play().then(() => a.pause())); } catch { /* still counts as gestured on most engines */ } }
+  try { window.speechSynthesis?.speak(new SpeechSynthesisUtterance("")); } catch { /* no speech engine */ }
   unlocked = true;
+  await withTimeout(Promise.allSettled(kicks), 400);
 }
 
 export interface Playing {
@@ -47,6 +48,7 @@ const blobUrls = new Map<string, string>();
 function resolveSrc(src: string): string {
   if (!src.startsWith("data:")) return src;
   const hit = blobUrls.get(src); if (hit) return hit;
+  if (blobUrls.size >= 6) { const [k, v] = blobUrls.entries().next().value as [string, string]; URL.revokeObjectURL(v); blobUrls.delete(k); }
   try {
     const [head, b64] = src.split(",", 2); const mime = head.slice(5, head.indexOf(";")) || "audio/mp4";
     const bin = atob(b64); const bytes = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);

@@ -82,7 +82,7 @@ export function StoryScreen({ story, mode, resume, onHome }: { story: Story; mod
       const timed = p.tokens.some((t) => t.ms > 0);
       const durMs = () => (isFinite(pl.el.duration) && pl.el.duration > 0 ? pl.el.duration * 1000 : p.audioMs ?? Infinity);   // Chrome webm recordings report Infinity
       const tokMs = (i: number) => (timed ? p.tokens[i].ms : durMs() !== Infinity ? (durMs() * i) / p.tokens.length : Infinity);
-      const stopMsAt = () => (magicIdx >= 0 ? tokMs(magicIdx) : Infinity);
+      const stopMsAt = () => (magicIdx >= 0 ? (timed ? tokMs(magicIdx) : tokMs(magicIdx) - 350) : Infinity);   // untimed recordings: stop a beat early so the parent's voice never says the word
       let raf = 0, last = -1;
       const tick = () => {
         const ms = pl.el.currentTime * 1000; const stopMs = stopMsAt();
@@ -143,7 +143,7 @@ export function StoryScreen({ story, mode, resume, onHome }: { story: Story; mod
 
   useEffect(() => { if (!startedRef.current) { startedRef.current = true; void unlock().then(() => send({ type: "START" })); } return () => { stopAll(); playing.current?.stop(); }; }, [send]);
 
-  const home = () => { playing.current?.stop(); stopAll(); onHome(); };
+  const home = () => { runRef.current++; playing.current?.stop(); stopAll(); onHome(); };
   const inStory = state === "narrating" || state === "reread" || state === "magicWord" || state === "modelling";
   const panelOpen = (state === "magicWord" || state === "modelling") && !!ctx.magic;
 
@@ -159,7 +159,7 @@ export function StoryScreen({ story, mode, resume, onHome }: { story: Story; mod
         <StoryView
           page={page} pageNo={ctx.page} total={story.pages.length} token={listen ? ctx.token : -1} results={ctx.results}
           readMode={!listen} listener={listener} reader={reader} kid={kid.name} stalled={stalled} pageHeld={pageHeld}
-          onRetry={() => { setStalled(false); setRetry((n) => n + 1); }}
+          onRetry={() => { void unlock(); setStalled(false); setRetry((n) => n + 1); }}
           onMagicTap={(w) => state === "narrating" && send({ type: "MAGIC_REACHED", word: w })}
           onWordTap={(tok) => { if (listener || !listen) { if (state === "narrating" && listen && !pageHeld) return; setCaption(tok); const h = speakText(tok, { rate }); playing.current = h; } }}
           onNext={() => state === "narrating" && send({ type: "PAGE_NEXT" })}
@@ -172,11 +172,13 @@ export function StoryScreen({ story, mode, resume, onHome }: { story: Story; mod
           onSound={() => send({ type: "SOUND_TAPPED" })}
           onYes={async () => { const w = ctx.magic!; if (listen) await speakPrompt(`yes:${w}`, `Yes! ${w}.`); else setCaption(`Yes! ${w}.`); send({ type: "YES" }); }}
           onTogether={async () => {
+            const run = ++runRef.current; const alive = () => run === runRef.current;
             send({ type: "NOT_YET" });
             if (listen) await speakPrompt("notyet", "That's okay. Listen to me blend it, then you try."); else setCaption("Blend it together slowly, then try again.");
-            for (const g of checkWord(ctx.magic!, learner).graphemes) { try { await playClip(soundAsset(GRAPHEME_SOUND[g].clip)).done; } catch { /* clip missing */ } }
-            if (listen) { await speakPrompt(`word:${ctx.magic}`, ctx.magic!); await speakPrompt("yourturn", "Your turn."); }
-            send({ type: "MODEL_DONE" });
+            for (const g of checkWord(ctx.magic!, learner).graphemes) { if (!alive()) return; try { await playClip(soundAsset(GRAPHEME_SOUND[g].clip)).done; } catch { /* clip missing */ } }
+            if (!alive()) return;
+            if (listen) { await speakPrompt(`word:${ctx.magic}`, ctx.magic!); if (!alive()) return; await speakPrompt("yourturn", "Your turn."); }
+            if (alive()) send({ type: "MODEL_DONE" });
           }}
           onSkip={async () => { const w = ctx.magic!; if (listen) await speakPrompt("practise", `${w}. We'll practise it tomorrow.`); else setCaption(`${w}. We'll practise it tomorrow.`); send({ type: "SKIP" }); }}
         />

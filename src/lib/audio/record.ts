@@ -13,17 +13,24 @@ export async function startRecording(): Promise<Recorder> {
   const t0 = Date.now();
   rec.ondataavailable = (e) => { if (e.data.size) chunks.push(e.data); };
   rec.start();                        // no timeslice: iOS produces an empty/invalid mp4 with one
+  let settled: Promise<{ dataUrl: string; ms: number } | null> | null = null;
+  const release = () => stream.getTracks().forEach((t) => t.stop());
   return {
-    stop: () => new Promise((resolve) => {
+    stop: () => settled ??= new Promise((resolve) => {   // idempotent: every outcome settles exactly once
+      const ms = Date.now() - t0;                          // measured at stop, not after encoding
+      const finish = (v: { dataUrl: string; ms: number } | null) => { release(); resolve(v); };
+      rec.onerror = () => finish(null);
       rec.onstop = () => {
-        stream.getTracks().forEach((t) => t.stop());
         const blob = new Blob(chunks, { type: rec.mimeType || type || "audio/webm" });
-        if (!blob.size) return resolve(null);
+        if (!blob.size) return finish(null);
         const fr = new FileReader();
-        fr.onload = () => resolve({ dataUrl: fr.result as string, ms: Date.now() - t0 });
+        fr.onerror = () => finish(null);
+        fr.onload = () => finish({ dataUrl: fr.result as string, ms });
         fr.readAsDataURL(blob);
       };
-      rec.stop();
+      if (rec.state === "inactive") { rec.onstop?.(new Event("stop")); return; }
+      try { rec.stop(); } catch { finish(null); }
+      setTimeout(() => finish(null), 8000);               // never leave the builder waiting
     }),
   };
 }

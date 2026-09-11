@@ -12,7 +12,17 @@ import { LEVELS } from "../src/lib/phonics/learner";
 import { checkLine, checkMagicWord, normalise } from "../src/lib/phonics/validator";
 
 const LIB = join(__dirname, "..", "library");
+const PUB = join(__dirname, "..", "public", "library");
 const slugs = readdirSync(LIB).filter((s) => existsSync(join(LIB, s, "story.json")));
+
+describe("library as a whole", () => {
+  it("has unique slugs and titles", () => {
+    const stories = slugs.map((s) => JSON.parse(readFileSync(join(LIB, s, "story.json"), "utf8")) as Story);
+    expect(new Set(stories.map((s) => s.slug)).size).toBe(stories.length);
+    expect(new Set(stories.map((s) => s.title)).size).toBe(stories.length);
+    for (const s of stories) expect(s.slug, "slug matches folder").toBe(slugs[stories.indexOf(s)]);
+  });
+});
 
 describe.each(slugs)("library/%s", (slug) => {
   const story = JSON.parse(readFileSync(join(LIB, slug, "story.json"), "utf8")) as Story & { pages: Array<{ text?: string }> };
@@ -26,6 +36,20 @@ describe.each(slugs)("library/%s", (slug) => {
     expect(Object.values(story.retelling.checklist).every(Boolean)).toBe(true);
   });
   it("uses a known level", () => { expect(level).toBeDefined(); });
+  it("has a title and at least two pages, each with text", () => {
+    expect(story.title.trim()).not.toBe("");
+    expect(story.pages.length).toBeGreaterThanOrEqual(2);
+    for (const p of story.pages) expect((p.tokens ?? []).length, "page has words").toBeGreaterThan(0);
+  });
+  it("uses each magic word at most once (a result is keyed by word)", () => {
+    const all = story.pages.flatMap((p) => p.magic ?? []);
+    expect(new Set(all).size).toBe(all.length);
+  });
+  it("ships the narration it references (when audio has been generated)", () => {
+    if (!existsSync(PUB)) return; // fresh checkout: gen-audio.py has not run; deploy-pages.sh refuses to publish in that state
+    for (const p of story.pages) { if (p.audio) { expect(existsSync(join(PUB, slug, p.audio)), `${slug}/${p.audio}`).toBe(true); expect(p.audioMs ?? 0).toBeGreaterThan(500); } }
+    if (story.moral.audio) expect(existsSync(join(PUB, slug, story.moral.audio))).toBe(true);
+  });
   it("has 0–1 magic word per page, each decodable and present in the page text", () => {
     for (const p of story.pages as Story["pages"]) {
       const words = p.magic ?? [];

@@ -36,6 +36,7 @@ export const LATER_GRAPHEMES = ["ng", "sh", "ch", "th", "qu", "wh", "ph", "ai", 
 export function checkWord(word: string, learner: LearnerModel): CheckResult {
   const w = normalise(word);
   if (!w) return { ok: false, word: w, graphemes: [], reasons: ["empty word"] };
+  if (/['’]/.test((word ?? "").replace(/^['’]+|['’]+$/g, ""))) return { ok: false, word: w, graphemes: [], reasons: [`"${word}" has an apostrophe; contractions are not decodable`] };
 
   const tricky = new Set(learner.tricky.map(normalise));
   if (tricky.has(w)) return { ok: true, kind: "tricky", word: w, graphemes: [w] };

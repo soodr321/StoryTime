@@ -16,7 +16,8 @@ export default defineConfig({
         description: "Nani reads the story. You read the magic words.",
         display: "standalone",
         orientation: "portrait",
-        start_url: "/",
+        start_url: ".",
+        scope: "./",
         background_color: "#fbf6ea",
         theme_color: "#fbf6ea",
         icons: [

@@ -44,6 +44,10 @@ describe("checkWord", () => {
     expect(checkWord("trick", L).ok).toBe(true);
     expect(checkWord("sock", { gpcs: ["s", "o", "c", "k"], tricky: [] }).ok).toBe(false);
   });
+  it("fails closed on contractions and possessives", () => {
+    expect(checkWord("can't", L).ok).toBe(false);
+    expect(checkWord("Nani's", L).ok).toBe(false);
+  });
   it("is case-insensitive (sentence case is display-only)", () => {
     expect(checkWord("It", L).ok).toBe(true);
   });

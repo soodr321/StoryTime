@@ -10,6 +10,7 @@ import {
 
 interface Family {
   ready: boolean;
+  fatal: string | null;
   kids: Kid[];
   settings: Settings;
   customs: Story[];
@@ -43,11 +44,12 @@ export function FamilyProvider({ children }: { children: ReactNode }) {
   const [sessions, setSessions] = useState<Record<string, Session>>({});
   const [progress, setProgress] = useState<Record<string, StoryProgress>>({});
   const [toast, setToast] = useState<string | null>(null);
+  const [fatal, setFatal] = useState<string | null>(null);
   const progGen = useRef(0);
   const fail = (msg: string) => { setToast(msg); setTimeout(() => setToast(null), 6000); };
 
   useEffect(() => {
-    void (async () => {
+    void (async () => { try {
       let k = await loadKids();
       if (!k.length) { k = defaultKids(); await saveKids(k); }
       const s = await loadSettings();
@@ -55,7 +57,7 @@ export function FamilyProvider({ children }: { children: ReactNode }) {
       setProgress(await loadProgress(active));             // before ready, so Home never flashes "first story"
       setKids(k); setSettingsState({ ...s, activeKid: active });
       setCustoms(await loadCustomStories()); setSessions(await loadAllSessions(k));
-      setReady(true);
+    } catch (e) { setFatal(String((e as Error)?.message ?? e)); if (!kids.length) setKids(defaultKids()); } finally { setReady(true); }
     })();
   }, []);
 
@@ -79,7 +81,7 @@ export function FamilyProvider({ children }: { children: ReactNode }) {
 
   const session = activeKid ? sessions[activeKid.id] ?? null : null;
   const value: Family = {
-    ready, kids, settings, customs, sessions, session, activeKid, progress, stories, storiesFor, todayFor,
+    ready, fatal, kids, settings, customs, sessions, session, activeKid, progress, stories, storiesFor, todayFor,
     setActiveKid: (id) => updateSettings({ activeKid: id }),
     updateKid: (kid) => mutateKids((prev) => prev.map((k) => (k.id === kid.id ? kid : k))),
     addKid: (kid) => mutateKids((prev) => [...prev, kid]),
