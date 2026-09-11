@@ -252,7 +252,10 @@
     }
    ],
    "audio": "p4.m4a",
-   "audioMs": 9650
+   "audioMs": 9650,
+   "magic": [
+    "must"
+   ]
   },
   {
    "art": "🐦",
@@ -439,7 +442,10 @@
     }
    ],
    "audio": "p7.m4a",
-   "audioMs": 6380
+   "audioMs": 6380,
+   "magic": [
+    "sad"
+   ]
   }
  ],
  "moral": {

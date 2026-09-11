@@ -295,7 +295,10 @@
     }
    ],
    "audio": "p4.m4a",
-   "audioMs": 6700
+   "audioMs": 6700,
+   "magic": [
+    "and"
+   ]
   },
   {
    "art": "🌙",

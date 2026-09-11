@@ -15,6 +15,9 @@ export const LS_PHASE2_ORDER = [
 /** Locked tricky-word set for phase 2. The parent may delay teaching one; nothing may reclassify one. */
 export const TRICKY_PHASE2 = ["the", "a", "I", "is", "to", "no", "go", "into"] as const;
 
+/** Tricky words are mostly regular: show the regular part and mark only the odd bit. `|` separates regular | tricky. */
+export const TRICKY_PARTS: Record<string, string> = { the: "th|e", a: "|a", I: "|I", is: "i|s", to: "t|o", no: "n|o", go: "g|o", into: "in|to" };
+
 /** Named levels: how far along the order a child is. */
 export const LEVELS: Record<string, LearnerModel> = {
   "ls-phase2-set2": { gpcs: LS_PHASE2_ORDER.slice(0, 8) as unknown as string[], tricky: ["the", "a", "I"] },

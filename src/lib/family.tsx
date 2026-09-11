@@ -4,7 +4,7 @@ import type { Story } from "./content/types";
 import { LIBRARY, fits } from "./library";
 import {
   defaultKids, learnerOf, loadAllSessions, loadCustomStories, loadKids, loadProgress, loadSettings,
-  recordFinish, saveCustomStories, saveKids, saveSession, saveSettings,
+  recordFinish, saveCustomStories, saveKids, saveSession, saveSettings, scheduleReview, loadReview, dueReview, type ReviewItem,
   type Kid, type Session, type Settings, type StoryProgress,
 } from "./store";
 
@@ -18,6 +18,8 @@ interface Family {
   session: Session | null;             // for the active child
   activeKid: Kid | null;
   progress: Record<string, StoryProgress>;
+  review: ReviewItem[];                 // words due for a quick warm-up today
+  reviewDone: (results: { word: string; ok: boolean; mode: string }[]) => Promise<void>;
   stories: Story[];                       // library + family stories
   storiesFor: (kid: Kid) => Story[];      // those the kid can do
   todayFor: (kid: Kid) => Story | null;   // next unfinished that fits, else least recently finished
@@ -43,6 +45,7 @@ export function FamilyProvider({ children }: { children: ReactNode }) {
   const [customs, setCustoms] = useState<Story[]>([]);
   const [sessions, setSessions] = useState<Record<string, Session>>({});
   const [progress, setProgress] = useState<Record<string, StoryProgress>>({});
+  const [review, setReview] = useState<ReviewItem[]>([]);
   const [toast, setToast] = useState<string | null>(null);
   const [fatal, setFatal] = useState<string | null>(null);
   const progGen = useRef(0);
@@ -62,7 +65,7 @@ export function FamilyProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const activeKid = useMemo(() => kids.find((k) => k.id === settings.activeKid) ?? kids[0] ?? null, [kids, settings.activeKid]);
-  useEffect(() => { if (!activeKid) return; const my = ++progGen.current; void loadProgress(activeKid.id).then((p) => { if (my === progGen.current) setProgress(p); }); }, [activeKid]);
+  useEffect(() => { if (!activeKid) return; const my = ++progGen.current; void loadProgress(activeKid.id).then((p) => { if (my === progGen.current) setProgress(p); }); void loadReview(activeKid.id).then((r) => { if (my === progGen.current) setReview(dueReview(r)); }); }, [activeKid]);
 
   const stories = useMemo(() => [...customs, ...LIBRARY], [customs]);
   const storiesFor = useCallback((kid: Kid) => (kid.role === "listener" ? stories : stories.filter((s) => fits(s, learnerOf(kid)))), [stories]);
@@ -81,7 +84,8 @@ export function FamilyProvider({ children }: { children: ReactNode }) {
 
   const session = activeKid ? sessions[activeKid.id] ?? null : null;
   const value: Family = {
-    ready, fatal, kids, settings, customs, sessions, session, activeKid, progress, stories, storiesFor, todayFor,
+    ready, fatal, kids, settings, customs, sessions, session, activeKid, progress, review, stories, storiesFor, todayFor,
+    reviewDone: async (results) => { if (!activeKid) return; await scheduleReview(activeKid.id, results); setReview(dueReview(await loadReview(activeKid.id))); },
     setActiveKid: (id) => updateSettings({ activeKid: id }),
     updateKid: (kid) => mutateKids((prev) => prev.map((k) => (k.id === kid.id ? kid : k))),
     addKid: (kid) => mutateKids((prev) => [...prev, kid]),
@@ -89,7 +93,7 @@ export function FamilyProvider({ children }: { children: ReactNode }) {
     updateSettings,
     toast,
     setSession: async (s) => { if (!activeKid) return; setSessions((all) => { const n = { ...all }; if (s) n[activeKid.id] = s; else delete n[activeKid.id]; return n; }); try { await saveSession(activeKid.id, s); } catch { fail("Couldn't save your place on this device."); } },
-    finish: async (kidId, slug, results) => { try { await recordFinish(kidId, slug, results); setProgress(await loadProgress(kidId)); await saveSession(kidId, null); } catch { fail("Couldn't save progress on this device."); } setSessions((all) => { const n = { ...all }; delete n[kidId]; return n; }); },
+    finish: async (kidId, slug, results) => { try { await recordFinish(kidId, slug, results); await scheduleReview(kidId, results); setProgress(await loadProgress(kidId)); setReview(dueReview(await loadReview(kidId))); await saveSession(kidId, null); } catch { fail("Couldn't save progress on this device."); } setSessions((all) => { const n = { ...all }; delete n[kidId]; return n; }); },
     addCustom: async (s) => { const n = [s, ...customs.filter((c) => c.slug !== s.slug)]; try { await saveCustomStories(n); setCustoms(n); return true; } catch { fail("Not saved — this device is out of space. Remove a photo and try again."); return false; } },
     removeCustom: (slug) => { const n = customs.filter((c) => c.slug !== slug); setCustoms(n); void saveCustomStories(n); },
   };

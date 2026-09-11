@@ -42,6 +42,7 @@ export function checkWord(word: string, learner: LearnerModel): CheckResult {
   if (tricky.has(w)) return { ok: true, kind: "tricky", word: w, graphemes: [w] };
 
   const taught = new Set(learner.gpcs.map(normalise));
+  if (/[^aeiou]e$/.test(w) && w.length > 2 && !taught.has("a-e")) return { ok: false, word: w, graphemes: [], reasons: [`"${w}" ends in a silent e (split digraph), which has not been taught yet`] };
   const later = LATER_GRAPHEMES.filter((g) => !taught.has(g)).sort((a, b) => b.length - a.length).find((g) => w.includes(g));
   if (later) return { ok: false, word: w, graphemes: [], reasons: [`"${later}" in "${w}" is one sound that has not been taught yet`] };
 

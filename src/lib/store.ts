@@ -73,6 +73,27 @@ export async function saveCustomStories(list: Story[]): Promise<void> { await se
 
 export function learnerOf(kid: Kid): LearnerModel { return { gpcs: kid.gpcs, tricky: kid.tricky }; }
 
+/** Spaced retrieval: a word missed or modelled comes back tomorrow; a word read well comes back at widening intervals. */
+export interface ReviewItem { word: string; due: number; interval: number; last: "ok" | "help" | "skip" }
+const reviewKey = (kidId: string) => `st:review:${kidId}`;
+const DAY = 86_400_000;
+export async function loadReview(kidId: string): Promise<Record<string, ReviewItem>> { return (await get(reviewKey(kidId))) ?? {}; }
+export async function scheduleReview(kidId: string, results: { word: string; ok: boolean; mode: string }[]): Promise<void> {
+  const all = await loadReview(kidId); const now = Date.now();
+  for (const r of results) {
+    const prev = all[r.word];
+    if (!r.ok || r.mode === "modelled") all[r.word] = { word: r.word, due: now + DAY, interval: 1, last: r.ok ? "help" : "skip" };
+    else { const interval = Math.min(14, (prev?.interval ?? 1) * 3); all[r.word] = { word: r.word, due: now + interval * DAY, interval, last: "ok" }; }
+  }
+  await set(reviewKey(kidId), all);
+}
+export function dueReview(all: Record<string, ReviewItem>, now = Date.now()): ReviewItem[] {
+  const due = Object.values(all).filter((r) => r.due <= now);
+  const weak = due.filter((r) => r.last !== "ok").slice(0, 3);
+  const secure = due.filter((r) => r.last === "ok").slice(0, 1);
+  return [...weak, ...secure];
+}
+
 /** Default kids on first launch: neutral names, parent renames in Settings. */
 export function defaultKids(): Kid[] {
   const now = Date.now();

@@ -44,6 +44,10 @@ describe("checkWord", () => {
     expect(checkWord("trick", L).ok).toBe(true);
     expect(checkWord("sock", { gpcs: ["s", "o", "c", "k"], tricky: [] }).ok).toBe(false);
   });
+  it("rejects split-digraph words (silent e) at phase 2", () => {
+    for (const w of ["race", "came", "one", "cake"]) expect(checkWord(w, L).ok, w).toBe(false);
+    expect(checkWord("the", L).ok).toBe(true); // tricky word, taught
+  });
   it("fails closed on contractions and possessives", () => {
     expect(checkWord("can't", L).ok).toBe(false);
     expect(checkWord("Nani's", L).ok).toBe(false);

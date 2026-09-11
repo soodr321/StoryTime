@@ -22,15 +22,15 @@ describe("storyMachine", () => {
     a.send({ type: "MAGIC_REACHED", word: "sat" }); expect(a.getSnapshot().value).toBe("magicWord");
     a.send({ type: "SOUND_TAPPED" });
     a.send({ type: "YES" }); expect(a.getSnapshot().value).toBe("reread");
-    expect(a.getSnapshot().context.results).toEqual([{ word: "sat", ok: true, mode: "sounded" }]);
+    expect(a.getSnapshot().context.results).toEqual([{ id: "1:sat", word: "sat", ok: true, mode: "sounded" }]);
     a.send({ type: "REREAD_DONE" }); expect(a.getSnapshot().value).toBe("moral");
     a.send({ type: "LINE_YES" }); expect(a.getSnapshot().value).toBe("done");
     a.send({ type: "HOME" }); expect(a.getSnapshot().value).toBe("idle");
   });
-  it("records a sight read when no sounds were tapped", () => {
+  it("records an independent read when no sounds were tapped", () => {
     const a = createActor(storyMachine, { input: { story } }).start();
     a.send({ type: "START" }); a.send({ type: "NARRATION_DONE" }); a.send({ type: "MAGIC_REACHED", word: "sat" }); a.send({ type: "YES" });
-    expect(a.getSnapshot().context.results[0].mode).toBe("sight");
+    expect(a.getSnapshot().context.results[0].mode).toBe("independent");
   });
   it("ignores taps while modelling and records modelled on a later yes", () => {
     const a = createActor(storyMachine, { input: { story } }).start();

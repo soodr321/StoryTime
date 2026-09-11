@@ -271,7 +271,10 @@
     }
    ],
    "audio": "p4.m4a",
-   "audioMs": 6260
+   "audioMs": 6260,
+   "magic": [
+    "stop"
+   ]
   },
   {
    "art": "🐢",

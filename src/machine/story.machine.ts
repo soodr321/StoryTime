@@ -6,8 +6,9 @@
 import { assign, setup } from "xstate";
 import type { Story } from "../lib/content/types";
 
-export type VerdictMode = "sight" | "sounded" | "modelled" | "skipped";
-export interface WordResult { word: string; ok: boolean; mode: VerdictMode }
+export type VerdictMode = "independent" | "sounded" | "modelled" | "skipped";
+/** id = `${page}:${word}` so a word repeated on a later page gets its own turn */
+export interface WordResult { id?: string; word: string; ok: boolean; mode: VerdictMode }
 
 export interface Ctx {
   story: Story;
@@ -43,21 +44,21 @@ export const storyMachine = setup({
     hasNextPage: ({ context }) => context.page + 1 < context.story.pages.length,
   },
   actions: {
-    nextPage: assign({ page: ({ context }) => context.page + 1, token: -1, magic: null, mode: "sight" }),
+    nextPage: assign({ page: ({ context }) => context.page + 1, token: -1, magic: null, mode: "independent" }),
     setToken: assign({ token: ({ event }) => (event.type === "TOKEN" ? event.index : -1) }),
-    openMagic: assign({ magic: ({ event }) => (event.type === "MAGIC_REACHED" ? event.word : null), mode: "sight" }),
+    openMagic: assign({ magic: ({ event }) => (event.type === "MAGIC_REACHED" ? event.word : null), mode: "independent" }),
     sounded: assign({ mode: ({ context }) => (context.mode === "modelled" ? "modelled" : "sounded") }),
     modelled: assign({ mode: "modelled" }),
     record: assign({
       results: ({ context, event }) => [
         ...context.results,
-        { word: context.magic ?? "", ok: event.type === "YES", mode: event.type === "SKIP" ? "skipped" : context.mode },
+        { id: `${context.page}:${context.magic ?? ""}`, word: context.magic ?? "", ok: event.type === "YES", mode: event.type === "SKIP" ? "skipped" : context.mode },
       ],
     }),
   },
 }).createMachine({
   id: "story",
-  context: ({ input }) => ({ story: input.story, page: input.page ?? 0, token: -1, magic: null, mode: "sight", results: input.results ?? [] }),
+  context: ({ input }) => ({ story: input.story, page: input.page ?? 0, token: -1, magic: null, mode: "independent", results: input.results ?? [] }),
   initial: "idle",
   on: { HOME: ".idle" },
   states: {

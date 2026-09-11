@@ -9,8 +9,9 @@ import { SettingsScreen } from "./screens/Settings";
 import { StoryScreen } from "./screens/Story";
 import { AddStoryScreen } from "./screens/AddStory";
 import { WelcomeScreen } from "./screens/Welcome";
+import { WarmUpScreen } from "./screens/WarmUp";
 
-type Route = { name: "family" } | { name: "home" } | { name: "library" } | { name: "settings" } | { name: "add" } | { name: "story"; story: Story; mode: Mode; resume: boolean };
+type Route = { name: "family" } | { name: "home" } | { name: "warmup" } | { name: "library" } | { name: "settings" } | { name: "add" } | { name: "story"; story: Story; mode: Mode; resume: boolean };
 
 export default function App() {
   return <FamilyProvider><Shell /></FamilyProvider>;
@@ -36,7 +37,8 @@ function Shell() {
         <button className="home" onClick={() => setRoute({ name: "settings" })} aria-label="Settings">⚙︎</button>
       </header>
       {route.name === "family" && <FamilyScreen onPick={(id) => { fam.setActiveKid(id); setRoute({ name: "home" }); }} onSettings={() => setRoute({ name: "settings" })} />}
-      {route.name === "home" && <HomeScreen onStart={start} onLibrary={() => setRoute({ name: "library" })} onSwitch={() => setRoute({ name: "family" })} />}
+      {route.name === "home" && <HomeScreen onStart={start} onLibrary={() => setRoute({ name: "library" })} onSwitch={() => setRoute({ name: "family" })} onWarmUp={() => { void unlock(); setRoute({ name: "warmup" }); }} />}
+      {route.name === "warmup" && <WarmUpScreen onDone={() => setRoute({ name: "home" })} />}
       {route.name === "library" && <LibraryScreen onStart={(s, m, r) => start(s, m, r)} onBack={() => setRoute({ name: "home" })} />}
       {fam.toast && <div className="toast" role="status">{fam.toast}</div>}
       {route.name === "settings" && <SettingsScreen onBack={() => setRoute({ name: "family" })} onAddStory={() => setRoute({ name: "add" })} />}

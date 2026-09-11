@@ -1,0 +1,21 @@
+1. **[P1] Blending is taught as chopping.** In [Story.tsx](/Users/rish_ai/StoryTime/src/screens/Story.tsx:174), “Say it together” plays isolated phoneme clips sequentially, then says the whole word. Replace this with continuous blending: stretch continuants, join sounds without gaps, then pronounce the word and ask the child to repeat it. Apply the same correction to read-back word help at line 281.
+
+2. **[P1] Decodable words are framed as sight words.** [story.machine.ts](/Users/rish_ai/StoryTime/src/machine/story.machine.ts:9) records untapped words as `"sight"`, and [Settings.tsx](/Users/rish_ai/StoryTime/src/screens/Settings.tsx:20) celebrates “on sight.” Rename this to “independent,” prompt “say the sounds and blend,” and never treat instant recognition as preferable to decoding. Mastery should require successful retrieval on a later day.
+
+3. **[P1] The app explicitly teaches tricky words “as wholes.”** [Settings.tsx](/Users/rish_ai/StoryTime/src/screens/Settings.tsx:74) encourages whole-word visual memorisation. Show the regular correspondences and mark only the unusual part—e.g. identify the decodable and tricky portions of *the*—then teach pronunciation and spelling together.
+
+4. **[P1] Onboarding can place a novice far above their knowledge.** [Welcome.tsx](/Users/rish_ai/StoryTime/src/screens/Welcome.tsx:19) defaults to the 12-sound level. Start at `level = 0` and require the grown-up to choose upward. Also remove *cat* from the 8-sound row: `c` is not introduced until the 12-sound row. Let caregivers tap each grapheme to hear its pure sound before deciding.
+
+5. **[P1] The magic-word routine permits guessing from context and pictures.** [Story.tsx](/Users/rish_ai/StoryTime/src/screens/Story.tsx:132) asks only “Can you read it?” after the child has seen the illustration and heard the sentence stem. Move focus to a plain word card and say, “Look at the letters. Say the sounds and blend.” If the child guesses, the grown-up needs an explicit “Look again—start here” correction cue.
+
+6. **[P1] The read-back is not an adequate sentence-reading routine.** [Story.tsx](/Users/rish_ai/StoryTime/src/screens/Story.tsx:278) lets every word reveal its pronunciation and then accepts one global “They read it!” verdict. Require the child to attempt the whole line first; provide continuous-blend help on one word, have the child reread that word, then reread the entire sentence smoothly before completion.
+
+7. **[P2] The two stories provide too little decoding practice.** [fox-and-crow/story.json](/Users/rish_ai/StoryTime/library/fox-and-crow/story.json) and [lion-and-mouse/story.json](/Users/rish_ai/StoryTime/library/lion-and-mouse/story.json) each give only three magic words across seven pages. Add roughly one purposeful decodable word to most pages and repeat selected targets. First fix [Story.tsx](/Users/rish_ai/StoryTime/src/screens/Story.tsx:68), which keys completion by word and therefore skips later occurrences of the same word; key results by page/token occurrence.
+
+8. **[P2] There is no retrieval or spaced-practice loop.** [Home.tsx](/Users/rish_ai/StoryTime/src/screens/Home.tsx:49) goes directly to today’s story. Begin with a 45–60 second review of yesterday’s modelled/skipped words plus one previously secure word; reschedule failures tomorrow and successful words at widening intervals.
+
+9. **[P2] The course has no visible instructional direction or spelling practice.** Add a Home card showing “Next sound: ___” and a brief grown-up-led segmenting/dictation task after reading: say one known word, child counts phonemes, selects/writes graphemes, then reads it back. Use the sequence in [learner.ts](/Users/rish_ai/StoryTime/src/lib/phonics/learner.ts:7).
+
+10. **[P2] Completion praise is inflated and unrelated to learning.** [Story.tsx](/Users/rish_ai/StoryTime/src/screens/Story.tsx:139) says “Beautiful reading” even when every word was skipped, while the trophy/confetti rewards finishing. Use specific feedback—“You blended *c-u-t*” or “You tried again”—and end with one quick successful reread rather than a performance celebration.
+
+**FAIL — The single highest-impact change is to replace the chopped sound playback with a correct continuous-blending correction routine, followed immediately by the child blending the word and rereading its sentence.**

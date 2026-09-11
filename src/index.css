@@ -192,3 +192,16 @@ textarea { width: 100%; line-height: 1.5; }
 .tog.rec { font-family: system-ui, sans-serif; font-size: 15px; }
 .tog.rec.live { background: #f6d5cf; border-color: #c47a6a; animation: pulse 1s infinite; }
 @keyframes pulse { 50% { opacity: .6; } }
+
+/* ===== loop 1 (teacher) ===== */
+.panel-h { margin: 4px 0 6px; font-size: 17px; font-weight: 600; text-align: center; }
+.ok-note { display: block; font-style: normal; color: var(--done-ink); font-size: 14px; font-family: system-ui, sans-serif; }
+.row.center { justify-content: center; }
+.art-box.veiled { background: #efe7d6; font-size: 20px; color: var(--muted); font-family: system-ui, sans-serif; }
+.lw.helped { outline: 3px solid var(--accent); }
+.lw .odd { text-decoration: underline wavy var(--accent); text-underline-offset: 6px; }
+.legend .odd { text-decoration: underline wavy var(--accent); }
+.warmcard { width: min(100%, 420px); background: #fff3e8; border: 2px solid var(--accent); border-radius: 18px; padding: 12px 16px; display: flex; flex-direction: column; gap: 4px; text-align: left; }
+.warmcard b { font-size: 18px; } .warmcard span { font-family: var(--print); font-size: 22px; } .warmcard small { color: var(--muted); font-family: system-ui, sans-serif; }
+.nextsound { font-size: 15px; } .nextsound b { font-family: var(--print); font-size: 22px; background: var(--magic); color: var(--magic-ink); padding: 2px 10px; border-radius: 8px; }
+.warm { align-items: center; text-align: center; }

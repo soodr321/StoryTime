@@ -84,7 +84,10 @@
     }
    ],
    "audio": "p1.m4a",
-   "audioMs": 6620
+   "audioMs": 6620,
+   "magic": [
+    "and"
+   ]
   },
   {
    "art": "🐺",

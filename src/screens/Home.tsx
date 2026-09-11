@@ -21,8 +21,8 @@ function WeekStrip({ days }: { days: number[] }) {
   return <div className="week" aria-label="stories this week">{cells.map((c, i) => <span key={i} className={"day" + (c.on ? " on" : "") + (c.isToday ? " today" : "")}>{c.on ? "★" : c.label}</span>)}</div>;
 }
 
-export function HomeScreen({ onStart, onLibrary, onSwitch }: { onStart: (story: Story, mode: Mode, resume: boolean) => void; onLibrary: () => void; onSwitch: () => void }) {
-  const { activeKid: kid, todayFor, session, stories, progress, settings, setSession } = useFamily();
+export function HomeScreen({ onStart, onLibrary, onSwitch, onWarmUp }: { onStart: (story: Story, mode: Mode, resume: boolean) => void; onLibrary: () => void; onSwitch: () => void; onWarmUp: () => void }) {
+  const { activeKid: kid, todayFor, session, stories, progress, settings, setSession, review } = useFamily();
   const resumable = session ? stories.find((s) => s.slug === session.slug) ?? null : null;
   const today = kid ? resumable ?? todayFor(kid) : null;
   useEffect(() => { if (today) void precache(today); }, [today]);
@@ -37,6 +37,12 @@ export function HomeScreen({ onStart, onLibrary, onSwitch }: { onStart: (story: 
     <main className="home-screen">
       <button className="who" onClick={onSwitch}><span>{kid.avatar}</span> {kid.name} · <u>switch</u></button>
       <WeekStrip days={days} />
+      {!listener && review.length > 0 && !resumable && !doneTonight && (
+        <button className="warmcard" onClick={onWarmUp}><b>Warm-up first</b><span>{review.map((r) => r.word).join(" · ")}</span><small>1 minute · words from last time</small></button>
+      )}
+      {!listener && kid.gpcs.length < 23 && (
+        <div className="nextsound"><span className="legend">Next sound to teach:</span> <b>{["s","a","t","p","i","n","m","d","g","o","c","k","ck","e","u","r","h","b","f","ff","l","ll","ss"][kid.gpcs.length]}</b> <span className="legend">(tick it in ⚙︎ once taught)</span></div>
+      )}
 
       {doneTonight ? (
         <div className="closing">

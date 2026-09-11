@@ -208,7 +208,10 @@
     }
    ],
    "audio": "p3.m4a",
-   "audioMs": 5570
+   "audioMs": 5570,
+   "magic": [
+    "must"
+   ]
   },
   {
    "art": "❄️",

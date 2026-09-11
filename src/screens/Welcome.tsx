@@ -2,10 +2,13 @@
 import { useState } from "react";
 import { useFamily } from "../lib/family";
 import { ALL_GPCS, ALL_TRICKY, uid } from "../lib/store";
+import { playClip } from "../lib/audio/player";
+import { soundAsset } from "../lib/library";
+import { GRAPHEME_SOUND } from "../lib/phonics/learner";
 
 const LEVELS_UI = [
   { n: 4, label: "s a t p", hint: "just started" },
-  { n: 8, label: "+ i n m d", hint: "can blend cat, sat, pin" },
+  { n: 8, label: "+ i n m d", hint: "can blend sat, pin, mat" },
   { n: 12, label: "+ g o c k", hint: "reads dog, top, kid" },
   { n: 16, label: "+ ck e u r", hint: "reads trick, run, red" },
   { n: 23, label: "+ h b f l ss", hint: "all phase-2 sounds" },
@@ -16,7 +19,7 @@ export function WelcomeScreen({ onDone }: { onDone: () => void }) {
   const { kids, updateKid, addKid, removeKid, updateSettings } = useFamily();
   const [name, setName] = useState("");
   const [avatar, setAvatar] = useState("🦁");
-  const [level, setLevel] = useState(2);
+  const [level, setLevel] = useState(0);   // start low; the grown-up chooses upward
   const [sibling, setSibling] = useState("");
   const [grownup, setGrownup] = useState("");
 
@@ -38,9 +41,9 @@ export function WelcomeScreen({ onDone }: { onDone: () => void }) {
       <section className="pc">
         <label className="lbl">Who is learning to read? <input value={name} onChange={(e) => setName(e.target.value)} placeholder="first name" /></label>
         <div className="chips">{AVATARS.map((a) => <button key={a} className={"emo" + (avatar === a ? " on" : "")} onClick={() => setAvatar(a)}>{a}</button>)}</div>
-        <p className="legend">How far along are they? Tap the last row that is true.</p>
+        <p className="legend">How far along are they? Tap the last row that is true (you'll hear its newest sound — these are sounds, never letter names).</p>
         <div className="levels">
-          {LEVELS_UI.map((l, i) => <button key={l.n} className={"lvlrow" + (i === level ? " on" : "")} onClick={() => setLevel(i)}><b>{l.label}</b><small>{l.hint}</small></button>)}
+          {LEVELS_UI.map((l, i) => <button key={l.n} className={"lvlrow" + (i === level ? " on" : "")} onClick={() => { setLevel(i); const g = ALL_GPCS[l.n - 1]; void playClip(soundAsset(GRAPHEME_SOUND[g].clip)).done.catch(() => {}); }}><b>{l.label}</b><small>{l.hint} · 🔊</small></button>)}
         </div>
       </section>
       <section className="pc">

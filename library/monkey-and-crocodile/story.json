@@ -154,7 +154,10 @@
     }
    ],
    "audio": "p2.m4a",
-   "audioMs": 7300
+   "audioMs": 7300,
+   "magic": [
+    "and"
+   ]
   },
   {
    "art": "🐊",
@@ -503,7 +506,10 @@
     }
    ],
    "audio": "p7.m4a",
-   "audioMs": 6790
+   "audioMs": 6790,
+   "magic": [
+    "tricks"
+   ]
   }
  ],
  "moral": {

@@ -17,8 +17,8 @@ export function SettingsScreen({ onBack, onAddStory }: { onBack: () => void; onA
       {activeKid && words.length > 0 && (
         <section className="pc">
           <h3>{activeKid.name} so far</h3>
-          <p className="legend">{Object.keys(progress).length} stories · {words.filter((r) => r.ok).length} magic words read: {count("sight")} on sight, {count("sounded")} sounded out, {count("modelled")} after help · {words.filter((r) => !r.ok).length} skipped</p>
-          {count("sight") >= 3 && count("sounded") === 0 && <p className="legend">Tip: lots of sight reads and no sounding out — try “Say it together” once so the sounds stay fresh.</p>}
+          <p className="legend">{Object.keys(progress).length} stories · {words.filter((r) => r.ok).length} magic words blended: {count("independent")} independently, {count("sounded")} with the tiles, {count("modelled")} after help · {words.filter((r) => !r.ok).length} for tomorrow</p>
+          {count("independent") >= 3 && count("sounded") === 0 && <p className="legend">Tip: if a word comes out instantly, ask for the sounds once (“say the sounds, then blend”) so it stays decoding, not guessing.</p>}
         </section>
       )}
       <section className="pc">
@@ -71,7 +71,7 @@ function KidEditor({ kid, onChange, onRemove }: { kid: Kid; onChange: (k: Kid) =
       <div className="chips">
         {ALL_GPCS.map((g, i) => <button key={g} className={"tog" + (i < known ? " on" : "")} onClick={() => onChange({ ...kid, gpcs: ALL_GPCS.slice(0, i + 1) })}>{g}</button>)}
       </div>
-      <p className="legend">Tricky words taught (read as wholes; the app never sounds these out).</p>
+      <p className="legend">Tricky words taught. Most of each word is regular; the app shows the regular part and marks only the odd bit (the → th + e). Only tick ones you have taught.</p>
       <div className="chips">
         {ALL_TRICKY.map((t) => { const on = kid.tricky.includes(t); return <button key={t} className={"tog tk" + (on ? " on" : "")} onClick={() => onChange({ ...kid, tricky: on ? kid.tricky.filter((x) => x !== t) : [...kid.tricky, t] })}>{t}</button>; })}
       </div>

@@ -2,14 +2,16 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useMachine } from "@xstate/react";
 import { storyMachine, type WordResult } from "../machine/story.machine";
 import type { Page, Story } from "../lib/content/types";
-import { GRAPHEME_SOUND } from "../lib/phonics/learner";
+import { TRICKY_PARTS } from "../lib/phonics/learner";
 import { checkLine, checkWord, normalise, type LearnerModel } from "../lib/phonics/validator";
-import { playClip, playNarration, stopAll, unlock, type Playing } from "../lib/audio/player";
-import { promptAsset, soundAsset, storyAsset } from "../lib/library";
+import { playNarration, stopAll, unlock, type Playing } from "../lib/audio/player";
+import { promptAsset, storyAsset } from "../lib/library";
 import { speakText, type SpeakHandle } from "../lib/audio/speech";
 import { useFamily } from "../lib/family";
 import { learnerOf } from "../lib/store";
 import { Art } from "../components/Art";
+import { MagicPanel } from "../components/MagicPanel";
+import { dotted, playBlend } from "../lib/blend";
 import type { Mode } from "./Home";
 
 type Prompts = Record<string, { audio: string; ms: number }>;
@@ -19,6 +21,7 @@ async function prompts(): Promise<Prompts> {
   try { const r = await fetch(promptAsset("manifest.json")); promptsCache = r.ok ? ((await r.json()) as Prompts) : {}; } catch { promptsCache = {}; }
   return promptsCache;
 }
+const isUrl = (a: string) => /^(data|blob):/.test(a);
 
 export function StoryScreen({ story, mode, resume, onHome }: { story: Story; mode: Mode; resume: boolean; onHome: () => void }) {
   const fam = useFamily();
@@ -36,14 +39,13 @@ export function StoryScreen({ story, mode, resume, onHome }: { story: Story; mod
   const page: Page | undefined = story.pages[ctx.page];
   const playing = useRef<Playing | SpeakHandle | null>(null);
   const [caption, setCaption] = useState("");
-  const [stalled, setStalled] = useState(false);       // audio failed to load: wait for a tap, never auto-advance
-  const [pageHeld, setPageHeld] = useState(false);     // listener: page finished, waiting for Next
+  const [stalled, setStalled] = useState(false);
+  const [pageHeld, setPageHeld] = useState(false);
   const [retry, setRetry] = useState(0);
   const startedRef = useRef(false);
   const finishedRef = useRef(false);
-  const runRef = useRef(0);                            // abort token: a superseded narration must not act on the machine
+  const runRef = useRef(0);
 
-  // persistence: save at every page/result change; the finish clears it
   useEffect(() => {
     if (state === "idle" || state === "done") return;
     void fam.setSession({ kidId: kid.id, slug: story.slug, mode, page: ctx.page, results: ctx.results, updatedAt: Date.now() });
@@ -54,55 +56,49 @@ export function StoryScreen({ story, mode, resume, onHome }: { story: Story; mod
   const speak = useCallback(async (src: string | null, text?: string) => {
     if (text) setCaption(text);
     playing.current?.stop();
-    if (src) { const p = playNarration(src, rate); playing.current = p; try { await p.done; } catch { /* prompt missing: caption is enough */ } }
+    if (src) { const p = playNarration(src, rate); playing.current = p; try { await p.done; } catch { /* caption is enough */ } }
     else if (text) { const h = speakText(text, { rate }); playing.current = h; await h.done; }
   }, [rate]);
-
   const speakPrompt = useCallback(async (key: string, text: string) => {
     const m = await prompts();
     const s = story.prompts?.[key] ? storyAsset(story, story.prompts[key].audio) : m[key] ? promptAsset(m[key].audio) : null;
     await speak(s, text);
   }, [speak, story]);
 
-  /** Index of the first magic token on this page that has not been graded yet (resume-safe). */
-  const pendingMagicIdx = useCallback((p: Page) => (listener ? -1 : p.tokens.findIndex((t) => (p.magic ?? []).includes(normalise(t.t)) && !ctx.results.some((r) => r.word === normalise(t.t)))), [listener, ctx.results]);
+  /** first magic token on this page whose occurrence (page:word) has not been graded */
+  const doneIds = useMemo(() => new Set(ctx.results.map((r) => r.id ?? `?:${r.word}`)), [ctx.results]);
+  const pendingMagicIdx = useCallback((p: Page, pageNo: number) => (listener ? -1 : p.tokens.findIndex((t) => (p.magic ?? []).includes(normalise(t.t)) && !doneIds.has(`${pageNo}:${normalise(t.t)}`))), [listener, doneIds]);
 
-  // narration with karaoke driven by the audio clock (pre-generated) or Web Speech boundaries (family stories)
-  const narratePage = useCallback(async (p: Page, opts: { stopAtMagic: boolean; onDone: () => void }): Promise<void> => {
-    const magicIdx = opts.stopAtMagic ? pendingMagicIdx(p) : -1;
+  const narratePage = useCallback(async (p: Page, pageNo: number, opts: { stopAtMagic: boolean; onDone: () => void }): Promise<void> => {
+    const magicIdx = opts.stopAtMagic ? pendingMagicIdx(p, pageNo) : -1;
     const run = ++runRef.current; const alive = () => run === runRef.current;
     playing.current?.stop();
     let stopped = false;
     const reachMagic = () => { stopped = true; send({ type: "TOKEN", index: magicIdx }); send({ type: "MAGIC_REACHED", word: normalise(p.tokens[magicIdx].t) }); };
 
     if (p.audio) {
-      const src = /^(data|blob):/.test(p.audio) ? p.audio : storyAsset(story, p.audio);
+      const src = isUrl(p.audio) ? p.audio : storyAsset(story, p.audio);
       const pl = playNarration(src, rate); playing.current = pl;
-      // a parent recording has no word timings: spread the words evenly over the clip once its length is known
       const timed = p.tokens.some((t) => t.ms > 0);
-      const durMs = () => (isFinite(pl.el.duration) && pl.el.duration > 0 ? pl.el.duration * 1000 : p.audioMs ?? Infinity);   // Chrome webm recordings report Infinity
+      const durMs = () => (isFinite(pl.el.duration) && pl.el.duration > 0 ? pl.el.duration * 1000 : p.audioMs ?? Infinity);
       const tokMs = (i: number) => (timed ? p.tokens[i].ms : durMs() !== Infinity ? (durMs() * i) / p.tokens.length : Infinity);
-      const stopMsAt = () => (magicIdx >= 0 ? (timed ? tokMs(magicIdx) : tokMs(magicIdx) - 350) : Infinity);   // untimed recordings: stop a beat early so the parent's voice never says the word
-      let raf = 0, last = -1;
-      const tick = () => {
+      const stopMsAt = () => (magicIdx >= 0 ? (timed ? tokMs(magicIdx) : tokMs(magicIdx) - 350) : Infinity);
+      let last = -1;
+      // interval, not rAF: the magic-word stop must fire even when the phone screen dims or the tab is backgrounded
+      const raf = setInterval(() => {
         const ms = pl.el.currentTime * 1000; const stopMs = stopMsAt();
-        if (ms >= stopMs) { pl.stop(); reachMagic(); return; }
+        if (ms >= stopMs) { clearInterval(raf); pl.stop(); reachMagic(); return; }
         let i = -1; for (let k = 0; k < p.tokens.length; k++) if (tokMs(k) <= ms) i = k;
         if (i !== last) { last = i; send({ type: "TOKEN", index: i }); }
-        raf = requestAnimationFrame(tick);
-      };
-      raf = requestAnimationFrame(tick);
-      // a load failure or a 5 s stall at 0 pauses the story (never walks it to the end); a clip that never fires `ended`
-      // (iOS data-URL recordings) is finished by a deadline from its known length
+      }, 40);
       const stall = new Promise<"stall">((res) => setTimeout(() => res("stall"), 5000));
       const deadline = new Promise<"deadline">((res) => setTimeout(() => res("deadline"), ((p.audioMs ?? 20000) / rate) + 1500));
       let ok = true;
       try { const r = await Promise.race([pl.done.then(() => "done" as const), stall.then(() => (pl.el.currentTime === 0 ? "stall" : pl.done.then(() => "done" as const))), deadline]); if (r === "stall") ok = false; if (r === "deadline") pl.stop(); } catch { ok = false; }
-      cancelAnimationFrame(raf);
+      clearInterval(raf);
       if (!alive()) return;
       if (!ok) { pl.stop(); setStalled(true); setCaption("Tap ▶ to hear this page."); return; }
     } else {
-      // family story: speak only the words BEFORE the magic word so the child never hears the answer
       const upto = magicIdx >= 0 ? magicIdx : p.tokens.length;
       const text = p.tokens.slice(0, upto).map((t) => t.t).join(" ");
       if (text) { const h = speakText(text, { rate, onWord: (i) => alive() && send({ type: "TOKEN", index: i }) }); playing.current = h; await h.done; }
@@ -110,8 +106,8 @@ export function StoryScreen({ story, mode, resume, onHome }: { story: Story; mod
       if (magicIdx >= 0) { reachMagic(); return; }
     }
     if (!alive()) return;
-    if (!stopped && magicIdx >= 0) { reachMagic(); return; }   // magic word ends the page and the clock check missed it
-    if (!stopped) { send({ type: "TOKEN", index: p.tokens.length }); if (magicIdx < 0 && opts.stopAtMagic) await new Promise((r) => setTimeout(r, 1400)); if (alive()) opts.onDone(); }   // a beat to look at the picture
+    if (!stopped && magicIdx >= 0) { reachMagic(); return; }
+    if (!stopped) { send({ type: "TOKEN", index: p.tokens.length }); if (magicIdx < 0 && opts.stopAtMagic) await new Promise((r) => setTimeout(r, 1400)); if (alive()) opts.onDone(); }
   }, [send, story, rate, pendingMagicIdx]);
 
   useEffect(() => {
@@ -120,23 +116,24 @@ export function StoryScreen({ story, mode, resume, onHome }: { story: Story; mod
       if (!listen) return;
       let live = true;
       const onDone = () => { if (!live) return; if (listener) setPageHeld(true); else send({ type: "NARRATION_DONE" }); };
-      void narratePage(page, { stopAtMagic: true, onDone });
+      void narratePage(page, ctx.page, { stopAtMagic: true, onDone });
       return () => { live = false; };
     }
     if (state === "reread" && page) {
       if (!listen) { send({ type: "RESUME" }); return; }
       let live = true;
-      void narratePage(page, { stopAtMagic: false, onDone: () => live && send({ type: "REREAD_DONE" }) });
+      void narratePage(page, ctx.page, { stopAtMagic: false, onDone: () => live && send({ type: "REREAD_DONE" }) });
       return () => { live = false; };
     }
-    if (state === "magicWord" && ctx.mode === "sight" && listen) void speakPrompt("yours", "… this one is yours. Can you read it?");
+    if (state === "magicWord" && ctx.mode === "independent" && listen) void speakPrompt("yours", "… this one is yours. Look at the letters, say the sounds, and blend.");
     if (state === "moral") {
-      if (!listen) { setCaption("Read the line together, then tap ✓."); return; }
-      void (async () => { await speak(story.moral.audio ? (/^(data|blob):/.test(story.moral.audio) ? story.moral.audio : storyAsset(story, story.moral.audio)) : null, story.moral.spoken); if (!listener) await speakPrompt("line", "Now you. Read your line."); })();
+      if (!listen) { setCaption("Nani reads the moral. Then the child tries the whole line."); return; }
+      void (async () => { await speak(story.moral.audio ? (isUrl(story.moral.audio) ? story.moral.audio : storyAsset(story, story.moral.audio)) : null, story.moral.spoken); if (!listener) await speakPrompt("line", "Now you. Read your line."); })();
     }
     if (state === "done") {
       if (!finishedRef.current) { finishedRef.current = true; void fam.finish(kid.id, story.slug, ctx.results); }
-      if (listen) void speakPrompt("done", "Beautiful reading. This story goes on your shelf."); else setCaption("Beautiful reading.");
+      const okCount = ctx.results.filter((r) => r.ok).length;
+      if (listen && okCount > 0) void speakPrompt("done", "Beautiful reading. This story goes on your shelf."); else setCaption(okCount ? "Beautiful reading." : "Good listening. Those words come back tomorrow.");
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state, ctx.page, retry]);
@@ -146,6 +143,19 @@ export function StoryScreen({ story, mode, resume, onHome }: { story: Story; mod
   const home = () => { runRef.current++; playing.current?.stop(); stopAll(); onHome(); };
   const inStory = state === "narrating" || state === "reread" || state === "magicWord" || state === "modelling";
   const panelOpen = (state === "magicWord" || state === "modelling") && !!ctx.magic;
+
+  /** continuous-blend model, then hand the word back */
+  const together = async () => {
+    const run = ++runRef.current; const alive = () => run === runRef.current;
+    const word = ctx.magic!; const gs = checkWord(word, learner).graphemes;
+    send({ type: "NOT_YET" });
+    if (listen) await speakPrompt("notyet", "That's okay. Listen: I'll stretch the sounds together, then you try."); else setCaption("Grown-up: stretch the sounds together, no gaps, then say the word.");
+    if (!alive()) return;
+    setCaption(dotted(gs) + " …"); await playBlend(gs, { alive });
+    if (!alive()) return;
+    if (listen) { await speakPrompt(`word:${word}`, word); if (!alive()) return; await speakPrompt("yourturn", "Your turn: say the sounds, then blend."); } else setCaption(`${word}. Now ${kid.name}: say the sounds, then blend.`);
+    if (alive()) send({ type: "MODEL_DONE" });
+  };
 
   return (
     <div className={"screen-wrap" + (panelOpen ? " panel-open" : "")}>
@@ -158,7 +168,7 @@ export function StoryScreen({ story, mode, resume, onHome }: { story: Story; mod
       {inStory && page && (
         <StoryView
           page={page} pageNo={ctx.page} total={story.pages.length} token={listen ? ctx.token : -1} results={ctx.results}
-          readMode={!listen} listener={listener} reader={reader} kid={kid.name} stalled={stalled} pageHeld={pageHeld}
+          readMode={!listen} listener={listener} reader={reader} kid={kid.name} stalled={stalled} pageHeld={pageHeld} hideArt={panelOpen}
           onRetry={() => { void unlock(); setStalled(false); setRetry((n) => n + 1); }}
           onMagicTap={(w) => state === "narrating" && send({ type: "MAGIC_REACHED", word: w })}
           onWordTap={(tok) => { if (listener || !listen) { if (state === "narrating" && listen && !pageHeld) return; setCaption(tok); const h = speakText(tok, { rate }); playing.current = h; } }}
@@ -171,21 +181,13 @@ export function StoryScreen({ story, mode, resume, onHome }: { story: Story; mod
           word={ctx.magic!} learner={learner} modelling={state === "modelling"} kid={kid.name} reader={reader}
           onSound={() => send({ type: "SOUND_TAPPED" })}
           onYes={async () => { const w = ctx.magic!; if (listen) await speakPrompt(`yes:${w}`, `Yes! ${w}.`); else setCaption(`Yes! ${w}.`); send({ type: "YES" }); }}
-          onTogether={async () => {
-            const run = ++runRef.current; const alive = () => run === runRef.current;
-            send({ type: "NOT_YET" });
-            if (listen) await speakPrompt("notyet", "That's okay. Listen to me blend it, then you try."); else setCaption("Blend it together slowly, then try again.");
-            for (const g of checkWord(ctx.magic!, learner).graphemes) { if (!alive()) return; try { await playClip(soundAsset(GRAPHEME_SOUND[g].clip)).done; } catch { /* clip missing */ } }
-            if (!alive()) return;
-            if (listen) { await speakPrompt(`word:${ctx.magic}`, ctx.magic!); if (!alive()) return; await speakPrompt("yourturn", "Your turn."); }
-            if (alive()) send({ type: "MODEL_DONE" });
-          }}
+          onTogether={together}
           onSkip={async () => { const w = ctx.magic!; if (listen) await speakPrompt("practise", `${w}. We'll practise it tomorrow.`); else setCaption(`${w}. We'll practise it tomorrow.`); send({ type: "SKIP" }); }}
         />
       )}
 
-      {state === "moral" && <Moral story={story} learner={learner} listener={listener} onYes={() => send({ type: "LINE_YES" })} />}
-      {state === "done" && <Done story={story} results={ctx.results} bedtime={bedtime} kid={kid.name} onHome={home} />}
+      {state === "moral" && <Moral story={story} learner={learner} listener={listener} kid={kid.name} reader={reader} listen={listen} setCaption={setCaption} onYes={() => send({ type: "LINE_YES" })} />}
+      {state === "done" && <Done story={story} results={ctx.results} bedtime={bedtime} kid={kid.name} learner={learner} onHome={home} />}
 
       <div className="cap" aria-live="polite">{caption}</div>
       {fam.toast && <div className="toast" role="status">{fam.toast}</div>}
@@ -193,23 +195,25 @@ export function StoryScreen({ story, mode, resume, onHome }: { story: Story; mod
   );
 }
 
-function StoryView({ page, pageNo, total, token, results, readMode, listener, reader, kid, stalled, pageHeld, onRetry, onMagicTap, onWordTap, onNext }: {
-  page: Page; pageNo: number; total: number; token: number; results: { word: string; ok: boolean }[];
-  readMode: boolean; listener: boolean; reader: string; kid: string; stalled: boolean; pageHeld: boolean;
+function StoryView({ page, pageNo, total, token, results, readMode, listener, reader, kid, stalled, pageHeld, hideArt, onRetry, onMagicTap, onWordTap, onNext }: {
+  page: Page; pageNo: number; total: number; token: number; results: WordResult[];
+  readMode: boolean; listener: boolean; reader: string; kid: string; stalled: boolean; pageHeld: boolean; hideArt: boolean;
   onRetry: () => void; onMagicTap: (w: string) => void; onWordTap: (tok: string) => void; onNext: () => void;
 }) {
-  const pending = listener ? [] : (page.magic ?? []).filter((m) => !results.some((r) => r.word === m));
+  const resFor = (n: string) => results.find((r) => (r.id ?? `?:${r.word}`) === `${pageNo}:${n}`);
+  const pending = listener ? [] : (page.magic ?? []).filter((m) => !resFor(m));
   const last = pageNo + 1 >= total;
   return (
     <main className="story">
-      <div className="art-box"><Art art={page.art} /></div>
+      {/* the picture is hidden while a magic word is open: the child reads the letters, not the picture */}
+      <div className={"art-box" + (hideArt ? " veiled" : "")}>{hideArt ? <span className="veil">🔒 read the letters</span> : <Art art={page.art} />}</div>
       <div className="text-card">
         <div className="pg">Page {pageNo + 1} of {total}</div>
         <p className="sentence">
           {page.tokens.map((t, i) => {
             const n = normalise(t.t);
             const magic = !listener && (page.magic ?? []).includes(n);
-            const res = results.find((r) => r.word === n);
+            const res = magic ? resFor(n) : undefined;
             const cls = ["w", i === token ? "now" : "", i < token ? "read" : "", magic ? "magic" : "", magic && res ? (res.ok ? "done" : "skipped") : ""].join(" ");
             if (readMode && magic && !res) return <button key={i} className={cls + " tap"} onClick={() => onMagicTap(n)}>{t.t} </button>;
             if (listener || readMode) return <button key={i} className={cls + " tap"} onClick={() => onWordTap(t.t)}>{t.t} </button>;
@@ -219,7 +223,7 @@ function StoryView({ page, pageNo, total, token, results, readMode, listener, re
         {stalled && <div className="readbar"><button className="next" onClick={onRetry}>▶ Try again</button></div>}
         {readMode && !stalled && (
           <div className="readbar">
-            <span className="script">{pending.length ? <><b>{reader}</b> reads the story. <b>{kid}</b> reads the <em className="pinkword">pink word</em>: tap it when it's time.</> : <><b>{reader}</b> reads the page. Then go on.</>}</span>
+            <span className="script">{pending.length ? <><b>{reader}</b> reads the story. <b>{kid}</b> reads the <em className="pinkword">pink word</em>: tap it, then say the sounds and blend.</> : <><b>{reader}</b> reads the page. Then go on.</>}</span>
             <button className="next" disabled={pending.length > 0} onClick={onNext}>{last ? "The end →" : "Next page →"}</button>
           </div>
         )}
@@ -234,74 +238,82 @@ function StoryView({ page, pageNo, total, token, results, readMode, listener, re
   );
 }
 
-function MagicPanel({ word, learner, modelling, kid, reader, onSound, onYes, onTogether, onSkip }: { word: string; learner: LearnerModel; modelling: boolean; kid: string; reader: string; onSound: () => void; onYes: () => void; onTogether: () => void; onSkip: () => void }) {
-  const gs = useMemo(() => checkWord(word, learner).graphemes, [word, learner]);
-  const [said, setSaid] = useState(0);
-  useEffect(() => { setSaid(0); }, [word, modelling]);
-  const tap = (i: number) => {
-    if (modelling) return;
-    const g = gs[i];
-    void playClip(soundAsset(GRAPHEME_SOUND[g].clip)).done.catch(() => {});
-    if (i === said) { setSaid(i + 1); onSound(); if (i + 1 === gs.length) void prompts().then((m) => m.fast && playClip(promptAsset(m.fast.audio))); }
-  };
-  return (
-    <section className="panel" role="dialog" aria-label="Magic word">
-      <div className="kicker">Magic word · {kid}'s turn</div>
-      <div className="tiles">
-        {gs.map((g, i) => (
-          <button key={i} className={["tile", i < said || modelling ? "said" : "", i === said && !modelling ? "next" : ""].join(" ")} onClick={() => tap(i)} aria-label={`${g}, says ${GRAPHEME_SOUND[g].label}`}>
-            <small>{GRAPHEME_SOUND[g].label}</small>{g}
-          </button>
-        ))}
-      </div>
-      <div className="verdict grownup">
-        <div className="hint"><span className="tag">{reader}</span> did {kid} say <b>{word}</b>?</div>
-        <div className="btns">
-          <button className="no" disabled={modelling} onClick={onTogether}>Say it together</button>
-          <button className="yes" disabled={modelling} onClick={onYes}>✓ Yes!</button>
-        </div>
-        <button className="skip" disabled={modelling} onClick={onSkip}>skip for today →</button>
-      </div>
-    </section>
-  );
-}
-
-function Moral({ story, learner, listener, onYes }: { story: Story; learner: LearnerModel; listener: boolean; onYes: () => void }) {
+/**
+ * Read-back routine: the child tries the WHOLE line first. If a word needs help, the grown-up taps it:
+ * the app shows regular vs tricky parts (tricky word) or stretches the sounds (decodable word),
+ * the child re-reads that word, then re-reads the whole line smoothly before ✓.
+ */
+function Moral({ story, learner, listener, kid, reader, listen, setCaption, onYes }: { story: Story; learner: LearnerModel; listener: boolean; kid: string; reader: string; listen: boolean; setCaption: (s: string) => void; onYes: () => void }) {
   const line = checkLine(story.moral.line, learner);
   const words = story.moral.line.split(/\s+/);
+  const [stage, setStage] = useState<"try" | "help" | "reread">("try");
+  const [helped, setHelped] = useState<number | null>(null);
+  const help = async (i: number) => {
+    const r = line.results[i]; setHelped(i);
+    if (!r.ok) return;
+    if (r.kind === "tricky") {
+      const [reg, odd] = (TRICKY_PARTS[r.word] ?? `|${r.word}`).split("|");
+      setCaption(`${words[i]}: ${reg ? `"${reg}" is regular` : ""}${reg && odd ? ", " : ""}${odd ? `"${odd}" is the tricky bit` : ""}. Say it, then read the line again.`);
+      if (listen) speakText(words[i], {});
+    } else {
+      setCaption(`${dotted(r.graphemes)} … ${r.word}. Now ${kid}: say the sounds, blend, then read the whole line.`);
+      await playBlend(r.graphemes);
+      if (listen) speakText(r.word, {});
+    }
+    setStage("reread");
+  };
   return (
     <main className="moral">
       <div className="kicker">The end</div>
       <p className="spoken">“{story.moral.spoken}”</p>
       {!listener && (
         <>
-          <div className="kicker">Now you read your line</div>
+          <div className="kicker">{stage === "try" ? `${kid} reads the whole line` : stage === "help" ? "tap the word that needs help" : "now the whole line again, smoothly"}</div>
           <p className="line">
-            {line.results.map((r, i) => (
-              <button key={i} className={"lw " + (r.ok && r.kind === "tricky" ? "tricky" : "magic")} onClick={async () => { if (r.ok && r.kind === "decodable") { for (const g of r.graphemes) { try { await playClip(soundAsset(GRAPHEME_SOUND[g].clip)).done; } catch { /* clip missing */ } } } else speakText(words[i], {}); }}>
-                {words[i]}
-              </button>
-            ))}
+            {line.results.map((r, i) => {
+              const parts = r.ok && r.kind === "tricky" ? (TRICKY_PARTS[r.word] ?? `|${r.word}`).split("|") : null;
+              return (
+                <button key={i} className={"lw " + (r.ok && r.kind === "tricky" ? "tricky" : "magic") + (helped === i ? " helped" : "")} disabled={stage === "try"} onClick={() => help(i)}>
+                  {parts ? <><span>{words[i].slice(0, parts[0].length)}</span><u className="odd">{words[i].slice(parts[0].length)}</u></> : words[i]}
+                </button>
+              );
+            })}
           </p>
-          <div className="legend"><i className="sw magic" /> sound it out <i className="sw tricky" /> tricky word you know · tap a word for help</div>
+          <div className="legend"><i className="sw magic" /> sound it out <i className="sw tricky" /> tricky word: <u className="odd">odd bit</u> underlined</div>
+          <div className="script"><b>{reader}</b>: {stage === "try" ? "let them read the whole line first." : stage === "help" ? "tap the word they stuck on." : "ask for the whole line once more, smoothly."}</div>
         </>
       )}
-      <div className="btns"><button className="yes" onClick={onYes}>{listener ? "The end ✓" : "✓ They read it!"}</button></div>
+      <div className="btns">
+        {listener ? <button className="yes" onClick={onYes}>The end ✓</button> : stage === "try" ? (
+          <><button className="no" onClick={() => setStage("help")}>Needs help on a word</button><button className="yes" onClick={onYes}>✓ Read it smoothly</button></>
+        ) : stage === "help" ? (
+          <button className="no" onClick={() => setStage("try")}>← back</button>
+        ) : (
+          <><button className="no" onClick={() => setStage("help")}>Another word</button><button className="yes" onClick={onYes}>✓ Read it smoothly</button></>
+        )}
+      </div>
     </main>
   );
 }
 
-function Done({ story, results, bedtime, kid, onHome }: { story: Story; results: { word: string; ok: boolean; mode: string }[]; bedtime: boolean; kid: string; onHome: () => void }) {
-  const ok = results.filter((r) => r.ok).length;
+/** Specific feedback, not a trophy: what the child actually did with each word. */
+function Done({ story, results, bedtime, kid, learner, onHome }: { story: Story; results: WordResult[]; bedtime: boolean; kid: string; learner: LearnerModel; onHome: () => void }) {
+  const ok = results.filter((r) => r.ok);
+  const line = (r: WordResult) => {
+    const gs = checkWord(r.word, learner).graphemes.join("-");
+    if (!r.ok) return `${r.word} · tomorrow`;
+    if (r.mode === "independent") return `${r.word} · read it straight off`;
+    if (r.mode === "sounded") return `${r.word} · blended ${gs}`;
+    return `${r.word} · tried again and blended it`;
+  };
   return (
     <main className="done">
-      {!bedtime && <Confetti />}
-      <div className="art-box big"><span>{bedtime ? "🌙" : "🏆"}</span></div>
+      {!bedtime && ok.length > 0 && <Confetti />}
+      <div className="art-box big"><span>{bedtime ? "🌙" : ok.length ? "📖" : "🌱"}</span></div>
       <h2>{story.title}</h2>
-      {results.length > 0 && <p>{ok} of {results.length} magic words read</p>}
-      {results.length > 0 && <ul className="results">{results.map((r, i) => <li key={r.word + i} className={r.ok ? "ok" : "no"}>{r.word}{r.ok ? "" : " · tomorrow"}</li>)}</ul>}
-      <p className="show">{bedtime ? `Lights low. One real book, then sleep.` : results.some((r) => r.ok) ? `Now go find someone and read them your ${results.length === 1 ? "magic word" : "magic words"}, ${kid}!` : `Great listening, ${kid}!`}</p>
-      {!bedtime && results.some((r) => r.ok) && <p className="bigwords">{results.filter((r) => r.ok).map((r) => <span key={r.word}>{r.word}</span>)}</p>}
+      {results.length > 0 && <ul className="results">{results.map((r, i) => <li key={(r.id ?? r.word) + i} className={r.ok ? "ok" : "no"}>{line(r)}</li>)}</ul>}
+      <p className="show">{bedtime ? `Lights low. One real book, then sleep.` : ok.length ? `Now go find someone and read them your ${ok.length === 1 ? "word" : "words"}, ${kid}!` : `Good listening, ${kid}. Those words come back tomorrow for a warm-up.`}</p>
+      {!bedtime && ok.length > 0 && <p className="bigwords">{ok.map((r, i) => <span key={(r.id ?? r.word) + i}>{r.word}</span>)}</p>}
       <div className="btns"><button className="yes" onClick={onHome}>Done</button></div>
     </main>
   );
