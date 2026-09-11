@@ -1,14 +1,25 @@
-# state
+# state — morning summary (2026-09-11)
 
-**Version:** v7. Stable URL: https://soodr321.github.io/StoryTime/ (GitHub Pages). Vercel: temporary deployments until the owner claims one or runs `vercel login`.
-**Reviews folded in:** Gemini v2 (12), Grok v3 (12), Gemini v5 (8), Grok v6 (8). Next: GPT-5.6 via Codex (limit resets 2026-09-11 01:04 PDT; cron 01:13) → fold → v8.
-**What works:** welcome flow; family profiles (reader + listener); per-child resume with mode; 7-story library (5 Aesop, 2 Panchatantra) with neural narration + word timestamps; listen + read modes; 'Say it together' modelled blend; skip; moral + read-back line; bedtime mode with nightly closing card; family story builder (emoji or photo per page, parent-recorded narration or on-device speech, magic words suggested from the child's decodable bank, validator rejects untaught digraphs); shelf with in-flight confirm; week strip; parent summary; offline precache; IPA phoneme clips (CC BY-SA).
-**Next step:** GPT-5.6 review → fold → v6. Then owner tests on iPhone + Android; record real phoneme clips optional (IPA set is fine).
+**Version:** v17 · 25 commits · 111 tests green · https://github.com/soodr321/StoryTime
+**Stable URL:** https://soodr321.github.io/StoryTime/
+**Latest Vercel (temporary, expires ~1 h unless claimed):** https://temporary-speedy-banjo-bia3yp0.vercel.app — claim: https://vercel.com/claim-deployment?code=eeb8ff5e-e6d3-46c2-9090-34e5311f8b8c
+**Reviews folded in (14):** engineering — Gemini v2, Grok v3, Gemini v5, Grok v6, GPT-5.6 v7; teacher loops — loop 1 GPT/Grok/Gemini, loop 2 GPT/Grok/Gemini, loop 3 GPT/Grok/Gemini. Transcripts in docs/reviews/.
+
+## What changed per loop (K–1 phonics teacher lens)
+**Loop 1** — blending is continuous, not chopped; the picture is hidden while the child reads the word card; a "look again" cue; read-back routine (whole line → help one word → ✓ on that word → reread smoothly); tricky words show the regular part with the odd bit underlined; "independent", never "sight"; onboarding starts low with tap-to-hear sounds; spaced warm-up of yesterday's helped/skipped words is mandatory when due; CVC-only targets at phase 2 (no consonant clusters until taught); set-1 and set-2 original stories so honest onboarding has a book; a shaky story repeats tomorrow; the adult and the device never say the whole word before the child blends; grey words are never tap-to-hear in read mode; the bookshelf lets a favourite be reread in either mode.
+**Loop 2** — Web Audio overlapped blend with explicit hold times and a sweep under the graphemes; "start here and slide through the word" language with a persistent adult note; adult-judged verdicts (first try / after a nudge / after the model / skipped) independent of tile taps; only first-try blends count as known, everything else returns tomorrow; one-word dictation after the read-back (fingers first, then boxes, model = stretch then slow count, distractor vowel); teach-a-sound routine (hear, mouth cue, action, words, trace, tricky words at set boundaries, blend from earlier sounds) gated on readiness with an explicit override; untaught exception words are never sounded out; true beginner level with a teach-first path; results keyed by token index; punctuation outside highlights; 30-night champion card; originals rewritten with clear causality.
+**Loop 3** — readiness from a per-child attempt history tied to the taught count, scored on a rolling pool of ~10 word attempts (no deadlock at set 1, no freeze after one nudge); review words due the next morning; today's story is the one that practises the newest sound; a second set-1 story; progressive disclosure on the word card; build word only from a first-try result and a failed build comes back; one new sound per calendar day; listener gets an oral prompt per page; settings chips only play; the app never talks over the grown-up in read mode; trace direction modelled by the adult; lowercase magic words with punctuation outside.
+
+## Try first on the phone
+1. Open the stable URL, Add to Home Screen, run Welcome as the reader at the level you believe is true (start low: the app recommends the next sound from evidence).
+2. "Nani reads" one story end to end: magic word → wait 5 s → ✓ or Needs help → read-back → build a word.
+3. Add a family story with one page recorded in your voice, then read it back in "Nani reads".
+
+## Reviewer items deliberately not applied
+- GPT v7 #5 pronunciation lexicon: validator fails closed on contractions, silent-e, untaught digraphs, clusters and exception words instead.
+- GPT v7 #6 forced alignment for parent recordings: recordings play on the reread only; the first pass uses speech so the magic word is never leaked.
+- Gemini loop 2 #9 "A trick is sad.": rejected — "tr" is a phase-4 cluster; the line stays "It is sad."
+- GPT loop 3 #3 oral-only activity: a second set-1 story was added instead; an oral activity is queued.
+- Real Nani voice, a Panchatantra set beyond two tales, and a placement screen remain queued.
+
 **Resume rule:** on a 5-hour usage limit or an explicit "pause", resume from this file, up to 3 consecutive sessions.
-
-## Reviewer items not applied (with reasons)
-- GPT v7 #5 "curated pronunciation lexicon": not in one night; instead the validator fails closed on contractions, silent-e (split digraph) and untaught digraphs, which covers the phase-2 word bank.
-- GPT v7 #6 "forced alignment for parent recordings": mitigated by stopping ~350 ms before the estimated magic-word boundary; real alignment is a later phase.
-- GPT teacher L1 #9 dictation/segmenting task: "Next sound to teach" card added; a dictation activity is queued for a later loop.
-- Gemini loop 2 #9 "A trick is sad." — rejected: `tr` is an adjacent-consonant cluster (phase 4); the CVC-only rule from Grok loop 1 stands. Line stays "It is sad."
-- GPT loop 3 #3 "rotate a 30-second oral blending activity": partially applied — a second set-1 story (Tap, Tap, Tap) was added; an oral-only activity is queued.
