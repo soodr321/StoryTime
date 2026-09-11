@@ -42,7 +42,8 @@ export interface Settings {
   activeKid?: string;
 }
 
-const K = { kids: "st:kids", settings: "st:settings", session: "st:session", customs: "st:custom-stories" };
+const K = { kids: "st:kids", settings: "st:settings", customs: "st:custom-stories" };
+const sessionKey = (kidId: string) => `st:session:${kidId}`;
 const progressKey = (kidId: string) => `st:progress:${kidId}`;
 
 export const uid = () => Math.random().toString(36).slice(2, 10);
@@ -60,8 +61,9 @@ export async function recordFinish(kidId: string, slug: string, results: { word:
   await set(progressKey(kidId), all);
 }
 
-export async function loadSession(): Promise<Session | null> { return (await get<Session>(K.session)) ?? null; }
-export async function saveSession(s: Session | null): Promise<void> { if (s) await set(K.session, s); else await del(K.session); }
+export async function loadSession(kidId: string): Promise<Session | null> { return (await get<Session>(sessionKey(kidId))) ?? null; }
+export async function saveSession(kidId: string, s: Session | null): Promise<void> { if (s) await set(sessionKey(kidId), s); else await del(sessionKey(kidId)); }
+export async function loadAllSessions(kids: { id: string }[]): Promise<Record<string, Session>> { const out: Record<string, Session> = {}; for (const k of kids) { const s = await loadSession(k.id); if (s) out[k.id] = s; } return out; }
 
 export async function loadCustomStories(): Promise<Story[]> { return (await get<Story[]>(K.customs)) ?? []; }
 export async function saveCustomStories(list: Story[]): Promise<void> { await set(K.customs, list); }

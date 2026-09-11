@@ -65,7 +65,7 @@ main { flex: 1; display: flex; flex-direction: column; padding: 8px 14px 14px; g
 .btns { display: flex; gap: 10px; justify-content: center; }
 .yes, .no { flex: 1; max-width: 220px; min-height: 60px; border-radius: 16px; font-size: 24px; }
 .yes { background: #cfe8c6; color: var(--done-ink); }
-.no { background: #f6d5cf; color: #7a2a1c; }
+.no { background: #e8e1d3; color: var(--ink); }   /* neutral, never red: a miss is "say it together" */
 .skip { align-self: center; color: var(--muted); font-size: 14px; text-decoration: underline; font-family: system-ui, sans-serif; min-height: 44px; padding: 0 12px; }
 
 /* MORAL */
@@ -142,7 +142,9 @@ textarea { width: 100%; line-height: 1.5; }
 .ptext { font-size: 16px; }
 .emo { font-size: 24px; width: 44px; height: 44px; border-radius: 10px; border: 2px solid transparent; }
 .emo.on { border-color: var(--accent); background: #fff3e8; }
-.script { font-size: 16px; line-height: 1.4; text-align: center; color: var(--ink); }
+.script { font-size: 20px; line-height: 1.4; text-align: center; color: var(--ink); }
+.pinkword { font-style: normal; background: var(--magic); color: var(--magic-ink); padding: 0 6px; border-radius: 6px; font-weight: 700; }
+.art-box img { width: 100%; height: 100%; object-fit: cover; border-radius: 22px; }
 .script b { color: var(--accent); }
 .show { font-size: 18px; max-width: 420px; line-height: 1.5; }
 .confetti { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 3; }
@@ -153,3 +155,5 @@ textarea { width: 100%; line-height: 1.5; }
 .app.bedtime .art-box { background: linear-gradient(160deg, #4a3a2c, #3a2c22); filter: saturate(.6); }
 .app.bedtime .cap { background: rgba(0, 0, 0, .6); }
 .app.bedtime input, .app.bedtime select, .app.bedtime textarea, .app.bedtime .tog { background: var(--card); }
+.emo.photo { display: inline-grid; place-items: center; cursor: pointer; }
+.thumb { width: 44px; height: 44px; object-fit: cover; border-radius: 10px; border: 2px solid var(--accent); }

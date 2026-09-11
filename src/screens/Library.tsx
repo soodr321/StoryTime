@@ -22,7 +22,7 @@ export function LibraryScreen({ onStart, onBack }: { onStart: (s: Story, mode: M
               {list.map((s) => {
                 const ok = kid.role === "listener" || fits(s, L); const p = progress[s.slug];
                 return (
-                  <button key={s.slug} className={"bk" + (p ? " done" : "") + (ok ? "" : " locked")} disabled={!ok} onClick={() => onStart(s, "listen")}>
+                  <button key={s.slug} className={"bk" + (p ? " done" : "") + (ok || p ? "" : " locked")} disabled={!ok && !p} onClick={() => onStart(s, "listen")}>
                     <span className="ico">{s.pages[0].art}</span>
                     <b>{s.title}</b>
                     <small>{p ? `read ${p.timesFinished}× · ${p.results.filter((r) => r.ok).length}/${p.results.length} magic words` : ok ? "new" : "needs more sounds"}</small>

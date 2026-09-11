@@ -2,7 +2,7 @@
  * Family story builder — a tired parent finishes it in three minutes:
  *   1. Title + who it's for.  2. Paste or type the story (one sentence per line = one page).
  *   3. The app finds every word the child can decode and suggests one magic word per page.
- *   4. Pick an emoji (or a photo from the camera roll) for each page.  5. Moral + read-back line, checked live.
+ *   4. Pick an emoji or a camera-roll photo for each page (photos are shrunk to ≤640px JPEG and stored locally, never uploaded).  5. Moral + read-back line, checked live.
  * Narration uses on-device speech; no server, works offline.
  */
 import { useMemo, useState } from "react";
@@ -10,6 +10,15 @@ import { useFamily } from "../lib/family";
 import { learnerOf, uid } from "../lib/store";
 import { checkLine, checkMagicWord, normalise } from "../lib/phonics/validator";
 import type { Story } from "../lib/content/types";
+
+/** Camera-roll photo → small JPEG data URL (≤ 640px) so it fits IndexedDB and loads instantly. */
+async function shrink(file: File): Promise<string> {
+  const bmp = await createImageBitmap(file);
+  const k = Math.min(1, 640 / Math.max(bmp.width, bmp.height));
+  const c = document.createElement("canvas"); c.width = Math.round(bmp.width * k); c.height = Math.round(bmp.height * k);
+  c.getContext("2d")!.drawImage(bmp, 0, 0, c.width, c.height);
+  return c.toDataURL("image/jpeg", 0.82);
+}
 
 const EMOJI = ["👵", "👴", "👩", "👨", "👧", "👦", "🐶", "🐱", "🐦", "🐘", "🥭", "🌳", "🏠", "🚗", "🚌", "⚽", "🎂", "🌙", "☀️", "🌧️", "🐐", "🐄", "🐒", "🦜", "🍎", "🎈", "🏖️", "🛏️"];
 
@@ -25,7 +34,8 @@ export function AddStoryScreen({ onDone }: { onDone: () => void }) {
   const [arts, setArts] = useState<Record<number, string>>({});
   const [magic, setMagic] = useState<Record<number, string | null>>({});
 
-  const pages = useMemo(() => text.split(/\n+/).map((s) => s.trim()).filter(Boolean), [text]);
+  // one line per page; a pasted paragraph is split at sentence ends so a tired parent never sees a silent disabled Save
+  const pages = useMemo(() => text.split(/\n+/).flatMap((l) => (l.includes("\n") ? [l] : l.split(/(?<=[.!?”"])\s+(?=[A-Z“"])/))).map((s) => s.trim()).filter(Boolean), [text]);
   const candidates = useMemo(() => pages.map((p) => [...new Set(p.split(/\s+/).map(normalise).filter((w) => w.length >= 2 && checkMagicWord(w, learner).ok))]), [pages, learner]);
   const lineCheck = useMemo(() => (line.trim() ? checkLine(line, learner) : null), [line, learner]);
   const chosen = (i: number) => (magic[i] === undefined ? candidates[i]?.[0] ?? null : magic[i]);
@@ -68,6 +78,8 @@ export function AddStoryScreen({ onDone }: { onDone: () => void }) {
               <div className="row wrap">
                 <span className="legend">Picture:</span>
                 {EMOJI.map((e) => <button key={e} className={"emo" + (arts[i] === e ? " on" : "")} onClick={() => setArts({ ...arts, [i]: e })}>{e}</button>)}
+                <label className="emo photo" title="photo from your camera roll">📷<input type="file" accept="image/*" hidden onChange={async (e) => { const f = e.target.files?.[0]; if (f) setArts({ ...arts, [i]: await shrink(f) }); }} /></label>
+                {arts[i]?.startsWith("data:") && <img className="thumb" src={arts[i]} alt="" />}
               </div>
               <div className="row wrap">
                 <span className="legend">Magic word:</span>

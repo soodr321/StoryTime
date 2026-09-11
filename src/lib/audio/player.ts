@@ -30,6 +30,7 @@ export async function unlock(): Promise<void> {
   for (const a of [narration, clip]) {
     try { a.src = silent; await withTimeout(a.play(), 400); a.pause(); } catch { /* element still counts as gestured on most engines */ }
   }
+  try { window.speechSynthesis?.speak(new SpeechSynthesisUtterance("")); } catch { /* no speech engine */ }   // iOS: unlock Web Speech in the same gesture
   unlocked = true;
 }
 
@@ -40,7 +41,9 @@ export interface Playing {
   el: HTMLAudioElement;
 }
 
+const cleanups = new WeakMap<HTMLAudioElement, () => void>();
 function playOn(el: HTMLAudioElement, src: string): Playing {
+  cleanups.get(el)?.();               // a superseded track must not keep listeners on the shared element
   el.pause();
   el.src = src;
   el.currentTime = 0;
@@ -56,6 +59,7 @@ function playOn(el: HTMLAudioElement, src: string): Playing {
   el.addEventListener("ended", onEnded);
   el.addEventListener("error", onError);
   el.addEventListener("timeupdate", onTime);
+  cleanups.set(el, () => { if (!settled) { settled = true; off(); resolve(); } });
   void el.play().catch((e) => { if (!settled) { settled = true; off(); reject(e); } });
   return { done, stop: () => { if (settled) return; el.pause(); finish(); }, el };
 }

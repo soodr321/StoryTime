@@ -36,6 +36,7 @@ export function StoryScreen({ story, mode, resume, onHome }: { story: Story; mod
   const playing = useRef<Playing | SpeakHandle | null>(null);
   const [caption, setCaption] = useState("");
   const startedRef = useRef(false);
+  const finishedRef = useRef(false);
 
   // ---- persistence: save the session at every page/result change; clear on finish ----
   useEffect(() => {
@@ -85,6 +86,8 @@ export function StoryScreen({ story, mode, resume, onHome }: { story: Story; mod
       const h = speakText(text, { rate, onWord: (i) => { if (magicIdx >= 0 && i >= magicIdx) { h.stop(); reachMagic(); return; } send({ type: "TOKEN", index: i }); } });
       playing.current = h; await h.done;
     }
+    // a magic word that ends the page can be missed by the clock check when the audio ends first
+    if (!stopped && magicIdx >= 0) { reachMagic(); return; }
     if (!stopped) { send({ type: "TOKEN", index: p.tokens.length }); opts.onDone(); }
   }, [send, story, listener, rate]);
 
@@ -107,7 +110,7 @@ export function StoryScreen({ story, mode, resume, onHome }: { story: Story; mod
       void (async () => { await speak(story.moral.audio ? storyAsset(story, story.moral.audio) : null, story.moral.spoken); if (!listener) await speakPrompt("line", "Now you. Read your line."); })();
     }
     if (state === "done") {
-      void fam.finish(kid.id, story.slug, ctx.results);
+      if (!finishedRef.current) { finishedRef.current = true; void fam.finish(kid.id, story.slug, ctx.results); }
       if (listen) void speakPrompt("done", "Beautiful reading. This story goes on your shelf."); else setCaption("Beautiful reading.");
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -132,7 +135,7 @@ export function StoryScreen({ story, mode, resume, onHome }: { story: Story; mod
           page={page} pageNo={ctx.page} total={story.pages.length} token={listen ? ctx.token : -1} results={ctx.results}
           readMode={!listen} listener={listener} reader={reader} kid={kid.name}
           onMagicTap={(w) => state === "narrating" && send({ type: "MAGIC_REACHED", word: w })}
-          onWordTap={(tok) => { if (listener || !listen) { setCaption(tok); const h = speakText(tok, { rate }); playing.current = h; } }}
+          onWordTap={(tok) => { if ((listener || !listen) && state !== "narrating" && state !== "reread") { setCaption(tok); const h = speakText(tok, { rate }); playing.current = h; } else if (listener && listen) setCaption(tok); }}
           onNext={() => state === "narrating" && send({ type: "PAGE_NEXT" })}
         />
       )}
@@ -169,7 +172,7 @@ function StoryView({ page, pageNo, total, token, results, readMode, listener, re
   const pending = listener ? [] : (page.magic ?? []).filter((m) => !results.some((r) => r.word === m));
   return (
     <main className="story">
-      <div className="art-box"><span>{page.art}</span></div>
+      <div className="art-box">{page.art.startsWith("data:") ? <img src={page.art} alt="" /> : <span>{page.art}</span>}</div>
       <div className="text-card">
         <div className="pg">Page {pageNo + 1} of {total}</div>
         <p className="sentence">
@@ -185,11 +188,11 @@ function StoryView({ page, pageNo, total, token, results, readMode, listener, re
         </p>
         {readMode && (
           <div className="readbar">
-            <span className="script">{pending.length ? <><b>{reader}</b> reads the grey words. <b>{kid}</b> reads the pink word: tap it when it's time.</> : <><b>{reader}</b> reads the page. Then go on.</>}</span>
+            <span className="script">{pending.length ? <><b>{reader}</b> reads the story. <b>{kid}</b> reads the <em className="pinkword">pink word</em>: tap it when it's time.</> : <><b>{reader}</b> reads the page. Then go on.</>}</span>
             <button className="next" disabled={pending.length > 0} onClick={onNext}>{pageNo + 1 < total ? "Next page →" : "The end →"}</button>
           </div>
         )}
-        {listener && !readMode && <div className="readbar"><span className="script">Tap any word to hear it again.</span></div>}
+        {listener && !readMode && <div className="readbar"><span className="script">When the page is done, tap any word to hear it again.</span></div>}
       </div>
     </main>
   );
