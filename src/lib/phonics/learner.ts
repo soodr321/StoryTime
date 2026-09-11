@@ -16,7 +16,7 @@ export const LS_PHASE2_ORDER = [
 export const TRICKY_PHASE2 = ["the", "a", "I", "is", "to", "no", "go", "into"] as const;
 
 /** Tricky words are mostly regular: show the regular part and mark only the odd bit. `|` separates regular | tricky. */
-export const TRICKY_PARTS: Record<string, string> = { the: "th|e", a: "|a", I: "|I", is: "i|s", to: "t|o", no: "n|o", go: "g|o", into: "in|to" };
+export const TRICKY_PARTS: Record<string, string> = { the: "th|e", a: "|a", i: "|i", is: "i|s", to: "t|o", no: "n|o", go: "g|o", into: "in|to" };
 
 /** Named levels: how far along the order a child is. */
 export const LEVELS: Record<string, LearnerModel> = {

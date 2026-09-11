@@ -6,9 +6,12 @@ import type { Story } from "../lib/content/types";
 import { Art } from "../components/Art";
 import type { Mode } from "./Home";
 
+const p2 = (progress: Record<string, { timesFinished: number }>, slug: string) => (progress[slug] ? `read ${progress[slug].timesFinished}× · reading it again builds fluency` : "new");
+
 export function LibraryScreen({ onStart, onBack }: { onStart: (s: Story, mode: Mode, resume: boolean) => void; onBack: () => void }) {
   const { activeKid: kid, stories, progress, session, setSession } = useFamily();
   const [confirm, setConfirm] = useState<Story | null>(null);
+  const [picked, setPicked] = useState<Story | null>(null);   // which book was tapped; the grown-up then picks a mode
   if (!kid) return null;
   const L = learnerOf(kid);
   const groups: Story["tradition"][] = ["family", "aesop", "panchatantra", "classic"];
@@ -17,12 +20,22 @@ export function LibraryScreen({ onStart, onBack }: { onStart: (s: Story, mode: M
   const pick = (s: Story) => {
     if (session && session.slug === s.slug) return onStart(s, session.mode, true);   // same story: carry on
     if (session && inFlight) return setConfirm(s);                                    // another story is mid-way: ask
-    onStart(s, "listen", false);
+    setPicked(s);
   };
 
   return (
     <main className="library">
       <div className="row"><button className="linkbtn" onClick={onBack}>← Back</button><div className="kicker">{kid.name}'s bookshelf</div></div>
+      {picked && (
+        <div className="pc confirmbox">
+          <p><b>{picked.title}</b> · {p2(progress, picked.slug)}</p>
+          <div className="modes">
+            <button className="mode" onClick={() => onStart(picked, "listen", false)}><span className="mi">🔊</span><b>Nani reads</b><small>karaoke; {kid.name} reads the magic words</small></button>
+            {kid.role !== "listener" && <button className="mode" onClick={() => onStart(picked, "read", false)}><span className="mi">📖</span><b>I read</b><small>sound off; reread a favourite for fluency</small></button>}
+          </div>
+          <button className="linkbtn" onClick={() => setPicked(null)}>cancel</button>
+        </div>
+      )}
       {confirm && inFlight && (
         <div className="pc confirmbox">
           <p><b>{inFlight.title}</b> is on page {session!.page + 1}. Leave it and start <b>{confirm.title}</b>?</p>

@@ -54,7 +54,7 @@ export function AddStoryScreen({ onDone }: { onDone: () => void }) {
   // media key: page text plus its occurrence number, so two identical lines ("Run!") stay separate
   const keys = useMemo(() => { const seen: Record<string, number> = {}; return pages.map((p) => { seen[p] = (seen[p] ?? 0) + 1; return seen[p] > 1 ? `${p}#${seen[p]}` : p; }); }, [pages]);
   // names (capitalised mid-sentence) are never magic words; possessives are stripped; nothing is auto-picked
-  const candidates = useMemo(() => pages.map((p) => { const toks = p.split(/\s+/); return [...new Set(toks.filter((t, i) => !(i > 0 && /^[A-Z]/.test(t))).map((t) => normalise(t.replace(/[’']s$/, ""))).filter((w) => w.length >= 2 && checkMagicWord(w, learner).ok))]; }), [pages, learner]);
+  const candidates = useMemo(() => pages.map((p) => { const toks = p.split(/\s+/); return [...new Set(toks.filter((t, i) => !(i > 0 && /^[A-Z]/.test(t))).map((t) => normalise(t)).filter((w) => w.length >= 2 && checkMagicWord(w, learner).ok))]; }), [pages, learner]);
   const lineCheck = useMemo(() => (line.trim() ? checkLine(line, learner) : null), [line, learner]);
   const chosen = (i: number) => magic[keys[i]] ?? null;
   const artOf = (i: number) => arts[keys[i]];

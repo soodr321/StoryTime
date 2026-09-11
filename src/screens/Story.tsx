@@ -76,7 +76,8 @@ export function StoryScreen({ story, mode, resume, onHome }: { story: Story; mod
     let stopped = false;
     const reachMagic = () => { stopped = true; send({ type: "TOKEN", index: magicIdx }); send({ type: "MAGIC_REACHED", word: normalise(p.tokens[magicIdx].t) }); };
 
-    if (p.audio) {
+    const untimed = !p.tokens.some((t) => t.ms > 0);
+    if (p.audio && !(untimed && magicIdx >= 0)) {   // a parent recording has no word timings: it cannot stop cleanly before the magic word, so the first pass uses speech and the recording plays on the reread
       const src = isUrl(p.audio) ? p.audio : storyAsset(story, p.audio);
       const pl = playNarration(src, rate); playing.current = pl;
       const timed = p.tokens.some((t) => t.ms > 0);
@@ -127,7 +128,7 @@ export function StoryScreen({ story, mode, resume, onHome }: { story: Story; mod
     }
     if (state === "magicWord" && ctx.mode === "independent" && listen) void speakPrompt("yours", "… this one is yours. Look at the letters, say the sounds, and blend.");
     if (state === "moral") {
-      if (!listen) { setCaption("Nani reads the moral. Then the child tries the whole line."); return; }
+      if (!listen) { setCaption(`${reader} reads the moral. Then ${kid.name} tries the whole line.`); return; }
       void (async () => { await speak(story.moral.audio ? (isUrl(story.moral.audio) ? story.moral.audio : storyAsset(story, story.moral.audio)) : null, story.moral.spoken); if (!listener) await speakPrompt("line", "Now you. Read your line."); })();
     }
     if (state === "done") {
@@ -150,7 +151,7 @@ export function StoryScreen({ story, mode, resume, onHome }: { story: Story; mod
     const run = ++runRef.current; const alive = () => run === runRef.current;
     const word = ctx.magic!; const gs = checkWord(word, learner).graphemes;
     send({ type: "NOT_YET" });
-    if (listen) await speakPrompt("notyet", "That's okay. Listen: I'll stretch the sounds together, then you try."); else setCaption("Grown-up: stretch the sounds together, no gaps, then say the word.");
+    if (listen) await speakPrompt("notyet", "That's okay. Listen: I'll stretch the sounds together, then you try."); else setCaption(`${reader}: stretch the sounds together, no gaps. Do NOT say the whole word.`);
     if (!alive()) return;
     setCaption(dotted(gs) + " …"); await playBlend(gs, { alive });
     if (!alive()) return;
@@ -254,13 +255,11 @@ function Moral({ story, learner, listener, kid, reader, listen, setCaption, onYe
     const r = line.results[i]; setHelped(i);
     if (!r.ok) return;
     if (r.kind === "tricky") {
-      const [reg, odd] = (TRICKY_PARTS[r.word] ?? `|${r.word}`).split("|");
-      setCaption(`${words[i]}: ${reg ? `"${reg}" is regular` : ""}${reg && odd ? ", " : ""}${odd ? `"${odd}" is the tricky bit` : ""}. Say it, then read the line again.`);
-      if (listen) speakText(words[i], {});
+      setCaption(`${words[i]} is a tricky word. The underlined part is the odd bit. Just say the word, then read the line again.`);
+      if (listen) speakText(words[i], {});   // a tricky word is taught as a whole, so hearing it is fine
     } else {
-      setCaption(`${dotted(r.graphemes)} … ${r.word}. Now ${kid}: say the sounds, blend, then read the whole line.`);
-      await playBlend(r.graphemes);
-      if (listen) speakText(r.word, {});
+      setCaption(`${dotted(r.graphemes)} … ${reader}: stretch the sounds, but let ${kid} say the word. Then the whole line again.`);
+      await playBlend(r.graphemes);   // never the whole word: that would be echoing, not blending
     }
     setStage("reread");
   };

@@ -10,7 +10,7 @@ const LEVELS_UI = [
   { n: 4, label: "s a t p", hint: "just started" },
   { n: 8, label: "+ i n m d", hint: "can blend sat, pin, mat" },
   { n: 12, label: "+ g o c k", hint: "reads dog, top, kid" },
-  { n: 16, label: "+ ck e u r", hint: "reads trick, run, red" },
+  { n: 16, label: "+ ck e u r", hint: "reads duck, run, red" },
   { n: 23, label: "+ h b f l ss", hint: "all phase-2 sounds" },
 ];
 const AVATARS = ["🦁", "🐯", "🦊", "🐼", "🐸", "🦄", "🐬", "🚀"];
