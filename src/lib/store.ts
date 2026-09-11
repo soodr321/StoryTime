@@ -39,6 +39,8 @@ export interface Session {
 export interface Settings {
   bedtime: boolean;         // dim, slow, no celebration
   readers: string[];        // grown-ups who read: names shown in the adult script
+  tonight?: string;         // which grown-up is reading tonight
+  onboarded?: boolean;
   activeKid?: string;
 }
 

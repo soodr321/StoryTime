@@ -12,18 +12,21 @@ import { checkLine, checkMagicWord, normalise } from "../lib/phonics/validator";
 import type { Story } from "../lib/content/types";
 
 /** Camera-roll photo → small JPEG data URL (≤ 640px) so it fits IndexedDB and loads instantly. */
-async function shrink(file: File): Promise<string> {
+async function shrink(file: File): Promise<string | null> {
+  try {
   const bmp = await createImageBitmap(file);
   const k = Math.min(1, 640 / Math.max(bmp.width, bmp.height));
   const c = document.createElement("canvas"); c.width = Math.round(bmp.width * k); c.height = Math.round(bmp.height * k);
   c.getContext("2d")!.drawImage(bmp, 0, 0, c.width, c.height);
   return c.toDataURL("image/jpeg", 0.82);
+  } catch { return null; }
 }
 
 const EMOJI = ["👵", "👴", "👩", "👨", "👧", "👦", "🐶", "🐱", "🐦", "🐘", "🥭", "🌳", "🏠", "🚗", "🚌", "⚽", "🎂", "🌙", "☀️", "🌧️", "🐐", "🐄", "🐒", "🦜", "🍎", "🎈", "🏖️", "🛏️"];
 
 export function AddStoryScreen({ onDone }: { onDone: () => void }) {
   const { kids, addCustom } = useFamily();
+  const [photoErr, setPhotoErr] = useState<string | null>(null);
   const [kidId, setKidId] = useState(kids.find((k) => k.role === "reader")?.id ?? kids[0]?.id);
   const kid = kids.find((k) => k.id === kidId) ?? kids[0];
   const learner = useMemo(() => learnerOf(kid), [kid]);
@@ -35,13 +38,14 @@ export function AddStoryScreen({ onDone }: { onDone: () => void }) {
   const [magic, setMagic] = useState<Record<number, string | null>>({});
 
   // one line per page; a pasted paragraph is split at sentence ends so a tired parent never sees a silent disabled Save
-  const pages = useMemo(() => text.split(/\n+/).flatMap((l) => (l.includes("\n") ? [l] : l.split(/(?<=[.!?”"])\s+(?=[A-Z“"])/))).map((s) => s.trim()).filter(Boolean), [text]);
-  const candidates = useMemo(() => pages.map((p) => [...new Set(p.split(/\s+/).map(normalise).filter((w) => w.length >= 2 && checkMagicWord(w, learner).ok))]), [pages, learner]);
+  const pages = useMemo(() => text.split(/\n+/).flatMap((l) => l.split(/(?<!\b[A-Z][a-z]{0,2})(?<=[.!?”"])\s+(?=[A-Z“"])/)).map((s) => s.trim()).filter(Boolean), [text]);
+  // names (capitalised mid-sentence) are never magic words; possessives are stripped; nothing is auto-picked
+  const candidates = useMemo(() => pages.map((p) => { const toks = p.split(/\s+/); return [...new Set(toks.filter((t, i) => !(i > 0 && /^[A-Z]/.test(t))).map((t) => normalise(t.replace(/[’']s$/, ""))).filter((w) => w.length >= 2 && checkMagicWord(w, learner).ok))]; }), [pages, learner]);
   const lineCheck = useMemo(() => (line.trim() ? checkLine(line, learner) : null), [line, learner]);
-  const chosen = (i: number) => (magic[i] === undefined ? candidates[i]?.[0] ?? null : magic[i]);
+  const chosen = (i: number) => magic[i] ?? null;
   const ready = title.trim() && pages.length >= 2 && moral.trim() && lineCheck?.ok && pages.every((_, i) => arts[i] || true);
 
-  const save = () => {
+  const save = async () => {
     const story: Story = {
       slug: "family-" + uid(), title: title.trim(), tradition: "family",
       source: { work: "Family story", rights: "owner" },
@@ -50,7 +54,7 @@ export function AddStoryScreen({ onDone }: { onDone: () => void }) {
       pages: pages.map((p, i) => ({ art: arts[i] ?? "📖", tokens: p.split(/\s+/).map((t) => ({ t, ms: 0 })), ...(chosen(i) ? { magic: [chosen(i)!] } : {}) })),
       moral: { spoken: moral.trim(), line: line.trim() },
     };
-    addCustom(story); onDone();
+    if (await addCustom(story)) onDone();
   };
 
   return (
@@ -78,14 +82,15 @@ export function AddStoryScreen({ onDone }: { onDone: () => void }) {
               <div className="row wrap">
                 <span className="legend">Picture:</span>
                 {EMOJI.map((e) => <button key={e} className={"emo" + (arts[i] === e ? " on" : "")} onClick={() => setArts({ ...arts, [i]: e })}>{e}</button>)}
-                <label className="emo photo" title="photo from your camera roll">📷<input type="file" accept="image/*" hidden onChange={async (e) => { const f = e.target.files?.[0]; if (f) setArts({ ...arts, [i]: await shrink(f) }); }} /></label>
+                <label className="emo photo" title="photo from your camera roll">📷<input type="file" accept="image/*" hidden onChange={async (e) => { const f = e.target.files?.[0]; if (!f) return; const d = await shrink(f); if (d) { setArts({ ...arts, [i]: d }); setPhotoErr(null); } else setPhotoErr("Couldn't use that photo. Try a JPEG or PNG."); }} /></label>
                 {arts[i]?.startsWith("data:") && <img className="thumb" src={arts[i]} alt="" />}
+                {photoErr && <span className="legend bad">{photoErr}</span>}
               </div>
               <div className="row wrap">
                 <span className="legend">Magic word:</span>
                 {candidates[i].length === 0 && <span className="legend">none decodable on this page — fine, {kid.name} listens.</span>}
-                {candidates[i].map((w) => <button key={w} className={"tog" + (chosen(i) === w ? " on" : "")} onClick={() => setMagic({ ...magic, [i]: w })}>{w}</button>)}
-                {candidates[i].length > 0 && <button className={"tog" + (chosen(i) === null ? " on" : "")} onClick={() => setMagic({ ...magic, [i]: null })}>none</button>}
+                {candidates[i].map((w) => <button key={w} className={"tog" + (chosen(i) === w ? " on" : "")} onClick={() => setMagic({ ...magic, [i]: chosen(i) === w ? null : w })}>{w}</button>)}
+                {candidates[i].length > 0 && <span className="legend">{chosen(i) ? "" : "tap one, or none"}</span>}
               </div>
             </div>
           ))}

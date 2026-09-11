@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useFamily } from "../lib/family";
 import { ALL_GPCS, ALL_TRICKY, uid, type Kid } from "../lib/store";
+import { Art } from "../components/Art";
 
 const AVATARS = ["🦁", "🐣", "🐯", "🦊", "🐼", "🐸", "🦄", "🐬", "🐢", "🐝", "🌟", "🚀"];
 
@@ -20,7 +21,8 @@ export function SettingsScreen({ onBack, onAddStory }: { onBack: () => void; onA
       <section className="pc">
         <h3>Grown-ups who read</h3>
         <p className="legend">Names show in the reading script (“Papa reads the grey words”).</p>
-        <div className="chips">{settings.readers.map((r) => <button key={r} className="chip" onClick={() => updateSettings({ readers: settings.readers.filter((x) => x !== r) })}>{r} ✕</button>)}</div>
+        <div className="chips">{settings.readers.map((r) => <button key={r} className={"chip" + (settings.tonight === r ? " on" : "")} onClick={() => updateSettings({ tonight: r })}>{settings.tonight === r ? "★ " : ""}{r}</button>)}</div>
+        {settings.readers.length > 0 && <p className="legend">★ = reading tonight. Tap a name to switch. <button className="linkbtn" onClick={() => updateSettings({ readers: [], tonight: undefined })}>clear all</button></p>}
         <form className="row" onSubmit={(e) => { e.preventDefault(); if (readerDraft.trim()) { updateSettings({ readers: [...settings.readers, readerDraft.trim()] }); setReaderDraft(""); } }}>
           <input value={readerDraft} onChange={(e) => setReaderDraft(e.target.value)} placeholder="e.g. Nani, Papa, Mama" aria-label="grown-up name" />
           <button className="small">Add</button>
@@ -35,7 +37,7 @@ export function SettingsScreen({ onBack, onAddStory }: { onBack: () => void; onA
       <section className="pc">
         <h3>Family stories</h3>
         {customs.length === 0 && <p className="legend">None yet. Add one about Nani, the dog, or the blue cup — the app keeps the magic words to sounds your child knows.</p>}
-        {customs.map((s) => <div key={s.slug} className="row between"><span>{s.pages[0].art} {s.title}</span><button className="linkbtn" onClick={() => removeCustom(s.slug)}>remove</button></div>)}
+        {customs.map((s) => <div key={s.slug} className="row between"><span className="row"><span className="ico-sm"><Art art={s.pages[0].art} /></span> {s.title}</span><button className="linkbtn" onClick={() => removeCustom(s.slug)}>remove</button></div>)}
         <button className="next" onClick={onAddStory}>+ Add a family story</button>
       </section>
     </main>
@@ -55,7 +57,8 @@ function KidEditor({ kid, onChange, onRemove }: { kid: Kid; onChange: (k: Kid) =
         </select>
         {onRemove && <button className="linkbtn" onClick={onRemove}>remove</button>}
       </div>
-      <p className="legend">Sounds taught, in order. Tap the last one you've taught.</p>
+      <p className="legend">Sounds taught so far: <select value={known} onChange={(e) => onChange({ ...kid, gpcs: ALL_GPCS.slice(0, +e.target.value) })} aria-label="level">{[4, 8, 12, 16, 23].map((n) => <option key={n} value={n}>{ALL_GPCS.slice(0, n).join(" ")}</option>)}</select></p>
+      <p className="legend">Or tap the last sound you've taught:</p>
       <div className="chips">
         {ALL_GPCS.map((g, i) => <button key={g} className={"tog" + (i < known ? " on" : "")} onClick={() => onChange({ ...kid, gpcs: ALL_GPCS.slice(0, i + 1) })}>{g}</button>)}
       </div>

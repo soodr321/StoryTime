@@ -1,38 +1,63 @@
 import { useFamily } from "../lib/family";
 import { TRADITION_LABEL } from "../lib/library";
 import type { Story } from "../lib/content/types";
+import { Art } from "../components/Art";
 
 export type Mode = "listen" | "read";
 
+const sameDay = (a: number, b: number) => new Date(a).toDateString() === new Date(b).toDateString();
+
 export function HomeScreen({ onStart, onLibrary, onSwitch }: { onStart: (story: Story, mode: Mode, resume: boolean) => void; onLibrary: () => void; onSwitch: () => void }) {
-  const { activeKid: kid, todayFor, session, stories, progress, settings } = useFamily();
+  const { activeKid: kid, todayFor, session, stories, progress, settings, setSession } = useFamily();
   if (!kid) return null;
-  const resumable = session && session.kidId === kid.id ? stories.find((s) => s.slug === session.slug) : null;
+  const resumable = session ? stories.find((s) => s.slug === session.slug) ?? null : null;
   const today = resumable ?? todayFor(kid);
   const finished = Object.keys(progress).length;
   const listener = kid.role === "listener";
+  const lastFinished = Math.max(0, ...Object.values(progress).map((p) => p.lastFinished ?? 0));
+  const doneTonight = settings.bedtime && lastFinished > 0 && sameDay(lastFinished, Date.now()) && !resumable;
+
   return (
     <main className="home-screen">
       <button className="who" onClick={onSwitch}><span>{kid.avatar}</span> {kid.name} · <u>switch</u></button>
-      {today ? (
+
+      {doneTonight ? (
+        <div className="closing">
+          <div className="art-box big"><span>🌙</span></div>
+          <h2>Story done for tonight.</h2>
+          <p className="note">One real book, then sleep. StoryTime opens again tomorrow.</p>
+          <button className="linkbtn" onClick={() => today && onStart(today, "listen", false)}>grown-up: read one more anyway</button>
+        </div>
+      ) : today ? (
         <>
           <div className="kicker">{resumable ? "Carry on where you stopped" : finished ? "Today's story" : "Your first story"}</div>
           <div className="big-tile" role="group" aria-label={today.title}>
-            <span className="art">{today.pages[0].art}</span>
+            <span className="art"><Art art={today.pages[0].art} /></span>
             <span className="t">{today.title}</span>
-            <span className="s">{TRADITION_LABEL[today.tradition]} · {today.pages.filter((p) => p.magic?.length).length} magic words{resumable ? ` · page ${resumable ? session!.page + 1 : 1}` : ""}</span>
+            <span className="s">{TRADITION_LABEL[today.tradition]} · {today.pages.filter((p) => p.magic?.length).length} magic words{resumable ? ` · page ${session!.page + 1}` : ""}</span>
           </div>
-          <div className="modes">
-            <button className="mode" onClick={() => onStart(today, "listen", !!resumable)}>
-              <span className="mi">🔊</span><b>{settings.bedtime ? "Bedtime story" : "Nani reads"}</b>
-              <small>{listener ? "Listen and tap the words you like." : "Karaoke story. You read the magic words."}</small>
-            </button>
-            {!listener && (
-              <button className="mode" onClick={() => onStart(today, "read", !!resumable)}>
-                <span className="mi">📖</span><b>I read</b><small>Sound off. A grown-up reads with you.</small>
+          {resumable ? (
+            <div className="modes">
+              <button className="mode" onClick={() => onStart(today, session!.mode, true)}>
+                <span className="mi">{session!.mode === "listen" ? "🔊" : "📖"}</span><b>Continue</b><small>{session!.mode === "listen" ? "Nani reads" : "I read"} · page {session!.page + 1}</small>
               </button>
-            )}
-          </div>
+              <button className="mode quiet" onClick={() => setSession(null)}>
+                <span className="mi">↺</span><b>Start over</b><small>Pick a mode again</small>
+              </button>
+            </div>
+          ) : (
+            <div className="modes">
+              <button className="mode" onClick={() => onStart(today, "listen", false)}>
+                <span className="mi">🔊</span><b>{settings.bedtime ? "Bedtime story" : "Nani reads"}</b>
+                <small>{listener ? "Listen and tap the words you like." : "Karaoke story. You read the magic words."}</small>
+              </button>
+              {!listener && (
+                <button className="mode" onClick={() => onStart(today, "read", false)}>
+                  <span className="mi">📖</span><b>I read</b><small>Sound off. A grown-up reads with you.</small>
+                </button>
+              )}
+            </div>
+          )}
         </>
       ) : (
         <p className="note">No story fits {kid.name}'s sounds yet. A grown-up can add sounds in Settings.</p>
