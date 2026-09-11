@@ -303,7 +303,10 @@
     }
    ],
    "audio": "p4.m4a",
-   "audioMs": 9340
+   "audioMs": 9340,
+   "magic": [
+    "tap"
+   ]
   },
   {
    "art": "🐦",

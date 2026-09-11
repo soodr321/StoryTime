@@ -23,6 +23,7 @@ interface Family {
   encodingDone: (slug: string, word: string, ok: boolean) => Promise<void>;
   advanceReady: boolean;
   nights: number;
+  pendingBuild: string | null;   // a word whose build failed and has not succeeded since
   stories: Story[];                       // library + family stories
   storiesFor: (kid: Kid) => Story[];      // those the kid can do
   todayFor: (kid: Kid) => Story | null;   // a shaky story again, else next unfinished that fits, else least recently finished
@@ -79,9 +80,13 @@ export function FamilyProvider({ children }: { children: ReactNode }) {
   const todayFor = useCallback((kid: Kid) => {
     const list = storiesFor(kid); if (!list.length) return null;
     if (shaky && kid.role !== "listener") { const s = list.find((x) => x.slug === shaky); if (s) return s; }
-    const unfinished = list.filter((s) => !progress[s.slug]);
+    // practise the newest sound: prefer the story whose magic words use it most; unfinished first, then least recent
+    const newest = kid.gpcs[kid.gpcs.length - 1];
+    const uses = (s: Story) => s.pages.flatMap((p) => p.magic ?? []).filter((m) => newest && m.includes(newest)).length;
+    const byNewest = (a: Story, b: Story) => uses(b) - uses(a);
+    const unfinished = list.filter((s) => !progress[s.slug]).sort(byNewest);
     if (unfinished.length) return unfinished[0];
-    return [...list].sort((a, b) => (progress[a.slug]?.lastFinished ?? 0) - (progress[b.slug]?.lastFinished ?? 0))[0];
+    return [...list].sort((a, b) => byNewest(a, b) || (progress[a.slug]?.lastFinished ?? 0) - (progress[b.slug]?.lastFinished ?? 0))[0];
   }, [storiesFor, progress, shaky]);
 
   // functional updates: two edits in one tick (welcome screen) must not clobber each other
@@ -93,9 +98,10 @@ export function FamilyProvider({ children }: { children: ReactNode }) {
   const session = activeKid ? sessions[activeKid.id] ?? null : null;
   const value: Family = {
     ready, fatal, kids, settings, customs, sessions, session, activeKid, progress, review, stories, storiesFor, todayFor, repeatToday: !!shaky && activeKid?.role !== "listener",
-    encodingDone: async (slug, word, ok) => { if (!activeKid) return; await recordEncoding(activeKid.id, slug, word, ok); setProgress(await loadProgress(activeKid.id)); },
+    encodingDone: async (slug, word, ok) => { if (!activeKid) return; await recordEncoding(activeKid.id, slug, word, ok); if (!ok) { await scheduleReview(activeKid.id, [{ word, ok: false, mode: "skipped" }]); setReview(dueReview(await loadReview(activeKid.id))); } setProgress(await loadProgress(activeKid.id)); },
     advanceReady: !!activeKid && readyToAdvance(attempts, activeKid.gpcs.length, progress, review.length),
-    nights: new Set(Object.values(progress).flatMap((p) => p.history ?? []).map((t) => new Date(t).toDateString())).size,
+    nights: new Set([...Object.values(progress).flatMap((p) => p.history ?? []).map((t) => new Date(t).toDateString()), ...(activeKid?.teachDays ?? []).map((d) => new Date(d).toDateString())]).size,
+    pendingBuild: (() => { const enc = Object.values(progress).flatMap((p) => p.encoding ?? []).sort((a, b) => a.at - b.at); const failed = enc.filter((e) => !e.ok).map((e) => e.word); return failed.find((w) => !enc.some((e) => e.word === w && e.ok && e.at > (enc.find((f) => f.word === w && !f.ok)?.at ?? 0))) ?? null; })(),
     reviewDone: async (results) => { if (!activeKid) return; await scheduleReview(activeKid.id, results); setReview(dueReview(await loadReview(activeKid.id))); },
     setActiveKid: (id) => updateSettings({ activeKid: id }),
     updateKid: (kid) => mutateKids((prev) => prev.map((k) => (k.id === kid.id ? kid : k))),
@@ -104,7 +110,7 @@ export function FamilyProvider({ children }: { children: ReactNode }) {
     updateSettings,
     toast,
     setSession: async (s) => { if (!activeKid) return; setSessions((all) => { const n = { ...all }; if (s) n[activeKid.id] = s; else delete n[activeKid.id]; return n; }); try { await saveSession(activeKid.id, s); } catch { fail("Couldn't save your place on this device."); } },
-    finish: async (kidId, slug, results) => { try { await recordFinish(kidId, slug, results); await scheduleReview(kidId, results); const kid = kids.find((k) => k.id === kidId); await recordAttempt(kidId, { at: Date.now(), slug, gpcCount: kid?.gpcs.length ?? 0, firstTryRate: results.length ? results.filter((r) => r.ok && r.mode === "first_try").length / results.length : 0, words: results.length }); setAttempts(await loadAttempts(kidId)); setProgress(await loadProgress(kidId)); setReview(dueReview(await loadReview(kidId))); await saveSession(kidId, null); } catch { fail("Couldn't save progress on this device."); } setSessions((all) => { const n = { ...all }; delete n[kidId]; return n; }); },
+    finish: async (kidId, slug, results) => { try { await recordFinish(kidId, slug, results); await scheduleReview(kidId, results); const kid = kids.find((k) => k.id === kidId); await recordAttempt(kidId, { at: Date.now(), slug, gpcCount: kid?.gpcs.length ?? 0, firstTryRate: results.length ? results.filter((r) => r.ok && r.mode === "first_try").length / results.length : 0, words: results.length, firstTry: results.filter((r) => r.ok && r.mode === "first_try").length }); setAttempts(await loadAttempts(kidId)); setProgress(await loadProgress(kidId)); setReview(dueReview(await loadReview(kidId))); await saveSession(kidId, null); } catch { fail("Couldn't save progress on this device."); } setSessions((all) => { const n = { ...all }; delete n[kidId]; return n; }); },
     addCustom: async (s) => { const n = [s, ...customs.filter((c) => c.slug !== s.slug)]; try { await saveCustomStories(n); setCustoms(n); return true; } catch { fail("Not saved — this device is out of space. Remove a photo and try again."); return false; } },
     removeCustom: (slug) => { const n = customs.filter((c) => c.slug !== slug); setCustoms(n); void saveCustomStories(n); },
   };

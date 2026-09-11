@@ -41,10 +41,7 @@ describe.each(slugs)("library/%s", (slug) => {
     expect(story.pages.length).toBeGreaterThanOrEqual(2);
     for (const p of story.pages) expect((p.tokens ?? []).length, "page has words").toBeGreaterThan(0);
   });
-  it("uses each magic word at most once (a result is keyed by word)", () => {
-    const all = story.pages.flatMap((p) => p.magic ?? []);
-    expect(new Set(all).size).toBe(all.length);
-  });
+  // a magic word may recur across pages: results are keyed by page + token index, so each occurrence is its own turn
   it("ships the narration it references (when audio has been generated)", () => {
     if (!existsSync(PUB)) return; // fresh checkout: gen-audio.py has not run; deploy-pages.sh refuses to publish in that state
     for (const p of story.pages) { if (p.audio) { expect(existsSync(join(PUB, slug, p.audio)), `${slug}/${p.audio}`).toBe(true); expect(p.audioMs ?? 0).toBeGreaterThan(500); } }

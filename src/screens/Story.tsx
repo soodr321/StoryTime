@@ -194,7 +194,7 @@ export function StoryScreen({ story, mode, resume, onHome }: { story: Story; mod
         />
       )}
 
-      {state === "moral" && <Moral story={story} learner={learner} listener={listener} kid={kid.name} reader={reader} listen={listen} setCaption={setCaption} buildWord={ctx.results.find((r) => r.ok && r.mode === "first_try")?.word ?? null} onBuilt={(w, ok) => void fam.encodingDone(story.slug, w, ok)} onYes={() => send({ type: "LINE_YES" })} />}
+      {state === "moral" && <Moral story={story} learner={learner} listener={listener} kid={kid.name} reader={reader} listen={listen} setCaption={setCaption} buildWord={fam.pendingBuild ?? ctx.results.find((r) => r.ok && r.mode === "first_try")?.word ?? null} onBuilt={(w, ok) => void fam.encodingDone(story.slug, w, ok)} onYes={() => send({ type: "LINE_YES" })} />}
       {state === "done" && <Done story={story} results={ctx.results} bedtime={bedtime} kid={kid.name} learner={learner} onHome={home} />}
 
       <div className="cap" aria-live="polite">{caption}</div>

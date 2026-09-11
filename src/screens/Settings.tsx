@@ -68,10 +68,10 @@ function KidEditor({ kid, onChange, onRemove }: { kid: Kid; onChange: (k: Kid) =
         </select>
         {onRemove && <button className="linkbtn" onClick={onRemove}>remove</button>}
       </div>
-      <p className="legend">Sounds taught so far: <select value={known} onChange={(e) => onChange({ ...kid, gpcs: ALL_GPCS.slice(0, +e.target.value) })} aria-label="level">{[4, 8, 12, 16, 23].map((n) => <option key={n} value={n}>{ALL_GPCS.slice(0, n).join(" ")}</option>)}</select></p>
-      <p className="legend">Or tap the last sound you've taught (you'll hear it — the sound, never the letter name):</p>
+      <p className="legend">Sounds taught so far: <select value={known} onChange={(e) => onChange({ ...kid, gpcs: ALL_GPCS.slice(0, +e.target.value) })} aria-label="level">{[0, 1, 2, 3, 4, 8, 12, 16, 23].map((n) => <option key={n} value={n}>{n === 0 ? "none yet" : ALL_GPCS.slice(0, n).join(" ")}</option>)}</select></p>
+      <p className="legend">Tap any sound to hear it (the sound, never the letter name). Taught sounds are green; change them with the list above or the 90-second teach routine on Home.</p>
       <div className="chips">
-        {ALL_GPCS.map((g, i) => <button key={g} className={"tog" + (i < known ? " on" : "")} title="tap: hear the sound and set as taught" onClick={() => { void playClip(soundAsset(GRAPHEME_SOUND[g].clip)).done.catch(() => {}); onChange({ ...kid, gpcs: ALL_GPCS.slice(0, i + 1) }); }}>{g}</button>)}
+        {ALL_GPCS.map((g, i) => <button key={g} className={"tog" + (i < known ? " on" : "")} title="tap: hear the sound" onClick={() => void playClip(soundAsset(GRAPHEME_SOUND[g].clip)).done.catch(() => {})}>{g}</button>)}
       </div>
       <p className="legend">Tricky words taught. Most of each word is regular; the app shows the regular part and marks only the odd bit (the → th + e). Only tick ones you have taught.</p>
       <div className="chips">

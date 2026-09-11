@@ -21,8 +21,9 @@ export default function App() {
 function Shell() {
   const fam = useFamily();
   const [route, setRoute] = useState<Route>({ name: "home" });
+  const [ignoreFatal, setIgnoreFatal] = useState(false);
   if (!fam.ready) return <div className="app"><main className="home-screen"><p className="note">Opening StoryTime…</p></main></div>;
-  if (fam.fatal) return <div className="app"><main className="home-screen"><h2>Storage needs a hand</h2><p className="note">This phone would not open StoryTime's saved data ({fam.fatal}). Private browsing or a full phone can cause this. You can still read a story now; progress will not be kept until it is fixed.</p><div className="btns"><button className="yes" onClick={() => location.reload()}>Try again</button><button className="no" onClick={async () => { try { indexedDB.deleteDatabase("keyval-store"); } catch { /* ignore */ } location.reload(); }}>Reset saved data</button></div></main></div>;
+  if (fam.fatal && !ignoreFatal) return <div className="app"><main className="home-screen"><h2>Storage needs a hand</h2><p className="note">This phone would not open StoryTime's saved data ({fam.fatal}). Private browsing or a full phone can cause this.</p><div className="btns"><button className="yes" onClick={() => setIgnoreFatal(true)}>Read tonight without saving</button><button className="no" onClick={() => location.reload()}>Try again</button></div><button className="linkbtn" onClick={async () => { try { indexedDB.deleteDatabase("keyval-store"); } catch { /* ignore */ } location.reload(); }}>reset saved data</button></main></div>;
 
   const start = (story: Story, mode: Mode, resume = false) => { void unlock(); setRoute({ name: "story", story, mode, resume }); };
   const dim = fam.settings.bedtime ? " bedtime" : "";

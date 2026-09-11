@@ -19,6 +19,8 @@ export interface Kid {
   /** "reader" does magic words; "listener" (younger sibling) only listens and taps */
   role: "reader" | "listener";
   createdAt: number;
+  /** ISO dates on which a sound was taught (counts as a night; one new sound per day for the first four) */
+  teachDays?: string[];
 }
 
 export interface WordResult { word: string; ok: boolean; mode: string; at: number }
@@ -71,7 +73,7 @@ export async function recordEncoding(kidId: string, slug: string, word: string, 
 }
 
 /** One finished reading session (the same story twice counts twice), stamped with how many sounds the child knew. */
-export interface Attempt { at: number; slug: string; gpcCount: number; firstTryRate: number; words: number }
+export interface Attempt { at: number; slug: string; gpcCount: number; firstTryRate: number; words: number; firstTry?: number }
 const attemptsKey = (kidId: string) => `st:attempts:${kidId}`;
 export async function loadAttempts(kidId: string): Promise<Attempt[]> { return (await get(attemptsKey(kidId))) ?? []; }
 export async function recordAttempt(kidId: string, a: Attempt): Promise<void> { const all = await loadAttempts(kidId); await set(attemptsKey(kidId), [...all, a].slice(-200)); }
@@ -80,8 +82,10 @@ export async function recordAttempt(kidId: string, a: Attempt): Promise<void> { 
 export function readyToAdvance(attempts: Attempt[], gpcCount: number, progress: Record<string, StoryProgress>, due: number, now = Date.now()): boolean {
   const sinceTeach = attempts.filter((a) => a.gpcCount === gpcCount && a.words > 0);
   if (sinceTeach.length < 2 || due > 0) return false;
-  const last2 = sinceTeach.slice(-2);
-  const allOk = last2.every((a) => a.firstTryRate >= 0.8);
+  // a rolling pool of the last ~10 magic-word attempts, not one tiny story: one nudge on a two-word book must not freeze progress
+  let words = 0, ok = 0;
+  for (const a of [...sinceTeach].reverse()) { if (words >= 10) break; const take = Math.min(a.words, 10 - words); ok += (a.firstTry ?? Math.round(a.firstTryRate * a.words)) * (take / a.words); words += take; }
+  const allOk = words >= 4 && ok / words >= 0.8;
   const built = Object.values(progress).some((p) => (p.encoding ?? []).some((e) => e.ok && now - e.at < 7 * DAY));
   return allOk && built;
 }

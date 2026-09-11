@@ -16,7 +16,9 @@ import { LEVELS, TRICKY_PARTS } from "../lib/phonics/learner";
 
 export function TeachSoundScreen({ onDone }: { onDone: () => void }) {
   const { activeKid: kid, updateKid, settings, advanceReady: ready } = useFamily();
-  const advanceReady = ready || (kid?.gpcs.length ?? 0) < 4;   // the first four sounds have no stories to prove readiness with
+  const today = new Date().toDateString();
+  const taughtToday = (kid?.teachDays ?? []).some((d) => new Date(d).toDateString() === today);
+  const advanceReady = (ready || (kid?.gpcs.length ?? 0) < 4) && !taughtToday;   // the first four sounds need no story evidence, but one new sound per day
   const [override, setOverride] = useState(false);
   const reader = settings.tonight ?? settings.readers[0] ?? "Grown-up";
   const g = kid ? LS_PHASE2_ORDER[kid.gpcs.length] : undefined;
@@ -42,9 +44,9 @@ export function TeachSoundScreen({ onDone }: { onDone: () => void }) {
       <section className="pc"><h3>{steps[step].title}</h3>{steps[step].body}</section>
       <div className="btns">
         {step > 0 && <button className="no" onClick={() => setStep(step - 1)}>← back</button>}
-        {!last ? <button className="yes" onClick={() => setStep(step + 1)}>Next →</button> : <button className="yes" disabled={!advanceReady && !override} onClick={() => { updateKid({ ...kid, gpcs: ALL_GPCS.slice(0, nextCount), tricky: [...new Set([...kid.tricky, ...newTricky])] }); onDone(); }}>Taught today ✓</button>}
+        {!last ? <button className="yes" onClick={() => setStep(step + 1)}>Next →</button> : <button className="yes" disabled={!advanceReady && !override} onClick={() => { updateKid({ ...kid, gpcs: ALL_GPCS.slice(0, nextCount), tricky: [...new Set([...kid.tricky, ...newTricky])], teachDays: [...(kid.teachDays ?? []), new Date().toISOString()] }); onDone(); }}>Taught today ✓</button>}
       </div>
-      {last && !advanceReady && !override && <p className="legend">{kid.name} has not blended the current sounds first-try in two sessions yet, so this stays practice for today. <button className="linkbtn" onClick={() => setOverride(true)}>mark it taught anyway</button></p>}
+      {last && !advanceReady && !override && <p className="legend">{taughtToday ? `One new sound a day: ${kid.name} learned one today already. Replay it now; come back tomorrow for the next.` : `${kid.name} has not blended the current sounds first-try in two sessions yet, so this stays practice for today.`} <button className="linkbtn" onClick={() => setOverride(true)}>mark it taught anyway</button></p>}
       <p className="legend">“Taught today” adds {g}{newTricky.length ? ` and the tricky word${newTricky.length > 1 ? "s" : ""} ${newTricky.join(", ")}` : ""} to {kid.name}'s sounds. They show up in magic words and the warm-up from tomorrow.</p>
     </main>
   );

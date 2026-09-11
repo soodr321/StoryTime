@@ -350,7 +350,10 @@
     }
    ],
    "audio": "p5.m4a",
-   "audioMs": 7800
+   "audioMs": 7800,
+   "magic": [
+    "pat"
+   ]
   },
   {
    "art": "☀️",

@@ -42,7 +42,7 @@ export function HomeScreen({ onStart, onLibrary, onSwitch, onWarmUp, onTeach }: 
       <div className="row between" style={{ width: "min(100%, 420px)" }}><WeekStrip days={days} /><span className="nights">night <b>{Math.min(30, nights + 1)}</b> of 30</span></div>
       {!listener && nights >= 30 && <div className="champion"><span>🏅</span><b>30 nights of reading!</b><small>{kid.name} is a Reading Champion. Keep the ritual: one story, then a real book.</small></div>}
       {!listener && kid.gpcs.length < 4 && (
-        <button className="readycard" onClick={onTeach}><b>Teach today's sound: {LS_PHASE2_ORDER[kid.gpcs.length]}</b><small>90 seconds. After four sounds the first story unlocks.</small></button>
+        <button className="readycard" onClick={onTeach}><b>{(kid.teachDays ?? []).some((d) => new Date(d).toDateString() === new Date().toDateString()) ? `Replay today's sound: ${kid.gpcs[kid.gpcs.length - 1]}` : `Teach today's sound: ${LS_PHASE2_ORDER[kid.gpcs.length]}`}</b><small>90 seconds, one new sound a day. After four sounds the first story unlocks.</small></button>
       )}
       {!listener && advanceReady && kid.gpcs.length >= 4 && kid.gpcs.length < LS_PHASE2_ORDER.length && (
         <button className="readycard" onClick={onTeach}><b>Ready for the next sound-spelling: {LS_PHASE2_ORDER[kid.gpcs.length]}</b><small>Two smooth sessions and a word built. 90 seconds to teach it — you decide when.</small></button>
