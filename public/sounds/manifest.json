@@ -1,0 +1,92 @@
+{
+ "s": {
+  "audio": "s.m4a",
+  "ms": 2520,
+  "recorded": false
+ },
+ "a": {
+  "audio": "a.m4a",
+  "ms": 1920,
+  "recorded": false
+ },
+ "t": {
+  "audio": "t.m4a",
+  "ms": 1900,
+  "recorded": false
+ },
+ "p": {
+  "audio": "p.m4a",
+  "ms": 1870,
+  "recorded": false
+ },
+ "i": {
+  "audio": "i.m4a",
+  "ms": 1870,
+  "recorded": false
+ },
+ "n": {
+  "audio": "n.m4a",
+  "ms": 2260,
+  "recorded": false
+ },
+ "m": {
+  "audio": "m.m4a",
+  "ms": 1920,
+  "recorded": false
+ },
+ "d": {
+  "audio": "d.m4a",
+  "ms": 1940,
+  "recorded": false
+ },
+ "g": {
+  "audio": "g.m4a",
+  "ms": 1920,
+  "recorded": false
+ },
+ "o": {
+  "audio": "o.m4a",
+  "ms": 1850,
+  "recorded": false
+ },
+ "k": {
+  "audio": "k.m4a",
+  "ms": 1970,
+  "recorded": false
+ },
+ "e": {
+  "audio": "e.m4a",
+  "ms": 1870,
+  "recorded": false
+ },
+ "u": {
+  "audio": "u.m4a",
+  "ms": 1900,
+  "recorded": false
+ },
+ "r": {
+  "audio": "r.m4a",
+  "ms": 2180,
+  "recorded": false
+ },
+ "h": {
+  "audio": "h.m4a",
+  "ms": 1990,
+  "recorded": false
+ },
+ "b": {
+  "audio": "b.m4a",
+  "ms": 1940,
+  "recorded": false
+ },
+ "f": {
+  "audio": "f.m4a",
+  "ms": 2400,
+  "recorded": false
+ },
+ "l": {
+  "audio": "l.m4a",
+  "ms": 2300,
+  "recorded": false
+ }
+}

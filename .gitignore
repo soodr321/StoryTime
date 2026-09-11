@@ -1,0 +1,11 @@
+node_modules
+dist
+dev-dist
+.vercel
+# deploy-time audio artefacts (regenerate with scripts/gen-audio.py)
+public/library/
+public/prompts/
+# recorded phoneme clips ARE committed; placeholders are regenerated
+!public/sounds/
+*.log
+.DS_Store

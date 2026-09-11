@@ -1,0 +1,66 @@
+import { describe, expect, it } from "vitest";
+import { checkLine, checkMagicWord, checkWord, normalise } from "./validator";
+import { LEVELS } from "./learner";
+
+const L = LEVELS["ls-phase2-set4"]; // s a t p i n m d g o c k ck e u r + tricky
+
+describe("normalise", () => {
+  it("lowercases and strips punctuation", () => {
+    expect(normalise("“Dear,")).toBe("dear");
+    expect(normalise("It")).toBe("it");
+    expect(normalise("")).toBe("");
+  });
+});
+
+describe("checkWord", () => {
+  it("tokenises CVC words", () => {
+    const r = checkWord("sat", L);
+    expect(r.ok && r.kind === "decodable" && r.graphemes).toEqual(["s", "a", "t"]);
+  });
+  it("prefers the longest grapheme (ck as one sound)", () => {
+    const r = checkWord("trick", L);
+    expect(r.ok && r.graphemes).toEqual(["t", "r", "i", "ck"]);
+  });
+  it("rejects untaught letters with an actionable reason", () => {
+    const r = checkWord("crow", L);
+    expect(r.ok).toBe(false);
+    if (!r.ok) expect(r.reasons[0]).toMatch(/"w".*not a taught sound/);
+  });
+  it("fails closed on empty input", () => {
+    expect(checkWord("", L).ok).toBe(false);
+    expect(checkWord("!!", L).ok).toBe(false);
+  });
+  it("accepts tricky words only when taught, and never tokenises them", () => {
+    const r = checkWord("the", L);
+    expect(r.ok && r.kind === "tricky").toBe(true);
+    const none = checkWord("the", { gpcs: ["t", "h", "e"], tricky: [] });
+    expect(none.ok && none.kind === "decodable").toBe(true); // th-e would be a mis-teach: that is why tricky is a locked set
+  });
+  it("is case-insensitive (sentence case is display-only)", () => {
+    expect(checkWord("It", L).ok).toBe(true);
+  });
+});
+
+describe("checkMagicWord", () => {
+  it("refuses tricky words as magic words", () => {
+    const r = checkMagicWord("is", L);
+    expect(r.ok).toBe(false);
+  });
+  it("accepts decodable words", () => {
+    expect(checkMagicWord("did", L).ok).toBe(true);
+  });
+});
+
+describe("checkLine", () => {
+  it("passes the Fox and Crow read-back line", () => {
+    const r = checkLine("It is a trick.", L);
+    expect(r.ok).toBe(true);
+    expect(r.results.map((x) => (x.ok ? x.kind : "bad"))).toEqual(["decodable", "tricky", "tricky", "decodable"]);
+  });
+  it("fails a line with an untaught grapheme", () => {
+    expect(checkLine("It is a con job.", L).ok).toBe(false);
+  });
+  it("fails an empty line", () => {
+    expect(checkLine("", L).ok).toBe(false);
+  });
+});
