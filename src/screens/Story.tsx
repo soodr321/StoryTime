@@ -15,6 +15,7 @@ import { stretched, playBlend } from "../lib/blend";
 import { SegmentPanel } from "../components/SegmentPanel";
 import type { Verdict } from "../components/MagicPanel";
 import type { Mode } from "./Home";
+import { BookIcon, HomeIcon, LockIcon, MoonIcon, SpeakerIcon, CheckIcon } from "../components/Icons";
 
 type Prompts = Record<string, { audio: string; ms: number }>;
 let promptsCache: Prompts | null = null;
@@ -171,9 +172,9 @@ export function StoryScreen({ story, mode, resume, onHome }: { story: Story; mod
   return (
     <div className={"screen-wrap" + (panelOpen ? " panel-open" : "")}>
       <header className="top">
-        <button className="home" onClick={home} aria-label="Home">⌂</button>
+        <button className="home" onClick={home} aria-label="Home"><HomeIcon /></button>
         <div className="title">{story.title}</div>
-        <div className="lvl">{listen ? (bedtime ? "🌙 bedtime" : "🔊 listen") : "📖 read"}</div>
+        <div className="lvl">{listen ? (bedtime ? <><MoonIcon size={16} /> bedtime</> : <><SpeakerIcon size={16} /> listen</>) : <><BookIcon size={16} /> read</>}</div>
       </header>
 
       {inStory && page && (
@@ -220,7 +221,7 @@ function StoryView({ page, pageNo, total, token, results, readMode, listener, re
   return (
     <main className="story">
       {/* the picture is hidden while a magic word is open: the child reads the letters, not the picture */}
-      <div className={"art-box" + (hideArt ? " veiled" : "")}>{hideArt ? <span className="veil">🔒 read the letters</span> : <Art art={page.art} />}</div>
+      <div className={"art-box" + (hideArt ? " veiled" : "")}>{hideArt ? <span className="veil"><LockIcon size={28} />read the letters</span> : <Art art={page.art} />}</div>
       <div className="text-card">
         <div className="pg">Page {pageNo + 1} of {total}</div>
         <p className="sentence">
@@ -310,7 +311,7 @@ function Moral({ story, learner, listener, kid, reader, listen, setCaption, buil
       )}
       <div className="btns">
         {listener ? <button className="yes" onClick={onYes}>The end ✓</button> : stage === "try" ? (
-          <><button className="no" onClick={() => setStage("help")}>Needs help on a word</button><button className="yes" onClick={finishLine}>✓ Read it smoothly</button></>
+          <><button className="no" onClick={() => setStage("help")}>Needs help on a word</button><button className="yes" onClick={finishLine}><CheckIcon /> Read it smoothly</button></>
         ) : stage === "help" ? (
           <button className="no" onClick={() => setStage("try")}>← back</button>
         ) : stage === "word" ? (
@@ -336,12 +337,12 @@ function Done({ story, results, bedtime, kid, learner, onHome }: { story: Story;
   return (
     <main className="done">
       {!bedtime && ok.length > 0 && <Confetti />}
-      <div className="art-box big"><span>{bedtime ? "🌙" : ok.length ? "📖" : "🌱"}</span></div>
-      <h2>{story.title}</h2>
+      <div className="badge rise">{bedtime ? <MoonIcon size={84} /> : <Art art={story.pages[0].art} />}</div>
+      <h2 className="rise">{story.title}</h2>
       {results.length > 0 && <ul className="results">{results.map((r, i) => <li key={(r.id ?? r.word) + i} className={r.ok ? "ok" : "no"}>{line(r)}</li>)}</ul>}
       <p className="show">{bedtime ? `Lights low. One real book, then sleep.` : ok.length ? `Now go find someone and read them your ${ok.length === 1 ? "word" : "words"}, ${kid}!` : `Good listening, ${kid}. Those words come back tomorrow for a warm-up.`}</p>
       {!bedtime && ok.length > 0 && <p className="bigwords">{ok.map((r, i) => <span key={(r.id ?? r.word) + i}>{r.word}</span>)}</p>}
-      <div className="btns"><button className="yes" onClick={onHome}>Done</button></div>
+      <div className="btns"><button className="yes" onClick={onHome}><CheckIcon /> Done</button></div>
     </main>
   );
 }

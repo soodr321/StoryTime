@@ -9,3 +9,5 @@ public/prompts/
 !public/sounds/
 *.log
 .DS_Store
+design/storytime-redesign.html
+docs/demo/

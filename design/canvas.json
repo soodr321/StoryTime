@@ -1,0 +1,80 @@
+{
+ "artboards": [
+  {
+   "file": "Welcome.dc.html",
+   "x": 0,
+   "y": 0,
+   "w": 390,
+   "h": 844,
+   "title": "1 \u00b7 Welcome"
+  },
+  {
+   "file": "Family.dc.html",
+   "x": 480,
+   "y": 0,
+   "w": 390,
+   "h": 844,
+   "title": "2 \u00b7 Who is reading"
+  },
+  {
+   "file": "Main.dc.html",
+   "x": 960,
+   "y": 0,
+   "w": 390,
+   "h": 844,
+   "title": "3 \u00b7 Home"
+  },
+  {
+   "file": "Story.dc.html",
+   "x": 1440,
+   "y": 0,
+   "w": 390,
+   "h": 844,
+   "title": "4 \u00b7 Magic word"
+  },
+  {
+   "file": "ReadBack.dc.html",
+   "x": 1920,
+   "y": 0,
+   "w": 390,
+   "h": 844,
+   "title": "5 \u00b7 Read-back"
+  },
+  {
+   "file": "Done.dc.html",
+   "x": 2400,
+   "y": 0,
+   "w": 390,
+   "h": 844,
+   "title": "6 \u00b7 The end"
+  },
+  {
+   "file": "OptionB.dc.html",
+   "x": 0,
+   "y": 1000,
+   "w": 390,
+   "h": 560,
+   "title": "Alternate B \u00b7 Night sky (sketch)"
+  },
+  {
+   "file": "OptionC.dc.html",
+   "x": 480,
+   "y": 1000,
+   "w": 390,
+   "h": 560,
+   "title": "Alternate C \u00b7 Paper cut-out (sketch)"
+  }
+ ],
+ "annotations": [
+  {
+   "id": "direction",
+   "x": 960,
+   "y": -140,
+   "w": 420,
+   "text": "Direction A \u00b7 Warm storybook (built): the app's own cream paper, ink and marigold, plus a rounded display face (Baloo 2) and a fox & crow drawn in one stroke style. Calm for Nani, bright for Veer. B and C below are sketches of other directions."
+  }
+ ],
+ "launch": {
+  "view": "canvas"
+ }
+}

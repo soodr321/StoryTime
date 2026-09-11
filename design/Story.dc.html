@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Literata:ital,wght@0,400;0,600;1,400&display=swap">
+  <style>
+    body { margin: 0; font-family: "Literata", Georgia, serif; color: #2b2418; }
+    a { color: #b8541a; } a:hover { color: #92400e; }
+    .display { font-family: "Baloo 2", "Avenir Next", system-ui, sans-serif; }
+    .paper { background: radial-gradient(120% 80% at 50% -10%, #fff8ea 0%, #fbf6ea 45%, #f5ecd8 100%); }
+    @keyframes rise { from { transform: translateY(14px); opacity: 0; } to { transform: none; opacity: 1; } }
+    .rise { animation: rise .7s cubic-bezier(.2,.8,.2,1) both; }
+    .rise2 { animation: rise .7s .15s cubic-bezier(.2,.8,.2,1) both; }
+    .rise3 { animation: rise .7s .3s cubic-bezier(.2,.8,.2,1) both; }
+  </style>
+</helmet>
+<div class="paper" style="width: 390px; height: 844px; box-sizing: border-box; padding: 56px 20px 24px; display: flex; flex-direction: column; gap: 16px; background-color: #fbf6ea; overflow: hidden; position: relative;">
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+  <div style="width: 44px; height: 44px; border-radius: 14px; background: #fffdf7; border: 2px solid #e7dcc4; display: grid; place-items: center; color: #2b2418;"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 4l9 7"/><path d="M5 10v10h14V10"/></svg></div>
+  <div class="display" style="font-size: 20px; font-weight: 800; letter-spacing: .01em;">The Fox and the Crow</div>
+  <div style="min-width: 44px; text-align: right; font-size: 13px; color: #6f6350; font-family: system-ui, sans-serif;">listen</div>
+</div>
+<div style="height: 150px; border-radius: 22px; background: #efe7d6; display: grid; place-items: center; color: #6f6350; font-family: system-ui, sans-serif; font-size: 15px; gap: 4px;">
+  <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#6f6350" stroke-width="2" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+  read the letters
+</div>
+<div style="background: #fffdf7; border: 2px solid #e7dcc4; border-radius: 22px; padding: 14px 16px; font-size: 27px; line-height: 1.6;">
+  <div style="font-family: system-ui, sans-serif; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: #6f6350; margin-bottom: 6px;">Page 6 of 7</div>
+  <span style="display:inline-block;padding:2px 7px;border-radius:9px;background:#d8ecd2;color:#1f4a17;">“Caw!”</span> <span style="display:inline-block;padding:2px 7px;border-radius:9px;background:#d8ecd2;color:#1f4a17;">Down</span> <span style="display:inline-block;padding:2px 7px;border-radius:9px;background:#d8ecd2;color:#1f4a17;">fell</span> <span style="display:inline-block;padding:2px 7px;border-radius:9px;background:#d8ecd2;color:#1f4a17;">the</span> <span style="display:inline-block;padding:2px 7px;border-radius:9px;background:#d8ecd2;color:#1f4a17;">cheese.</span> <span style="display:inline-block;padding:2px 7px;border-radius:9px;background:#d8ecd2;color:#1f4a17;">The</span> <span style="display:inline-block;padding:2px 7px;border-radius:9px;background:#d8ecd2;color:#1f4a17;">fox</span> <span style="display:inline-block;padding:2px 7px;border-radius:9px;background:#d8ecd2;color:#1f4a17;">got</span> <span style="display:inline-block;padding:2px 7px;border-radius:9px;background:#d8ecd2;color:#1f4a17;">it</span> <span style="display:inline-block;padding:2px 7px;border-radius:9px;background:#d8ecd2;color:#1f4a17;">and</span> <span style="display:inline-block;padding:2px 7px;border-radius:9px;background:#f3c7e6;color:#5c1447;font-weight:600;box-shadow:0 0 0 2px #e9a6d3 inset;">ran</span> off.
+</div>
+<div style="margin-top: auto; background: #fffdf7; border: 2px solid #e7dcc4; border-radius: 26px 26px 0 0; margin-left: -20px; margin-right: -20px; margin-bottom: -24px; padding: 16px 18px 26px; box-shadow: 0 -14px 40px rgba(43,36,24,.14); display: flex; flex-direction: column; gap: 12px;">
+  <div style="font-family: system-ui, sans-serif; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: #6f6350;">Magic word · Veer's turn</div>
+  <div class="display" style="font-size: 19px; font-weight: 800; text-align: center; line-height: 1.25;">Start here and slide through the word.</div>
+  <div style="display: flex; gap: 12px; justify-content: center;"><div class="display" style="width: 96px; height: 116px; border-radius: 20px; background: #fbe3f3; color: #5c1447; display: grid; place-items: center; font-size: 66px; font-weight: 800; border: 3px solid #c47ab0; box-shadow: none; position: relative;"><span style="position:absolute; top:8px; font-size: 14px; font-family: system-ui, sans-serif; color: #8a4f78;">rrr</span>r</div><div class="display" style="width: 96px; height: 116px; border-radius: 20px; background: #f3c7e6; color: #5c1447; display: grid; place-items: center; font-size: 66px; font-weight: 800; border: 3px solid transparent; box-shadow: 0 0 0 4px #ffe9a8; position: relative;"><span style="position:absolute; top:8px; font-size: 14px; font-family: system-ui, sans-serif; color: #8a4f78;"></span>a</div><div class="display" style="width: 96px; height: 116px; border-radius: 20px; background: #f8dbef; color: #5c1447; display: grid; place-items: center; font-size: 66px; font-weight: 800; border: 3px solid transparent; box-shadow: none; position: relative;"><span style="position:absolute; top:8px; font-size: 14px; font-family: system-ui, sans-serif; color: #8a4f78;"></span>n</div></div>
+  <div style="height: 6px; margin: 0 14px; background: #e7dcc4; border-radius: 3px; overflow: hidden;"><div style="width: 38%; height: 100%; background: #b8541a; border-radius: 3px;"></div></div>
+  <div style="border-top: 2px dashed #e7dcc4; padding-top: 10px; display: flex; flex-direction: column; gap: 10px;">
+    <div style="font-size: 16px; text-align: center;"><span style="background:#ffe9a8;border-radius:8px;padding:2px 8px;font-family:system-ui,sans-serif;font-size:13px;">Nani</span> wait 5 seconds. Did Veer say it as <b>one word</b>?</div>
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px;">
+      <div class="display" style="height: 60px; border-radius: 16px; background: #e8e1d3; display: grid; place-items: center; font-size: 20px; font-weight: 800;">Needs help</div>
+      <div class="display" style="height: 60px; border-radius: 16px; background: #cfe8c6; color: #1f4a17; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 20px; font-weight: 800;"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L19 7"/></svg> First try</div>
+    </div>
+  </div>
+</div>
+</div></x-dc>
+</body>
+</html>

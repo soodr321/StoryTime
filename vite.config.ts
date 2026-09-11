@@ -28,7 +28,7 @@ export default defineConfig({
       workbox: {
         // App shell is precached. Library audio is cache-on-play with a small LRU so the
         // audio cache can never push the origin over iOS quota and evict IndexedDB.
-        globPatterns: ["**/*.{js,css,html,png,svg,json}"],
+        globPatterns: ["**/*.{js,css,html,png,svg,json,woff2}"],
         globIgnores: ["library/**", "prompts/**"],
         runtimeCaching: [
           {

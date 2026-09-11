@@ -1,3 +1,4 @@
+import { BookIcon, SpeakerIcon } from "../components/Icons";
 import { useState } from "react";
 import { useFamily } from "../lib/family";
 import { TRADITION_LABEL, fits } from "../lib/library";
@@ -31,8 +32,8 @@ export function LibraryScreen({ onStart, onBack }: { onStart: (s: Story, mode: M
         <div className="pc confirmbox">
           <p><b>{picked.title}</b> · {p2(progress, picked.slug)}</p>
           <div className="modes">
-            <button className="mode" onClick={() => onStart(picked, "listen", false)}><span className="mi">🔊</span><b>Nani reads</b><small>karaoke; {kid.name} reads the magic words</small></button>
-            {kid.role !== "listener" && <button className="mode" onClick={() => onStart(picked, "read", false)}><span className="mi">📖</span><b>I read</b><small>sound off; reread a favourite for fluency</small></button>}
+            <button className="mode" onClick={() => onStart(picked, "listen", false)}><span className="mi"><SpeakerIcon /></span><b>Nani reads</b><small>karaoke; {kid.name} reads the magic words</small></button>
+            {kid.role !== "listener" && <button className="mode" onClick={() => onStart(picked, "read", false)}><span className="mi"><BookIcon /></span><b>I read</b><small>sound off; reread a favourite for fluency</small></button>}
           </div>
           <button className="linkbtn" onClick={() => setPicked(null)}>cancel</button>
         </div>

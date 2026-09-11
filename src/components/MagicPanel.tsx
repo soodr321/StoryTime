@@ -3,6 +3,7 @@ import { GRAPHEME_SOUND } from "../lib/phonics/learner";
 import { checkWord, type LearnerModel } from "../lib/phonics/validator";
 import { playClip } from "../lib/audio/player";
 import { soundAsset } from "../lib/library";
+import { CheckIcon } from "./Icons";
 
 export type Verdict = "first_try" | "prompted";
 
@@ -46,7 +47,7 @@ export function MagicPanel({ word, learner, modelling, modelledOnce, sweep, kid,
             <div className="hint"><span className="tag">{reader}</span> wait 5 seconds. Did {kid} say it as <b>one word</b>? <small className="legend">(stuck on a sound? tap that letter — never say its name)</small></div>
             <div className="btns">
               <button className="no" disabled={modelling} onClick={() => setHelp(true)}>Needs help</button>
-              <button className="yes" disabled={modelling} onClick={() => onYes("first_try")}>✓ First try</button>
+              <button className="yes" disabled={modelling} onClick={() => onYes("first_try")}><CheckIcon /> First try</button>
             </div>
           </>
         ) : modelledOnce ? (
@@ -62,7 +63,7 @@ export function MagicPanel({ word, learner, modelling, modelledOnce, sweep, kid,
             <div className="hint"><span className="tag">{reader}</span> one nudge, then wait: point to the first letter and say <em>“Start here… slide.”</em> Nothing more.</div>
             <div className="btns">
               <button className="no" disabled={modelling} onClick={onTogether}>Show me: slide through it</button>
-              <button className="yes soft" disabled={modelling} onClick={() => onYes("prompted")}>✓ After a nudge</button>
+              <button className="yes soft" disabled={modelling} onClick={() => onYes("prompted")}><CheckIcon /> After a nudge</button>
             </div>
           </>
         )}

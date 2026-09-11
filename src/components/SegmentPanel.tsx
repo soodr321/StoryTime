@@ -5,6 +5,7 @@ import { playClip } from "../lib/audio/player";
 import { soundAsset } from "../lib/library";
 import { speakText } from "../lib/audio/speech";
 import { playBlend } from "../lib/blend";
+import { SpeakerIcon, CheckIcon } from "./Icons";
 
 /**
  * One-word dictation (30–45 s) after the read-back: the word is hidden; the grown-up says it;
@@ -39,7 +40,7 @@ export function SegmentPanel({ word, learner, kid, reader, listen, onDone }: { w
     <section className="panel" role="dialog" aria-label="Build the word">
       <div className="kicker">Build it · {kid}'s turn</div>
       <h2 className="panel-h">{reader} says the word. {kid} counts the sounds on fingers, then builds it{learner.gpcs.filter((g) => "aeiou".includes(g)).length > 1 ? " — listen for the middle sound" : ""}.</h2>
-      <div className="row center"><button className="small" onClick={sayWord}>🔊 say the word</button><span className="legend">(the word stays hidden)</span></div>
+      <div className="row center"><button className="small row" onClick={sayWord}><SpeakerIcon size={18} /> say the word</button><span className="legend">(the word stays hidden)</span></div>
       {!counted ? (
         <div className="row center"><span className="legend">How many sounds? Fingers up.</span><button className="small" onClick={() => setCounted(true)}>they held up {target.length} ✓</button></div>
       ) : (<>
@@ -51,7 +52,7 @@ export function SegmentPanel({ word, learner, kid, reader, listen, onDone }: { w
         <div className="hint"><span className="tag">{reader}</span> {full ? (correct ? `That spells ${word}. Did ${kid} read it back?` : `Not ${word} yet — try together?`) : "Let them pick the tiles."}</div>
         <div className="btns">
           <button className="no" disabled={busy} onClick={model}>Try together</button>
-          <button className="yes" disabled={!correct || busy} onClick={() => onDone(!modelled)}>✓ Spelled it</button>
+          <button className="yes" disabled={!correct || busy} onClick={() => onDone(!modelled)}><CheckIcon /> Spelled it</button>
         </div>
         <button className="skip" onClick={() => onDone(false)}>skip building today →</button>
       </div>

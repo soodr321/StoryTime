@@ -5,6 +5,7 @@ import { ALL_GPCS, ALL_TRICKY, uid } from "../lib/store";
 import { playClip } from "../lib/audio/player";
 import { soundAsset } from "../lib/library";
 import { GRAPHEME_SOUND } from "../lib/phonics/learner";
+import { Mascots } from "../components/Icons";
 
 const LEVELS_UI = [
   { n: 0, label: "none yet", hint: "starting from scratch: we teach s first" },
@@ -38,9 +39,8 @@ export function WelcomeScreen({ onDone }: { onDone: () => void }) {
 
   return (
     <main className="settings welcome">
-      <div className="kicker">Welcome to StoryTime</div>
-      <h2>Nani reads the story.<br />Your child reads the magic words.</h2>
-      <section className="pc">
+      <div className="hero rise"><Mascots /><h1>StoryTime</h1><h2>Nani reads the story.<br />Your child reads the magic words.</h2></div>
+      <section className="pc rise2">
         <label className="lbl">Who is learning to read? <input value={name} onChange={(e) => setName(e.target.value)} placeholder="first name" /></label>
         <div className="chips">{AVATARS.map((a) => <button key={a} className={"emo" + (avatar === a ? " on" : "")} onClick={() => setAvatar(a)}>{a}</button>)}</div>
         <p className="legend">How far along are they? Tap the last row that is true (you'll hear its newest sound — these are sounds, never letter names).</p>
@@ -48,12 +48,12 @@ export function WelcomeScreen({ onDone }: { onDone: () => void }) {
           {LEVELS_UI.map((l, i) => <button key={l.n} className={"lvlrow" + (i === level ? " on" : "")} onClick={() => { setLevel(i); if (l.n > 0) { const g = ALL_GPCS[l.n - 1]; void playClip(soundAsset(GRAPHEME_SOUND[g].clip)).done.catch(() => {}); } }}><b>{l.label}</b><small>{l.hint}{l.n > 0 ? " · 🔊" : ""}</small></button>)}
         </div>
       </section>
-      <section className="pc">
+      <section className="pc rise3">
         <label className="lbl">A younger brother or sister who listens along? <input value={sibling} onChange={(e) => setSibling(e.target.value)} placeholder="name, or leave blank" /></label>
         <label className="lbl">Who reads with them tonight? <input value={grownup} onChange={(e) => setGrownup(e.target.value)} placeholder="Nani, Papa, Mama…" /></label>
       </section>
-      <button className="next" onClick={finish}>Start reading →</button>
-      <p className="legend">Nothing leaves this device. You can change all of this later under ⚙︎.</p>
+      <button className="next rise3" onClick={finish}>Start reading →</button>
+      <p className="legend">Nothing leaves this device. You can change all of this later in Settings.</p>
     </main>
   );
 }

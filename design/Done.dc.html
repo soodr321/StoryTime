@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Literata:ital,wght@0,400;0,600;1,400&display=swap">
+  <style>
+    body { margin: 0; font-family: "Literata", Georgia, serif; color: #2b2418; }
+    a { color: #b8541a; } a:hover { color: #92400e; }
+    .display { font-family: "Baloo 2", "Avenir Next", system-ui, sans-serif; }
+    .paper { background: radial-gradient(120% 80% at 50% -10%, #fff8ea 0%, #fbf6ea 45%, #f5ecd8 100%); }
+    @keyframes rise { from { transform: translateY(14px); opacity: 0; } to { transform: none; opacity: 1; } }
+    .rise { animation: rise .7s cubic-bezier(.2,.8,.2,1) both; }
+    .rise2 { animation: rise .7s .15s cubic-bezier(.2,.8,.2,1) both; }
+    .rise3 { animation: rise .7s .3s cubic-bezier(.2,.8,.2,1) both; }
+  </style>
+</helmet>
+<div class="paper" style="width: 390px; height: 844px; box-sizing: border-box; padding: 56px 20px 24px; display: flex; flex-direction: column; gap: 16px; background-color: #fbf6ea; overflow: hidden; position: relative;">
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+  <div style="width: 44px; height: 44px; border-radius: 14px; background: #fffdf7; border: 2px solid #e7dcc4; display: grid; place-items: center; color: #2b2418;"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 4l9 7"/><path d="M5 10v10h14V10"/></svg></div>
+  <div class="display" style="font-size: 20px; font-weight: 800; letter-spacing: .01em;">The Fox and the Crow</div>
+  <div style="min-width: 44px; text-align: right; font-size: 13px; color: #6f6350; font-family: system-ui, sans-serif;"></div>
+</div>
+<div style="position: absolute; inset: 0; pointer-events: none;"><div style="position:absolute; left:0%; top:0%; width:10px; height:14px; border-radius:2px; background:#f3c7e6; transform: rotate(0deg);"></div><div style="position:absolute; left:37%; top:13%; width:10px; height:14px; border-radius:2px; background:#d8ecd2; transform: rotate(40deg);"></div><div style="position:absolute; left:74%; top:26%; width:10px; height:14px; border-radius:2px; background:#ffe9a8; transform: rotate(80deg);"></div><div style="position:absolute; left:11%; top:39%; width:10px; height:14px; border-radius:2px; background:#dbe7f7; transform: rotate(120deg);"></div><div style="position:absolute; left:48%; top:12%; width:10px; height:14px; border-radius:2px; background:#f3c7e6; transform: rotate(160deg);"></div><div style="position:absolute; left:85%; top:25%; width:10px; height:14px; border-radius:2px; background:#d8ecd2; transform: rotate(200deg);"></div><div style="position:absolute; left:22%; top:38%; width:10px; height:14px; border-radius:2px; background:#ffe9a8; transform: rotate(240deg);"></div><div style="position:absolute; left:59%; top:11%; width:10px; height:14px; border-radius:2px; background:#dbe7f7; transform: rotate(280deg);"></div><div style="position:absolute; left:96%; top:24%; width:10px; height:14px; border-radius:2px; background:#f3c7e6; transform: rotate(320deg);"></div><div style="position:absolute; left:33%; top:37%; width:10px; height:14px; border-radius:2px; background:#d8ecd2; transform: rotate(360deg);"></div><div style="position:absolute; left:70%; top:10%; width:10px; height:14px; border-radius:2px; background:#ffe9a8; transform: rotate(400deg);"></div><div style="position:absolute; left:7%; top:23%; width:10px; height:14px; border-radius:2px; background:#dbe7f7; transform: rotate(440deg);"></div><div style="position:absolute; left:44%; top:36%; width:10px; height:14px; border-radius:2px; background:#f3c7e6; transform: rotate(480deg);"></div><div style="position:absolute; left:81%; top:9%; width:10px; height:14px; border-radius:2px; background:#d8ecd2; transform: rotate(520deg);"></div><div style="position:absolute; left:18%; top:22%; width:10px; height:14px; border-radius:2px; background:#ffe9a8; transform: rotate(560deg);"></div><div style="position:absolute; left:55%; top:35%; width:10px; height:14px; border-radius:2px; background:#dbe7f7; transform: rotate(600deg);"></div><div style="position:absolute; left:92%; top:8%; width:10px; height:14px; border-radius:2px; background:#f3c7e6; transform: rotate(640deg);"></div><div style="position:absolute; left:29%; top:21%; width:10px; height:14px; border-radius:2px; background:#d8ecd2; transform: rotate(680deg);"></div><div style="position:absolute; left:66%; top:34%; width:10px; height:14px; border-radius:2px; background:#ffe9a8; transform: rotate(720deg);"></div><div style="position:absolute; left:3%; top:7%; width:10px; height:14px; border-radius:2px; background:#dbe7f7; transform: rotate(760deg);"></div><div style="position:absolute; left:40%; top:20%; width:10px; height:14px; border-radius:2px; background:#f3c7e6; transform: rotate(800deg);"></div><div style="position:absolute; left:77%; top:33%; width:10px; height:14px; border-radius:2px; background:#d8ecd2; transform: rotate(840deg);"></div></div>
+<div class="rise" style="text-align: center; margin-top: 24px; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+  <div style="width: 140px; height: 140px; border-radius: 50%; background: #ffe9a8; display: grid; place-items: center;"><svg viewBox="0 0 120 120" width="110" height="110" fill="none" stroke="#2b2418" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 40 L36 70 L84 70 L100 40 L78 52 L60 44 L42 52 Z" fill="#f4a261"/><path d="M36 70 C36 96 84 96 84 70" fill="#fff3e8"/><circle cx="50" cy="60" r="3" fill="#2b2418"/><circle cx="70" cy="60" r="3" fill="#2b2418"/><path d="M56 78 L60 82 L64 78" /><path d="M20 40 L30 20 L44 38" fill="#f4a261"/><path d="M100 40 L90 20 L76 38" fill="#f4a261"/></svg></div>
+  <div class="display" style="font-size: 30px; font-weight: 800; line-height: 1.1;">The Fox and the Crow</div>
+  <div style="font-size: 15px; color: #6f6350;">4 of 4 magic words blended</div>
+</div>
+<div class="rise2" style="display: flex; flex-direction: column; gap: 8px; font-family: system-ui, sans-serif; font-size: 15px;">
+  <div style="background: #d8ecd2; color: #1f4a17; border-radius: 12px; padding: 8px 12px;">did · slid through d-i-d first try</div>
+  <div style="background: #d8ecd2; color: #1f4a17; border-radius: 12px; padding: 8px 12px;">sat · first try</div>
+  <div style="background: #d8ecd2; color: #1f4a17; border-radius: 12px; padding: 8px 12px;">ran · after a nudge</div>
+  <div style="background: #d8ecd2; color: #1f4a17; border-radius: 12px; padding: 8px 12px;">get · first try</div>
+</div>
+<div class="rise3" style="text-align: center; font-size: 18px; line-height: 1.45; margin-top: 6px;">Now go find someone and read them your words, Veer!</div>
+<div class="rise3" style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+  <span class="display" style="font-size: 38px; font-weight: 800; background: #f3c7e6; color: #5c1447; padding: 2px 16px; border-radius: 14px;">did</span><span class="display" style="font-size: 38px; font-weight: 800; background: #f3c7e6; color: #5c1447; padding: 2px 16px; border-radius: 14px;">sat</span><span class="display" style="font-size: 38px; font-weight: 800; background: #f3c7e6; color: #5c1447; padding: 2px 16px; border-radius: 14px;">ran</span><span class="display" style="font-size: 38px; font-weight: 800; background: #f3c7e6; color: #5c1447; padding: 2px 16px; border-radius: 14px;">get</span>
+</div>
+<div class="display" style="margin-top: auto; height: 60px; border-radius: 18px; background: #b8541a; color: #fff; display: grid; place-items: center; font-size: 22px; font-weight: 800;">Done</div>
+</div></x-dc>
+</body>
+</html>

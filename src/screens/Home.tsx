@@ -6,6 +6,7 @@ import { Art } from "../components/Art";
 import { playClip } from "../lib/audio/player";
 import { soundAsset } from "../lib/library";
 import { GRAPHEME_SOUND, LS_PHASE2_ORDER } from "../lib/phonics/learner";
+import { BookIcon, MoonIcon, RedoIcon, SpeakerIcon, StarIcon } from "../components/Icons";
 
 export type Mode = "listen" | "read";
 
@@ -21,7 +22,7 @@ async function precache(story: Story) {
 function WeekStrip({ days }: { days: number[] }) {
   const today = new Date(); const cells = [] as { label: string; on: boolean; isToday: boolean }[];
   for (let i = 6; i >= 0; i--) { const d = new Date(today); d.setDate(today.getDate() - i); cells.push({ label: d.toLocaleDateString(undefined, { weekday: "narrow" }), on: days.some((t) => sameDay(t, d.getTime())), isToday: i === 0 }); }
-  return <div className="week" aria-label="stories this week">{cells.map((c, i) => <span key={i} className={"day" + (c.on ? " on" : "") + (c.isToday ? " today" : "")}>{c.on ? "★" : c.label}</span>)}</div>;
+  return <div className="week" aria-label="stories this week">{cells.map((c, i) => <span key={i} className={"day" + (c.on ? " on" : "") + (c.isToday ? " today" : "")}>{c.on ? <StarIcon size={16} /> : c.label}</span>)}</div>;
 }
 
 export function HomeScreen({ onStart, onLibrary, onSwitch, onWarmUp, onTeach }: { onStart: (story: Story, mode: Mode, resume: boolean) => void; onLibrary: () => void; onSwitch: () => void; onWarmUp: () => void; onTeach: () => void }) {
@@ -48,12 +49,12 @@ export function HomeScreen({ onStart, onLibrary, onSwitch, onWarmUp, onTeach }: 
         <button className="readycard" onClick={onTeach}><b>Ready for the next sound-spelling: {LS_PHASE2_ORDER[kid.gpcs.length]}</b><small>Two smooth sessions and a word built. 90 seconds to teach it — you decide when.</small></button>
       )}
       {!listener && advanceReady && kid.gpcs.length < LS_PHASE2_ORDER.length && (
-        <div className="nextsound"><span className="legend">Next sound:</span> <button className="soundbtn" onClick={() => void playClip(soundAsset(GRAPHEME_SOUND[LS_PHASE2_ORDER[kid.gpcs.length]].clip)).done.catch(() => {})}>{LS_PHASE2_ORDER[kid.gpcs.length]} 🔊</button> <button className="linkbtn" onClick={onTeach}>teach it (90 s) →</button></div>
+        <div className="nextsound"><span className="legend">Next sound:</span> <button className="soundbtn" onClick={() => void playClip(soundAsset(GRAPHEME_SOUND[LS_PHASE2_ORDER[kid.gpcs.length]].clip)).done.catch(() => {})}>{LS_PHASE2_ORDER[kid.gpcs.length]}</button> <button className="linkbtn" onClick={onTeach}>teach it · 90 s →</button></div>
       )}
 
       {doneTonight ? (
         <div className="closing">
-          <div className="art-box big"><span>🌙</span></div>
+          <div className="art-box big"><MoonIcon size={72} /></div>
           <h2>Story done for tonight.</h2>
           <p className="note">One real book, then sleep. StoryTime opens again tomorrow.</p>
           <button className="linkbtn" onClick={() => today && onStart(today, "listen", false)}>grown-up: read one more anyway</button>
@@ -61,31 +62,31 @@ export function HomeScreen({ onStart, onLibrary, onSwitch, onWarmUp, onTeach }: 
       ) : today ? (
         <>
           <div className="kicker">{resumable ? "Carry on where you stopped" : repeatToday ? "Same story — smoother today" : finished ? "Today's story" : "Your first story"}</div>
-          <div className="big-tile" role="group" aria-label={today.title}>
-            <span className="art"><Art art={today.pages[0].art} /></span>
+          <div className="big-tile rise" role="group" aria-label={today.title}>
+            <span className="art rise"><Art art={today.pages[0].art} /></span>
             <span className="t">{today.title}</span>
             <span className="s">{TRADITION_LABEL[today.tradition]} · {today.pages.filter((p) => p.magic?.length).length} magic words{resumable ? ` · page ${session!.page + 1}` : ""}</span>
           </div>
           {resumable ? (
             <div className="modes">
               <button className="mode" onClick={() => onStart(today, session!.mode, true)}>
-                <span className="mi">{session!.mode === "listen" ? "🔊" : "📖"}</span><b>Continue</b><small>{session!.mode === "listen" ? "Nani reads" : "I read"} · page {session!.page + 1}</small>
+                <span className="mi">{session!.mode === "listen" ? <SpeakerIcon /> : <BookIcon />}</span><b>Continue</b><small>{session!.mode === "listen" ? "Nani reads" : "I read"} · page {session!.page + 1}</small>
               </button>
               <button className="mode quiet" onClick={() => setSession(null)}>
-                <span className="mi">↺</span><b>Start over</b><small>Pick a mode again</small>
+                <span className="mi"><RedoIcon /></span><b>Start over</b><small>Pick a mode again</small>
               </button>
             </div>
           ) : review.length > 0 && !listener ? (
             <button className="warmcard" onClick={onWarmUp}><b>Warm-up first</b><span>{review.map((r) => r.word).join(" · ")}</span><small>1 minute · words from last time, then the story</small></button>
           ) : (
-            <div className="modes">
+            <div className="modes rise2">
               <button className="mode" onClick={() => onStart(today, "listen", false)}>
-                <span className="mi">🔊</span><b>{settings.bedtime ? "Bedtime story" : "Nani reads"}</b>
+                <span className="mi">{settings.bedtime ? <MoonIcon /> : <SpeakerIcon />}</span><b>{settings.bedtime ? "Bedtime story" : "Nani reads"}</b>
                 <small>{listener ? "Listen and tap the words you like." : "Karaoke story. You read the magic words."}</small>
               </button>
               {!listener && (
                 <button className="mode" onClick={() => onStart(today, "read", false)}>
-                  <span className="mi">📖</span><b>I read</b><small>Sound off. A grown-up reads with you.</small>
+                  <span className="mi"><BookIcon /></span><b>I read</b><small>Sound off. A grown-up reads with you.</small>
                 </button>
               )}
             </div>
@@ -95,7 +96,7 @@ export function HomeScreen({ onStart, onLibrary, onSwitch, onWarmUp, onTeach }: 
         <p className="note">{kid.gpcs.length < 4 ? `Four sounds, then the first story. ${4 - kid.gpcs.length} to go.` : `No story fits ${kid.name}'s sounds yet. A grown-up can add sounds in Settings.`}</p>
       )}
       {today && !resumable && !doneTonight && !repeatToday && review.length === 0 && (() => { const alt = storiesFor(kid).find((s) => s.slug !== today.slug && !progress[s.slug]) ?? storiesFor(kid).find((s) => s.slug !== today.slug); return alt ? <button className="linkbtn" onClick={() => onStart(alt, "listen", false)}>or {kid.name} picks: {alt.pages[0].art} {alt.title} →</button> : null; })()}
-      <button className="linkbtn" onClick={review.length > 0 && !listener ? onWarmUp : onLibrary}>📚 Bookshelf · {finished} finished{review.length > 0 && !listener ? " · after the warm-up" : ""}</button>
+      <button className="linkbtn" onClick={review.length > 0 && !listener ? onWarmUp : onLibrary}><BookIcon size={18} /> Bookshelf · {finished} finished{review.length > 0 && !listener ? " · after the warm-up" : ""}</button>
     </main>
   );
 }

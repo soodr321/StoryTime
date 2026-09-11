@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Literata:ital,wght@0,400;0,600;1,400&display=swap">
+  <style>
+    body { margin: 0; font-family: "Literata", Georgia, serif; color: #2b2418; }
+    a { color: #b8541a; } a:hover { color: #92400e; }
+    .display { font-family: "Baloo 2", "Avenir Next", system-ui, sans-serif; }
+    .paper { background: radial-gradient(120% 80% at 50% -10%, #fff8ea 0%, #fbf6ea 45%, #f5ecd8 100%); }
+    @keyframes rise { from { transform: translateY(14px); opacity: 0; } to { transform: none; opacity: 1; } }
+    .rise { animation: rise .7s cubic-bezier(.2,.8,.2,1) both; }
+    .rise2 { animation: rise .7s .15s cubic-bezier(.2,.8,.2,1) both; }
+    .rise3 { animation: rise .7s .3s cubic-bezier(.2,.8,.2,1) both; }
+  </style>
+</helmet>
+<div style="width: 390px; height: 560px; box-sizing: border-box; padding: 28px 22px; background: #fbf6ea; display: flex; flex-direction: column; gap: 14px; font-family: 'Literata', Georgia, serif;">
+<div class="display" style="font-size: 22px; font-weight: 800;">Option B · Night sky</div>
+<div style="font-size: 14px; color: #6f6350; font-family: system-ui, sans-serif; line-height: 1.4;">Bedtime-first: deep indigo, warm lamp glow, stars as the week strip. Calmest for 7:30 pm; less lively in daylight.</div>
+<div style="border-radius: 22px; background: #23304d; color: #f1e6d2; padding: 20px; display: flex; flex-direction: column; gap: 12px; flex: 1;">
+   <div style="display:flex; gap:8px;"><div style="width:14px;height:14px;border-radius:50%;background:#ffe9a8"></div><div style="width:14px;height:14px;border-radius:50%;background:#ffe9a8"></div><div style="width:14px;height:14px;border-radius:50%;background:#ffe9a8"></div><div style="width:14px;height:14px;border-radius:50%;background:#ffe9a8"></div><div style="width:14px;height:14px;border-radius:50%;border:1px solid #8892b0"></div><div style="width:14px;height:14px;border-radius:50%;border:1px solid #8892b0"></div><div style="width:14px;height:14px;border-radius:50%;border:1px solid #8892b0"></div></div>
+   <div style="height: 120px; border-radius: 18px; background: radial-gradient(60% 60% at 50% 30%, #f7d27a 0%, #3a4a6e 70%);"></div>
+   <div class="display" style="font-size: 26px; font-weight: 800;">The Fox and the Crow</div>
+   <div style="height: 54px; border-radius: 16px; background: #f7d27a; color: #23304d; display:grid; place-items:center;" class="display">Nani reads</div>
+   <div style="height: 54px; border-radius: 16px; border: 2px solid #8892b0; display:grid; place-items:center;" class="display">I read</div>
+ </div></div></x-dc>
+</body>
+</html>

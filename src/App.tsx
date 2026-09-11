@@ -11,6 +11,7 @@ import { AddStoryScreen } from "./screens/AddStory";
 import { WelcomeScreen } from "./screens/Welcome";
 import { WarmUpScreen } from "./screens/WarmUp";
 import { TeachSoundScreen } from "./screens/TeachSound";
+import { FamilyIcon, GearIcon } from "./components/Icons";
 
 type Route = { name: "family" } | { name: "home" } | { name: "warmup" } | { name: "teach" } | { name: "library" } | { name: "settings" } | { name: "add" } | { name: "story"; story: Story; mode: Mode; resume: boolean };
 
@@ -34,9 +35,9 @@ function Shell() {
   return (
     <div className={"app" + dim}>
       <header className="top">
-        <button className="home" onClick={() => setRoute({ name: "family" })} aria-label="Family">👨‍👩‍👧‍👦</button>
+        <button className="home" onClick={() => setRoute({ name: "family" })} aria-label="Family"><FamilyIcon size={24} /></button>
         <div className="title">StoryTime</div>
-        <button className="home" onClick={() => setRoute({ name: "settings" })} aria-label="Settings">⚙︎</button>
+        <button className="home" onClick={() => setRoute({ name: "settings" })} aria-label="Settings"><GearIcon size={22} /></button>
       </header>
       {route.name === "family" && <FamilyScreen onPick={(id) => { fam.setActiveKid(id); setRoute({ name: "home" }); }} onSettings={() => setRoute({ name: "settings" })} />}
       {route.name === "home" && <HomeScreen onStart={start} onLibrary={() => setRoute({ name: "library" })} onSwitch={() => setRoute({ name: "family" })} onWarmUp={() => { void unlock(); setRoute({ name: "warmup" }); }} onTeach={() => { void unlock(); setRoute({ name: "teach" }); }} />}
