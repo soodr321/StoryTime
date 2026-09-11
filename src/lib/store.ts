@@ -61,7 +61,7 @@ export async function loadProgress(kidId: string): Promise<Record<string, StoryP
 export async function recordFinish(kidId: string, slug: string, results: { word: string; ok: boolean; mode: string }[]): Promise<void> {
   const all = await loadProgress(kidId);
   const prev = all[slug];
-  all[slug] = { slug, timesFinished: (prev?.timesFinished ?? 0) + 1, lastFinished: Date.now(), history: [...(prev?.history ?? (prev?.lastFinished ? [prev.lastFinished] : [])), Date.now()].slice(-60), results: results.map((r) => ({ ...r, at: Date.now() })) };
+  all[slug] = { ...prev, slug, timesFinished: (prev?.timesFinished ?? 0) + 1, lastFinished: Date.now(), history: [...(prev?.history ?? (prev?.lastFinished ? [prev.lastFinished] : [])), Date.now()].slice(-60), results: results.map((r) => ({ ...r, at: Date.now() })) };
   await set(progressKey(kidId), all);
 }
 
@@ -70,12 +70,12 @@ export async function recordEncoding(kidId: string, slug: string, word: string, 
   p.encoding = [...(p.encoding ?? []), { word, ok, at: Date.now() }].slice(-30); await set(progressKey(kidId), all);
 }
 
-/** Recommend (never perform) advancing to the next sound: two recent sessions with ≥80% first-try/prompted blending, nothing due, and one successful build. */
-export function readyToAdvance(progress: Record<string, StoryProgress>, due: number): boolean {
+/** Recommend (never perform) advancing to the next sound: two recent sessions with ≥80% FIRST-TRY blending, nothing due, and one successful build in the last week. */
+export function readyToAdvance(progress: Record<string, StoryProgress>, due: number, now = Date.now()): boolean {
   const recent = Object.values(progress).filter((p) => p.results.length).sort((a, b) => (b.lastFinished ?? 0) - (a.lastFinished ?? 0)).slice(0, 2);
   if (recent.length < 2 || due > 0) return false;
-  const allOk = recent.every((p) => p.results.filter((r) => r.ok && r.mode !== "modelled").length / p.results.length >= 0.8);
-  const built = Object.values(progress).some((p) => (p.encoding ?? []).some((e) => e.ok));
+  const allOk = recent.every((p) => p.results.filter((r) => r.ok && r.mode === "first_try").length / p.results.length >= 0.8);
+  const built = Object.values(progress).some((p) => (p.encoding ?? []).some((e) => e.ok && now - e.at < 7 * DAY));
   return allOk && built;
 }
 
@@ -97,7 +97,7 @@ export async function scheduleReview(kidId: string, results: { word: string; ok:
   const all = await loadReview(kidId); const now = Date.now();
   for (const r of results) {
     const prev = all[r.word];
-    if (!r.ok || r.mode === "modelled") all[r.word] = { word: r.word, due: now + DAY, interval: 1, last: r.ok ? "help" : "skip" };
+    if (!r.ok || r.mode === "modelled" || r.mode === "prompted") all[r.word] = { word: r.word, due: now + DAY, interval: 1, last: r.ok ? "help" : "skip" };   // only a first-try blend counts as known
     else { const interval = Math.min(14, (prev?.interval ?? 1) * 3); all[r.word] = { word: r.word, due: now + interval * DAY, interval, last: "ok" }; }
   }
   await set(reviewKey(kidId), all);

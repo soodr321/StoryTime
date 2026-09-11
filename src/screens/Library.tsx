@@ -9,7 +9,7 @@ import type { Mode } from "./Home";
 const p2 = (progress: Record<string, { timesFinished: number }>, slug: string) => (progress[slug] ? `read ${progress[slug].timesFinished}× · reading it again builds fluency` : "new");
 
 export function LibraryScreen({ onStart, onBack }: { onStart: (s: Story, mode: Mode, resume: boolean) => void; onBack: () => void }) {
-  const { activeKid: kid, stories, progress, session, setSession } = useFamily();
+  const { activeKid: kid, stories, progress, session, setSession, review } = useFamily();
   const [confirm, setConfirm] = useState<Story | null>(null);
   const [picked, setPicked] = useState<Story | null>(null);   // which book was tapped; the grown-up then picks a mode
   if (!kid) return null;
@@ -18,6 +18,7 @@ export function LibraryScreen({ onStart, onBack }: { onStart: (s: Story, mode: M
   const inFlight = session ? stories.find((s) => s.slug === session.slug) : null;
 
   const pick = (s: Story) => {
+    if (review.length > 0 && kid.role !== "listener") return;   // words are due: the warm-up gate on Home is the only way in
     if (session && session.slug === s.slug) return onStart(s, session.mode, true);   // same story: carry on
     if (session && inFlight) return setConfirm(s);                                    // another story is mid-way: ask
     setPicked(s);

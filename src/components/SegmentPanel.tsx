@@ -17,6 +17,7 @@ export function SegmentPanel({ word, learner, kid, reader, listen, onDone }: { w
   const bank = useMemo(() => { const set = new Set([...target, ...learner.gpcs.slice(-6)]); return [...set].slice(0, 8); }, [target, learner]);
   const [boxes, setBoxes] = useState<string[]>([]);
   const [modelled, setModelled] = useState(false);
+  const [counted, setCounted] = useState(false);   // boxes appear only after the child has counted on fingers
   const [busy, setBusy] = useState(false);
   const full = boxes.length === target.length;
   const correct = full && boxes.every((g, i) => g === target[i]);
@@ -24,8 +25,9 @@ export function SegmentPanel({ word, learner, kid, reader, listen, onDone }: { w
   const sayWord = () => { if (listen) speakText(word, {}); };
   const model = async () => {
     setBusy(true); setModelled(true);
-    for (const g of target) { try { await playClip(soundAsset(GRAPHEME_SOUND[g].clip)).done; } catch { /* clip missing */ } await new Promise((r) => setTimeout(r, 250)); }
-    setBoxes([]); setBusy(false);
+    await playBlend(target);                                           // the stretch first, as one word
+    for (const g of target) { try { await playClip(soundAsset(GRAPHEME_SOUND[g].clip)).done; } catch { /* clip missing */ } await new Promise((r) => setTimeout(r, 400)); }   // then one slow count
+    setBoxes([]); setCounted(true); setBusy(false);
   };
   const readBack = async () => { setBusy(true); await playBlend(boxes); setBusy(false); };
 
@@ -34,9 +36,13 @@ export function SegmentPanel({ word, learner, kid, reader, listen, onDone }: { w
       <div className="kicker">Build it · {kid}'s turn</div>
       <h2 className="panel-h">{reader} says the word. {kid} counts the sounds on fingers, then builds it.</h2>
       <div className="row center"><button className="small" onClick={sayWord}>🔊 say the word</button><span className="legend">(the word stays hidden)</span></div>
+      {!counted ? (
+        <div className="row center"><span className="legend">How many sounds? Fingers up.</span><button className="small" onClick={() => setCounted(true)}>they held up {target.length} ✓</button></div>
+      ) : (<>
       <div className="boxes">{target.map((_, i) => <button key={i} className={"box" + (boxes[i] ? " filled" : "")} onClick={() => setBoxes(boxes.slice(0, i))}>{boxes[i] ?? ""}</button>)}</div>
       <div className="tiles bank">{bank.map((g) => <button key={g} className="tile small" disabled={full || busy} onClick={() => { void playClip(soundAsset(GRAPHEME_SOUND[g].clip)).done.catch(() => {}); setBoxes([...boxes, g]); }}>{g}</button>)}</div>
       {full && <div className="row center"><button className="small" disabled={busy} onClick={readBack}>▶ sweep and read it back</button></div>}
+      </>)}
       <div className="verdict grownup">
         <div className="hint"><span className="tag">{reader}</span> {full ? (correct ? `That spells ${word}. Did ${kid} read it back?` : `Not ${word} yet — try together?`) : "Let them pick the tiles."}</div>
         <div className="btns">

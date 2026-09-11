@@ -8,7 +8,6 @@ import { learnerOf } from "../lib/store";
 import { MagicPanel } from "../components/MagicPanel";
 import { checkWord } from "../lib/phonics/validator";
 import { stretched, playBlend } from "../lib/blend";
-import { unlock } from "../lib/audio/player";
 
 export function WarmUpScreen({ onDone }: { onDone: () => void }) {
   const { activeKid: kid, review, reviewDone, settings } = useFamily();
@@ -17,17 +16,18 @@ export function WarmUpScreen({ onDone }: { onDone: () => void }) {
   const [i, setI] = useState(0);
   const [modelling, setModelling] = useState(false);
   const [sweep, setSweep] = useState(0);
+  const [modelledOnce, setModelledOnce] = useState(false);
   const [caption, setCaption] = useState("Warm-up: a few words from last time.");
   const [results, setResults] = useState<{ word: string; ok: boolean; mode: string }[]>([]);
   const words = review.map((r) => r.word);
   const word = words[i];
 
   const record = async (ok: boolean, mode: string) => {
-    const next = [...results, { word, ok, mode }]; setResults(next);
+    const next = [...results, { word, ok, mode: modelledOnce && ok ? "modelled" : mode }]; setResults(next); setModelledOnce(false);
     if (i + 1 < words.length) setI(i + 1); else { await reviewDone(next); onDone(); }
   };
   const together = async () => {
-    setModelling(true); const gs = checkWord(word, learner).graphemes;
+    setModelling(true); setModelledOnce(true); const gs = checkWord(word, learner).graphemes;
     setCaption(`${stretched(gs)} … now you: slide through it.`);
     await playBlend(gs, { onProgress: setSweep }); setModelling(false); setSweep(0);
   };
@@ -38,10 +38,10 @@ export function WarmUpScreen({ onDone }: { onDone: () => void }) {
       <main className="story warm">
         <div className="kicker">Warm-up · {i + 1} of {words.length}</div>
         <p className="note">Quick words from last time, then today's story.</p>
-        <button className="linkbtn" onClick={() => { void unlock(); onDone(); }}>skip to the story →</button>
+        <p className="legend">Every word gets a turn; then the story.</p>
       </main>
       <MagicPanel
-        word={word} learner={learner} modelling={modelling} sweep={sweep} kid={kid.name} reader={reader} kicker={`Warm-up word · ${kid.name}'s turn`}
+        word={word} learner={learner} modelling={modelling} modelledOnce={modelledOnce} sweep={sweep} kid={kid.name} reader={reader} kicker={`Warm-up word · ${kid.name}'s turn`}
         onSound={() => {}}
         onYes={(v) => record(true, v)}
         onTogether={together}

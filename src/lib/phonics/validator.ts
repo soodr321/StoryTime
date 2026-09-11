@@ -35,6 +35,9 @@ export function normalise(word: string): string {
  */
 export const LATER_GRAPHEMES = ["ng", "sh", "ch", "th", "qu", "wh", "ph", "ai", "ee", "igh", "oa", "oo", "ar", "or", "ur", "ow", "oi", "ear", "air", "ure", "er", "ay", "ou", "ie", "ea", "oy", "ir", "ue", "aw", "ew", "oe", "au", "ey", "tch", "dge", "wr", "kn", "ck", "ff", "ll", "ss", "zz"];
 
+/** Exception words (Letters & Sounds phases 2–3). These are never sounded out; they are taught as wholes or not at all. */
+export const EXCEPTIONS = new Set(["the", "a", "i", "is", "to", "no", "go", "into", "put", "of", "do", "he", "she", "we", "me", "be", "was", "you", "they", "all", "are", "my", "her", "said", "have", "like", "so", "some", "come", "were", "there", "little", "one", "when", "out", "what"]);
+
 export function checkWord(word: string, learner: LearnerModel): CheckResult {
   const w = normalise(word);
   if (!w) return { ok: false, word: w, graphemes: [], reasons: ["empty word"] };
@@ -42,6 +45,7 @@ export function checkWord(word: string, learner: LearnerModel): CheckResult {
 
   const tricky = new Set(learner.tricky.map(normalise));
   if (tricky.has(w)) return { ok: true, kind: "tricky", word: w, graphemes: [w] };
+  if (EXCEPTIONS.has(w)) return { ok: false, word: w, graphemes: [], reasons: [`"${w}" is a tricky word that has not been taught yet; it is never sounded out`] };
 
   const taught = new Set(learner.gpcs.map(normalise));
   if (/[^aeiou]e$/.test(w) && w.length > 2 && !taught.has("a-e")) return { ok: false, word: w, graphemes: [], reasons: [`"${w}" ends in a silent e (split digraph), which has not been taught yet`] };

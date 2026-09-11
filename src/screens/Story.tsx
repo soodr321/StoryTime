@@ -184,11 +184,11 @@ export function StoryScreen({ story, mode, resume, onHome }: { story: Story; mod
 
       {panelOpen && (
         <MagicPanel
-          word={ctx.magic!} learner={learner} modelling={state === "modelling"} sweep={sweep} kid={kid.name} reader={reader}
+          word={ctx.magic!} learner={learner} modelling={state === "modelling"} modelledOnce={ctx.mode === "modelled"} sweep={sweep} kid={kid.name} reader={reader}
           onSound={() => send({ type: "SOUND_TAPPED" })}
           onYes={async (v: Verdict) => { const w = ctx.magic!; if (listen) await speakPrompt(`yes:${w}`, `Yes! ${w}.`); else setCaption(`Yes! ${w}.`); send({ type: "YES", verdict: v }); }}
           onTogether={together}
-          onSkip={async () => { const w = ctx.magic!; if (listen) await speakPrompt("practise", `${w}. We'll practise it tomorrow.`); else setCaption(`${w}. We'll practise it tomorrow.`); send({ type: "SKIP" }); }}
+          onSkip={async () => { const w = ctx.magic!; setCaption("We'll practise it tomorrow."); await playBlend(checkWord(w, learner).graphemes, { rate }); if (listen) await speakPrompt("practise", "We'll practise it tomorrow."); send({ type: "SKIP" }); }}
         />
       )}
 
@@ -252,7 +252,7 @@ function StoryView({ page, pageNo, total, token, results, readMode, listener, re
 function Moral({ story, learner, listener, kid, reader, listen, setCaption, buildWord, onBuilt, onYes }: { story: Story; learner: LearnerModel; listener: boolean; kid: string; reader: string; listen: boolean; setCaption: (s: string) => void; buildWord: string | null; onBuilt: (w: string, ok: boolean) => void; onYes: () => void }) {
   const line = checkLine(story.moral.line, learner);
   const words = story.moral.line.split(/\s+/);
-  const [stage, setStage] = useState<"try" | "help" | "reread" | "build">("try");
+  const [stage, setStage] = useState<"try" | "help" | "word" | "reread" | "build">("try");
   // after the read-back: one-word dictation on a word the child just blended (skipped when none)
   const finishLine = () => { if (buildWord) { setStage("build"); setCaption(`${reader}: say "${buildWord}". ${kid} counts the sounds, then builds it.`); } else onYes(); };
   const [helped, setHelped] = useState<number | null>(null);
@@ -263,8 +263,9 @@ function Moral({ story, learner, listener, kid, reader, listen, setCaption, buil
       setCaption(`${words[i]} is a tricky word. The underlined part is the odd bit. Just say the word, then read the line again.`);
       if (listen) speakText(words[i], {});   // a tricky word is taught as a whole, so hearing it is fine
     } else {
-      setCaption(`${stretched(r.graphemes)} … ${reader}: slide through the sounds, but let ${kid} say the word. Then the whole line again.`);
+      setCaption(`${stretched(r.graphemes)} … ${reader}: slide through the sounds, but let ${kid} say the word.`);
       await playBlend(r.graphemes);   // never the whole word: that would be echoing, not blending
+      setStage("word"); return;       // stay on this word until the grown-up confirms the child blended it
     }
     setStage("reread");
   };
@@ -280,7 +281,7 @@ function Moral({ story, learner, listener, kid, reader, listen, setCaption, buil
       <p className="spoken">“{story.moral.spoken}”</p>
       {!listener && (
         <>
-          <div className="kicker">{stage === "try" ? `${kid} reads the whole line` : stage === "help" ? "tap the word that needs help" : "now the whole line again, smoothly"}</div>
+          <div className="kicker">{stage === "try" ? `${kid} reads the whole line` : stage === "help" ? "tap the word that needs help" : stage === "word" ? `${kid} blends that word` : "now the whole line again, smoothly"}</div>
           <p className="line">
             {line.results.map((r, i) => {
               const parts = r.ok && r.kind === "tricky" ? (TRICKY_PARTS[r.word] ?? `|${r.word}`).split("|") : null;
@@ -292,7 +293,7 @@ function Moral({ story, learner, listener, kid, reader, listen, setCaption, buil
             })}
           </p>
           <div className="legend"><i className="sw magic" /> sound it out <i className="sw tricky" /> tricky word: <u className="odd">odd bit</u> underlined</div>
-          <div className="script"><b>{reader}</b>: {stage === "try" ? "let them read the whole line first." : stage === "help" ? "tap the word they stuck on." : "ask for the whole line once more, smoothly."}</div>
+          <div className="script"><b>{reader}</b>: {stage === "try" ? "let them read the whole line first." : stage === "help" ? "tap the word they stuck on." : stage === "word" ? "wait for them to slide through it and say it as one word." : "ask for the whole line once more, smoothly."}</div>
         </>
       )}
       <div className="btns">
@@ -300,6 +301,8 @@ function Moral({ story, learner, listener, kid, reader, listen, setCaption, buil
           <><button className="no" onClick={() => setStage("help")}>Needs help on a word</button><button className="yes" onClick={finishLine}>✓ Read it smoothly</button></>
         ) : stage === "help" ? (
           <button className="no" onClick={() => setStage("try")}>← back</button>
+        ) : stage === "word" ? (
+          <><button className="no" onClick={() => helped !== null && help(helped)}>Show me again</button><button className="yes" onClick={() => setStage("reread")}>✓ They blended it</button></>
         ) : (
           <><button className="no" onClick={() => setStage("help")}>Another word</button><button className="yes" onClick={finishLine}>✓ Read it smoothly</button></>
         )}

@@ -30,6 +30,11 @@ describe("checkWord", () => {
     expect(checkWord("", L).ok).toBe(false);
     expect(checkWord("!!", L).ok).toBe(false);
   });
+  it("never sounds out an untaught exception word (is, to, put)", () => {
+    const none = { gpcs: [...L.gpcs], tricky: [] };
+    for (const w of ["is", "to", "put", "a", "I", "no"]) expect(checkWord(w, none).ok, w).toBe(false);
+    expect(checkMagicWord("is", L).ok).toBe(false);
+  });
   it("accepts tricky words only when taught, and never tokenises them", () => {
     const r = checkWord("the", L);
     expect(r.ok && r.kind === "tricky").toBe(true);

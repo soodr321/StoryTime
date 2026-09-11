@@ -12,8 +12,8 @@ export type Verdict = "first_try" | "prompted";
  * tile taps only play sounds and never decide the label. A sweep under the graphemes shows
  * the voice sliding through during a model.
  */
-export function MagicPanel({ word, learner, modelling, sweep, kid, reader, kicker, onSound, onYes, onTogether, onSkip }: {
-  word: string; learner: LearnerModel; modelling: boolean; sweep?: number; kid: string; reader: string; kicker?: string;
+export function MagicPanel({ word, learner, modelling, modelledOnce, sweep, kid, reader, kicker, onSound, onYes, onTogether, onSkip }: {
+  word: string; learner: LearnerModel; modelling: boolean; modelledOnce?: boolean; sweep?: number; kid: string; reader: string; kicker?: string;
   onSound: () => void; onYes: (v: Verdict) => void; onTogether: () => void; onSkip?: () => void;
 }) {
   const gs = useMemo(() => checkWord(word, learner).graphemes, [word, learner]);
@@ -40,11 +40,15 @@ export function MagicPanel({ word, learner, modelling, sweep, kid, reader, kicke
         <div className="sweep" aria-hidden><i style={{ width: `${Math.round((sweep ?? 0) * 100)}%`, opacity: modelling ? 1 : 0 }} /></div>
       </div>
       <div className="verdict grownup">
-        <div className="hint"><span className="tag">{reader}</span> wait 5 seconds. Did {kid} say <b>{word}</b> as one word?</div>
-        <div className="btns">
-          <button className="yes" disabled={modelling} onClick={() => onYes("first_try")}>✓ First try</button>
-          <button className="yes soft" disabled={modelling} onClick={() => onYes("prompted")}>✓ After a nudge</button>
-        </div>
+        <div className="hint"><span className="tag">{reader}</span> wait 5 seconds. Did {kid} say it as <b>one word</b>?</div>
+        {modelledOnce ? (
+          <div className="btns"><button className="yes soft" disabled={modelling} onClick={() => onYes("prompted")}>✓ Slid through it after the model</button></div>
+        ) : (
+          <div className="btns">
+            <button className="yes" disabled={modelling} onClick={() => onYes("first_try")}>✓ First try</button>
+            <button className="yes soft" disabled={modelling} onClick={() => onYes("prompted")}>✓ After a nudge</button>
+          </div>
+        )}
         <div className="btns">
           <button className="no" disabled={modelling} onClick={onTogether}>Show me: slide through it</button>
         </div>
