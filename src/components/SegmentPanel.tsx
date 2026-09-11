@@ -1,8 +1,7 @@
 import { useMemo, useState } from "react";
+import { playSound } from "../lib/sounds";
 import { GRAPHEME_SOUND } from "../lib/phonics/learner";
 import { checkWord, type LearnerModel } from "../lib/phonics/validator";
-import { playClip } from "../lib/audio/player";
-import { soundAsset } from "../lib/library";
 import { speakText } from "../lib/audio/speech";
 import { playBlend } from "../lib/blend";
 import { SpeakerIcon, CheckIcon } from "./Icons";
@@ -31,7 +30,7 @@ export function SegmentPanel({ word, learner, kid, reader, listen, onDone }: { w
   const model = async () => {
     setBusy(true); setModelled(true);
     await playBlend(target);                                           // the stretch first, as one word
-    for (const g of target) { try { await playClip(soundAsset(GRAPHEME_SOUND[g].clip)).done; } catch { /* clip missing */ } await new Promise((r) => setTimeout(r, 400)); }   // then one slow count
+    for (const g of target) { try { await playSound(GRAPHEME_SOUND[g].clip); } catch { /* clip missing */ } await new Promise((r) => setTimeout(r, 400)); }   // then one slow count
     setBoxes([]); setCounted(true); setBusy(false);
   };
   const readBack = async () => { setBusy(true); await playBlend(boxes); setBusy(false); };
@@ -45,7 +44,7 @@ export function SegmentPanel({ word, learner, kid, reader, listen, onDone }: { w
         <div className="row center"><span className="legend">How many sounds? Fingers up.</span><button className="small" onClick={() => setCounted(true)}>they held up {target.length} ✓</button></div>
       ) : (<>
       <div className="boxes">{target.map((_, i) => <button key={i} className={"box" + (boxes[i] ? " filled" : "")} onClick={() => setBoxes(boxes.slice(0, i))}>{boxes[i] ?? ""}</button>)}</div>
-      <div className="tiles bank">{bank.map((g) => <button key={g} className="tile small" disabled={full || busy} onClick={() => { void playClip(soundAsset(GRAPHEME_SOUND[g].clip)).done.catch(() => {}); setBoxes([...boxes, g]); }}>{g}</button>)}</div>
+      <div className="tiles bank">{bank.map((g) => <button key={g} className="tile small" disabled={full || busy} onClick={() => { void playSound(GRAPHEME_SOUND[g].clip); setBoxes([...boxes, g]); }}>{g}</button>)}</div>
       {full && <div className="row center"><button className="small" disabled={busy} onClick={readBack}>▶ sweep and read it back</button></div>}
       </>)}
       <div className="verdict grownup">

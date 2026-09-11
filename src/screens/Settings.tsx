@@ -2,13 +2,12 @@ import { useState } from "react";
 import { useFamily } from "../lib/family";
 import { ALL_GPCS, ALL_TRICKY, uid, type Kid } from "../lib/store";
 import { Art } from "../components/Art";
-import { playClip } from "../lib/audio/player";
-import { soundAsset } from "../lib/library";
+import { playSound } from "../lib/sounds";
 import { GRAPHEME_SOUND } from "../lib/phonics/learner";
 
 const AVATARS = ["🦁", "🐣", "🐯", "🦊", "🐼", "🐸", "🦄", "🐬", "🐢", "🐝", "🌟", "🚀"];
 
-export function SettingsScreen({ onBack, onAddStory }: { onBack: () => void; onAddStory: () => void }) {
+export function SettingsScreen({ onBack, onAddStory, onSounds }: { onBack: () => void; onAddStory: () => void; onSounds: () => void }) {
   const { kids, updateKid, addKid, removeKid, settings, updateSettings, customs, removeCustom, activeKid, progress } = useFamily();
   const words = Object.values(progress).flatMap((p) => p.results);
   const count = (m: string) => words.filter((r) => r.ok && r.mode === m).length;
@@ -41,8 +40,19 @@ export function SettingsScreen({ onBack, onAddStory }: { onBack: () => void; onA
       </section>
 
       <section className="pc">
+        <h3>Sounds in your voice</h3>
+        <p className="legend">Record the 18 pure sounds once (two minutes). Your voice then plays on every letter tile and in the slide-through model instead of the built-in clips.</p>
+        <button className="next" onClick={onSounds}>Record the sounds</button>
+      </section>
+
+      <section className="pc">
         <h3>Bedtime mode</h3>
         <label className="switch"><input type="checkbox" checked={settings.bedtime} onChange={(e) => updateSettings({ bedtime: e.target.checked })} /> Dim colours, slower voice, no confetti. One story, then a real book.</label>
+      </section>
+
+      <section className="pc">
+        <h3>Experimental: follow my voice</h3>
+        <label className="switch"><input type="checkbox" checked={!!settings.voiceFollow} onChange={(e) => updateSettings({ voiceFollow: e.target.checked })} /> In “I read”, a “Follow my voice” button lights the words as you read them. While it is listening, your audio is sent to Apple or Google for recognition; nothing else ever leaves the phone. Sliding a finger under the words always works, offline.</label>
       </section>
 
       <section className="pc">
@@ -71,7 +81,7 @@ function KidEditor({ kid, onChange, onRemove }: { kid: Kid; onChange: (k: Kid) =
       <p className="legend">Sounds taught so far: <select value={known} onChange={(e) => onChange({ ...kid, gpcs: ALL_GPCS.slice(0, +e.target.value) })} aria-label="level">{[0, 1, 2, 3, 4, 8, 12, 16, 23].map((n) => <option key={n} value={n}>{n === 0 ? "none yet" : ALL_GPCS.slice(0, n).join(" ")}</option>)}</select></p>
       <p className="legend">Tap any sound to hear it (the sound, never the letter name). Taught sounds are green; change them with the list above or the 90-second teach routine on Home.</p>
       <div className="chips">
-        {ALL_GPCS.map((g, i) => <button key={g} className={"tog" + (i < known ? " on" : "")} title="tap: hear the sound" onClick={() => void playClip(soundAsset(GRAPHEME_SOUND[g].clip)).done.catch(() => {})}>{g}</button>)}
+        {ALL_GPCS.map((g, i) => <button key={g} className={"tog" + (i < known ? " on" : "")} title="tap: hear the sound" onClick={() => void playSound(GRAPHEME_SOUND[g].clip)}>{g}</button>)}
       </div>
       <p className="legend">Tricky words taught. Most of each word is regular; the app shows the regular part and marks only the odd bit (the → th + e). Only tick ones you have taught.</p>
       <div className="chips">

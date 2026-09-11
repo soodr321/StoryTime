@@ -32,9 +32,9 @@ export default defineConfig({
         globIgnores: ["library/**", "prompts/**"],
         runtimeCaching: [
           {
-            urlPattern: ({ url }) => /\/(library|prompts|sounds)\/.*\.(m4a|mp3|json)$/.test(url.pathname),
+            urlPattern: ({ url }) => /\/(library|prompts|sounds)\/.*\.(m4a|mp3|wav|json)$/.test(url.pathname),
             handler: "CacheFirst",
-            options: { cacheName: "storytime-audio", expiration: { maxEntries: 40, maxAgeSeconds: 60 * 60 * 24 * 30 } },
+            options: { cacheName: "storytime-audio-v3", expiration: { maxEntries: 40, maxAgeSeconds: 60 * 60 * 24 * 30 } },
           },
         ],
       },

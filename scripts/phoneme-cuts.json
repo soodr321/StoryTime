@@ -1,0 +1,147 @@
+{
+ "_note": "start/end in ms into the pinned original (assets/phonemes-src/<src>.ogg, sha256 in sources.json). Chosen from 10 ms energy/voicing maps: continuants = the steady sound before any vowel transition; vowels = the steady middle; stops = burst + a short release. fade in/out in ms. Listening is the gate: see docs/plan-v2.md A1.",
+ "s": {
+  "src": "s",
+  "start": 262,
+  "end": 442,
+  "fadeIn": 5,
+  "fadeOut": 15,
+  "kind": "continuant"
+ },
+ "f": {
+  "src": "f",
+  "start": 22,
+  "end": 188,
+  "fadeIn": 5,
+  "fadeOut": 15,
+  "kind": "continuant"
+ },
+ "h": {
+  "src": "h",
+  "start": 262,
+  "end": 372,
+  "fadeIn": 5,
+  "fadeOut": 15,
+  "kind": "continuant"
+ },
+ "m": {
+  "src": "m",
+  "start": 215,
+  "end": 415,
+  "fadeIn": 8,
+  "fadeOut": 15,
+  "kind": "continuant"
+ },
+ "n": {
+  "src": "n",
+  "start": 365,
+  "end": 555,
+  "fadeIn": 8,
+  "fadeOut": 15,
+  "kind": "continuant"
+ },
+ "l": {
+  "src": "l",
+  "start": 215,
+  "end": 525,
+  "fadeIn": 8,
+  "fadeOut": 15,
+  "kind": "continuant"
+ },
+ "r": {
+  "src": "r",
+  "start": 295,
+  "end": 480,
+  "fadeIn": 8,
+  "fadeOut": 15,
+  "kind": "continuant"
+ },
+ "a": {
+  "src": "a",
+  "start": 100,
+  "end": 400,
+  "fadeIn": 8,
+  "fadeOut": 20,
+  "kind": "vowel"
+ },
+ "e": {
+  "src": "e",
+  "start": 100,
+  "end": 400,
+  "fadeIn": 8,
+  "fadeOut": 20,
+  "kind": "vowel"
+ },
+ "i": {
+  "src": "i",
+  "start": 80,
+  "end": 380,
+  "fadeIn": 8,
+  "fadeOut": 20,
+  "kind": "vowel"
+ },
+ "o": {
+  "src": "o-us",
+  "start": 80,
+  "end": 380,
+  "fadeIn": 8,
+  "fadeOut": 20,
+  "kind": "vowel"
+ },
+ "u": {
+  "src": "u",
+  "start": 80,
+  "end": 380,
+  "fadeIn": 8,
+  "fadeOut": 20,
+  "kind": "vowel"
+ },
+ "t": {
+  "src": "t",
+  "start": 903,
+  "end": 940,
+  "fadeIn": 0,
+  "fadeOut": 5,
+  "kind": "stop"
+ },
+ "p": {
+  "src": "p",
+  "start": 598,
+  "end": 640,
+  "fadeIn": 0,
+  "fadeOut": 5,
+  "kind": "stop"
+ },
+ "k": {
+  "src": "k",
+  "start": 918,
+  "end": 945,
+  "fadeIn": 0,
+  "fadeOut": 5,
+  "kind": "stop"
+ },
+ "b": {
+  "src": "b",
+  "start": 1023,
+  "end": 1048,
+  "fadeIn": 0,
+  "fadeOut": 5,
+  "kind": "stop"
+ },
+ "d": {
+  "src": "d",
+  "start": 883,
+  "end": 908,
+  "fadeIn": 0,
+  "fadeOut": 5,
+  "kind": "stop"
+ },
+ "g": {
+  "src": "g",
+  "start": 668,
+  "end": 693,
+  "fadeIn": 0,
+  "fadeOut": 5,
+  "kind": "stop"
+ }
+}

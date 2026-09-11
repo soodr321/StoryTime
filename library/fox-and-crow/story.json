@@ -24,122 +24,122 @@
    "tokens": [
     {
      "t": "A",
-     "ms": 100
+     "ms": 97
     },
     {
      "t": "crow",
-     "ms": 290
+     "ms": 152
     },
     {
      "t": "found",
-     "ms": 629
+     "ms": 430
     },
     {
      "t": "a",
-     "ms": 1105
+     "ms": 708
     },
     {
      "t": "big",
-     "ms": 1227
+     "ms": 861
     },
     {
      "t": "piece",
-     "ms": 1540
+     "ms": 1152
     },
     {
      "t": "of",
-     "ms": 1879
+     "ms": 1444
     },
     {
      "t": "cheese.",
-     "ms": 2042
+     "ms": 1513
     },
     {
      "t": "She",
-     "ms": 3541
+     "ms": 2583
     },
     {
      "t": "flew",
-     "ms": 3840
+     "ms": 2750
     },
     {
      "t": "up",
-     "ms": 4153
+     "ms": 3083
     },
     {
      "t": "to",
-     "ms": 4343
+     "ms": 3222
     },
     {
      "t": "a",
-     "ms": 4492
+     "ms": 3347
     },
     {
      "t": "branch",
-     "ms": 4560
+     "ms": 3416
     },
     {
      "t": "to",
-     "ms": 5022
+     "ms": 3902
     },
     {
      "t": "eat",
-     "ms": 5199
+     "ms": 4027
     },
     {
      "t": "it.",
-     "ms": 5471
+     "ms": 4208
     }
    ],
    "audio": "p1.m4a",
-   "audioMs": 6700
+   "audioMs": 4780
   },
   {
    "art": "🦊",
    "tokens": [
     {
      "t": "A",
-     "ms": 100
+     "ms": 97
     },
     {
      "t": "fox",
-     "ms": 290
+     "ms": 152
     },
     {
      "t": "saw",
-     "ms": 752
+     "ms": 513
     },
     {
      "t": "the",
-     "ms": 1023
+     "ms": 708
     },
     {
      "t": "cheese.",
-     "ms": 1173
+     "ms": 819
     },
     {
      "t": "He",
-     "ms": 2685
+     "ms": 1875
     },
     {
      "t": "wanted",
-     "ms": 2903
+     "ms": 1930
     },
     {
      "t": "it",
-     "ms": 3378
+     "ms": 2194
     },
     {
      "t": "very",
-     "ms": 3541
+     "ms": 2305
     },
     {
      "t": "much.",
-     "ms": 3867
+     "ms": 2597
     }
    ],
    "audio": "p2.m4a",
-   "audioMs": 5330
+   "audioMs": 3620
   },
   {
    "art": "🦊",
@@ -149,110 +149,110 @@
    "tokens": [
     {
      "t": "So",
-     "ms": 100
+     "ms": 111
     },
     {
      "t": "the",
-     "ms": 494
+     "ms": 236
     },
     {
      "t": "fox",
-     "ms": 629
+     "ms": 319
     },
     {
      "t": "did",
-     "ms": 1105
+     "ms": 708
     },
     {
      "t": "a",
-     "ms": 1322
+     "ms": 819
     },
     {
      "t": "trick.",
-     "ms": 1417
+     "ms": 861
     }
    ],
    "audio": "p3.m4a",
-   "audioMs": 2860
+   "audioMs": 1750
   },
   {
    "art": "🦊",
    "tokens": [
     {
      "t": "“Dear",
-     "ms": 100
+     "ms": 180
     },
     {
      "t": "crow,”",
-     "ms": 521
+     "ms": 416
     },
     {
      "t": "he",
-     "ms": 1119
+     "ms": 1486
     },
     {
      "t": "said,",
-     "ms": 1350
+     "ms": 1611
     },
     {
      "t": "“what",
-     "ms": 2042
+     "ms": 2194
     },
     {
      "t": "fine",
-     "ms": 2301
+     "ms": 2402
     },
     {
      "t": "feathers!",
-     "ms": 2695
+     "ms": 2888
     },
     {
      "t": "Your",
-     "ms": 4329
+     "ms": 4250
     },
     {
      "t": "voice",
-     "ms": 4669
+     "ms": 4375
     },
     {
      "t": "must",
-     "ms": 5050
+     "ms": 4791
     },
     {
      "t": "be",
-     "ms": 5376
+     "ms": 4958
     },
     {
      "t": "lovely",
-     "ms": 5552
+     "ms": 5083
     },
     {
      "t": "too.",
-     "ms": 6055
+     "ms": 5527
     },
     {
      "t": "Will",
-     "ms": 7427
+     "ms": 6416
     },
     {
      "t": "you",
-     "ms": 7713
+     "ms": 6486
     },
     {
      "t": "sing",
-     "ms": 7848
+     "ms": 6625
     },
     {
      "t": "for",
-     "ms": 8188
+     "ms": 6944
     },
     {
      "t": "me?”",
-     "ms": 8392
+     "ms": 7125
     }
    ],
    "audio": "p4.m4a",
-   "audioMs": 9650
+   "audioMs": 7780
   },
   {
    "art": "🐦",
@@ -262,63 +262,63 @@
    "tokens": [
     {
      "t": "The",
-     "ms": 100
+     "ms": 111
     },
     {
      "t": "crow",
-     "ms": 317
+     "ms": 180
     },
     {
      "t": "was",
-     "ms": 670
+     "ms": 458
     },
     {
      "t": "proud.",
-     "ms": 928
+     "ms": 583
     },
     {
      "t": "She",
-     "ms": 2400
+     "ms": 1513
     },
     {
      "t": "sat",
-     "ms": 2685
+     "ms": 1652
     },
     {
      "t": "up",
-     "ms": 3039
+     "ms": 1902
     },
     {
      "t": "tall",
-     "ms": 3202
+     "ms": 2013
     },
     {
      "t": "and",
-     "ms": 3623
+     "ms": 2750
     },
     {
      "t": "opened",
-     "ms": 3827
+     "ms": 2930
     },
     {
      "t": "her",
-     "ms": 4194
+     "ms": 3222
     },
     {
      "t": "beak",
-     "ms": 4370
+     "ms": 3333
     },
     {
      "t": "to",
-     "ms": 4642
+     "ms": 3638
     },
     {
      "t": "sing.",
-     "ms": 4791
+     "ms": 3736
     }
    ],
    "audio": "p5.m4a",
-   "audioMs": 6220
+   "audioMs": 4630
   },
   {
    "art": "🧀",
@@ -328,118 +328,118 @@
    "tokens": [
     {
      "t": "“Caw!”",
-     "ms": 100
+     "ms": 152
     },
     {
      "t": "Down",
-     "ms": 1503
+     "ms": 736
     },
     {
      "t": "fell",
-     "ms": 2006
+     "ms": 1027
     },
     {
      "t": "the",
-     "ms": 2319
+     "ms": 1305
     },
     {
      "t": "cheese.",
-     "ms": 2441
+     "ms": 1388
     },
     {
      "t": "The",
-     "ms": 3922
+     "ms": 2444
     },
     {
      "t": "fox",
-     "ms": 4139
+     "ms": 2500
     },
     {
      "t": "got",
-     "ms": 4547
+     "ms": 2791
     },
     {
      "t": "it",
-     "ms": 4846
+     "ms": 3013
     },
     {
      "t": "and",
-     "ms": 5063
+     "ms": 3291
     },
     {
      "t": "ran",
-     "ms": 5308
+     "ms": 3444
     },
     {
      "t": "off.",
-     "ms": 5593
+     "ms": 3722
     }
    ],
    "audio": "p6.m4a",
-   "audioMs": 6940
+   "audioMs": 4560
   },
   {
    "art": "🐦",
    "tokens": [
     {
      "t": "The",
-     "ms": 100
+     "ms": 111
     },
     {
      "t": "crow",
-     "ms": 317
+     "ms": 180
     },
     {
      "t": "was",
-     "ms": 670
+     "ms": 472
     },
     {
      "t": "sad.",
-     "ms": 888
+     "ms": 625
     },
     {
      "t": "The",
-     "ms": 2319
+     "ms": 1527
     },
     {
      "t": "fox",
-     "ms": 2550
+     "ms": 1625
     },
     {
      "t": "had",
-     "ms": 2998
+     "ms": 1930
     },
     {
      "t": "praised",
-     "ms": 3242
+     "ms": 2097
     },
     {
      "t": "her",
-     "ms": 3691
+     "ms": 2513
     },
     {
      "t": "only",
-     "ms": 3935
+     "ms": 2763
     },
     {
      "t": "to",
-     "ms": 4316
+     "ms": 3180
     },
     {
      "t": "get",
-     "ms": 4479
+     "ms": 3305
     },
     {
      "t": "the",
-     "ms": 4737
+     "ms": 3513
     },
     {
      "t": "cheese.",
-     "ms": 4859
+     "ms": 3611
     }
    ],
    "audio": "p7.m4a",
-   "audioMs": 6380,
+   "audioMs": 4700,
    "magic": [
     "get"
    ]
@@ -449,32 +449,40 @@
   "spoken": "Someone who praises you just to get something is not a friend.",
   "line": "It is sad.",
   "audio": "moral.m4a",
-  "audioMs": 4970
+  "audioMs": 3890
  },
  "prompts": {
   "yes:did": {
    "audio": "yes-did.m4a",
-   "ms": 3220
+   "ms": 1700
   },
   "word:did": {
    "audio": "word-did.m4a",
-   "ms": 1630
+   "ms": 820
   },
   "yes:sat": {
    "audio": "yes-sat.m4a",
-   "ms": 3310
+   "ms": 1940
   },
   "word:sat": {
    "audio": "word-sat.m4a",
-   "ms": 1700
+   "ms": 980
   },
-  "yes:got": {
-   "audio": "yes-got.m4a",
-   "ms": 3260
+  "yes:ran": {
+   "audio": "yes-ran.m4a",
+   "ms": 1900
   },
-  "word:got": {
-   "audio": "word-got.m4a",
-   "ms": 1660
+  "word:ran": {
+   "audio": "word-ran.m4a",
+   "ms": 910
+  },
+  "yes:get": {
+   "audio": "yes-get.m4a",
+   "ms": 1800
+  },
+  "word:get": {
+   "audio": "word-get.m4a",
+   "ms": 860
   }
  }
 }

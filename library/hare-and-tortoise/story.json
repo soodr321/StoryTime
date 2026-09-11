@@ -24,71 +24,71 @@
    "tokens": [
     {
      "t": "A",
-     "ms": 100
+     "ms": 111
     },
     {
      "t": "hare",
-     "ms": 290
+     "ms": 166
     },
     {
      "t": "laughed",
-     "ms": 602
+     "ms": 472
     },
     {
      "t": "at",
-     "ms": 1078
+     "ms": 1111
     },
     {
      "t": "a",
-     "ms": 1254
+     "ms": 1194
     },
     {
      "t": "tortoise.",
-     "ms": 1322
+     "ms": 1250
     },
     {
      "t": "“You",
-     "ms": 2930
+     "ms": 2458
     },
     {
      "t": "are",
-     "ms": 3297
+     "ms": 2527
     },
     {
      "t": "so",
-     "ms": 3460
+     "ms": 2666
     },
     {
      "t": "slow!”",
-     "ms": 3732
+     "ms": 3000
     },
     {
      "t": "The",
-     "ms": 5117
+     "ms": 3916
     },
     {
      "t": "tortoise",
-     "ms": 5348
+     "ms": 3986
     },
     {
      "t": "said,",
-     "ms": 5838
+     "ms": 4416
     },
     {
      "t": "“Let",
-     "ms": 6517
+     "ms": 5375
     },
     {
      "t": "us",
-     "ms": 6789
+     "ms": 5527
     },
     {
      "t": "race.”",
-     "ms": 6979
+     "ms": 5708
     }
    ],
    "audio": "p1.m4a",
-   "audioMs": 8420
+   "audioMs": 6790
   },
   {
    "art": "🐇",
@@ -98,51 +98,51 @@
    "tokens": [
     {
      "t": "They",
-     "ms": 100
+     "ms": 125
     },
     {
      "t": "started.",
-     "ms": 439
+     "ms": 236
     },
     {
      "t": "The",
-     "ms": 2006
+     "ms": 1222
     },
     {
      "t": "hare",
-     "ms": 2223
+     "ms": 1277
     },
     {
      "t": "ran",
-     "ms": 2550
+     "ms": 1597
     },
     {
      "t": "fast,",
-     "ms": 2889
+     "ms": 1861
     },
     {
      "t": "far",
-     "ms": 3609
+     "ms": 2972
     },
     {
      "t": "ahead",
-     "ms": 4017
+     "ms": 3222
     },
     {
      "t": "of",
-     "ms": 4316
+     "ms": 3430
     },
     {
      "t": "the",
-     "ms": 4452
+     "ms": 3486
     },
     {
      "t": "tortoise.",
-     "ms": 4574
+     "ms": 3569
     }
    ],
    "audio": "p2.m4a",
-   "audioMs": 6170
+   "audioMs": 4680
   },
   {
    "art": "🐇",
@@ -152,126 +152,126 @@
    "tokens": [
     {
      "t": "“I",
-     "ms": 100
+     "ms": 138
     },
     {
      "t": "have",
-     "ms": 344
+     "ms": 152
     },
     {
      "t": "lots",
-     "ms": 602
+     "ms": 291
     },
     {
      "t": "of",
-     "ms": 1010
+     "ms": 583
     },
     {
      "t": "time,”",
-     "ms": 1159
+     "ms": 666
     },
     {
      "t": "said",
-     "ms": 1784
+     "ms": 1361
     },
     {
      "t": "the",
-     "ms": 2219
+     "ms": 1583
     },
     {
      "t": "hare.",
-     "ms": 2341
+     "ms": 1652
     },
     {
      "t": "He",
-     "ms": 3704
+     "ms": 2541
     },
     {
      "t": "lay",
-     "ms": 3935
+     "ms": 2611
     },
     {
      "t": "down",
-     "ms": 4180
+     "ms": 2791
     },
     {
      "t": "for",
-     "ms": 4574
+     "ms": 3069
     },
     {
      "t": "a",
-     "ms": 4791
+     "ms": 3208
     },
     {
      "t": "nap",
-     "ms": 4846
+     "ms": 3250
     },
     {
      "t": "in",
-     "ms": 5226
+     "ms": 3583
     },
     {
      "t": "the",
-     "ms": 5348
+     "ms": 3638
     },
     {
      "t": "sun.",
-     "ms": 5457
+     "ms": 3736
     }
    ],
    "audio": "p3.m4a",
-   "audioMs": 6860
+   "audioMs": 4560
   },
   {
    "art": "🐢",
    "tokens": [
     {
      "t": "The",
-     "ms": 100
+     "ms": 111
     },
     {
      "t": "tortoise",
-     "ms": 317
+     "ms": 180
     },
     {
      "t": "did",
-     "ms": 847
+     "ms": 597
     },
     {
      "t": "not",
-     "ms": 1078
+     "ms": 750
     },
     {
      "t": "stop.",
-     "ms": 1377
+     "ms": 1000
     },
     {
      "t": "Step",
-     "ms": 2794
+     "ms": 1986
     },
     {
      "t": "by",
-     "ms": 3270
+     "ms": 2208
     },
     {
      "t": "step,",
-     "ms": 3541
+     "ms": 2361
     },
     {
      "t": "he",
-     "ms": 4248
+     "ms": 2819
     },
     {
      "t": "kept",
-     "ms": 4438
+     "ms": 2930
     },
     {
      "t": "going.",
-     "ms": 4805
+     "ms": 3208
     }
    ],
    "audio": "p4.m4a",
-   "audioMs": 6260
+   "audioMs": 3980
   },
   {
    "art": "🐢",
@@ -281,154 +281,154 @@
    "tokens": [
     {
      "t": "He",
-     "ms": 100
+     "ms": 111
     },
     {
      "t": "passed",
-     "ms": 330
+     "ms": 194
     },
     {
      "t": "the",
-     "ms": 765
+     "ms": 527
     },
     {
      "t": "sleeping",
-     "ms": 874
+     "ms": 638
     },
     {
      "t": "hare",
-     "ms": 1431
+     "ms": 1069
     },
     {
      "t": "and",
-     "ms": 1798
+     "ms": 1750
     },
     {
      "t": "got",
-     "ms": 2015
+     "ms": 1847
     },
     {
      "t": "to",
-     "ms": 2301
+     "ms": 2097
     },
     {
      "t": "the",
-     "ms": 2409
+     "ms": 2152
     },
     {
      "t": "finish",
-     "ms": 2532
+     "ms": 2250
     },
     {
      "t": "line",
-     "ms": 3007
+     "ms": 2597
     },
     {
      "t": "first.",
-     "ms": 3320
+     "ms": 2972
     }
    ],
    "audio": "p5.m4a",
-   "audioMs": 4850
+   "audioMs": 4030
   },
   {
    "art": "🐇",
    "tokens": [
     {
      "t": "The",
-     "ms": 100
+     "ms": 111
     },
     {
      "t": "hare",
-     "ms": 317
+     "ms": 180
     },
     {
      "t": "woke",
-     "ms": 575
+     "ms": 402
     },
     {
      "t": "up",
-     "ms": 888
+     "ms": 652
     },
     {
      "t": "and",
-     "ms": 1064
+     "ms": 861
     },
     {
      "t": "ran,",
-     "ms": 1268
+     "ms": 986
     },
     {
      "t": "but",
-     "ms": 1893
+     "ms": 1861
     },
     {
      "t": "it",
-     "ms": 2110
+     "ms": 1958
     },
     {
      "t": "was",
-     "ms": 2233
+     "ms": 2027
     },
     {
      "t": "too",
-     "ms": 2491
+     "ms": 2180
     },
     {
      "t": "late.",
-     "ms": 2735
+     "ms": 2444
     },
     {
      "t": "The",
-     "ms": 4166
+     "ms": 3375
     },
     {
      "t": "tortoise",
-     "ms": 4384
+     "ms": 3444
     },
     {
      "t": "had",
-     "ms": 4900
+     "ms": 3875
     },
     {
      "t": "won.",
-     "ms": 5145
+     "ms": 4055
     }
    ],
    "audio": "p6.m4a",
-   "audioMs": 6500
+   "audioMs": 4820
   }
  ],
  "moral": {
   "spoken": "Slow and steady wins the race.",
   "line": "I did not nap.",
   "audio": "moral.m4a",
-  "audioMs": 3190
+  "audioMs": 2810
  },
  "prompts": {
   "yes:ran": {
    "audio": "yes-ran.m4a",
-   "ms": 3290
+   "ms": 1900
   },
   "word:ran": {
    "audio": "word-ran.m4a",
-   "ms": 1680
+   "ms": 910
   },
   "yes:nap": {
    "audio": "yes-nap.m4a",
-   "ms": 3240
+   "ms": 1970
   },
   "word:nap": {
    "audio": "word-nap.m4a",
-   "ms": 1630
+   "ms": 960
   },
   "yes:got": {
    "audio": "yes-got.m4a",
-   "ms": 3260
+   "ms": 1820
   },
   "word:got": {
    "audio": "word-got.m4a",
-   "ms": 1660
+   "ms": 840
   }
  }
 }

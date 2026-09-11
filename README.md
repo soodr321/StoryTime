@@ -3,7 +3,7 @@
 **Nani reads the story. Your child reads the magic words.**
 
 A free, installable web app (PWA) that helps a 4–5 year old learn to read, built for one family and
-shared for anyone. No account, no ads, no microphone, nothing leaves the phone.
+shared for anyone. No account, no ads, nothing leaves the phone. The microphone is used only if you record your own voice (stored on the phone) or switch on the experimental "follow my voice" option, which sends audio to Apple or Google for recognition while it is listening.
 
 Stable URL: **https://soodr321.github.io/StoryTime/** · install with Share → Add to Home Screen (iPhone) or Install (Android).
 

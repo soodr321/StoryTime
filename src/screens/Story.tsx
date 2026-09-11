@@ -11,10 +11,14 @@ import { useFamily } from "../lib/family";
 import { learnerOf } from "../lib/store";
 import { Art } from "../components/Art";
 import { MagicPanel } from "../components/MagicPanel";
-import { stretched, playBlend } from "../lib/blend";
+import { stretched, playBlend, stopBlend } from "../lib/blend";
 import { SegmentPanel } from "../components/SegmentPanel";
 import type { Verdict } from "../components/MagicPanel";
 import type { Mode } from "./Home";
+import { advanceCursor, hitWord, type WordRect } from "../lib/follow";
+import { pickIllTry } from "../lib/phonics/illtry";
+import { align } from "../lib/voice/align";
+import { startVoice, voiceSupported, type VoiceSession, type VoiceState } from "../lib/voice/session";
 import { BookIcon, HomeIcon, LockIcon, MoonIcon, SpeakerIcon, CheckIcon } from "../components/Icons";
 
 type Prompts = Record<string, { audio: string; ms: number }>;
@@ -146,9 +150,9 @@ export function StoryScreen({ story, mode, resume, onHome }: { story: Story; mod
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state, ctx.page, retry]);
 
-  useEffect(() => { if (!startedRef.current) { startedRef.current = true; void unlock().then(() => send({ type: "START" })); } return () => { stopAll(); playing.current?.stop(); }; }, [send]);
+  useEffect(() => { if (!startedRef.current) { startedRef.current = true; void unlock().then(() => send({ type: "START" })); } return () => { stopAll(); stopBlend(); playing.current?.stop(); }; }, [send]);
 
-  const home = () => { runRef.current++; playing.current?.stop(); stopAll(); onHome(); };
+  const home = () => { runRef.current++; playing.current?.stop(); stopAll(); stopBlend(); onHome(); };
   const inStory = state === "narrating" || state === "reread" || state === "magicWord" || state === "modelling";
   const panelOpen = (state === "magicWord" || state === "modelling") && !!ctx.magic;
 
@@ -157,14 +161,14 @@ export function StoryScreen({ story, mode, resume, onHome }: { story: Story; mod
     const run = ++runRef.current; const alive = () => run === runRef.current;
     const word = ctx.magic!; const gs = checkWord(word, learner).graphemes;
     send({ type: "NOT_YET" });
-    if (listen) await speakPrompt("notyet", "That's okay. Listen: I'll slide through the sounds, then you try."); else setCaption(`${reader}: keep your voice going, slide through the sounds. Do NOT say the whole word.`);
+    if (listen) await speakPrompt("notyet", "That's okay. Listen: I'll slide through the sounds, then you try."); else setCaption(`${reader}: slide through the sounds and let them run into the word (bouncy sounds like t and p stay short).`);
     if (!alive()) return;
     setCaption(stretched(gs) + " …");
     if (listen) await playBlend(gs, { alive, rate, onProgress: setSweep });
     else { const n = gs.length * 12; for (let i = 1; i <= n; i++) { await new Promise((r) => setTimeout(r, 70)); if (!alive()) return; setSweep(i / n); } }   // sound off: the app must not talk over the grown-up
     setSweep(0);
     if (!alive()) return;
-    // never say the whole word here: the child must blend it, not echo it
+    // the model may end in the whole word (that is what a model is); it is recorded as "modelled", never as known
     if (listen) await speakPrompt("yourturn", "Your turn: start here and slide through the word."); else setCaption(`Now ${kid.name}: start at the first sound and slide through the word.`);
     if (alive()) send({ type: "MODEL_DONE" });
   };
@@ -180,7 +184,7 @@ export function StoryScreen({ story, mode, resume, onHome }: { story: Story; mod
       {inStory && page && (
         <StoryView
           page={page} pageNo={ctx.page} total={story.pages.length} token={listen ? ctx.token : -1} results={ctx.results}
-          readMode={!listen} listener={listener} reader={reader} kid={kid.name} stalled={stalled} pageHeld={pageHeld} hideArt={panelOpen}
+          readMode={!listen} listener={listener} reader={reader} kid={kid.name} stalled={stalled} pageHeld={pageHeld} hideArt={panelOpen} learner={learner} voiceFollow={!!fam.settings.voiceFollow && !bedtime}
           onRetry={() => { void unlock(); setStalled(false); setRetry((n) => n + 1); }}
           onMagicTap={(w, i) => state === "narrating" && send({ type: "MAGIC_REACHED", word: w, index: i })}
           onWordTap={(tok) => { if (listener || !listen) { if (state === "narrating" && listen && !pageHeld) return; setCaption(tok); const h = speakText(tok, { rate }); playing.current = h; } }}
@@ -207,9 +211,9 @@ export function StoryScreen({ story, mode, resume, onHome }: { story: Story; mod
   );
 }
 
-function StoryView({ page, pageNo, total, token, results, readMode, listener, reader, kid, stalled, pageHeld, hideArt, onRetry, onMagicTap, onWordTap, onNext }: {
+function StoryView({ page, pageNo, total, token, results, readMode, listener, reader, kid, stalled, pageHeld, hideArt, learner, voiceFollow, onRetry, onMagicTap, onWordTap, onNext }: {
   page: Page; pageNo: number; total: number; token: number; results: WordResult[];
-  readMode: boolean; listener: boolean; reader: string; kid: string; stalled: boolean; pageHeld: boolean; hideArt: boolean;
+  readMode: boolean; listener: boolean; reader: string; kid: string; stalled: boolean; pageHeld: boolean; hideArt: boolean; learner: LearnerModel; voiceFollow: boolean;
   onRetry: () => void; onMagicTap: (w: string, i: number) => void; onWordTap: (tok: string) => void; onNext: () => void;
 }) {
   const resAt = (i: number) => results.find((r) => r.id === `${pageNo}:${i}`);
@@ -218,29 +222,91 @@ function StoryView({ page, pageNo, total, token, results, readMode, listener, re
   // trailing punctuation sits outside the highlight: the child decodes letters, not full stops
   const split = (tok: string) => { const m = tok.match(/^([^A-Za-z]*)([A-Za-z]+(?:['’][A-Za-z]+)?)([^A-Za-z]*)$/); return m ? [m[1], m[2], m[3]] : ["", tok, ""]; };
   const last = pageNo + 1 >= total;
+
+  // finger-follow (read mode): pointer = word under the finger, cursor = the adult's reading position
+  const sentenceRef = useRef<HTMLParagraphElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);   // the finger travels under the print, so the whole card listens
+  const [pointer, setPointer] = useState(-1);
+  const [cursor, setCursor] = useState(-1);
+  const drag = useRef<{ x: number; y: number; on: boolean; rects: WordRect[]; id: number } | null>(null);
+  useEffect(() => { setPointer(-1); setCursor(-1); drag.current = null; }, [pageNo]);
+  const blocked = (i: number) => firstIdx.has(i) && !resAt(i);
+  const land = (i: number) => { if (i < 0) return; setPointer(i); setCursor((c) => advanceCursor(c, i, blocked)); };
+  const measure = (): WordRect[] => Array.from(sentenceRef.current?.querySelectorAll<HTMLElement>("[data-i]") ?? []).map((el) => { const b = el.getBoundingClientRect(); return { index: Number(el.dataset.i), left: b.left, right: b.right, top: b.top, bottom: b.bottom }; });
+  const onDown = (e: React.PointerEvent) => { if (!readMode) return; drag.current = { x: e.clientX, y: e.clientY, on: false, rects: [], id: e.pointerId }; };
+  const onMove = (e: React.PointerEvent) => {
+    const d = drag.current; if (!d || !readMode) return;
+    if (!d.on) { if (Math.hypot(e.clientX - d.x, e.clientY - d.y) < 8) return; d.on = true; d.rects = measure(); try { cardRef.current?.setPointerCapture(d.id); } catch { /* not supported */ } }   // a tap stays a tap: the pink button still clicks
+    land(hitWord(d.rects, e.clientX, e.clientY));
+  };
+  const onUp = () => { drag.current = null; };
+  const wordCls = (i: number, base: string) => (readMode ? base + (i === pointer ? " now" : i <= cursor ? " read" : "") : base);
+
+  // "I'll try": one extra decodable word per page, chosen on page open, offered only until the grown-up has read past it
+  const extra = useMemo(() => (readMode && !listener ? pickIllTry(page, learner, firstIdx, (i) => !!resAt(i)) : -1),
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  [page, pageNo, readMode, listener, learner]);
+
+  // follow my voice (opt-in): the recogniser only ever moves the cursor forward, never onto the pending child word
+  const [voice, setVoice] = useState<VoiceState>("off");
+  const session = useRef<VoiceSession | null>(null);
+  const anchor = useRef(-1);
+  const cursorRef = useRef(-1); cursorRef.current = cursor;
+  const tokensNorm = useMemo(() => page.tokens.map((t) => normalise(t.t)), [page]);
+  const stopVoice = () => { session.current?.stop(); session.current = null; };
+  useEffect(() => { anchor.current = cursorRef.current; }, [pointer]);   // a finger or tap correction invalidates the running alignment
+  useEffect(() => { if (hideArt) { stopVoice(); setVoice((v) => (v === "listening" || v === "starting" ? "stopped" : v)); } }, [hideArt]);   // the word card: never listen to the child
+  useEffect(() => () => stopVoice(), [pageNo]);
+  const startFollow = () => {
+    stopVoice(); anchor.current = cursorRef.current;
+    session.current = startVoice({
+      onState: setVoice,
+      onHeard: (words, final) => {
+        const stopAt = pending.length ? pending[0] : -1;
+        const next = align({ tokens: tokensNorm, anchor: anchor.current, heard: words, stopAt });
+        if (next > cursorRef.current) { setCursor(next); setPointer(next); }
+        if (final) anchor.current = Math.max(anchor.current, next);
+      },
+    });
+  };
   return (
     <main className="story">
       {/* the picture is hidden while a magic word is open: the child reads the letters, not the picture */}
       <div className={"art-box" + (hideArt ? " veiled" : "")}>{hideArt ? <span className="veil"><LockIcon size={28} />read the letters</span> : <Art art={page.art} />}</div>
-      <div className="text-card">
+      <div className={"text-card" + (readMode ? " follow" : "")} ref={cardRef} onPointerDown={onDown} onPointerMove={onMove} onPointerUp={onUp} onPointerCancel={onUp} onLostPointerCapture={onUp}>
         <div className="pg">Page {pageNo + 1} of {total}</div>
-        <p className="sentence">
+        <p className={"sentence" + (readMode ? " follow" : "")} ref={sentenceRef}>
           {page.tokens.map((t, i) => {
             const n = normalise(t.t);
             const magic = !listener && firstIdx.has(i);
             const res = magic ? resAt(i) : undefined;
-            const cls = ["w", i === token ? "now" : "", i < token ? "read" : "", magic ? "magic" : "", magic && res ? (res.ok ? "done" : "skipped") : ""].join(" ");
+            const cls = wordCls(i, ["w", i === token ? "now" : "", i < token ? "read" : "", magic ? "magic" : "", magic && res ? (res.ok ? "done" : "skipped") : ""].join(" "));
             const [lead, core0, punct] = split(t.t);
             const core = magic ? core0.toLowerCase() : core0;   // a magic word is shown in the letterforms the child was taught
-            if (readMode && magic && !res) return <span key={i} className="tokwrap">{lead}<button className={cls + " tap"} onClick={() => onMagicTap(n, i)}>{core}</button>{punct} </span>;
+            if (readMode && magic && !res) return <span key={i} className="tokwrap">{lead}<button className={cls + " tap"} data-i={i} onClick={() => onMagicTap(n, i)}>{core}</button>{punct} </span>;
+            if (readMode && i === extra) {
+              const r = resAt(i);
+              if (r) return <span key={i} className="tokwrap">{lead}<span className={wordCls(i, "w magic " + (r.ok ? "done" : "skipped"))} data-i={i}>{core.toLowerCase()}</span>{punct} </span>;
+              if (i > cursor) return <span key={i} className="tokwrap">{lead}<button className={cls + " try"} data-i={i} onClick={() => onMagicTap(n, i)}>{core.toLowerCase()}</button>{punct} </span>;   // offered until the grown-up reads past it
+            }
             if (listener) return <span key={i} className="tokwrap">{lead}<button className={cls + " listener-tap"} onClick={() => onWordTap(t.t)}>{core}</button>{punct} </span>;   // read mode: grey words are the grown-up's, never tap-to-hear
+            if (readMode) return <span key={i} className="tokwrap">{lead}<span className={cls} data-i={i} onClick={() => land(i)}>{core}</span>{punct} </span>;   // tap-only alternative to the slide: the next word moves the cursor
             return <span key={i} className="tokwrap">{lead}<span className={cls}>{core}</span>{punct} </span>;
           })}
         </p>
         {stalled && <div className="readbar"><button className="next" onClick={onRetry}>▶ Try again</button></div>}
         {readMode && !stalled && (
           <div className="readbar">
-            <span className="script">{pending.length ? <><b>{reader}</b> reads the story. <b>{kid}</b> reads the <em className="pinkword">pink word</em>: tap it, then say the sounds and blend.</> : <><b>{reader}</b> reads the page. Then go on.</>}</span>
+            <span className="script">{pending.length ? <><b>{reader}</b> reads, sliding a finger under the words. <b>{kid}</b> reads the <em className="pinkword">pink word</em>: tap it, then say the sounds and blend.</> : <><b>{reader}</b> reads the page, finger under the words. Then go on.</>}{extra >= 0 && extra > cursor && !resAt(extra) && <> <small className="legend">Also decodable: <b>{normalise(page.tokens[extra].t)}</b> — tap it if {kid} wants a go.</small></>}</span>
+            {voiceFollow && voiceSupported() && (
+              <div className="row center voicebar">
+                {voice === "off" || voice === "stopped" ? <button className="small" onClick={startFollow}>{voice === "stopped" ? "Tap to follow again" : "Follow my voice"}</button>
+                  : voice === "starting" ? <span className="legend">starting the microphone…</span>
+                  : voice === "listening" ? <button className="small live" onClick={() => { stopVoice(); setVoice("off"); }}>Listening · stop</button>
+                  : voice === "denied" ? <span className="legend">Microphone not allowed here. Slide a finger under the words instead.</span>
+                  : <span className="legend">Voice follow is not available here (offline or unsupported). Slide a finger under the words instead.</span>}
+              </div>
+            )}
             <button className="next" disabled={pending.length > 0} onClick={onNext}>{last ? "The end →" : "Next page →"}</button>
           </div>
         )}

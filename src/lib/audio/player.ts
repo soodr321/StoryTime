@@ -56,11 +56,11 @@ function resolveSrc(src: string): string {
     const url = URL.createObjectURL(new Blob([bytes], { type: mime })); blobUrls.set(src, url); return url;
   } catch { return src; }
 }
-function playOn(el: HTMLAudioElement, src: string, rate = 1): Playing {
+function playOn(el: HTMLAudioElement, src: string, rate = 1, range?: { startMs?: number; endMs?: number }): Playing {
   cleanups.get(el)?.();               // a superseded track must not keep listeners on the shared element
   el.pause();
   el.src = resolveSrc(src);            // assigning src resets the clock; writing currentTime before load throws on WebKit
-  const onMeta = () => { try { el.playbackRate = rate; } catch { /* not supported for this source */ } };
+  const onMeta = () => { try { el.playbackRate = rate; if (range?.startMs) el.currentTime = range.startMs / 1000; } catch { /* not supported for this source */ } };
   el.addEventListener("loadedmetadata", onMeta, { once: true });
   let settled = false;
   let resolve!: () => void, reject!: (e: unknown) => void;
@@ -70,7 +70,7 @@ function playOn(el: HTMLAudioElement, src: string, rate = 1): Playing {
   const onEnded = () => finish();
   const onError = () => { if (!settled) { settled = true; off(); reject(new Error(`audio failed: ${src}`)); } };
   // safety net: some engines drop `ended` after a stall; treat reaching the end as ended
-  const onTime = () => { if (el.duration && el.currentTime >= el.duration - 0.05) { el.pause(); finish(); } };
+  const onTime = () => { if ((el.duration && el.currentTime >= el.duration - 0.05) || (range?.endMs && el.currentTime * 1000 >= range.endMs)) { el.pause(); finish(); } };
   el.addEventListener("ended", onEnded);
   el.addEventListener("error", onError);
   el.addEventListener("timeupdate", onTime);
@@ -85,9 +85,9 @@ export function playNarration(src: string, rate = 1): Playing {
   return playOn(narration, src, rate);
 }
 
-export function playClip(src: string): Playing {
+export function playClip(src: string, range?: { startMs?: number; endMs?: number }): Playing {
   clip ??= make();
-  return playOn(clip, src);
+  return playOn(clip, src, 1, range);
 }
 
 export function stopAll(): void {

@@ -7,6 +7,7 @@
  */
 import { useEffect, useMemo, useRef, useState } from "react";
 import { canRecord, startRecording, type Recorder } from "../lib/audio/record";
+import { playClip } from "../lib/audio/player";
 import { useFamily } from "../lib/family";
 import { learnerOf, uid } from "../lib/store";
 import { checkLine, checkMagicWord, normalise } from "../lib/phonics/validator";
@@ -40,11 +41,14 @@ export function AddStoryScreen({ onDone }: { onDone: () => void }) {
   const [magic, setMagic] = useState<Record<string, string | null>>({});
   const [rec, setRec] = useState<Record<string, { dataUrl: string; ms: number }>>({});
   const [recording, setRecording] = useState<number | null>(null);
+  const [times, setTimes] = useState<Record<string, number[]>>({});   // tap-as-you-listen word timings, keyed like recordings
+  const [timing, setTiming] = useState<number | null>(null);
+  const timingEl = useRef<HTMLAudioElement | null>(null);
   const recRef = useRef<Recorder | null>(null);
   useEffect(() => () => { void recRef.current?.stop(); }, []);   // leaving the screen releases the microphone
   const toggleRec = async (i: number) => {
     const key = keys[i];
-    if (recording === i) { let r: { dataUrl: string; ms: number } | null = null; try { r = (await recRef.current?.stop()) ?? null; } finally { recRef.current = null; setRecording(null); } if (r) setRec((prev) => ({ ...prev, [key]: r })); else setPhotoErr("That recording was empty. Try again and speak a little longer."); return; }
+    if (recording === i) { let r: { dataUrl: string; ms: number } | null = null; try { r = (await recRef.current?.stop()) ?? null; } finally { recRef.current = null; setRecording(null); } if (r) { setRec((prev) => ({ ...prev, [key]: r })); setTimes((prev) => { const n = { ...prev }; delete n[key]; return n; }); } else setPhotoErr("That recording was empty. Try again and speak a little longer."); return; }
     if (recording !== null) return;
     try { recRef.current = await startRecording(); setRecording(i); } catch { setPhotoErr("Microphone not allowed. You can still save the story; it will use the phone's voice."); }
   };
@@ -60,6 +64,11 @@ export function AddStoryScreen({ onDone }: { onDone: () => void }) {
   const chosen = (i: number) => magic[keys[i]] ?? null;
   const artOf = (i: number) => arts[keys[i]];
   const recOf = (i: number) => rec[keys[i]];
+  const wordsOf = (i: number) => pages[i].split(/\s+/);
+  /** timings count only when every word has a strictly increasing stamp inside the recording */
+  const timedOk = (i: number) => { const t = times[keys[i]]; const r = recOf(i); return !!t && !!r && t.length === wordsOf(i).length && t.every((v, k) => v > 0 && (k === 0 || v > t[k - 1])) && t[t.length - 1] < r.ms; };
+  const startTiming = (i: number) => { const r = recOf(i); if (!r) return; setTimes((prev) => ({ ...prev, [keys[i]]: [] })); const p = playClip(r.dataUrl); timingEl.current = p.el; setTiming(i); void p.done.finally(() => setTiming((cur) => (cur === i ? null : cur))); };
+  const tapWord = (i: number, k: number) => { const el = timingEl.current; const cur = times[keys[i]] ?? []; if (timing !== i || !el || cur.length !== k) return; setTimes((prev) => ({ ...prev, [keys[i]]: [...cur, Math.round(el.currentTime * 1000)] })); };
   const ready = title.trim() && pages.length >= 2 && moral.trim() && lineCheck?.ok && pages.every((_, i) => arts[i] || true);
 
   const save = async () => {
@@ -68,7 +77,7 @@ export function AddStoryScreen({ onDone }: { onDone: () => void }) {
       source: { work: "Family story", rights: "owner" },
       retelling: { level: `${kid.gpcs.length} sounds`, checklist: { setup: true, want: true, action: true, consequence: true, feeling: true } },
       level: "custom",
-      pages: pages.map((p, i) => ({ art: artOf(i) ?? "📖", tokens: p.split(/\s+/).map((t) => ({ t, ms: 0 })), ...(chosen(i) ? { magic: [chosen(i)!] } : {}), ...(recOf(i) ? { audio: recOf(i).dataUrl, audioMs: recOf(i).ms } : {}) })),
+      pages: pages.map((p, i) => ({ art: artOf(i) ?? "📖", tokens: p.split(/\s+/).map((t, k) => ({ t, ms: timedOk(i) ? times[keys[i]][k] : 0 })), ...(chosen(i) ? { magic: [chosen(i)!] } : {}), ...(recOf(i) ? { audio: recOf(i).dataUrl, audioMs: recOf(i).ms } : {}) })),
       moral: { spoken: moral.trim(), line: line.trim() },
     };
     if (await addCustom(story)) onDone();
@@ -108,6 +117,8 @@ export function AddStoryScreen({ onDone }: { onDone: () => void }) {
                   <span className="legend">Voice:</span>
                   <button className={"tog rec" + (recording === i ? " live" : recOf(i) ? " on" : "")} onClick={() => toggleRec(i)}>{recording === i ? "■ stop" : recOf(i) ? "🎤 re-record" : "🎤 record this page"}</button>
                   {recOf(i) && recording !== i && <span className="legend">✓ {Math.round(recOf(i).ms / 1000)}s in your voice</span>}
+                  {recOf(i) && recording !== i && (timedOk(i) ? <span className="legend ok">✓ words timed: the story can stop right before the magic word</span> : <button className="linkbtn" onClick={() => startTiming(i)}>{timing === i ? "▶ playing… tap each word as you hear it" : "time the words: play and tap along"}</button>)}
+                  {timing === i && <div className="chips">{wordsOf(i).map((w, k) => <button key={k} className={"tog" + ((times[keys[i]]?.length ?? 0) > k ? " on" : "")} onClick={() => tapWord(i, k)}>{w}</button>)}</div>}
                   {!recOf(i) && recording !== i && <span className="legend">or leave it: the phone reads it</span>}
                 </div>
               )}

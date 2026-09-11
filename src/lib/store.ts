@@ -46,6 +46,7 @@ export interface Settings {
   tonight?: string;         // which grown-up is reading tonight
   onboarded?: boolean;
   activeKid?: string;
+  voiceFollow?: boolean;   // experimental: "I read" follows the grown-up's voice (audio goes to Apple/Google while on)
 }
 
 const K = { kids: "st:kids", settings: "st:settings", customs: "st:custom-stories" };

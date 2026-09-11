@@ -1,146 +1,182 @@
 {
  "s": {
-  "audio": "s.m4a",
-  "ms": 1300,
+  "audio": "s.wav",
+  "ms": 180,
+  "kind": "continuant",
   "recorded": true,
   "source": "https://commons.wikimedia.org/wiki/File:Voiceless_alveolar_sibilant.ogg",
   "license": "CC BY-SA 3.0",
-  "artist": "Peter Isotalo"
- },
- "a": {
-  "audio": "a.m4a",
-  "ms": 800,
-  "recorded": true,
-  "source": "https://commons.wikimedia.org/wiki/File:Near-open_front_unrounded_vowel.ogg",
-  "license": "CC BY-SA 3.0",
-  "artist": "No machine-readable author provided. Denelson83 assumed (based on copyright claims)."
- },
- "t": {
-  "audio": "t.m4a",
-  "ms": 1300,
-  "recorded": true,
-  "source": "https://commons.wikimedia.org/wiki/File:Voiceless_alveolar_plosive.ogg",
-  "license": "CC BY-SA 3.0",
-  "artist": "?"
- },
- "p": {
-  "audio": "p.m4a",
-  "ms": 1300,
-  "recorded": true,
-  "source": "https://commons.wikimedia.org/wiki/File:Voiceless_bilabial_plosive.ogg",
-  "license": "CC BY-SA 3.0",
-  "artist": "?"
- },
- "i": {
-  "audio": "i.m4a",
-  "ms": 610,
-  "recorded": true,
-  "source": "https://commons.wikimedia.org/wiki/File:Near-close_near-front_unrounded_vowel.ogg",
-  "license": "CC BY-SA 3.0",
-  "artist": "No machine-readable author provided. Denelson83 assumed (based on copyright claims)."
- },
- "n": {
-  "audio": "n.m4a",
-  "ms": 1300,
-  "recorded": true,
-  "source": "https://commons.wikimedia.org/wiki/File:Alveolar_nasal.ogg",
-  "license": "CC BY-SA 3.0",
-  "artist": "?"
- },
- "m": {
-  "audio": "m.m4a",
-  "ms": 1300,
-  "recorded": true,
-  "source": "https://commons.wikimedia.org/wiki/File:Bilabial_nasal.ogg",
-  "license": "CC BY-SA 3.0",
-  "artist": "?"
- },
- "d": {
-  "audio": "d.m4a",
-  "ms": 1300,
-  "recorded": true,
-  "source": "https://commons.wikimedia.org/wiki/File:Voiced_alveolar_plosive.ogg",
-  "license": "CC BY-SA 3.0",
-  "artist": "?"
- },
- "g": {
-  "audio": "g.m4a",
-  "ms": 760,
-  "recorded": true,
-  "source": "https://commons.wikimedia.org/wiki/File:Voiced_velar_plosive.ogg",
-  "license": "CC BY-SA 3.0",
-  "artist": "?"
- },
- "o": {
-  "audio": "o.m4a",
-  "ms": 770,
-  "recorded": true,
-  "source": "https://commons.wikimedia.org/wiki/File:Open_back_rounded_vowel.ogg",
-  "license": "CC BY-SA 3.0",
-  "artist": "No machine-readable author provided. Denelson83 assumed (based on copyright claims)."
- },
- "k": {
-  "audio": "k.m4a",
-  "ms": 1300,
-  "recorded": true,
-  "source": "https://commons.wikimedia.org/wiki/File:Voiceless_velar_plosive.ogg",
-  "license": "CC BY-SA 3.0",
-  "artist": "?"
- },
- "e": {
-  "audio": "e.m4a",
-  "ms": 730,
-  "recorded": true,
-  "source": "https://commons.wikimedia.org/wiki/File:Open-mid_front_unrounded_vowel.ogg",
-  "license": "CC BY-SA 3.0",
-  "artist": "No machine-readable author provided. Denelson83 assumed (based on copyright claims)."
- },
- "u": {
-  "audio": "u.m4a",
-  "ms": 730,
-  "recorded": true,
-  "source": "https://commons.wikimedia.org/wiki/File:Open-mid_back_unrounded_vowel.ogg",
-  "license": "CC BY-SA 3.0",
-  "artist": "No machine-readable author provided. Denelson83 assumed (based on copyright claims)."
- },
- "r": {
-  "audio": "r.m4a",
-  "ms": 1300,
-  "recorded": true,
-  "source": "https://commons.wikimedia.org/wiki/File:Alveolar_approximant.ogg",
-  "license": "CC BY-SA 3.0",
-  "artist": "Erutuon"
- },
- "h": {
-  "audio": "h.m4a",
-  "ms": 1300,
-  "recorded": true,
-  "source": "https://commons.wikimedia.org/wiki/File:Voiceless_glottal_fricative.ogg",
-  "license": "CC BY-SA 3.0",
-  "artist": "?"
- },
- "b": {
-  "audio": "b.m4a",
-  "ms": 1300,
-  "recorded": true,
-  "source": "https://commons.wikimedia.org/wiki/File:Voiced_bilabial_plosive.ogg",
-  "license": "CC BY-SA 3.0",
-  "artist": "?"
+  "artist": "Peter Isotalo",
+  "edit": "cut 262\u2013442 ms of the original to the isolated sound, peak-normalised"
  },
  "f": {
-  "audio": "f.m4a",
-  "ms": 740,
+  "audio": "f.wav",
+  "ms": 166,
+  "kind": "continuant",
   "recorded": true,
   "source": "https://commons.wikimedia.org/wiki/File:Voiceless_labiodental_fricative.ogg",
   "license": "CC BY-SA 3.0",
-  "artist": "?"
+  "artist": "?",
+  "edit": "cut 22\u2013188 ms of the original to the isolated sound, peak-normalised"
+ },
+ "h": {
+  "audio": "h.wav",
+  "ms": 110,
+  "kind": "continuant",
+  "recorded": true,
+  "source": "https://commons.wikimedia.org/wiki/File:Voiceless_glottal_fricative.ogg",
+  "license": "CC BY-SA 3.0",
+  "artist": "?",
+  "edit": "cut 262\u2013372 ms of the original to the isolated sound, peak-normalised"
+ },
+ "m": {
+  "audio": "m.wav",
+  "ms": 200,
+  "kind": "continuant",
+  "recorded": true,
+  "source": "https://commons.wikimedia.org/wiki/File:Bilabial_nasal.ogg",
+  "license": "CC BY-SA 3.0",
+  "artist": "?",
+  "edit": "cut 215\u2013415 ms of the original to the isolated sound, peak-normalised"
+ },
+ "n": {
+  "audio": "n.wav",
+  "ms": 190,
+  "kind": "continuant",
+  "recorded": true,
+  "source": "https://commons.wikimedia.org/wiki/File:Alveolar_nasal.ogg",
+  "license": "CC BY-SA 3.0",
+  "artist": "?",
+  "edit": "cut 365\u2013555 ms of the original to the isolated sound, peak-normalised"
  },
  "l": {
-  "audio": "l.m4a",
-  "ms": 1300,
+  "audio": "l.wav",
+  "ms": 310,
+  "kind": "continuant",
   "recorded": true,
   "source": "https://commons.wikimedia.org/wiki/File:Alveolar_lateral_approximant.ogg",
   "license": "CC BY-SA 3.0",
-  "artist": "?"
+  "artist": "?",
+  "edit": "cut 215\u2013525 ms of the original to the isolated sound, peak-normalised"
+ },
+ "r": {
+  "audio": "r.wav",
+  "ms": 185,
+  "kind": "continuant",
+  "recorded": true,
+  "source": "https://commons.wikimedia.org/wiki/File:Alveolar_approximant.ogg",
+  "license": "CC BY-SA 3.0",
+  "artist": "Erutuon",
+  "edit": "cut 295\u2013480 ms of the original to the isolated sound, peak-normalised"
+ },
+ "a": {
+  "audio": "a.wav",
+  "ms": 300,
+  "kind": "vowel",
+  "recorded": true,
+  "source": "https://commons.wikimedia.org/wiki/File:Near-open_front_unrounded_vowel.ogg",
+  "license": "CC BY-SA 3.0",
+  "artist": "No machine-readable author provided. Denelson83 assumed (based on copyright claims).",
+  "edit": "cut 100\u2013400 ms of the original to the isolated sound, peak-normalised"
+ },
+ "e": {
+  "audio": "e.wav",
+  "ms": 300,
+  "kind": "vowel",
+  "recorded": true,
+  "source": "https://commons.wikimedia.org/wiki/File:Open-mid_front_unrounded_vowel.ogg",
+  "license": "CC BY-SA 3.0",
+  "artist": "No machine-readable author provided. Denelson83 assumed (based on copyright claims).",
+  "edit": "cut 100\u2013400 ms of the original to the isolated sound, peak-normalised"
+ },
+ "i": {
+  "audio": "i.wav",
+  "ms": 300,
+  "kind": "vowel",
+  "recorded": true,
+  "source": "https://commons.wikimedia.org/wiki/File:Near-close_near-front_unrounded_vowel.ogg",
+  "license": "CC BY-SA 3.0",
+  "artist": "No machine-readable author provided. Denelson83 assumed (based on copyright claims).",
+  "edit": "cut 80\u2013380 ms of the original to the isolated sound, peak-normalised"
+ },
+ "o": {
+  "audio": "o.wav",
+  "ms": 300,
+  "kind": "vowel",
+  "recorded": true,
+  "source": "https://commons.wikimedia.org/wiki/File:Open_back_unrounded_vowel.ogg",
+  "license": "CC BY-SA 3.0",
+  "artist": "No machine-readable author provided. Denelson83 assumed (based on copyright claims).",
+  "edit": "cut 80\u2013380 ms of the original to the isolated sound, peak-normalised"
+ },
+ "u": {
+  "audio": "u.wav",
+  "ms": 300,
+  "kind": "vowel",
+  "recorded": true,
+  "source": "https://commons.wikimedia.org/wiki/File:Open-mid_back_unrounded_vowel.ogg",
+  "license": "CC BY-SA 3.0",
+  "artist": "No machine-readable author provided. Denelson83 assumed (based on copyright claims).",
+  "edit": "cut 80\u2013380 ms of the original to the isolated sound, peak-normalised"
+ },
+ "t": {
+  "audio": "t.wav",
+  "ms": 37,
+  "kind": "stop",
+  "recorded": true,
+  "source": "https://commons.wikimedia.org/wiki/File:Voiceless_alveolar_plosive.ogg",
+  "license": "CC BY-SA 3.0",
+  "artist": "?",
+  "edit": "cut 903\u2013940 ms of the original to the isolated sound, peak-normalised"
+ },
+ "p": {
+  "audio": "p.wav",
+  "ms": 42,
+  "kind": "stop",
+  "recorded": true,
+  "source": "https://commons.wikimedia.org/wiki/File:Voiceless_bilabial_plosive.ogg",
+  "license": "CC BY-SA 3.0",
+  "artist": "?",
+  "edit": "cut 598\u2013640 ms of the original to the isolated sound, peak-normalised"
+ },
+ "k": {
+  "audio": "k.wav",
+  "ms": 27,
+  "kind": "stop",
+  "recorded": true,
+  "source": "https://commons.wikimedia.org/wiki/File:Voiceless_velar_plosive.ogg",
+  "license": "CC BY-SA 3.0",
+  "artist": "?",
+  "edit": "cut 918\u2013945 ms of the original to the isolated sound, peak-normalised"
+ },
+ "b": {
+  "audio": "b.wav",
+  "ms": 25,
+  "kind": "stop",
+  "recorded": true,
+  "source": "https://commons.wikimedia.org/wiki/File:Voiced_bilabial_plosive.ogg",
+  "license": "CC BY-SA 3.0",
+  "artist": "?",
+  "edit": "cut 1023\u20131048 ms of the original to the isolated sound, peak-normalised"
+ },
+ "d": {
+  "audio": "d.wav",
+  "ms": 25,
+  "kind": "stop",
+  "recorded": true,
+  "source": "https://commons.wikimedia.org/wiki/File:Voiced_alveolar_plosive.ogg",
+  "license": "CC BY-SA 3.0",
+  "artist": "?",
+  "edit": "cut 883\u2013908 ms of the original to the isolated sound, peak-normalised"
+ },
+ "g": {
+  "audio": "g.wav",
+  "ms": 25,
+  "kind": "stop",
+  "recorded": true,
+  "source": "https://commons.wikimedia.org/wiki/File:Voiced_velar_plosive.ogg",
+  "license": "CC BY-SA 3.0",
+  "artist": "?",
+  "edit": "cut 668\u2013693 ms of the original to the isolated sound, peak-normalised"
  }
 }

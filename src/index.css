@@ -52,7 +52,10 @@ main { flex: 1; display: flex; flex-direction: column; padding: 8px 14px 14px; g
 .art-box.big { height: 24dvh; }
 .text-card { background: var(--card); border: 2px solid var(--line); border-radius: 22px; padding: 16px 18px; flex: 1; }
 .pg { color: var(--muted); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; font-family: system-ui, sans-serif; margin-bottom: 8px; }
-.sentence { margin: 0; font-size: clamp(24px, 6.4vw, 34px); line-height: 1.6; }
+.sentence { margin: 0; font-size: clamp(24px, 6.4vw, 34px); line-height: 1.75; }
+.text-card.follow { touch-action: pan-y; user-select: none; -webkit-user-select: none; }
+.sentence.follow { cursor: pointer; }
+.sentence.follow .w.now { text-decoration: underline; text-decoration-thickness: 4px; text-decoration-color: var(--accent); text-underline-offset: 6px; }
 .w { display: inline-block; padding: 1px 5px; border-radius: 8px; }
 .w.read { background: var(--done); color: var(--done-ink); }
 .w.magic { background: var(--magic); color: var(--magic-ink); font-weight: 700; box-shadow: 0 0 0 2px #e9a6d3 inset; }
@@ -176,7 +179,7 @@ textarea { width: 100%; line-height: 1.5; }
 
 /* ===== v4 ===== */
 .panel-open .story { padding-bottom: 300px; }
-.w { min-height: 40px; line-height: 1.35; }
+.w { min-height: 48px; line-height: 1.35; display: inline-flex; align-items: center; }
 .w.tap { padding: 4px 8px; }
 .verdict.grownup { border-top: 2px dashed var(--line); padding-top: 8px; }
 .verdict .tag { display: inline-block; background: var(--now); border-radius: 8px; padding: 2px 8px; font-family: system-ui, sans-serif; font-size: 13px; margin-right: 6px; }
@@ -270,3 +273,13 @@ h1, h2, h3 { font-family: var(--display); }
 .who { display: inline-flex; align-items: center; gap: 6px; font-family: system-ui, sans-serif; font-size: 15px; color: var(--muted); }
 .who span { font-size: 22px; }
 .who u { color: var(--accent); }
+
+/* ===== sounds in your voice ===== */
+.holdbtn { min-height: 88px; border-radius: 22px; background: var(--magic); color: var(--magic-ink); font-family: var(--display); font-weight: 800; font-size: 22px; touch-action: none; -webkit-user-select: none; user-select: none; }
+.holdbtn.live { background: #f6d5cf; color: #7a2a1c; animation: pulse 1s infinite; }
+.tog.now { outline: 3px solid var(--accent); }
+.sounds .chips .tog { min-width: 44px; }
+
+/* I'll try + voice follow */
+.w.try { border: 2px dashed var(--accent); background: transparent; color: var(--ink); font: inherit; }
+.voicebar .small.live { background: #f6d5cf; border-color: #c47a6a; animation: pulse 1s infinite; }

@@ -2,8 +2,7 @@
 import { useState } from "react";
 import { useFamily } from "../lib/family";
 import { ALL_GPCS, ALL_TRICKY, uid } from "../lib/store";
-import { playClip } from "../lib/audio/player";
-import { soundAsset } from "../lib/library";
+import { playSound } from "../lib/sounds";
 import { GRAPHEME_SOUND } from "../lib/phonics/learner";
 import { Mascots } from "../components/Icons";
 
@@ -45,7 +44,7 @@ export function WelcomeScreen({ onDone }: { onDone: () => void }) {
         <div className="chips">{AVATARS.map((a) => <button key={a} className={"emo" + (avatar === a ? " on" : "")} onClick={() => setAvatar(a)}>{a}</button>)}</div>
         <p className="legend">How far along are they? Tap the last row that is true (you'll hear its newest sound — these are sounds, never letter names).</p>
         <div className="levels">
-          {LEVELS_UI.map((l, i) => <button key={l.n} className={"lvlrow" + (i === level ? " on" : "")} onClick={() => { setLevel(i); if (l.n > 0) { const g = ALL_GPCS[l.n - 1]; void playClip(soundAsset(GRAPHEME_SOUND[g].clip)).done.catch(() => {}); } }}><b>{l.label}</b><small>{l.hint}{l.n > 0 ? " · 🔊" : ""}</small></button>)}
+          {LEVELS_UI.map((l, i) => <button key={l.n} className={"lvlrow" + (i === level ? " on" : "")} onClick={() => { setLevel(i); if (l.n > 0) { const g = ALL_GPCS[l.n - 1]; void playSound(GRAPHEME_SOUND[g].clip); } }}><b>{l.label}</b><small>{l.hint}{l.n > 0 ? " · 🔊" : ""}</small></button>)}
         </div>
       </section>
       <section className="pc rise3">

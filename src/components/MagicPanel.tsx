@@ -1,8 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
+import { playSound } from "../lib/sounds";
 import { GRAPHEME_SOUND } from "../lib/phonics/learner";
 import { checkWord, type LearnerModel } from "../lib/phonics/validator";
-import { playClip } from "../lib/audio/player";
-import { soundAsset } from "../lib/library";
 import { CheckIcon } from "./Icons";
 
 export type Verdict = "first_try" | "prompted";
@@ -24,13 +23,13 @@ export function MagicPanel({ word, learner, modelling, modelledOnce, sweep, kid,
   useEffect(() => { if (modelledOnce) setHelp(true); }, [modelledOnce]);
   const tap = (i: number) => {
     if (modelling) return;
-    void playClip(soundAsset(GRAPHEME_SOUND[gs[i]].clip)).done.catch(() => {});
+    void playSound(GRAPHEME_SOUND[gs[i]].clip);
     if (i === said) { setSaid(i + 1); onSound(); }
   };
   return (
     <section className="panel" role="dialog" aria-label="Magic word">
       <div className="kicker">{kicker ?? `Magic word · ${kid}'s turn`}</div>
-      <h2 className="panel-h">Start here and slide through the word. Keep your voice going.</h2>
+      <h2 className="panel-h">Start here and slide through the word. Keep your voice going (bouncy sounds stay short).</h2>
       <div className="tiles-wrap">
         <div className="tiles">
           {gs.map((g, i) => (
@@ -60,7 +59,7 @@ export function MagicPanel({ word, learner, modelling, modelledOnce, sweep, kid,
           </>
         ) : (
           <>
-            <div className="hint"><span className="tag">{reader}</span> one nudge, then wait: point to the first letter and say <em>“Start here… slide.”</em> Nothing more.</div>
+            <div className="hint"><span className="tag">{reader}</span> one nudge, then wait: point to the first letter and say <em>“Start here… slide.”</em> Still stuck? “Show me” models the sounds running into the word; {kid} then tries alone.</div>
             <div className="btns">
               <button className="no" disabled={modelling} onClick={onTogether}>Show me: slide through it</button>
               <button className="yes soft" disabled={modelling} onClick={() => onYes("prompted")}><CheckIcon /> After a nudge</button>
@@ -71,7 +70,7 @@ export function MagicPanel({ word, learner, modelling, modelledOnce, sweep, kid,
           <button className="skip" disabled={modelling} onClick={() => setSaid(0)}>look again — start here ↺</button>
           {help && onSkip && <button className="skip" disabled={modelling} onClick={onSkip}>skip for today →</button>}
         </div>
-        {help && <p className="adultnote">Sounds, not letter names · don't give the first sound · no guessing from the picture · any accent is fine · ✓ only after the whole word.</p>}
+        {help && <p className="adultnote">Sounds, not letter names · don't give the first sound before they try · no guessing from the picture · any accent is fine · ✓ only after the whole word.</p>}
       </div>
     </section>
   );

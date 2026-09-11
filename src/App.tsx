@@ -11,9 +11,10 @@ import { AddStoryScreen } from "./screens/AddStory";
 import { WelcomeScreen } from "./screens/Welcome";
 import { WarmUpScreen } from "./screens/WarmUp";
 import { TeachSoundScreen } from "./screens/TeachSound";
+import { RecordSoundsScreen } from "./screens/RecordSounds";
 import { FamilyIcon, GearIcon } from "./components/Icons";
 
-type Route = { name: "family" } | { name: "home" } | { name: "warmup" } | { name: "teach" } | { name: "library" } | { name: "settings" } | { name: "add" } | { name: "story"; story: Story; mode: Mode; resume: boolean };
+type Route = { name: "family" } | { name: "home" } | { name: "warmup" } | { name: "teach" } | { name: "library" } | { name: "settings" } | { name: "add" } | { name: "sounds" } | { name: "story"; story: Story; mode: Mode; resume: boolean };
 
 export default function App() {
   return <FamilyProvider><Shell /></FamilyProvider>;
@@ -45,8 +46,9 @@ function Shell() {
       {route.name === "warmup" && <WarmUpScreen onDone={() => setRoute({ name: "home" })} />}
       {route.name === "library" && <LibraryScreen onStart={(s, m, r) => start(s, m, r)} onBack={() => setRoute({ name: "home" })} />}
       {fam.toast && <div className="toast" role="status">{fam.toast}</div>}
-      {route.name === "settings" && <SettingsScreen onBack={() => setRoute({ name: "family" })} onAddStory={() => setRoute({ name: "add" })} />}
+      {route.name === "settings" && <SettingsScreen onBack={() => setRoute({ name: "family" })} onAddStory={() => setRoute({ name: "add" })} onSounds={() => setRoute({ name: "sounds" })} />}
       {route.name === "add" && <AddStoryScreen onDone={() => setRoute({ name: "settings" })} />}
+      {route.name === "sounds" && <RecordSoundsScreen onDone={() => setRoute({ name: "settings" })} />}
     </div>
   );
 }
