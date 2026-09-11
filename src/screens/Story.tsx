@@ -41,6 +41,7 @@ export function StoryScreen({ story, mode, resume, onHome }: { story: Story; mod
   const [retry, setRetry] = useState(0);
   const startedRef = useRef(false);
   const finishedRef = useRef(false);
+  const runRef = useRef(0);                            // abort token: a superseded narration must not act on the machine
 
   // persistence: save at every page/result change; the finish clears it
   useEffect(() => {
@@ -53,7 +54,7 @@ export function StoryScreen({ story, mode, resume, onHome }: { story: Story; mod
   const speak = useCallback(async (src: string | null, text?: string) => {
     if (text) setCaption(text);
     playing.current?.stop();
-    if (src) { const p = playNarration(src); p.el.playbackRate = rate; playing.current = p; try { await p.done; } catch { /* prompt missing: caption is enough */ } }
+    if (src) { const p = playNarration(src, rate); playing.current = p; try { await p.done; } catch { /* prompt missing: caption is enough */ } }
     else if (text) { const h = speakText(text, { rate }); playing.current = h; await h.done; }
   }, [rate]);
 
@@ -69,12 +70,14 @@ export function StoryScreen({ story, mode, resume, onHome }: { story: Story; mod
   // narration with karaoke driven by the audio clock (pre-generated) or Web Speech boundaries (family stories)
   const narratePage = useCallback(async (p: Page, opts: { stopAtMagic: boolean; onDone: () => void }): Promise<void> => {
     const magicIdx = opts.stopAtMagic ? pendingMagicIdx(p) : -1;
+    const run = ++runRef.current; const alive = () => run === runRef.current;
     playing.current?.stop();
     let stopped = false;
     const reachMagic = () => { stopped = true; send({ type: "TOKEN", index: magicIdx }); send({ type: "MAGIC_REACHED", word: normalise(p.tokens[magicIdx].t) }); };
 
     if (p.audio) {
-      const pl = playNarration(storyAsset(story, p.audio)); pl.el.playbackRate = rate; playing.current = pl;
+      const src = /^(data|blob):/.test(p.audio) ? p.audio : storyAsset(story, p.audio);
+      const pl = playNarration(src, rate); playing.current = pl;
       // a parent recording has no word timings: spread the words evenly over the clip once its length is known
       const timed = p.tokens.some((t) => t.ms > 0);
       const durMs = () => (isFinite(pl.el.duration) && pl.el.duration > 0 ? pl.el.duration * 1000 : p.audioMs ?? Infinity);   // Chrome webm recordings report Infinity
@@ -89,21 +92,26 @@ export function StoryScreen({ story, mode, resume, onHome }: { story: Story; mod
         raf = requestAnimationFrame(tick);
       };
       raf = requestAnimationFrame(tick);
-      // a load failure or a 5 s stall at 0 must pause the story, never walk it to the end
+      // a load failure or a 5 s stall at 0 pauses the story (never walks it to the end); a clip that never fires `ended`
+      // (iOS data-URL recordings) is finished by a deadline from its known length
       const stall = new Promise<"stall">((res) => setTimeout(() => res("stall"), 5000));
+      const deadline = new Promise<"deadline">((res) => setTimeout(() => res("deadline"), ((p.audioMs ?? 20000) / rate) + 1500));
       let ok = true;
-      try { const r = await Promise.race([pl.done.then(() => "done" as const), stall.then(() => (pl.el.currentTime === 0 ? "stall" : pl.done.then(() => "done" as const)))]); if (r === "stall") ok = false; } catch { ok = false; }
+      try { const r = await Promise.race([pl.done.then(() => "done" as const), stall.then(() => (pl.el.currentTime === 0 ? "stall" : pl.done.then(() => "done" as const))), deadline]); if (r === "stall") ok = false; if (r === "deadline") pl.stop(); } catch { ok = false; }
       cancelAnimationFrame(raf);
-      if (!ok) { pl.stop(); setStalled(true); setCaption("The story couldn't load. Check the connection, then tap ▶ to try again."); return; }
+      if (!alive()) return;
+      if (!ok) { pl.stop(); setStalled(true); setCaption("Tap ▶ to hear this page."); return; }
     } else {
       // family story: speak only the words BEFORE the magic word so the child never hears the answer
       const upto = magicIdx >= 0 ? magicIdx : p.tokens.length;
       const text = p.tokens.slice(0, upto).map((t) => t.t).join(" ");
-      if (text) { const h = speakText(text, { rate, onWord: (i) => send({ type: "TOKEN", index: i }) }); playing.current = h; await h.done; }
+      if (text) { const h = speakText(text, { rate, onWord: (i) => alive() && send({ type: "TOKEN", index: i }) }); playing.current = h; await h.done; }
+      if (!alive()) return;
       if (magicIdx >= 0) { reachMagic(); return; }
     }
+    if (!alive()) return;
     if (!stopped && magicIdx >= 0) { reachMagic(); return; }   // magic word ends the page and the clock check missed it
-    if (!stopped) { send({ type: "TOKEN", index: p.tokens.length }); if (magicIdx < 0 && opts.stopAtMagic) await new Promise((r) => setTimeout(r, 1400)); opts.onDone(); }   // a beat to look at the picture
+    if (!stopped) { send({ type: "TOKEN", index: p.tokens.length }); if (magicIdx < 0 && opts.stopAtMagic) await new Promise((r) => setTimeout(r, 1400)); if (alive()) opts.onDone(); }   // a beat to look at the picture
   }, [send, story, rate, pendingMagicIdx]);
 
   useEffect(() => {
@@ -124,7 +132,7 @@ export function StoryScreen({ story, mode, resume, onHome }: { story: Story; mod
     if (state === "magicWord" && ctx.mode === "sight" && listen) void speakPrompt("yours", "… this one is yours. Can you read it?");
     if (state === "moral") {
       if (!listen) { setCaption("Read the line together, then tap ✓."); return; }
-      void (async () => { await speak(story.moral.audio ? storyAsset(story, story.moral.audio) : null, story.moral.spoken); if (!listener) await speakPrompt("line", "Now you. Read your line."); })();
+      void (async () => { await speak(story.moral.audio ? (/^(data|blob):/.test(story.moral.audio) ? story.moral.audio : storyAsset(story, story.moral.audio)) : null, story.moral.spoken); if (!listener) await speakPrompt("line", "Now you. Read your line."); })();
     }
     if (state === "done") {
       if (!finishedRef.current) { finishedRef.current = true; void fam.finish(kid.id, story.slug, ctx.results); }
@@ -178,6 +186,7 @@ export function StoryScreen({ story, mode, resume, onHome }: { story: Story; mod
       {state === "done" && <Done story={story} results={ctx.results} bedtime={bedtime} kid={kid.name} onHome={home} />}
 
       <div className="cap" aria-live="polite">{caption}</div>
+      {fam.toast && <div className="toast" role="status">{fam.toast}</div>}
     </div>
   );
 }

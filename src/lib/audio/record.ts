@@ -12,7 +12,7 @@ export async function startRecording(): Promise<Recorder> {
   const chunks: Blob[] = [];
   const t0 = Date.now();
   rec.ondataavailable = (e) => { if (e.data.size) chunks.push(e.data); };
-  rec.start(250);
+  rec.start();                        // no timeslice: iOS produces an empty/invalid mp4 with one
   return {
     stop: () => new Promise((resolve) => {
       rec.onstop = () => {

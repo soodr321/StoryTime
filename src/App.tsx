@@ -18,13 +18,13 @@ export default function App() {
 
 function Shell() {
   const fam = useFamily();
-  const [route, setRoute] = useState<Route>({ name: "family" });
+  const [route, setRoute] = useState<Route>({ name: "home" });
   if (!fam.ready) return <div className="app"><main className="home-screen"><p className="note">Opening StoryTime…</p></main></div>;
 
   const start = (story: Story, mode: Mode, resume = false) => { void unlock(); setRoute({ name: "story", story, mode, resume }); };
   const dim = fam.settings.bedtime ? " bedtime" : "";
 
-  if (!fam.settings.onboarded) return <div className="app"><WelcomeScreen onDone={() => setRoute({ name: "home" })} /></div>;
+  if (!fam.settings.onboarded) return <div className="app"><WelcomeScreen onDone={() => setRoute({ name: "home" })} />{fam.toast && <div className="toast" role="status">{fam.toast}</div>}</div>;
   if (route.name === "story") return <div className={"app" + dim}><StoryScreen key={route.story.slug + route.mode} story={route.story} mode={route.mode} resume={route.resume} onHome={() => setRoute({ name: "home" })} /></div>;
 
   return (

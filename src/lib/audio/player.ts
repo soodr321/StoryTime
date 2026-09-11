@@ -42,15 +42,27 @@ export interface Playing {
 }
 
 const cleanups = new WeakMap<HTMLAudioElement, () => void>();
-function playOn(el: HTMLAudioElement, src: string): Playing {
+const blobUrls = new Map<string, string>();
+/** iOS plays data: URLs badly (rate changes go silent, `ended` is unreliable); hand it an object URL instead. */
+function resolveSrc(src: string): string {
+  if (!src.startsWith("data:")) return src;
+  const hit = blobUrls.get(src); if (hit) return hit;
+  try {
+    const [head, b64] = src.split(",", 2); const mime = head.slice(5, head.indexOf(";")) || "audio/mp4";
+    const bin = atob(b64); const bytes = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    const url = URL.createObjectURL(new Blob([bytes], { type: mime })); blobUrls.set(src, url); return url;
+  } catch { return src; }
+}
+function playOn(el: HTMLAudioElement, src: string, rate = 1): Playing {
   cleanups.get(el)?.();               // a superseded track must not keep listeners on the shared element
   el.pause();
-  el.src = src;
-  el.currentTime = 0;
+  el.src = resolveSrc(src);            // assigning src resets the clock; writing currentTime before load throws on WebKit
+  const onMeta = () => { try { el.playbackRate = rate; } catch { /* not supported for this source */ } };
+  el.addEventListener("loadedmetadata", onMeta, { once: true });
   let settled = false;
   let resolve!: () => void, reject!: (e: unknown) => void;
   const done = new Promise<void>((res, rej) => { resolve = res; reject = rej; });
-  const off = () => { el.removeEventListener("ended", onEnded); el.removeEventListener("error", onError); el.removeEventListener("timeupdate", onTime); };
+  const off = () => { el.removeEventListener("ended", onEnded); el.removeEventListener("error", onError); el.removeEventListener("timeupdate", onTime); el.removeEventListener("loadedmetadata", onMeta); };
   const finish = () => { if (settled) return; settled = true; off(); resolve(); };
   const onEnded = () => finish();
   const onError = () => { if (!settled) { settled = true; off(); reject(new Error(`audio failed: ${src}`)); } };
@@ -64,10 +76,10 @@ function playOn(el: HTMLAudioElement, src: string): Playing {
   return { done, stop: () => { if (settled) return; el.pause(); finish(); }, el };
 }
 
-export function playNarration(src: string): Playing {
+export function playNarration(src: string, rate = 1): Playing {
   narration ??= make();
   clip?.pause();
-  return playOn(narration, src);
+  return playOn(narration, src, rate);
 }
 
 export function playClip(src: string): Playing {

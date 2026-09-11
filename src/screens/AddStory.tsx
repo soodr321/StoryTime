@@ -5,7 +5,7 @@
  *   4. Pick an emoji or a camera-roll photo for each page (photos are shrunk to ≤640px JPEG and stored locally, never uploaded).  5. Moral + read-back line, checked live.
  * Narration uses on-device speech; no server, works offline.
  */
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { canRecord, startRecording, type Recorder } from "../lib/audio/record";
 import { useFamily } from "../lib/family";
 import { learnerOf, uid } from "../lib/store";
@@ -41,9 +41,10 @@ export function AddStoryScreen({ onDone }: { onDone: () => void }) {
   const [rec, setRec] = useState<Record<string, { dataUrl: string; ms: number }>>({});
   const [recording, setRecording] = useState<number | null>(null);
   const recRef = useRef<Recorder | null>(null);
+  useEffect(() => () => { void recRef.current?.stop(); }, []);   // leaving the screen releases the microphone
   const toggleRec = async (i: number) => {
     const key = pages[i];
-    if (recording === i) { const r = await recRef.current?.stop(); recRef.current = null; setRecording(null); if (r) setRec({ ...rec, [key]: r }); return; }
+    if (recording === i) { const r = await recRef.current?.stop(); recRef.current = null; setRecording(null); if (r) setRec((prev) => ({ ...prev, [key]: r })); else setPhotoErr("That recording was empty. Try again and speak a little longer."); return; }
     if (recording !== null) return;
     try { recRef.current = await startRecording(); setRecording(i); } catch { setPhotoErr("Microphone not allowed. You can still save the story; it will use the phone's voice."); }
   };
@@ -94,8 +95,8 @@ export function AddStoryScreen({ onDone }: { onDone: () => void }) {
               </div>
               <div className="row wrap">
                 <span className="legend">Picture:</span>
-                {EMOJI.map((e) => <button key={e} className={"emo" + (artOf(i) === e ? " on" : "")} onClick={() => setArts({ ...arts, [p]: e })}>{e}</button>)}
-                <label className="emo photo" title="photo from your camera roll">📷<input type="file" accept="image/*" hidden onChange={async (e) => { const f = e.target.files?.[0]; if (!f) return; const d = await shrink(f); if (d) { setArts({ ...arts, [p]: d }); setPhotoErr(null); } else setPhotoErr("Couldn't use that photo. Try a JPEG or PNG."); }} /></label>
+                {EMOJI.map((e) => <button key={e} className={"emo" + (artOf(i) === e ? " on" : "")} onClick={() => setArts((prev) => ({ ...prev, [p]: e }))}>{e}</button>)}
+                <label className="emo photo" title="photo from your camera roll">📷<input type="file" accept="image/*" hidden onChange={async (e) => { const f = e.target.files?.[0]; if (!f) return; const d = await shrink(f); if (d) { setArts((prev) => ({ ...prev, [p]: d })); setPhotoErr(null); } else setPhotoErr("Couldn't use that photo. Try a JPEG or PNG."); }} /></label>
                 {artOf(i)?.startsWith("data:") && <img className="thumb" src={artOf(i)} alt="" />}
                 {photoErr && <span className="legend bad">{photoErr}</span>}
               </div>
@@ -110,7 +111,7 @@ export function AddStoryScreen({ onDone }: { onDone: () => void }) {
               <div className="row wrap">
                 <span className="legend">Magic word:</span>
                 {candidates[i].length === 0 && <span className="legend">none decodable on this page — fine, {kid.name} listens.</span>}
-                {candidates[i].map((w) => <button key={w} className={"tog" + (chosen(i) === w ? " on" : "")} onClick={() => setMagic({ ...magic, [p]: chosen(i) === w ? null : w })}>{w}</button>)}
+                {candidates[i].map((w) => <button key={w} className={"tog" + (chosen(i) === w ? " on" : "")} onClick={() => setMagic((prev) => ({ ...prev, [p]: chosen(i) === w ? null : w }))}>{w}</button>)}
                 {candidates[i].length > 0 && <span className="legend">{chosen(i) ? "" : "tap one, or none"}</span>}
               </div>
             </div>
