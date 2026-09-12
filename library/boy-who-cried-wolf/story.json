@@ -1,0 +1,414 @@
+{
+ "slug": "boy-who-cried-wolf",
+ "title": "The Boy Who Cried Wolf",
+ "tradition": "aesop",
+ "source": {
+  "work": "Aesop's Fables",
+  "author": "Aesop (trad.)",
+  "rights": "public-domain"
+ },
+ "retelling": {
+  "level": "ls-phase2-set4",
+  "checklist": {
+   "setup": true,
+   "want": true,
+   "action": true,
+   "consequence": true,
+   "feeling": true
+  }
+ },
+ "level": "ls-phase2-set4",
+ "pages": [
+  {
+   "art": "🐑",
+   "tokens": [
+    {
+     "t": "A",
+     "ms": 0
+    },
+    {
+     "t": "boy",
+     "ms": 260
+    },
+    {
+     "t": "looked",
+     "ms": 540
+    },
+    {
+     "t": "after",
+     "ms": 840
+    },
+    {
+     "t": "sheep",
+     "ms": 1460
+    },
+    {
+     "t": "on",
+     "ms": 1820
+    },
+    {
+     "t": "a",
+     "ms": 2140
+    },
+    {
+     "t": "hill.",
+     "ms": 2320
+    },
+    {
+     "t": "It",
+     "ms": 3560
+    },
+    {
+     "t": "was",
+     "ms": 3960
+    },
+    {
+     "t": "quiet,",
+     "ms": 4100
+    },
+    {
+     "t": "and",
+     "ms": 4600
+    },
+    {
+     "t": "he",
+     "ms": 5760
+    },
+    {
+     "t": "was",
+     "ms": 5920
+    },
+    {
+     "t": "bored.",
+     "ms": 6100
+    }
+   ],
+   "audio": "p1.m4a",
+   "audioMs": 7790
+  },
+  {
+   "art": "🐺",
+   "magic": [
+    "ran"
+   ],
+   "tokens": [
+    {
+     "t": "For",
+     "ms": 0
+    },
+    {
+     "t": "fun,",
+     "ms": 320
+    },
+    {
+     "t": "he",
+     "ms": 1020
+    },
+    {
+     "t": "shouted,",
+     "ms": 1100
+    },
+    {
+     "t": "“Wolf!",
+     "ms": 1560
+    },
+    {
+     "t": "Wolf!”",
+     "ms": 3220
+    },
+    {
+     "t": "The",
+     "ms": 4540
+    },
+    {
+     "t": "village",
+     "ms": 4920
+    },
+    {
+     "t": "people",
+     "ms": 5300
+    },
+    {
+     "t": "ran",
+     "ms": 5820
+    },
+    {
+     "t": "up",
+     "ms": 6240
+    },
+    {
+     "t": "the",
+     "ms": 6580
+    },
+    {
+     "t": "hill.",
+     "ms": 6760
+    }
+   ],
+   "audio": "p2.m4a",
+   "audioMs": 8320
+  },
+  {
+   "art": "😜",
+   "magic": [
+    "did"
+   ],
+   "tokens": [
+    {
+     "t": "There",
+     "ms": 0
+    },
+    {
+     "t": "was",
+     "ms": 260
+    },
+    {
+     "t": "no",
+     "ms": 400
+    },
+    {
+     "t": "wolf.",
+     "ms": 680
+    },
+    {
+     "t": "The",
+     "ms": 2240
+    },
+    {
+     "t": "boy",
+     "ms": 2720
+    },
+    {
+     "t": "laughed.",
+     "ms": 2960
+    },
+    {
+     "t": "He",
+     "ms": 4560
+    },
+    {
+     "t": "did",
+     "ms": 4940
+    },
+    {
+     "t": "it",
+     "ms": 5120
+    },
+    {
+     "t": "again",
+     "ms": 5240
+    },
+    {
+     "t": "the",
+     "ms": 5500
+    },
+    {
+     "t": "next",
+     "ms": 5760
+    },
+    {
+     "t": "day.",
+     "ms": 6000
+    }
+   ],
+   "audio": "p3.m4a",
+   "audioMs": 7670
+  },
+  {
+   "art": "🐺",
+   "tokens": [
+    {
+     "t": "Then",
+     "ms": 100
+    },
+    {
+     "t": "a",
+     "ms": 300
+    },
+    {
+     "t": "real",
+     "ms": 400
+    },
+    {
+     "t": "wolf",
+     "ms": 760
+    },
+    {
+     "t": "came.",
+     "ms": 1220
+    },
+    {
+     "t": "The",
+     "ms": 2900
+    },
+    {
+     "t": "boy",
+     "ms": 3000
+    },
+    {
+     "t": "shouted,",
+     "ms": 3280
+    },
+    {
+     "t": "“Wolf!”",
+     "ms": 4300
+    },
+    {
+     "t": "But",
+     "ms": 5540
+    },
+    {
+     "t": "nobody",
+     "ms": 5740
+    },
+    {
+     "t": "came.",
+     "ms": 6040
+    }
+   ],
+   "audio": "p4.m4a",
+   "audioMs": 7960
+  },
+  {
+   "art": "🐑",
+   "magic": [
+    "not"
+   ],
+   "tokens": [
+    {
+     "t": "The",
+     "ms": 0
+    },
+    {
+     "t": "wolf",
+     "ms": 260
+    },
+    {
+     "t": "chased",
+     "ms": 580
+    },
+    {
+     "t": "the",
+     "ms": 1080
+    },
+    {
+     "t": "sheep",
+     "ms": 1460
+    },
+    {
+     "t": "away.",
+     "ms": 1720
+    },
+    {
+     "t": "The",
+     "ms": 3300
+    },
+    {
+     "t": "boy",
+     "ms": 3640
+    },
+    {
+     "t": "was",
+     "ms": 3880
+    },
+    {
+     "t": "not",
+     "ms": 4100
+    },
+    {
+     "t": "happy",
+     "ms": 4340
+    },
+    {
+     "t": "now.",
+     "ms": 4760
+    }
+   ],
+   "audio": "p5.m4a",
+   "audioMs": 6470
+  },
+  {
+   "art": "👵",
+   "tokens": [
+    {
+     "t": "“When",
+     "ms": 0
+    },
+    {
+     "t": "you",
+     "ms": 340
+    },
+    {
+     "t": "trick",
+     "ms": 460
+    },
+    {
+     "t": "people,”",
+     "ms": 840
+    },
+    {
+     "t": "said",
+     "ms": 1940
+    },
+    {
+     "t": "his",
+     "ms": 2540
+    },
+    {
+     "t": "grandmother,",
+     "ms": 2720
+    },
+    {
+     "t": "“they",
+     "ms": 4180
+    },
+    {
+     "t": "stop",
+     "ms": 4480
+    },
+    {
+     "t": "believing",
+     "ms": 4840
+    },
+    {
+     "t": "you.”",
+     "ms": 5640
+    }
+   ],
+   "audio": "p6.m4a",
+   "audioMs": 7310
+  }
+ ],
+ "moral": {
+  "spoken": "If you keep telling lies, people will not believe you when it matters.",
+  "line": "It is a sad kid.",
+  "audio": "moral.m4a",
+  "audioMs": 6660
+ },
+ "prompts": {
+  "yes:ran": {
+   "audio": "yes-ran.m4a",
+   "ms": 3560
+  },
+  "word:ran": {
+   "audio": "word-ran.m4a",
+   "ms": 1720
+  },
+  "yes:did": {
+   "audio": "yes-did.m4a",
+   "ms": 3320
+  },
+  "word:did": {
+   "audio": "word-did.m4a",
+   "ms": 1480
+  },
+  "yes:not": {
+   "audio": "yes-not.m4a",
+   "ms": 3490
+  },
+  "word:not": {
+   "audio": "word-not.m4a",
+   "ms": 1640
+  }
+ }
+}

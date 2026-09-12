@@ -1,0 +1,488 @@
+{
+ "slug": "fox-and-crow",
+ "title": "The Fox and the Crow",
+ "tradition": "aesop",
+ "source": {
+  "work": "Aesop's Fables",
+  "author": "Aesop (trad.)",
+  "rights": "public-domain"
+ },
+ "retelling": {
+  "level": "ls-phase2-set4",
+  "checklist": {
+   "setup": true,
+   "want": true,
+   "action": true,
+   "consequence": true,
+   "feeling": true
+  }
+ },
+ "level": "ls-phase2-set4",
+ "pages": [
+  {
+   "art": "🐦",
+   "tokens": [
+    {
+     "t": "A",
+     "ms": 0
+    },
+    {
+     "t": "crow",
+     "ms": 220
+    },
+    {
+     "t": "found",
+     "ms": 500
+    },
+    {
+     "t": "a",
+     "ms": 900
+    },
+    {
+     "t": "big",
+     "ms": 1080
+    },
+    {
+     "t": "piece",
+     "ms": 1340
+    },
+    {
+     "t": "of",
+     "ms": 1640
+    },
+    {
+     "t": "cheese.",
+     "ms": 1940
+    },
+    {
+     "t": "She",
+     "ms": 3800
+    },
+    {
+     "t": "flew",
+     "ms": 4120
+    },
+    {
+     "t": "up",
+     "ms": 4400
+    },
+    {
+     "t": "to",
+     "ms": 4700
+    },
+    {
+     "t": "a",
+     "ms": 4920
+    },
+    {
+     "t": "branch",
+     "ms": 5040
+    },
+    {
+     "t": "to",
+     "ms": 5380
+    },
+    {
+     "t": "eat",
+     "ms": 5800
+    },
+    {
+     "t": "it.",
+     "ms": 6000
+    }
+   ],
+   "audio": "p1.m4a",
+   "audioMs": 7310
+  },
+  {
+   "art": "🦊",
+   "tokens": [
+    {
+     "t": "A",
+     "ms": 40
+    },
+    {
+     "t": "fox",
+     "ms": 240
+    },
+    {
+     "t": "saw",
+     "ms": 560
+    },
+    {
+     "t": "the",
+     "ms": 1020
+    },
+    {
+     "t": "cheese.",
+     "ms": 1200
+    },
+    {
+     "t": "He",
+     "ms": 2900
+    },
+    {
+     "t": "wanted",
+     "ms": 3160
+    },
+    {
+     "t": "it",
+     "ms": 3360
+    },
+    {
+     "t": "very",
+     "ms": 3560
+    },
+    {
+     "t": "much.",
+     "ms": 3860
+    }
+   ],
+   "audio": "p2.m4a",
+   "audioMs": 5750
+  },
+  {
+   "art": "🦊",
+   "magic": [
+    "did"
+   ],
+   "tokens": [
+    {
+     "t": "So",
+     "ms": 0
+    },
+    {
+     "t": "the",
+     "ms": 320
+    },
+    {
+     "t": "fox",
+     "ms": 440
+    },
+    {
+     "t": "did",
+     "ms": 740
+    },
+    {
+     "t": "a",
+     "ms": 1160
+    },
+    {
+     "t": "trick.",
+     "ms": 1260
+    }
+   ],
+   "audio": "p3.m4a",
+   "audioMs": 2820
+  },
+  {
+   "art": "🦊",
+   "tokens": [
+    {
+     "t": "“Dear",
+     "ms": 0
+    },
+    {
+     "t": "crow,”",
+     "ms": 400
+    },
+    {
+     "t": "he",
+     "ms": 1660
+    },
+    {
+     "t": "said,",
+     "ms": 1760
+    },
+    {
+     "t": "“what",
+     "ms": 2700
+    },
+    {
+     "t": "fine",
+     "ms": 2760
+    },
+    {
+     "t": "feathers!",
+     "ms": 3280
+    },
+    {
+     "t": "Your",
+     "ms": 5060
+    },
+    {
+     "t": "voice",
+     "ms": 5820
+    },
+    {
+     "t": "must",
+     "ms": 6200
+    },
+    {
+     "t": "be",
+     "ms": 6540
+    },
+    {
+     "t": "lovely",
+     "ms": 6800
+    },
+    {
+     "t": "too.",
+     "ms": 7260
+    },
+    {
+     "t": "Will",
+     "ms": 9160
+    },
+    {
+     "t": "you",
+     "ms": 9400
+    },
+    {
+     "t": "sing",
+     "ms": 9580
+    },
+    {
+     "t": "for",
+     "ms": 9940
+    },
+    {
+     "t": "me?”",
+     "ms": 10320
+    }
+   ],
+   "audio": "p4.m4a",
+   "audioMs": 11750
+  },
+  {
+   "art": "🐦",
+   "magic": [
+    "sat"
+   ],
+   "tokens": [
+    {
+     "t": "The",
+     "ms": 0
+    },
+    {
+     "t": "crow",
+     "ms": 260
+    },
+    {
+     "t": "was",
+     "ms": 520
+    },
+    {
+     "t": "proud.",
+     "ms": 840
+    },
+    {
+     "t": "She",
+     "ms": 2620
+    },
+    {
+     "t": "sat",
+     "ms": 2860
+    },
+    {
+     "t": "up",
+     "ms": 3200
+    },
+    {
+     "t": "tall",
+     "ms": 3380
+    },
+    {
+     "t": "and",
+     "ms": 3720
+    },
+    {
+     "t": "opened",
+     "ms": 4600
+    },
+    {
+     "t": "her",
+     "ms": 5160
+    },
+    {
+     "t": "beak",
+     "ms": 5340
+    },
+    {
+     "t": "to",
+     "ms": 5780
+    },
+    {
+     "t": "sing.",
+     "ms": 5960
+    }
+   ],
+   "audio": "p5.m4a",
+   "audioMs": 7690
+  },
+  {
+   "art": "🧀",
+   "magic": [
+    "ran"
+   ],
+   "tokens": [
+    {
+     "t": "“Caw!”",
+     "ms": 0
+    },
+    {
+     "t": "Down",
+     "ms": 720
+    },
+    {
+     "t": "fell",
+     "ms": 1160
+    },
+    {
+     "t": "the",
+     "ms": 1640
+    },
+    {
+     "t": "cheese.",
+     "ms": 1880
+    },
+    {
+     "t": "The",
+     "ms": 3760
+    },
+    {
+     "t": "fox",
+     "ms": 3860
+    },
+    {
+     "t": "got",
+     "ms": 4080
+    },
+    {
+     "t": "it",
+     "ms": 4540
+    },
+    {
+     "t": "and",
+     "ms": 4740
+    },
+    {
+     "t": "ran",
+     "ms": 5020
+    },
+    {
+     "t": "off.",
+     "ms": 5300
+    }
+   ],
+   "audio": "p6.m4a",
+   "audioMs": 7070
+  },
+  {
+   "art": "🐦",
+   "tokens": [
+    {
+     "t": "The",
+     "ms": 0
+    },
+    {
+     "t": "crow",
+     "ms": 220
+    },
+    {
+     "t": "was",
+     "ms": 480
+    },
+    {
+     "t": "sad.",
+     "ms": 800
+    },
+    {
+     "t": "The",
+     "ms": 2340
+    },
+    {
+     "t": "fox",
+     "ms": 2660
+    },
+    {
+     "t": "had",
+     "ms": 2980
+    },
+    {
+     "t": "praised",
+     "ms": 3340
+    },
+    {
+     "t": "her",
+     "ms": 3640
+    },
+    {
+     "t": "only",
+     "ms": 4040
+    },
+    {
+     "t": "to",
+     "ms": 4440
+    },
+    {
+     "t": "get",
+     "ms": 4900
+    },
+    {
+     "t": "the",
+     "ms": 5100
+    },
+    {
+     "t": "cheese.",
+     "ms": 5280
+    }
+   ],
+   "audio": "p7.m4a",
+   "audioMs": 7210,
+   "magic": [
+    "get"
+   ]
+  }
+ ],
+ "moral": {
+  "spoken": "Someone who praises you just to get something is not a friend.",
+  "line": "It is sad.",
+  "audio": "moral.m4a",
+  "audioMs": 5920
+ },
+ "prompts": {
+  "yes:did": {
+   "audio": "yes-did.m4a",
+   "ms": 3320
+  },
+  "word:did": {
+   "audio": "word-did.m4a",
+   "ms": 1480
+  },
+  "yes:sat": {
+   "audio": "yes-sat.m4a",
+   "ms": 3560
+  },
+  "word:sat": {
+   "audio": "word-sat.m4a",
+   "ms": 1720
+  },
+  "yes:ran": {
+   "audio": "yes-ran.m4a",
+   "ms": 3560
+  },
+  "word:ran": {
+   "audio": "word-ran.m4a",
+   "ms": 1720
+  },
+  "yes:get": {
+   "audio": "yes-get.m4a",
+   "ms": 3400
+  },
+  "word:get": {
+   "audio": "word-get.m4a",
+   "ms": 1550
+  }
+ }
+}
