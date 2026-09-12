@@ -81,6 +81,40 @@ def _duration_ms(path):
     m = re.search(r"Duration: (\d+):(\d+):([\d.]+)", probe)
     return int((int(m[1]) * 3600 + int(m[2]) * 60 + float(m[3])) * 1000) if m else 0
 
+_ASR = None
+def asr_words(path):
+    """Word timings measured from the file we actually ship, not from the synthesiser's own offsets."""
+    global _ASR
+    try:
+        if _ASR is None:
+            from faster_whisper import WhisperModel
+            _ASR = WhisperModel("base.en", device="cpu", compute_type="int8")
+    except Exception:
+        return None
+    wav = path.with_suffix(".asr.wav")
+    subprocess.run([FF, "-loglevel", "error", "-y", "-i", str(path), "-ar", "16000", "-ac", "1", str(wav)], check=True)
+    try:
+        segs, _ = _ASR.transcribe(str(wav), word_timestamps=True, beam_size=5)
+        out = [(w.word.strip(), float(w.start) * 1000) for s in segs for w in (s.words or [])]
+    except Exception:
+        out = None
+    finally:
+        wav.unlink(missing_ok=True)
+    return out
+
+def realign(tokens, tts_ms, path):
+    """
+    Prefer timings measured from the audio. Concatenating sentence pieces (and mp3 padding) shifts
+    the synthesiser's own word offsets by up to two seconds by the end of a page, which puts the
+    karaoke highlight on the wrong word and can cut the narration early before a magic word.
+    """
+    heard = asr_words(path)
+    if not heard or len(heard) != len(tokens): return tts_ms, False
+    if [norm(w) for w, _ in heard] != [norm(t) for t in tokens]: return tts_ms, False
+    ms = [int(t) for _, t in heard]
+    if any(ms[i] >= ms[i + 1] for i in range(len(ms) - 1)): return tts_ms, False
+    return ms, True
+
 def align(tokens, words):
     """Map TTS word boundaries onto display tokens 1:1 by normalised text, in order.
     A token may span several TTS words (e.g. 'Caw!' vs 'Caw'); a TTS word may never span tokens.
@@ -110,9 +144,10 @@ async def build_story(slug):
         toks = text.split(" ")
         ms, words = await tts(text, out / f"p{i}.m4a")
         starts = align(toks, words)
+        starts, measured = realign(toks, starts, out / f"p{i}.m4a")
         p["tokens"] = [{"t": t, "ms": s} for t, s in zip(toks, starts)]
         p["audio"], p["audioMs"] = f"p{i}.m4a", ms
-        print(f"  {slug} p{i}: {ms} ms, {len(toks)} tokens")
+        print(f"  {slug} p{i}: {ms} ms, {len(toks)} tokens{'' if measured else '  (timings from the synthesiser: the audio could not be re-measured)'}")
     ms, _ = await tts(story["moral"]["spoken"], out / "moral.m4a")
     story["moral"]["audio"], story["moral"]["audioMs"] = "moral.m4a", ms
     # story-specific narrator prompts (magic word feedback)

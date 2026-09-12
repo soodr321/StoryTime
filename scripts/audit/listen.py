@@ -102,8 +102,9 @@ def narration():
     wpm = sum(r["wpm"] for r in rows) / len(rows); art = sum(r["artic"] for r in rows) / len(rows)
     print(f"\nspeed:   {wpm:.0f} words per minute overall, {art:.0f} while actually speaking")
     print(f"         slowest page {min(r['wpm'] for r in rows):.0f}, fastest {max(r['wpm'] for r in rows):.0f}")
-    pausey = [r for r in rows if r["pauses"] < r["sentences"]]
-    print(f"pauses:  {len(rows)-len(pausey)}/{len(rows)} pages pause at every sentence end; {len(pausey)} run sentences together")
+    # a page with N sentences has N-1 gaps between them; the last full stop is the end of the page
+    pausey = [r for r in rows if r["pauses"] < max(0, r["sentences"] - 1)]
+    print(f"pauses:  {len(rows)-len(pausey)}/{len(rows)} pages stop at every full stop; {len(pausey)} run sentences together")
     f0lo = sum(r["f0lo"] for r in rows)/len(rows); f0hi = sum(r["f0hi"] for r in rows)/len(rows)
     print(f"tone:    pitch {f0lo:.0f}–{f0hi:.0f} Hz (a flat reader spans under ~40 Hz; a storyteller 80+)")
     aligned = [r for r in rows if r["off_mean"] is not None]

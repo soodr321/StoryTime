@@ -184,6 +184,35 @@ queued before a screen change could speak after it; a family's own recording los
 fallback playback path; and the phone-voice picker never preferred a local voice, so a remote synthesiser
 could have received the family's own story text.
 
+---
+
+# Corrections after the Gemini 3.1 Pro review (docs/reviews/gemini-audit-plan.md)
+
+Run through Antigravity CLI (`agy`), which is the path the project's `/gemini` skill uses; the older
+gemini-cli OAuth route is retired. Its critique was the most useful of the three because it supplied
+the *acoustic* tests that pitch and loudness could not give, and they found two more real defects.
+
+**New instrument — `scripts/audit/phonetics.py`.** Judges each sound the way a phonetician would:
+- **voice onset time and voiced tail** for stops. A voiceless stop with voicing running on after the
+  burst is "tuh", not /t/; a voiced stop with *no* voicing is simply the voiceless one. This is how we
+  found that /b/ /d/ /g/ had been cut to their bursts alone — the app was saying /p/ /t/ /k/.
+- **spectral steadiness** for vowels (self-similarity of the spectral envelope across the clip). A
+  vowel that slides is a diphthong and cannot be blended. Measured, every vowel window picked by hand
+  was moving; they are now chosen by search under two constraints — steady, and inside the speaker's
+  own pitch range, because the steadiest part of these recordings is the falsetto tail.
+- **spectral centre of gravity** for fricatives (/s/ must live above 4 kHz or it turns into /f/ on a
+  phone speaker).
+
+**Criteria corrected**: "stop ≤ 60 ms" was wrong — voiceless stops need burst plus aspiration and
+voiced stops must carry voicing, so the limit is now by kind. "Karaoke gap ≥ 300 ms median" is replaced
+by "no word highlighted for less than 200 ms", because a 4-year-old's eye movement takes that long.
+Pitch-band matching is a weak proxy for one speaker; steadiness and timbre are the real tests.
+
+**Still missing, by its own account**: the audit runs no test on real hardware, so it cannot catch
+audio/visual desync from a slow phone, a child spamming the letter tiles, or a screen at 2% brightness
+with Night Shift on. Those stay in the owner's column (§6, §12), and the order is now: human perception
+first, then device, then assets, then flows.
+
 ## Findings this method has already produced
 
 1. **The clip set was four different voices.** Measured: 112–394 Hz across the voiced clips, with `o` at
