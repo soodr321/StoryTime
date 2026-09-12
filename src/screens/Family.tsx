@@ -12,7 +12,7 @@ export function FamilyScreen({ onPick, onSettings }: { onPick: (id: string) => v
   const [nights, setNights] = useState<Record<string, number>>({});
   useEffect(() => {   // distinct reading days per child, for the stars; best effort
     let live = true;
-    void Promise.all(kids.map(async (k) => { try { const p = await loadProgress(k.id); return [k.id, new Set([...Object.values(p).flatMap((x) => x.history ?? []).map((t) => new Date(t).toDateString()), ...(k.teachDays ?? []).map((d) => new Date(d).toDateString())]).size] as const; } catch { return [k.id, 0] as const; } }))
+    void Promise.all(kids.map(async (k) => { try { const p = await loadProgress(k.id); const days = new Set([...Object.values(p).flatMap((x) => x.history ?? []).map((t) => new Date(t).toDateString()), ...(k.teachDays ?? []).map((d) => new Date(d).toDateString())]); return [k.id, days.size + (days.has(new Date().toDateString()) ? 0 : 1)] as const; } catch { return [k.id, 0] as const; } }))
       .then((rows) => { if (live) setNights(Object.fromEntries(rows)); });
     return () => { live = false; };
   }, [kids]);
@@ -25,7 +25,7 @@ export function FamilyScreen({ onPick, onSettings }: { onPick: (id: string) => v
           <button key={k.id} className={"kid" + (sessions[k.id] ? " has-session" : "") + (k.role === "reader" ? " reader" : "")} onClick={() => onPick(k.id)}>
             <span className="av">{k.avatar}</span>
             <b>{k.name}</b>
-            <small>{k.role === "listener" ? "listens & taps" : `${k.gpcs.length} sounds · night ${Math.min(30, nightsFor(k.id) + 1)}`}</small>
+            <small>{k.role === "listener" ? "listens & taps" : `${k.gpcs.length} sounds · night ${Math.min(30, nightsFor(k.id))}`}</small>
             <span className="stars" aria-hidden>{k.role === "reader" && Array.from({ length: 5 }, (_, i) => <StarIcon key={i} filled={i < Math.min(5, nightsFor(k.id))} />)}</span>
             {sessions[k.id] && <em>story in progress</em>}
           </button>

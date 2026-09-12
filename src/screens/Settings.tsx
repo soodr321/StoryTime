@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useFamily } from "../lib/family";
 import { ALL_GPCS, ALL_TRICKY, uid, type Kid } from "../lib/store";
 import { Art } from "../components/Art";
+import { designed } from "../lib/results";
 import { playSound } from "../lib/sounds";
 import { GRAPHEME_SOUND } from "../lib/phonics/learner";
 
@@ -12,7 +13,7 @@ const AVATARS = ["🦁", "🐣", "🐯", "🦊", "🐼", "🐸", "🦄", "🐬",
 
 export function SettingsScreen({ onBack, onAddStory, onSounds, onTeach }: { onBack: () => void; onAddStory: () => void; onSounds: () => void; onTeach: (replay?: boolean) => void }) {
   const { kids, updateKid, addKid, removeKid, settings, updateSettings, customs, removeCustom, activeKid, progress } = useFamily();
-  const words = Object.values(progress).flatMap((p) => p.results);
+  const words = designed(Object.values(progress).flatMap((p) => p.results));   // volunteered words are practice, not a score
   const count = (m: string) => words.filter((r) => r.ok && r.mode === m).length;
   const [readerDraft, setReaderDraft] = useState("");
   return (
@@ -22,7 +23,7 @@ export function SettingsScreen({ onBack, onAddStory, onSounds, onTeach }: { onBa
       {activeKid && words.length > 0 && (
         <section className="pc">
           <h3>{activeKid.name} so far</h3>
-          <p className="legend">{Object.keys(progress).length} stories · {words.filter((r) => r.ok).length} magic words blended: {count("first_try")} first try, {count("prompted")} after a nudge, {count("modelled")} after a model · {words.filter((r) => !r.ok).length} for tomorrow · {Object.values(progress).flatMap((p) => p.encoding ?? []).filter((e) => e.ok).length} words built</p>
+          <p className="legend">{Object.values(progress).filter((p) => p.timesFinished > 0).length} stories · in the latest reading of each, {words.filter((r) => r.ok).length} magic words blended: {count("first_try")} first try, {count("prompted")} after a nudge, {count("modelled")} after a model · {words.filter((r) => !r.ok).length} for tomorrow · {Object.values(progress).flatMap((p) => p.encoding ?? []).filter((e) => e.ok).length} words built</p>
         </section>
       )}
       <section className="pc">

@@ -45,7 +45,7 @@ export function AddStoryScreen({ onDone }: { onDone: () => void }) {
   const [timing, setTiming] = useState<number | null>(null);
   const timingEl = useRef<HTMLAudioElement | null>(null);
   const recRef = useRef<Recorder | null>(null);
-  useEffect(() => () => { void recRef.current?.stop(); }, []);   // leaving the screen releases the microphone
+  useEffect(() => () => { void recRef.current?.stop(); timingEl.current?.pause(); }, []);   // leaving the screen releases the microphone and stops any tap-along playback
   const toggleRec = async (i: number) => {
     const key = keys[i];
     if (recording === i) { let r: { dataUrl: string; ms: number } | null = null; try { r = (await recRef.current?.stop()) ?? null; } finally { recRef.current = null; setRecording(null); } if (r) { setRec((prev) => ({ ...prev, [key]: r })); setTimes((prev) => { const n = { ...prev }; delete n[key]; return n; }); } else setPhotoErr("That recording was empty. Try again and speak a little longer."); return; }
@@ -69,7 +69,8 @@ export function AddStoryScreen({ onDone }: { onDone: () => void }) {
   const timedOk = (i: number) => { const t = times[keys[i]]; const r = recOf(i); return !!t && !!r && t.length === wordsOf(i).length && t.every((v, k) => v > 0 && (k === 0 || v > t[k - 1])) && t[t.length - 1] < r.ms; };
   const startTiming = (i: number) => { const r = recOf(i); if (!r) return; setTimes((prev) => ({ ...prev, [keys[i]]: [] })); const p = playClip(r.dataUrl); timingEl.current = p.el; setTiming(i); void p.done.finally(() => setTiming((cur) => (cur === i ? null : cur))); };
   const tapWord = (i: number, k: number) => { const el = timingEl.current; const cur = times[keys[i]] ?? []; if (timing !== i || !el || cur.length !== k) return; setTimes((prev) => ({ ...prev, [keys[i]]: [...cur, Math.round(el.currentTime * 1000)] })); };
-  const ready = title.trim() && pages.length >= 2 && moral.trim() && lineCheck?.ok && pages.every((_, i) => arts[i] || true);
+  const anyMagic = pages.some((_, i) => chosen(i));   // a story with no magic word gives the child one line all night
+  const ready = title.trim() && pages.length >= 2 && moral.trim() && lineCheck?.ok && anyMagic;
 
   const save = async () => {
     const story: Story = {
@@ -144,6 +145,7 @@ export function AddStoryScreen({ onDone }: { onDone: () => void }) {
         <p className="legend">Allowed: words made only of {kid.gpcs.join(" ")}{kid.tricky.length ? ` plus the tricky words ${kid.tricky.join(", ")}` : ""}.</p>
       </section>
 
+      {!anyMagic && pages.length > 0 && <p className="legend">Pick at least one magic word above, so {kid.name} gets a turn in this story.</p>}
       <button className="next" disabled={!ready} onClick={save}>Save to the bookshelf</button>
     </main>
   );

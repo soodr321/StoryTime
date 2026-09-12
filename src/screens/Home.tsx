@@ -41,7 +41,7 @@ export function HomeScreen({ onStart, onLibrary, onSwitch, onWarmUp, onTeach }: 
   return (
     <main className="home-screen">
       <button className="who" onClick={onSwitch}><span>{kid.avatar}</span> {kid.name} · <u>switch</u></button>
-      <div className="row between" style={{ width: "min(100%, 420px)" }}><WeekStrip days={days} /><span className="nights">night <b>{Math.min(30, nights + 1)}</b> of 30</span></div>
+      <div className="row between" style={{ width: "min(100%, 420px)" }}><WeekStrip days={days} /><span className="nights">night <b>{Math.min(30, nights)}</b> of 30</span></div>
       {!listener && nights >= 30 && <div className="champion"><span>🏅</span><b>30 nights of reading!</b><small>{kid.name} is a Reading Champion. Keep the ritual: one story, then a real book.</small></div>}
       {!listener && kid.gpcs.length < 4 && (
         <button className="readycard" onClick={() => onTeach(taughtToday)}><b>{taughtToday ? `Replay today's sound: ${kid.gpcs[kid.gpcs.length - 1]}` : `Teach today's sound: ${LS_PHASE2_ORDER[kid.gpcs.length]}`}</b><small>90 seconds, one new sound a day. After four sounds {kid.name} starts reading the magic words.</small></button>
@@ -58,7 +58,7 @@ export function HomeScreen({ onStart, onLibrary, onSwitch, onWarmUp, onTeach }: 
           <div className="art-box big"><MoonIcon size={72} /></div>
           <h2>Story done for tonight.</h2>
           <p className="note">One real book, then sleep. StoryTime opens again tomorrow.</p>
-          <button className="linkbtn" onClick={() => today && onStart(today, "listen", false)}>grown-up: read one more anyway</button>
+          <button className="linkbtn" onClick={() => today && onStart(today, listenAlong ? "listen" : "listen", false)}>grown-up: read one more anyway</button>
         </div>
       ) : today ? (
         <>

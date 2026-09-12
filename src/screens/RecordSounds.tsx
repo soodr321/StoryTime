@@ -42,6 +42,9 @@ export function RecordSoundsScreen({ onDone }: { onDone: () => void }) {
   const kind = kindOf(clip);
   const blendWord = useMemo(() => t?.blend?.length ? t.blend : null, [t]);
   useEffect(() => { void familySoundClips().then((c) => setHave(new Set(c))); }, []);
+  const preview = useRef<string | null>(null);   // one object URL at a time: a recording blob is not small
+  const previewUrl = (b: Blob) => { if (preview.current) URL.revokeObjectURL(preview.current); preview.current = URL.createObjectURL(b); return preview.current; };
+  useEffect(() => () => { void rec.current?.stop(); if (preview.current) URL.revokeObjectURL(preview.current); }, []);   // leaving mid-hold must not leave the mic open
 
   const begin = async () => {
     if (holding || busy) return;
@@ -65,7 +68,7 @@ export function RecordSoundsScreen({ onDone }: { onDone: () => void }) {
       d = { ...d, startMs: tr.startMs, endMs: tr.endMs, trimmed: true };
     } catch { d.note = "Saved without trimming: this phone could not decode its own recording."; }
     setDraft(d);
-    try { await playClip(URL.createObjectURL(d.blob), { startMs: d.startMs, endMs: d.endMs }).done; } catch { /* preview failed */ }
+    try { await playClip(previewUrl(d.blob), { startMs: d.startMs, endMs: d.endMs }).done; } catch { /* preview failed */ }
     setBusy(false);
   };
   const keep = async () => {
@@ -99,7 +102,7 @@ export function RecordSoundsScreen({ onDone }: { onDone: () => void }) {
               <button className="no" disabled={busy} onClick={() => { setDraft(null); setMsg(null); }}>Redo</button>
               <button className="yes" disabled={busy} onClick={keep}><CheckIcon /> Keep it</button>
             </div>
-            <div className="row center"><button className="skip" onClick={() => void playClip(URL.createObjectURL(draft.blob), { startMs: draft.startMs, endMs: draft.endMs })}>play it again</button>{blendWord && <button className="skip" onClick={async () => { await saveFamilySound(clip, { blob: draft.blob, startMs: draft.startMs, endMs: draft.endMs, ms: draft.ms, at: Date.now() }); setHave(new Set([...have, clip])); await playBlend(blendWord); }}>hear it in {blendWord.join("")}</button>}</div>
+            <div className="row center"><button className="skip" onClick={() => void playClip(previewUrl(draft.blob), { startMs: draft.startMs, endMs: draft.endMs })}>play it again</button>{blendWord && <button className="skip" onClick={async () => { await saveFamilySound(clip, { blob: draft.blob, startMs: draft.startMs, endMs: draft.endMs, ms: draft.ms, at: Date.now() }); setHave(new Set([...have, clip])); await playBlend(blendWord); }}>hear it in {blendWord.join("")}</button>}</div>
           </div>
         )}
         {have.has(clip) && !draft && <button className="linkbtn" onClick={useFallback}>use the built-in recording instead</button>}

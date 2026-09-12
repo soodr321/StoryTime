@@ -5,7 +5,7 @@ import { LIBRARY, fits, listenAlongStory } from "./library";
 import { designed } from "./results";
 import {
   defaultKids, learnerOf, loadAllSessions, loadCustomStories, loadKids, loadProgress, loadSettings,
-  recordFinish, recordEncoding, readyToAdvance, recordAttempt, loadAttempts, type Attempt, saveCustomStories, saveKids, saveSession, saveSettings, scheduleReview, loadReview, dueReview, type ReviewItem,
+  recordFinish, recordEncoding, readyToAdvance, recordAttempt, loadAttempts, type Attempt, saveCustomStories, saveKids, saveSession, saveSettings, scheduleReview, loadReview, dueReview, reviewSnoozedUntil, snoozeReview, type ReviewItem,
   type Kid, type Session, type Settings, type StoryProgress,
 } from "./store";
 
@@ -19,7 +19,8 @@ interface Family {
   session: Session | null;             // for the active child
   activeKid: Kid | null;
   progress: Record<string, StoryProgress>;
-  review: ReviewItem[];                 // words due for a quick warm-up today
+  review: ReviewItem[];                 // words due for a quick warm-up today (empty while snoozed)
+  snoozeWarmUp: () => Promise<void>;     // "not tonight": clears the gate until tomorrow morning, records nothing
   reviewDone: (results: { word: string; ok: boolean; mode: string }[]) => Promise<void>;
   encodingDone: (slug: string, word: string, ok: boolean) => Promise<void>;
   advanceReady: boolean;
@@ -75,7 +76,7 @@ export function FamilyProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const activeKid = useMemo(() => kids.find((k) => k.id === settings.activeKid) ?? kids[0] ?? null, [kids, settings.activeKid]);
-  useEffect(() => { if (!activeKid) return; const my = ++progGen.current; void loadProgress(activeKid.id).then((p) => { if (my === progGen.current) setProgress(p); }); void loadReview(activeKid.id).then((r) => { if (my === progGen.current) setReview(dueReview(r)); }); void loadAttempts(activeKid.id).then((a) => { if (my === progGen.current) setAttempts(a); }); }, [activeKid]);
+  useEffect(() => { if (!activeKid) return; const my = ++progGen.current; void loadProgress(activeKid.id).then((p) => { if (my === progGen.current) setProgress(p); }); void Promise.all([loadReview(activeKid.id), reviewSnoozedUntil(activeKid.id)]).then(([r, snoozed]) => { if (my === progGen.current) setReview(Date.now() < snoozed ? [] : dueReview(r)); }); void loadAttempts(activeKid.id).then((a) => { if (my === progGen.current) setAttempts(a); }); }, [activeKid]);
 
   const stories = useMemo(() => [...customs, ...LIBRARY], [customs]);
   const listensAlong = useCallback((kid: Kid) => kid.role === "reader" && kid.gpcs.length < 4, []);
@@ -110,9 +111,12 @@ export function FamilyProvider({ children }: { children: ReactNode }) {
     ready, fatal, kids, settings, customs, sessions, session, activeKid, progress, review, stories, storiesFor, todayFor, listensAlong, repeatToday: !!shaky && activeKid?.role !== "listener",
     encodingDone: async (slug, word, ok) => { if (!activeKid) return; await recordEncoding(activeKid.id, slug, word, ok); if (!ok) { await scheduleReview(activeKid.id, [{ word, ok: false, mode: "skipped" }]); setReview(dueReview(await loadReview(activeKid.id))); } setProgress(await loadProgress(activeKid.id)); },
     advanceReady: !!activeKid && readyToAdvance(attempts, activeKid.gpcs.length, progress, review.length),
-    nights: new Set([...Object.values(progress).flatMap((p) => p.history ?? []).map((t) => new Date(t).toDateString()), ...(activeKid?.teachDays ?? []).map((d) => new Date(d).toDateString())]).size,
+    // distinct days the family did something, counting today as one whether or not it is already in the set:
+    // the card used to read "night 1" before the story and "night 2" after it, on the same evening
+    nights: (() => { const days = new Set([...Object.values(progress).flatMap((p) => p.history ?? []).map((t) => new Date(t).toDateString()), ...(activeKid?.teachDays ?? []).map((d) => new Date(d).toDateString())]); const today = new Date().toDateString(); return days.size + (days.has(today) ? 0 : 1); })(),
     pendingBuild: (() => { const enc = Object.values(progress).flatMap((p) => p.encoding ?? []).sort((a, b) => a.at - b.at); const failed = enc.filter((e) => !e.ok).map((e) => e.word); return failed.find((w) => !enc.some((e) => e.word === w && e.ok && e.at > (enc.find((f) => f.word === w && !f.ok)?.at ?? 0))) ?? null; })(),
     reviewDone: async (results) => { if (!activeKid) return; await scheduleReview(activeKid.id, results); setReview(dueReview(await loadReview(activeKid.id))); },
+    snoozeWarmUp: async () => { if (!activeKid) return; try { await snoozeReview(activeKid.id); } catch { /* a snooze that cannot be saved still clears tonight */ } setReview([]); },
     setActiveKid: (id) => updateSettings({ activeKid: id }),
     updateKid: (kid) => mutateKids((prev) => prev.map((k) => (k.id === kid.id ? kid : k))),
     addKid: (kid) => mutateKids((prev) => [...prev, kid]),

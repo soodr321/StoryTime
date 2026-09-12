@@ -14,7 +14,7 @@ import { TeachSoundScreen } from "./screens/TeachSound";
 import { RecordSoundsScreen } from "./screens/RecordSounds";
 import { FamilyIcon, GearIcon } from "./components/Icons";
 
-type Route = { name: "family" } | { name: "home" } | { name: "warmup" } | { name: "teach"; replay?: boolean } | { name: "library" } | { name: "settings" } | { name: "add" } | { name: "sounds" } | { name: "story"; story: Story; mode: Mode; resume: boolean };
+type Route = { name: "family" } | { name: "home" } | { name: "warmup"; then?: string } | { name: "teach"; replay?: boolean } | { name: "library" } | { name: "settings" } | { name: "add" } | { name: "sounds" } | { name: "story"; story: Story; mode: Mode; resume: boolean };
 
 export default function App() {
   return <FamilyProvider><Shell /></FamilyProvider>;
@@ -43,8 +43,8 @@ function Shell() {
       {route.name === "family" && <FamilyScreen onPick={(id) => { fam.setActiveKid(id); setRoute({ name: "home" }); }} onSettings={() => setRoute({ name: "settings" })} />}
       {route.name === "home" && <HomeScreen onStart={start} onLibrary={() => setRoute({ name: "library" })} onSwitch={() => setRoute({ name: "family" })} onWarmUp={() => { void unlock(); setRoute({ name: "warmup" }); }} onTeach={(replay) => { void unlock(); setRoute({ name: "teach", replay }); }} />}
       {route.name === "teach" && <TeachSoundScreen replay={route.replay} onDone={() => setRoute({ name: route.replay ? "home" : "home" })} />}
-      {route.name === "warmup" && <WarmUpScreen onDone={() => setRoute({ name: "home" })} />}
-      {route.name === "library" && <LibraryScreen onStart={(s, m, r) => start(s, m, r)} onBack={() => setRoute({ name: "home" })} />}
+      {route.name === "warmup" && <WarmUpScreen onDone={() => { const s = route.then ? fam.stories.find((x) => x.slug === route.then) : null; if (s) start(s, "listen", false); else setRoute({ name: "home" }); }} />}
+      {route.name === "library" && <LibraryScreen onStart={(s, m, r) => start(s, m, r)} onBack={() => setRoute({ name: "home" })} onWarmUp={(then) => { void unlock(); setRoute({ name: "warmup", then }); }} />}
       {fam.toast && <div className="toast" role="status">{fam.toast}</div>}
       {route.name === "settings" && <SettingsScreen onBack={() => setRoute({ name: "family" })} onAddStory={() => setRoute({ name: "add" })} onSounds={() => setRoute({ name: "sounds" })} onTeach={(replay) => { void unlock(); setRoute({ name: "teach", replay }); }} />}
       {route.name === "add" && <AddStoryScreen onDone={() => setRoute({ name: "settings" })} />}

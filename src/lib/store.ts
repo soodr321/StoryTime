@@ -110,7 +110,11 @@ export async function saveCustomStories(list: Story[]): Promise<void> { await se
 export function learnerOf(kid: Kid): LearnerModel { return { gpcs: kid.gpcs, tricky: kid.tricky }; }
 
 /** Spaced retrieval: a word missed or modelled comes back tomorrow; a word read well comes back at widening intervals. */
-export interface ReviewItem { word: string; due: number; interval: number; last: "ok" | "help" | "skip" }
+export interface ReviewItem { word: string; due: number; interval: number; last: "ok" | "help" | "skip"; misses?: number; retired?: boolean }
+const snoozeKey = (kidId: string) => `st:snooze:${kidId}`;
+/** "Not tonight": the warm-up is the only door to the story, so a tired family must be able to skip it once. */
+export async function snoozeReview(kidId: string, until = nextMorning()): Promise<void> { await set(snoozeKey(kidId), until); }
+export async function reviewSnoozedUntil(kidId: string): Promise<number> { return (await get<number>(snoozeKey(kidId))) ?? 0; }
 const reviewKey = (kidId: string) => `st:review:${kidId}`;
 const DAY = 86_400_000;
 /** "Tomorrow" means the next morning, not 24 hours later: a word missed at 7 pm is due at 5 am. */
@@ -120,13 +124,17 @@ export async function scheduleReview(kidId: string, results: { word: string; ok:
   const all = await loadReview(kidId); const now = Date.now();
   for (const r of results) {
     const prev = all[r.word];
-    if (!r.ok || r.mode === "modelled" || r.mode === "prompted") all[r.word] = { word: r.word, due: nextMorning(now), interval: 1, last: r.ok ? "help" : "skip" };   // only a first-try blend counts as known
-    else { const interval = Math.min(14, (prev?.interval ?? 1) * 3); all[r.word] = { word: r.word, due: now + interval * DAY, interval, last: "ok" }; }
+    if (!r.ok || r.mode === "modelled" || r.mode === "prompted") {
+      // only a first-try blend counts as known. After three returns with no progress the word steps out of the
+      // nightly queue — it is not ready yet, and one hard word must not block the story every night for a month.
+      const misses = (prev?.misses ?? 0) + 1;
+      all[r.word] = { word: r.word, due: nextMorning(now), interval: 1, last: r.ok ? "help" : "skip", misses, retired: misses >= 3 };
+    } else { const interval = Math.min(14, (prev?.interval ?? 1) * 3); all[r.word] = { word: r.word, due: now + interval * DAY, interval, last: "ok", misses: 0, retired: false }; }
   }
   await set(reviewKey(kidId), all);
 }
 export function dueReview(all: Record<string, ReviewItem>, now = Date.now()): ReviewItem[] {
-  const due = Object.values(all).filter((r) => r.due <= now);
+  const due = Object.values(all).filter((r) => r.due <= now && !r.retired);
   const weak = due.filter((r) => r.last !== "ok").slice(0, 3);
   const secure = due.filter((r) => r.last === "ok").slice(0, 1);
   return [...weak, ...secure];

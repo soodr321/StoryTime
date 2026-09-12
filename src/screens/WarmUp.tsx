@@ -10,7 +10,7 @@ import { checkWord } from "../lib/phonics/validator";
 import { stretched, playBlend } from "../lib/blend";
 
 export function WarmUpScreen({ onDone }: { onDone: () => void }) {
-  const { activeKid: kid, review, reviewDone, settings } = useFamily();
+  const { activeKid: kid, review, reviewDone, settings, snoozeWarmUp } = useFamily();
   const learner = useMemo(() => learnerOf(kid!), [kid]);
   const reader = settings.tonight ?? settings.readers[0] ?? "Grown-up";
   const [i, setI] = useState(0);
@@ -39,6 +39,7 @@ export function WarmUpScreen({ onDone }: { onDone: () => void }) {
         <div className="kicker">Warm-up · {i + 1} of {words.length}</div>
         <p className="note">Quick words from last time, then today's story.</p>
         <p className="legend">Every word gets a turn; then the story.</p>
+        <button className="skip" onClick={async () => { await snoozeWarmUp(); onDone(); }}>not tonight — go straight to the story →</button>
       </main>
       <MagicPanel
         word={word} learner={learner} modelling={modelling} modelledOnce={modelledOnce} sweep={sweep} kid={kid.name} reader={reader} kicker={`Warm-up word · ${kid.name}'s turn`}

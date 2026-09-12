@@ -19,6 +19,7 @@ import { advanceCursor, hitWord, type WordRect } from "../lib/follow";
 import { pickIllTry } from "../lib/phonics/illtry";
 import { magicTokens, resolveMagic } from "../lib/phonics/target";
 import { designed, volunteered } from "../lib/results";
+import { keepAwake } from "../lib/wakelock";
 import { align } from "../lib/voice/align";
 import { startVoice, voiceSupported, type VoiceSession, type VoiceState } from "../lib/voice/session";
 import { BookIcon, HomeIcon, LockIcon, MoonIcon, SpeakerIcon, CheckIcon } from "../components/Icons";
@@ -151,7 +152,7 @@ export function StoryScreen({ story, mode, resume, onHome }: { story: Story; mod
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state, ctx.page, retry]);
 
-  useEffect(() => { if (!startedRef.current) { startedRef.current = true; void unlock().then(() => send({ type: "START" })); } return () => { stopAll(); stopBlend(); playing.current?.stop(); }; }, [send]);
+  useEffect(() => { if (!startedRef.current) { startedRef.current = true; void unlock().then(() => send({ type: "START" })); } const awake = keepAwake(); return () => { awake(); stopAll(); stopBlend(); playing.current?.stop(); }; }, [send]);
 
   const home = () => { runRef.current++; playing.current?.stop(); stopAll(); stopBlend(); onHome(); };
   const inStory = state === "narrating" || state === "reread" || state === "magicWord" || state === "modelling";
@@ -235,13 +236,22 @@ function StoryView({ page, pageNo, total, token, results, readMode, listener, re
   const drag = useRef<{ x: number; y: number; on: boolean; rects: WordRect[]; id: number } | null>(null);
   useEffect(() => { setPointer(-1); setCursor(-1); drag.current = null; }, [pageNo]);
   const blocked = (i: number) => firstIdx.has(i) && !resAt(i);
-  const land = (i: number) => { if (i < 0) return; setPointer(i); setCursor((c) => advanceCursor(c, i, blocked)); };
+  const land = (i: number, fresh = false) => {
+    if (i < 0) return;
+    setPointer(i);
+    setCursor((c) => {
+      if (!fresh || i <= c) return advanceCursor(c, i, blocked);
+      let limit = i; for (let j = c + 1; j <= i; j++) if (blocked(j)) { limit = j - 1; break; }   // never across a word the child still owes
+      return Math.max(c, limit);
+    });
+  };
   const measure = (): WordRect[] => Array.from(sentenceRef.current?.querySelectorAll<HTMLElement>("[data-i]") ?? []).map((el) => { const b = el.getBoundingClientRect(); return { index: Number(el.dataset.i), left: b.left, right: b.right, top: b.top, bottom: b.bottom }; });
   const onDown = (e: React.PointerEvent) => { if (!readMode) return; drag.current = { x: e.clientX, y: e.clientY, on: false, rects: [], id: e.pointerId }; };
   const onMove = (e: React.PointerEvent) => {
     const d = drag.current; if (!d || !readMode) return;
-    if (!d.on) { if (Math.hypot(e.clientX - d.x, e.clientY - d.y) < 8) return; d.on = true; d.rects = measure(); try { cardRef.current?.setPointerCapture(d.id); } catch { /* not supported */ } }   // a tap stays a tap: the pink button still clicks
-    land(hitWord(d.rects, e.clientX, e.clientY));
+    let fresh = false;
+    if (!d.on) { if (Math.hypot(e.clientX - d.x, e.clientY - d.y) < 8) return; d.on = true; fresh = true; d.rects = measure(); try { cardRef.current?.setPointerCapture(d.id); } catch { /* not supported */ } }   // a tap stays a tap: the pink button still clicks
+    land(hitWord(d.rects, e.clientX, e.clientY), fresh);
   };
   const onUp = () => { drag.current = null; };
   const wordCls = (i: number, base: string) => (readMode ? base + (i === pointer ? " now" : i <= cursor ? " read" : "") : base);
@@ -294,7 +304,7 @@ function StoryView({ page, pageNo, total, token, results, readMode, listener, re
               if (i > cursor) return <span key={i} className="tokwrap">{lead}<button className={cls + " try"} data-i={i} onClick={() => onMagicTap(n, i, true)}>{core.toLowerCase()}</button>{punct} </span>;   // offered until the grown-up reads past it
             }
             if (listener) return <span key={i} className="tokwrap">{lead}<button className={cls + " listener-tap"} onClick={() => onWordTap(t.t)}>{core}</button>{punct} </span>;   // read mode: grey words are the grown-up's, never tap-to-hear
-            if (readMode) return <span key={i} className="tokwrap">{lead}<span className={cls} data-i={i} onClick={() => land(i)}>{core}</span>{punct} </span>;   // tap-only alternative to the slide: the next word moves the cursor
+            if (readMode) return <span key={i} className="tokwrap">{lead}<span className={cls} data-i={i} onClick={() => land(i, true)}>{core}</span>{punct} </span>;   // tap-only alternative to the slide: the next word moves the cursor
             return <span key={i} className="tokwrap">{lead}<span className={cls}>{core}</span>{punct} </span>;
           })}
         </p>
