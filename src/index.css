@@ -141,7 +141,7 @@ main { flex: 1; display: flex; flex-direction: column; padding: 8px 14px 14px; g
 .pc { background: var(--card); border: 2px solid var(--line); border-radius: 18px; padding: 14px; display: flex; flex-direction: column; gap: 8px; }
 .legend.ok { color: var(--done-ink); } .legend.bad { color: #7a2a1c; }
 .chips { display: flex; flex-wrap: wrap; gap: 6px; }
-.chip { background: var(--done); color: var(--done-ink); border-radius: 10px; padding: 6px 10px; font-size: 14px; font-family: system-ui, sans-serif; min-height: 40px; }
+.chip { background: var(--done); color: var(--done-ink); border-radius: 10px; padding: 6px 10px; font-size: 14px; font-family: system-ui, sans-serif; min-height: 44px; }
 .tog { min-width: 44px; height: 44px; border-radius: 12px; border: 2px solid var(--line); background: #fff; font-family: var(--print); font-size: 20px; padding: 0 10px; }
 .tog.on { background: var(--done); border-color: #9fcf92; }
 .tog.tk { font-family: var(--serif); font-size: 16px; } .tog.tk.on { background: var(--tricky); border-color: #9fb8e0; }
@@ -155,7 +155,8 @@ textarea { width: 100%; line-height: 1.5; }
 .lbl input, .lbl select { font-family: var(--serif); color: var(--ink); }
 .small { min-height: 44px; padding: 0 16px; border-radius: 12px; background: var(--card); border: 2px solid var(--line); }
 .switch { display: flex; gap: 10px; align-items: flex-start; font-size: 15px; line-height: 1.4; }
-.switch input { width: 24px; height: 24px; min-height: 0; }
+.switch input { width: 28px; height: 28px; min-height: 0; flex: none; }
+.switch { min-height: 44px; align-items: center; }
 .pagerow { border-top: 1px solid var(--line); padding: 8px 0; display: flex; flex-direction: column; gap: 6px; }
 .pn { background: var(--now); border-radius: 8px; padding: 2px 8px; font-family: system-ui, sans-serif; font-size: 13px; }
 .ptext { font-size: 16px; }
