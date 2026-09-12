@@ -145,6 +145,45 @@ grown-up have to read on screen. Anything scored badly comes back as a numbered 
 
 ---
 
+---
+
+# Corrections after review (GPT-6 Astra, docs/reviews/gpt-audit-plan.md)
+
+Gemini was unavailable: Google has retired the Gemini CLI's free-tier client for individual accounts
+and now requires Antigravity, which needs the owner's own login. GPT-6 Astra reviewed the plan instead.
+
+**The plan's main weakness was its evidence chain**: the instruments measured *assets* and playback
+*requests*, not what a person in the room hears. Corrections now folded in:
+
+- **Judge the captured sound, not the file.** Speed, tone and pronunciation are measured from a
+  transcript of the actual audio (faster-whisper), not from `library/*/story.json`. `scripts/audit/listen.py`
+  does this: it reports what was said, whether it matches the page, the speaking rate with and without
+  pauses, pause structure at sentence ends, pitch range, and how far the karaoke timings sit from the
+  words a listener actually hears.
+- **Pitch criteria were too loose.** "±50% of the median" passes a 70–210 Hz set at a 140 Hz median,
+  which is two different people. Tighten to ±20%, and express within-clip drift as a percentage of that
+  clip's own pitch, not a flat 40 Hz.
+- **Duration criteria can pass on silence.** Every clip check must also assert audible energy.
+- **The karaoke gap criterion was derived wrongly.** Uniform 166 wpm speech already averages ~360 ms
+  between word starts, so "median ≥ 300 ms" passes the fast narration it was meant to catch. Measure the
+  gap from the ASR word timings, and judge speed by articulation rate.
+- **"No two sounds within 50 ms" misses overlap.** Compare intervals, not start times.
+- **The whole-word leak check must include the first phoneme**, not just the whole word: the timed
+  narration stop polls every 40 ms and can release the onset.
+- **The deployed experience is the subject**, not the repo. Check the served asset hashes and a cached
+  upgrade, not only a clean install.
+- **Headless Chromium cannot decode the shipped m4a**, so a browser capture is silent for narration and
+  loud for the WAV clip set. Capture the browser mix for Web Audio, and judge narration from the served
+  files offline. State which instrument produced each number.
+
+**Real defects this review found in the app itself** (all fixed in the same pass): the spoken prompt said
+"This one is yours. Can you read it?" while the screen said "start at the first sound and slide through
+the word" — the audio invited exactly the guessing the adult script forbids; the reading pace was applied
+to the narration but not to the read-back model, the dictation model or the teach-routine blend; a prompt
+queued before a screen change could speak after it; a family's own recording lost its trim in the
+fallback playback path; and the phone-voice picker never preferred a local voice, so a remote synthesiser
+could have received the family's own story text.
+
 ## Findings this method has already produced
 
 1. **The clip set was four different voices.** Measured: 112–394 Hz across the voiced clips, with `o` at

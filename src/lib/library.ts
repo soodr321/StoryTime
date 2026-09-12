@@ -10,6 +10,8 @@ export const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
 export const AUDIO_V = "4";   // bump with any change to narration/timings or public/sounds so a cached install never pairs new timings with old audio
 export const storyAsset = (story: Story, file: string) => (story.tradition === "family" ? file : `${BASE}/library/${story.slug}/${file}?v=${AUDIO_V}`);
 export const promptAsset = (file: string) => `${BASE}/prompts/${file}?v=${AUDIO_V}`;
+/** the "slide through the word" model: the narration voice saying that word slowly (scripts/gen-blends.py) */
+export const blendAsset = (word: string) => `${BASE}/blends/${word.toLowerCase()}.m4a?v=${AUDIO_V}`;
 
 /** Can this child do every magic word and the read-back line of this story? */
 export function fits(story: Story, learner: LearnerModel): boolean {

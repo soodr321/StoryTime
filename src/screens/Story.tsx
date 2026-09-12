@@ -11,7 +11,7 @@ import { useFamily } from "../lib/family";
 import { learnerOf } from "../lib/store";
 import { Art } from "../components/Art";
 import { MagicPanel } from "../components/MagicPanel";
-import { stretched, playBlend, stopBlend } from "../lib/blend";
+import { stretched, playBlend, playWord, stopBlend } from "../lib/blend";
 import { SegmentPanel } from "../components/SegmentPanel";
 import type { Verdict } from "../components/MagicPanel";
 import type { Mode } from "./Home";
@@ -73,7 +73,10 @@ export function StoryScreen({ story, mode, resume, onHome }: { story: Story; mod
     else if (text) { const h = speakText(text, { rate }); playing.current = h; await h.done; }
   }, [rate]);
   const speakPrompt = useCallback(async (key: string, text: string) => {
+    const run = runRef.current;
     const m = await prompts();
+    if (run !== runRef.current) return;   // the screen moved on while the manifest loaded
+
     const s = story.prompts?.[key] ? storyAsset(story, story.prompts[key].audio) : m[key] ? promptAsset(m[key].audio) : null;
     await speak(s, text);
   }, [speak, story]);
@@ -167,7 +170,7 @@ export function StoryScreen({ story, mode, resume, onHome }: { story: Story; mod
     if (listen) await speakPrompt("notyet", "That's okay. Listen: I'll slide through the sounds, then you try."); else setCaption(`${reader}: slide through the sounds and let them run into the word (bouncy sounds like t and p stay short).`);
     if (!alive()) return;
     setCaption(stretched(gs) + " …");
-    if (listen) await playBlend(gs, { alive, rate, onProgress: setSweep });
+    if (listen) await playWord(word, gs, { alive, rate, onProgress: setSweep });
     else { const n = gs.length * 12; for (let i = 1; i <= n; i++) { await new Promise((r) => setTimeout(r, 70)); if (!alive()) return; setSweep(i / n); } }   // sound off: the app must not talk over the grown-up
     setSweep(0);
     if (!alive()) return;
@@ -208,7 +211,7 @@ export function StoryScreen({ story, mode, resume, onHome }: { story: Story; mod
         />
       )}
 
-      {state === "moral" && <Moral story={story} learner={learner} listener={listener} kid={kid.name} reader={reader} listen={listen} bedtime={bedtime} setCaption={setCaption} buildWord={fam.pendingBuild ?? designed(ctx.results).find((r) => r.ok && r.mode === "first_try")?.word ?? null} onBuilt={(w, ok) => fam.encodingDone(story.slug, w, ok)} onYes={() => send({ type: "LINE_YES" })} />}
+      {state === "moral" && <Moral story={story} learner={learner} listener={listener} kid={kid.name} reader={reader} listen={listen} bedtime={bedtime} rate={rate} setCaption={setCaption} buildWord={fam.pendingBuild ?? designed(ctx.results).find((r) => r.ok && r.mode === "first_try")?.word ?? null} onBuilt={(w, ok) => fam.encodingDone(story.slug, w, ok)} onYes={() => send({ type: "LINE_YES" })} />}
       {state === "done" && <Done story={story} results={ctx.results} bedtime={bedtime} kid={kid.name} learner={learner} listenOnly={listener} onHome={home} />}
 
       <div className="cap" aria-live="polite">{caption}</div>
@@ -341,7 +344,7 @@ function StoryView({ page, pageNo, total, token, results, readMode, listener, re
  * the app shows regular vs tricky parts (tricky word) or stretches the sounds (decodable word),
  * the child re-reads that word, then re-reads the whole line smoothly before ✓.
  */
-function Moral({ story, learner, listener, kid, reader, listen, bedtime, setCaption, buildWord, onBuilt, onYes }: { story: Story; learner: LearnerModel; listener: boolean; kid: string; reader: string; listen: boolean; bedtime: boolean; setCaption: (s: string) => void; buildWord: string | null; onBuilt: (w: string, ok: boolean) => Promise<void>; onYes: () => void }) {
+function Moral({ story, learner, listener, kid, reader, listen, bedtime, rate, setCaption, buildWord, onBuilt, onYes }: { story: Story; learner: LearnerModel; listener: boolean; kid: string; reader: string; listen: boolean; bedtime: boolean; rate: number; setCaption: (s: string) => void; buildWord: string | null; onBuilt: (w: string, ok: boolean) => Promise<void>; onYes: () => void }) {
   const line = checkLine(story.moral.line, learner);
   const raw = story.moral.line.split(/\s+/);
   const parts = raw.map((w, i) => { const m = w.match(/^([^A-Za-z]*)([A-Za-z]+)([^A-Za-z]*)$/); const r = line.results[i]; const core = m ? m[2] : w; const shown = r?.ok ? (r.kind === "tricky" ? (r.word === "i" ? "I" : r.word) : core.toLowerCase()) : core; return { lead: m ? m[1] : "", core: shown, punct: m ? m[3] : "" }; });   // taught letterforms; punctuation outside
@@ -357,8 +360,8 @@ function Moral({ story, learner, listener, kid, reader, listen, bedtime, setCapt
       setCaption(`${words[i]} is a tricky word. The underlined part is the odd bit. Just say the word, then read the line again.`);
       if (listen) speakText(words[i], {});   // a tricky word is taught as a whole, so hearing it is fine
     } else {
-      setCaption(`${stretched(r.graphemes)} … ${reader}: slide through the sounds, but let ${kid} say the word.`);
-      await playBlend(r.graphemes);   // never the whole word: that would be echoing, not blending
+      setCaption(`${stretched(r.graphemes)} … now ${kid}: slide through it and say the word.`);
+      await playWord(words[i], r.graphemes, { rate });   // they have already tried the line: the model runs the sounds into the word
       setStage("word"); return;       // stay on this word until the grown-up confirms the child blended it
     }
     setStage("reread");
@@ -367,7 +370,7 @@ function Moral({ story, learner, listener, kid, reader, listen, bedtime, setCapt
     <div className="screen-wrap panel-open">
       <main className="moral"><div className="kicker">One more: build a word</div><p className="spoken">“{story.moral.spoken}”</p></main>
       {/* the encoding write and the finish write both read-modify-write the same progress row: never race them */}
-      <SegmentPanel word={buildWord} learner={learner} kid={kid} reader={reader} listen={listen} bedtime={bedtime} onDone={async (outcome) => { if (outcome !== "not_tonight") await onBuilt(buildWord, outcome === "spelled"); onYes(); }} />
+      <SegmentPanel word={buildWord} learner={learner} kid={kid} reader={reader} listen={listen} bedtime={bedtime} rate={rate} onDone={async (outcome) => { if (outcome !== "not_tonight") await onBuilt(buildWord, outcome === "spelled"); onYes(); }} />
     </div>
   );
   return (

@@ -7,7 +7,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useFamily } from "../lib/family";
 import { GRAPHEME_SOUND } from "../lib/phonics/learner";
 import { TEACH } from "../lib/phonics/teach";
-import { CONTINUANTS, VOWELS, playBlend } from "../lib/blend";
+import { CONTINUANTS, VOWELS, playBlend } from "../lib/blend";   // the raw clip chain: this screen is checking the clips themselves
 import { canRecord, prepareMic, startRecording, type Recorder } from "../lib/audio/record";
 import { trimSilence } from "../lib/audio/trim";
 import { familySoundClips, playSound, removeFamilySound, saveFamilySound } from "../lib/sounds";

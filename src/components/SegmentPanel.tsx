@@ -3,7 +3,7 @@ import { playSound } from "../lib/sounds";
 import { GRAPHEME_SOUND } from "../lib/phonics/learner";
 import { checkWord, type LearnerModel } from "../lib/phonics/validator";
 import { speakText } from "../lib/audio/speech";
-import { playBlend } from "../lib/blend";
+import { playWord } from "../lib/blend";
 import { SpeakerIcon, CheckIcon } from "./Icons";
 
 /**
@@ -15,7 +15,7 @@ import { SpeakerIcon, CheckIcon } from "./Icons";
 export type BuildOutcome = "spelled" | "together" | "not_tonight";
 
 /** Three outcomes, because "not tonight" is not a failure: only the first two are evidence. */
-export function SegmentPanel({ word, learner, kid, reader, listen, bedtime, onDone }: { word: string; learner: LearnerModel; kid: string; reader: string; listen: boolean; bedtime?: boolean; onDone: (outcome: BuildOutcome) => void }) {
+export function SegmentPanel({ word, learner, kid, reader, listen, bedtime, rate = 1, onDone }: { word: string; learner: LearnerModel; kid: string; reader: string; listen: boolean; bedtime?: boolean; rate?: number; onDone: (outcome: BuildOutcome) => void }) {
   const target = useMemo(() => checkWord(word, learner).graphemes, [word, learner]);
   const bank = useMemo(() => {
     const vowels = ["a", "e", "i", "o", "u"].filter((v) => learner.gpcs.includes(v) && !target.includes(v));
@@ -29,14 +29,14 @@ export function SegmentPanel({ word, learner, kid, reader, listen, bedtime, onDo
   const full = boxes.length === target.length;
   const correct = full && boxes.every((g, i) => g === target[i]);
 
-  const sayWord = () => { if (listen) speakText(word, {}); };
+  const sayWord = () => { if (listen) speakText(word, { rate }); };
   const model = async () => {
     setBusy(true); setModelled(true);
-    await playBlend(target);                                           // the stretch first, as one word
-    for (const g of target) { try { await playSound(GRAPHEME_SOUND[g].clip); } catch { /* clip missing */ } await new Promise((r) => setTimeout(r, 400)); }   // then one slow count
+    await playWord(word, target, { rate });                            // the word first, slowly, as one word
+    for (const g of target) { try { await playSound(GRAPHEME_SOUND[g].clip); } catch { /* clip missing */ } await new Promise((r) => setTimeout(r, 400 / rate)); }   // then one slow count
     setBoxes([]); setCounted(true); setBusy(false);
   };
-  const readBack = async () => { setBusy(true); await playBlend(boxes); setBusy(false); };
+  const readBack = async () => { setBusy(true); await playWord(boxes.join(""), boxes, { rate }); setBusy(false); };
 
   return (
     <section className="panel" role="dialog" aria-label="Build the word">

@@ -29,12 +29,12 @@ export default defineConfig({
         // App shell is precached. Library audio is cache-on-play with a small LRU so the
         // audio cache can never push the origin over iOS quota and evict IndexedDB.
         globPatterns: ["**/*.{js,css,html,png,svg,json,woff2}"],
-        globIgnores: ["library/**", "prompts/**"],
+        globIgnores: ["library/**", "prompts/**", "blends/**"],
         runtimeCaching: [
           {
-            urlPattern: ({ url }) => /\/(library|prompts|sounds)\/.*\.(m4a|mp3|wav|json)$/.test(url.pathname),
+            urlPattern: ({ url }) => /\/(library|prompts|sounds|blends)\/.*\.(m4a|mp3|wav|json)$/.test(url.pathname),
             handler: "CacheFirst",
-            options: { cacheName: "storytime-audio-v4", expiration: { maxEntries: 40, maxAgeSeconds: 60 * 60 * 24 * 30 } },
+            options: { cacheName: "storytime-audio-v4", expiration: { maxEntries: 120, maxAgeSeconds: 60 * 60 * 24 * 30 } },
           },
         ],
       },
