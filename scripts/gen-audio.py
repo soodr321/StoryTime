@@ -104,15 +104,45 @@ def asr_words(path):
 
 def realign(tokens, tts_ms, path):
     """
-    Prefer timings measured from the audio. Concatenating sentence pieces (and mp3 padding) shifts
-    the synthesiser's own word offsets by up to two seconds by the end of a page, which puts the
-    karaoke highlight on the wrong word and can cut the narration early before a magic word.
+    Prefer timings measured from the audio we actually ship. Synthesising sentence by sentence (for
+    the pauses) shifts the synthesiser's own word offsets, and mp3 padding adds more: measured, the
+    highlight sat up to 1.9 s from the spoken word, which lands it on the wrong word and can cut the
+    narration early before a magic word.
+
+    The transcript will not always match the page exactly (a name, a "Caw!"), so tokens are aligned to
+    the heard words by edit distance and any token that was not matched is interpolated between its
+    neighbours. Only a page that cannot be anchored at all falls back to the synthesiser.
     """
     heard = asr_words(path)
-    if not heard or len(heard) != len(tokens): return tts_ms, False
-    if [norm(w) for w, _ in heard] != [norm(t) for t in tokens]: return tts_ms, False
-    ms = [int(t) for _, t in heard]
-    if any(ms[i] >= ms[i + 1] for i in range(len(ms) - 1)): return tts_ms, False
+    if not heard: return tts_ms, False
+    a, b = [norm(t) for t in tokens], [norm(w) for w, _ in heard]
+    n, m = len(a), len(b)
+    # Levenshtein table over words, then walk it back to get the pairs that matched
+    d = [[0] * (m + 1) for _ in range(n + 1)]
+    for i in range(n + 1): d[i][0] = i
+    for j in range(m + 1): d[0][j] = j
+    for i in range(1, n + 1):
+        for j in range(1, m + 1):
+            d[i][j] = min(d[i-1][j] + 1, d[i][j-1] + 1, d[i-1][j-1] + (0 if a[i-1] == b[j-1] else 1))
+    pairs, i, j = {}, n, m
+    while i > 0 and j > 0:
+        if a[i-1] == b[j-1] and d[i][j] == d[i-1][j-1]: pairs[i-1] = j-1; i, j = i-1, j-1
+        elif d[i][j] == d[i-1][j-1] + 1: i, j = i-1, j-1
+        elif d[i][j] == d[i-1][j] + 1: i -= 1
+        else: j -= 1
+    if len(pairs) < max(2, int(n * 0.6)): return tts_ms, False      # too little to anchor on
+    ms = [None] * n
+    for ti, hi in pairs.items(): ms[ti] = int(heard[hi][1])
+    known = sorted(k for k in range(n) if ms[k] is not None)
+    for k in range(n):                                              # interpolate the words ASR misheard
+        if ms[k] is not None: continue
+        before = [x for x in known if x < k]; after = [x for x in known if x > k]
+        if before and after:
+            lo, hi = before[-1], after[0]
+            ms[k] = int(ms[lo] + (ms[hi] - ms[lo]) * (k - lo) / (hi - lo))
+        elif after: ms[k] = max(0, ms[after[0]] - 200 * (after[0] - k))
+        else: ms[k] = ms[before[-1]] + 200 * (k - before[-1])
+    for k in range(1, n): ms[k] = max(ms[k], ms[k-1] + 20)          # strictly increasing
     return ms, True
 
 def align(tokens, words):

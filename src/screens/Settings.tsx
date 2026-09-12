@@ -88,7 +88,7 @@ function KidEditor({ kid, onChange, onRemove }: { kid: Kid; onChange: (k: Kid) =
   const known = kid.gpcs.length; // taught sounds are always a prefix of the order
   return (
     <div className="kidedit">
-      <div className="row">
+      <div className="row wrap">
         <select value={kid.avatar} onChange={(e) => onChange({ ...kid, avatar: e.target.value })} aria-label="avatar">{AVATARS.map((a) => <option key={a}>{a}</option>)}</select>
         <input value={kid.name} onChange={(e) => onChange({ ...kid, name: e.target.value })} aria-label="name" />
         <select value={kid.role} onChange={(e) => onChange({ ...kid, role: e.target.value as Kid["role"] })} aria-label="role">
@@ -98,7 +98,7 @@ function KidEditor({ kid, onChange, onRemove }: { kid: Kid; onChange: (k: Kid) =
         {onRemove && <button className="linkbtn" onClick={onRemove}>remove</button>}
       </div>
       <p className="legend">Sounds taught so far: <select value={known} onChange={(e) => { const n = +e.target.value; onChange({ ...kid, gpcs: ALL_GPCS.slice(0, n), tricky: [...new Set([...kid.tricky, ...trickyFor(n)])] }); }} aria-label="level">{[0, 1, 2, 3, 4, 8, 12, 16, 23].map((n) => <option key={n} value={n}>{n === 0 ? "none yet" : ALL_GPCS.slice(0, n).join(" ")}</option>)}</select></p>
-      <p className="legend">Tap any sound to hear it (the sound, never the letter name). Taught sounds are green; change them with the list above or the 90-second teach routine on Home.</p>
+      <p className="legend">Tap any sound to hear it (the sound, never the letter name). Taught sounds are green; change them with the list above, or teach one properly with the 90-second routine above.</p>
       <div className="chips">
         {ALL_GPCS.map((g, i) => <button key={g} className={"tog" + (i < known ? " on" : "")} title="tap: hear the sound" onClick={() => void playSound(GRAPHEME_SOUND[g].clip)}>{g}</button>)}
       </div>

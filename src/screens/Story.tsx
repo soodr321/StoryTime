@@ -20,6 +20,7 @@ import { pickIllTry } from "../lib/phonics/illtry";
 import { magicTokens, resolveMagic } from "../lib/phonics/target";
 import { designed, volunteered } from "../lib/results";
 import { keepAwake } from "../lib/wakelock";
+import { nextHighlight } from "../lib/highlight";
 import { align } from "../lib/voice/align";
 import { startVoice, voiceSupported, type VoiceSession, type VoiceState } from "../lib/voice/session";
 import { BookIcon, HomeIcon, LockIcon, MoonIcon, SpeakerIcon, CheckIcon } from "../components/Icons";
@@ -100,13 +101,13 @@ export function StoryScreen({ story, mode, resume, onHome }: { story: Story; mod
       const durMs = () => (isFinite(pl.el.duration) && pl.el.duration > 0 ? pl.el.duration * 1000 : p.audioMs ?? Infinity);
       const tokMs = (i: number) => (timed ? p.tokens[i].ms : durMs() !== Infinity ? (durMs() * i) / p.tokens.length : Infinity);
       const stopMsAt = () => (magicIdx >= 0 ? (timed ? tokMs(magicIdx) : tokMs(magicIdx) - 350) : Infinity);
-      let last = -1;
+      let last = -1, lastAt = 0;
       // interval, not rAF: the magic-word stop must fire even when the phone screen dims or the tab is backgrounded
       const raf = setInterval(() => {
         const ms = pl.el.currentTime * 1000; const stopMs = stopMsAt();
         if (ms >= stopMs) { clearInterval(raf); pl.stop(); reachMagic(); return; }
-        let i = -1; for (let k = 0; k < p.tokens.length; k++) if (tokMs(k) <= ms) i = k;
-        if (i !== last) { last = i; send({ type: "TOKEN", index: i }); }
+        const i = nextHighlight(p.tokens.map((_, k) => tokMs(k)), ms, last, ms - lastAt);
+        if (i !== last) { last = i; lastAt = ms; send({ type: "TOKEN", index: i }); }
       }, 40);
       const stall = new Promise<"stall">((res) => setTimeout(() => res("stall"), 5000));
       const deadline = new Promise<"deadline">((res) => setTimeout(() => res("deadline"), ((p.audioMs ?? 20000) / rate) + 1500));

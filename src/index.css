@@ -145,7 +145,10 @@ main { flex: 1; display: flex; flex-direction: column; padding: 8px 14px 14px; g
 .tog { min-width: 44px; height: 44px; border-radius: 12px; border: 2px solid var(--line); background: #fff; font-family: var(--print); font-size: 20px; padding: 0 10px; }
 .tog.on { background: var(--done); border-color: #9fcf92; }
 .tog.tk { font-family: var(--serif); font-size: 16px; } .tog.tk.on { background: var(--tricky); border-color: #9fb8e0; }
-.kidedit { border-top: 1px solid var(--line); padding-top: 10px; display: flex; flex-direction: column; gap: 6px; }
+.kidedit { border-top: 1px solid var(--line); padding-top: 10px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.kidedit .row.wrap > * { min-width: 0; }
+.kidedit input { flex: 1 1 8ch; }
+.kidedit select { max-width: 100%; }
 input, select, textarea { font: inherit; font-size: 17px; padding: 10px 12px; border: 2px solid var(--line); border-radius: 12px; background: #fff; color: var(--ink); min-height: 44px; max-width: 100%; }
 textarea { width: 100%; line-height: 1.5; }
 .lbl { display: flex; flex-direction: column; gap: 4px; font-family: system-ui, sans-serif; font-size: 14px; color: var(--muted); }
