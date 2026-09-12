@@ -47,7 +47,7 @@ export function TeachSoundScreen({ onDone, replay = false }: { onDone: () => voi
         {!last ? <button className="yes" onClick={() => setStep(step + 1)}>Next →</button> : replay ? <button className="yes" onClick={onDone}>Done ✓</button> : <button className="yes" disabled={!advanceReady && !override} onClick={() => { updateKid({ ...kid, gpcs: ALL_GPCS.slice(0, nextCount), tricky: [...new Set([...kid.tricky, ...newTricky])], teachDays: [...(kid.teachDays ?? []), new Date().toISOString()] }); onDone(); }}>Taught today ✓</button>}
       </div>
       {last && !replay && !advanceReady && !override && <p className="legend">{taughtToday ? `One new sound a day: ${kid.name} learned one today already. Replay it now; come back tomorrow for the next.` : `${kid.name} has not blended the current sounds first-try in two sessions yet, so this stays practice for today.`} <button className="linkbtn" onClick={() => setOverride(true)}>mark it taught anyway</button></p>}
-      {!replay && <p className="legend">“Taught today” adds {g}{newTricky.length ? ` and the tricky word${newTricky.length > 1 ? "s" : ""} ${newTricky.join(", ")}` : ""} to {kid.name}'s sounds. They show up in magic words and the warm-up from tomorrow.</p>}
+      {!replay && last && <p className="legend">“Taught today” adds {g}{newTricky.length ? ` and the tricky word${newTricky.length > 1 ? "s" : ""} ${newTricky.join(", ")}` : ""} to {kid.name}'s sounds. They show up in magic words and the warm-up from tomorrow.</p>}
     </main>
   );
 }

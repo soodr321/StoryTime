@@ -52,16 +52,16 @@ main { flex: 1; display: flex; flex-direction: column; padding: 8px 14px 14px; g
 .art-box.big { height: 24dvh; }
 .text-card { background: var(--card); border: 2px solid var(--line); border-radius: 22px; padding: 16px 18px; flex: 1; }
 .pg { color: var(--muted); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; font-family: system-ui, sans-serif; margin-bottom: 8px; }
-.sentence { margin: 0; font-size: clamp(24px, 6.4vw, 34px); line-height: 1.75; }
+.sentence { margin: 0; font-size: clamp(26px, 7vw, 36px); line-height: 1.7; word-spacing: .06em; }
 .text-card.follow { touch-action: pan-y; user-select: none; -webkit-user-select: none; }
 .sentence.follow { cursor: pointer; }
-.sentence.follow .w.now { text-decoration: underline; text-decoration-thickness: 4px; text-decoration-color: var(--accent); text-underline-offset: 6px; }
-.w { display: inline-block; padding: 1px 5px; border-radius: 8px; }
-.w.read { background: var(--done); color: var(--done-ink); }
+.sentence.follow .w.now { background: none; text-decoration: underline; text-decoration-thickness: 4px; text-decoration-color: var(--accent); text-underline-offset: 6px; }
+.w { display: inline-block; padding: 0 2px; border-radius: 8px; }
+.w.read { background: none; color: var(--muted); }
 .w.magic { background: var(--magic); color: var(--magic-ink); font-weight: 700; box-shadow: 0 0 0 2px #e9a6d3 inset; }
 .w.magic.done { background: var(--done); color: var(--done-ink); box-shadow: none; }
 .w.magic.skipped { opacity: .7; text-decoration: underline dotted; }
-.w.now { background: var(--now); color: var(--ink); box-shadow: none; }
+.w.now { background: var(--now); color: var(--ink); box-shadow: none; border-radius: 6px; padding: 0 4px; }
 
 /* MAGIC PANEL: a bottom sheet in portrait, never wider than the phone */
 .panel { position: fixed; left: 0; right: 0; bottom: 0; background: var(--card); border-top: 2px solid var(--line); border-radius: 26px 26px 0 0; padding: 14px 16px calc(14px + env(safe-area-inset-bottom)); box-shadow: 0 -12px 40px rgba(0, 0, 0, .18); z-index: 5; }
@@ -178,9 +178,13 @@ textarea { width: 100%; line-height: 1.5; }
 .thumb { width: 44px; height: 44px; object-fit: cover; border-radius: 10px; border: 2px solid var(--accent); }
 
 /* ===== v4 ===== */
-.panel-open .story { padding-bottom: 300px; }
-.w { min-height: 48px; line-height: 1.35; display: inline-flex; align-items: center; }
-.w.tap { padding: 4px 8px; }
+.panel-open .story { padding-bottom: 340px; }
+.panel-open .art-box { height: 12dvh; min-height: 84px; }   /* the sheet is tall: give the sentence the room instead of the veil */
+.panel-open .sentence { font-size: clamp(22px, 5.6vw, 28px); }
+/* a word is a word: no box model that pushes the full stop away from it. Height comes from line-height,
+   so the 48 px touch area is met without turning every token into a block. */
+.w { line-height: 1.55; }
+.w.tap { padding: 2px 8px; margin: 0 1px; }
 .verdict.grownup { border-top: 2px dashed var(--line); padding-top: 8px; }
 .verdict .tag { display: inline-block; background: var(--now); border-radius: 8px; padding: 2px 8px; font-family: system-ui, sans-serif; font-size: 13px; margin-right: 6px; }
 .mode.quiet { border-style: dashed; }
@@ -219,7 +223,7 @@ textarea { width: 100%; line-height: 1.5; }
 @keyframes pulse { 50% { opacity: .6; } }
 
 /* ===== loop 1 (teacher) ===== */
-.panel-h { margin: 4px 0 6px; font-size: 19px; font-weight: 800; font-family: var(--display); line-height: 1.25; text-align: center; }
+.panel-h { margin: 4px 0 6px; font-size: 18px; font-weight: 800; font-family: var(--display); line-height: 1.25; text-align: center; }
 .ok-note { display: block; font-style: normal; color: var(--done-ink); font-size: 14px; font-family: system-ui, sans-serif; }
 .row.center { justify-content: center; }
 .art-box.veiled { background: #efe7d6; font-size: 15px; color: var(--muted); font-family: system-ui, sans-serif; }
@@ -239,7 +243,7 @@ textarea { width: 100%; line-height: 1.5; }
 .sweep { height: 6px; margin: 2px 12px 8px; background: var(--line); border-radius: 3px; overflow: hidden; }
 .sweep i { display: block; height: 100%; background: var(--accent); transition: width .05s linear, opacity .3s; }
 .yes.soft { background: #e6f0dc; }
-.adultnote { margin: 4px 0 0; font-size: 12px; color: var(--muted); font-family: system-ui, sans-serif; text-align: center; line-height: 1.4; }
+.adultnote { margin: 4px 0 0; font-size: 12.5px; color: var(--muted); font-family: system-ui, -apple-system, sans-serif; text-align: center; line-height: 1.45; }
 .boxes { display: flex; gap: 10px; justify-content: center; margin: 8px 0; }
 .box { width: 64px; height: 64px; border: 3px dashed var(--line); border-radius: 12px; font-family: var(--display); font-weight: 800; font-size: 34px; background: #fff; }
 .box.filled { border-style: solid; border-color: var(--accent); background: #fff3e8; }
@@ -254,7 +258,9 @@ textarea { width: 100%; line-height: 1.5; }
 .nights { font-family: system-ui, sans-serif; font-size: 14px; color: var(--muted); }
 .nights b { font-family: var(--display); font-weight: 800; font-size: 20px; color: var(--ink); }
 
-.tokwrap { display: inline; }
+/* pre-wrap keeps the single space between words and still breaks lines there, while “came.” — which has
+   no space inside it — can never split across a line. */
+.tokwrap { display: inline; white-space: pre-wrap; }
 .w.listener-tap { padding: 1px 3px; margin: 0; }
 .champion { width: min(100%, 420px); background: #fff3e8; border: 2px solid var(--accent); border-radius: 18px; padding: 14px 16px; display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center; }
 .champion span { font-size: 44px; } .champion b { font-size: 22px; font-family: var(--display); font-weight: 800; } .champion small { color: var(--muted); font-family: system-ui, sans-serif; }
@@ -281,9 +287,17 @@ h1, h2, h3 { font-family: var(--display); }
 .sounds .chips .tog { min-width: 44px; }
 
 /* I'll try + voice follow */
-.w.try { border: 2px dashed var(--accent); background: transparent; color: var(--ink); font: inherit; }
+.w.try { border: 0; background: #fdf1e6; color: var(--ink); font: inherit; box-shadow: 0 2px 0 #f0d5bd; padding: 2px 8px; }
 .voicebar .small.live { background: #f6d5cf; border-color: #c47a6a; animation: pulse 1s infinite; }
 
 /* the ledger is the grown-up's, not the child's celebration */
 .grownup-ledger { margin-top: 4px; opacity: .85; }
 .grownup-ledger li { background: #fff0d8; color: #7a4a12; }
+
+/* ===== audit: the grown-up's line is a line, not a paragraph ===== */
+.readbar .script { font-family: system-ui, -apple-system, sans-serif; font-size: 15px; line-height: 1.4; color: var(--muted); text-align: center; }
+.readbar .script b { font-family: system-ui, -apple-system, sans-serif; font-weight: 700; color: var(--accent); }
+.readbar .script .pinkword { background: none; color: var(--magic-ink); font-weight: 700; padding: 0; }
+.readbar .legend { display: block; margin-top: 2px; }
+.blockednote { font-family: system-ui, -apple-system, sans-serif; font-size: 15px; text-align: center; color: var(--accent); }
+.blockednote b { font-family: var(--display); font-size: 19px; background: var(--magic); color: var(--magic-ink); border-radius: 8px; padding: 0 8px; }

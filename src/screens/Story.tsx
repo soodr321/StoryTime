@@ -128,7 +128,7 @@ export function StoryScreen({ story, mode, resume, onHome }: { story: Story; mod
   }, [send, story, rate, pendingMagicIdx]);
 
   useEffect(() => {
-    setStalled(false); setPageHeld(false);
+    setStalled(false); setPageHeld(false); setCaption("");
     if (state === "narrating" && page) {
       if (!listen) return;
       let live = true;
@@ -315,7 +315,12 @@ function StoryView({ page, pageNo, total, token, results, readMode, listener, re
         {stalled && <div className="readbar"><button className="next" onClick={onRetry}>▶ Try again</button></div>}
         {readMode && !stalled && (
           <div className="readbar">
-            <span className="script">{pending.length ? <><b>{reader}</b> reads, sliding a finger under the words. <b>{kid}</b> reads the <em className="pinkword">pink word</em>: tap it, then say the sounds and blend.</> : <><b>{reader}</b> reads the page, finger under the words. Then go on.</>}{extra >= 0 && extra > cursor && !resAt(extra) && <> <small className="legend">Also decodable: <b>{normalise(page.tokens[extra].t)}</b> — tap it if {kid} wants a go.</small></>}</span>
+            <span className="script">{pending.length
+              ? <><b>{reader}</b> reads. <b>{kid}</b> reads the <em className="pinkword">pink word</em>.</>
+              : <><b>{reader}</b> reads the page, finger under the words.</>}
+              {extra >= 0 && extra > cursor && !resAt(extra) && <small className="legend">{kid} can also try <b>{normalise(page.tokens[extra].t)}</b> — tap it.</small>}
+            </span>
+            {pending.length > 0 && <p className="blockednote">{kid}'s word first: <b>{normalise(page.tokens[pending[0]].t)}</b></p>}
             {voiceFollow && voiceSupported() && (
               <div className="row center voicebar">
                 {voice === "off" || voice === "stopped" ? <button className="small" onClick={startFollow}>{voice === "stopped" ? "Tap to follow again" : "Follow my voice"}</button>

@@ -33,7 +33,7 @@ export function MagicPanel({ word, learner, modelling, modelledOnce, sweep, kid,
   return (
     <section className="panel" role="dialog" aria-label="Magic word">
       <div className="kicker">{kicker ?? `Magic word · ${kid}'s turn`}</div>
-      <h2 className="panel-h">{modelling && modelScript ? modelScript : "Start here and slide through the word. Keep your voice going (bouncy sounds stay short)."}</h2>
+      <h2 className="panel-h">{modelling && modelScript ? modelScript : "Start here. Slide through the word and keep your voice going."}</h2>
       <div className="tiles-wrap">
         <div className="tiles">
           {gs.map((g, i) => (
@@ -48,7 +48,7 @@ export function MagicPanel({ word, learner, modelling, modelledOnce, sweep, kid,
         {!help ? (
           <>
             <div className="hint"><span className="tag">{reader}</span> wait 5 seconds. Did {kid} say it as <b>one word</b>? <small className="legend">(stuck on a sound? tap that letter — never say its name)</small></div>
-            <p className="adultnote">Don't give the first sound before they try · no guessing from the picture.</p>
+            <p className="adultnote">Don't give the first sound · no guessing from the picture.</p>
             <div className="btns">
               <button className="no" disabled={modelling} onClick={() => (extra ? onDismiss?.() : setHelp(true))}>{extra ? "Leave it" : "Needs help"}</button>
               <button className="yes" disabled={modelling} onClick={() => onYes("first_try")}><CheckIcon /> {extra ? "They read it" : "First try"}</button>
@@ -76,7 +76,7 @@ export function MagicPanel({ word, learner, modelling, modelledOnce, sweep, kid,
           {onDismiss && <button className="skip" disabled={modelling} onClick={onDismiss}>↓ not yet</button>}
           {help && onSkip && <button className="skip" disabled={modelling} onClick={onSkip}>skip for today →</button>}
         </div>
-        {help && <p className="adultnote">Sounds, not letter names · don't give the first sound before they try · no guessing from the picture · any accent is fine · ✓ only after the whole word.</p>}
+        {help && <p className="adultnote">Sounds, not letter names · any accent is fine · ✓ only after the whole word.</p>}
       </div>
     </section>
   );

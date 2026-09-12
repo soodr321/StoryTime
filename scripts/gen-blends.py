@@ -20,7 +20,7 @@ except ImportError: sys.exit("pip install edge-tts")
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "public" / "blends"; OUT.mkdir(parents=True, exist_ok=True)
-VOICE, RATE = "en-US-AndrewMultilingualNeural", "-40%"   # same voice as the narration; slow enough to model a blend
+VOICE, RATE = "en-US-AndrewMultilingualNeural", "-55%"   # same voice as the narration, stretched: a CVC lands around 600-900 ms
 
 def ffmpeg():
     import shutil; f = shutil.which("ffmpeg")
@@ -49,7 +49,7 @@ async def one(word: str):
     with open(mp3, "wb") as f:
         async for ch in com.stream():
             if ch["type"] == "audio": f.write(ch["data"])
-    subprocess.run([FF, "-loglevel", "error", "-y", "-i", str(mp3), "-af", "silenceremove=start_periods=1:start_threshold=-45dB,areverse,silenceremove=start_periods=1:start_threshold=-45dB,areverse,loudnorm=I=-17:TP=-2",
+    subprocess.run([FF, "-loglevel", "error", "-y", "-i", str(mp3), "-af", "silenceremove=start_periods=1:start_threshold=-50dB,areverse,silenceremove=start_periods=1:start_threshold=-50dB,areverse,adelay=120|120,apad=pad_dur=0.12,loudnorm=I=-17:TP=-2",   # keep a breath either side: an aggressive trim clips the opening stop
                     "-c:a", "aac", "-b:a", "64k", "-ar", "24000", "-ac", "1", str(m4a)], check=True)
     mp3.unlink()
     probe = subprocess.run([FF, "-i", str(m4a)], capture_output=True, text=True).stderr
