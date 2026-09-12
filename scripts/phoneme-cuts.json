@@ -58,32 +58,32 @@
  },
  "a": {
   "src": "a",
-  "start": 60,
-  "end": 250,
+  "start": 50,
+  "end": 230,
   "fadeIn": 8,
   "fadeOut": 25,
   "kind": "vowel"
  },
  "e": {
   "src": "e",
-  "start": 60,
-  "end": 310,
+  "start": 45,
+  "end": 265,
   "fadeIn": 8,
   "fadeOut": 25,
   "kind": "vowel"
  },
  "i": {
   "src": "i",
-  "start": 40,
-  "end": 230,
+  "start": 10,
+  "end": 190,
   "fadeIn": 8,
   "fadeOut": 25,
   "kind": "vowel"
  },
  "o": {
   "src": "o",
-  "start": 40,
-  "end": 290,
+  "start": 20,
+  "end": 200,
   "fadeIn": 8,
   "fadeOut": 25,
   "kind": "vowel"
@@ -91,7 +91,7 @@
  "u": {
   "src": "u",
   "start": 40,
-  "end": 290,
+  "end": 220,
   "fadeIn": 8,
   "fadeOut": 25,
   "kind": "vowel"
@@ -122,26 +122,26 @@
  },
  "b": {
   "src": "b",
-  "start": 1023,
-  "end": 1048,
+  "start": 1067,
+  "end": 1153,
   "fadeIn": 0,
-  "fadeOut": 5,
+  "fadeOut": 14,
   "kind": "stop"
  },
  "d": {
   "src": "d",
-  "start": 883,
-  "end": 908,
+  "start": 962,
+  "end": 1048,
   "fadeIn": 0,
-  "fadeOut": 5,
+  "fadeOut": 14,
   "kind": "stop"
  },
  "g": {
   "src": "g",
-  "start": 668,
-  "end": 693,
+  "start": 722,
+  "end": 808,
   "fadeIn": 0,
-  "fadeOut": 5,
+  "fadeOut": 14,
   "kind": "stop"
  }
 }

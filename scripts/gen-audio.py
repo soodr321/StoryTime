@@ -24,7 +24,8 @@ except ImportError:
 
 ROOT = Path(__file__).resolve().parents[1]
 LIB, PUB = ROOT / "library", ROOT / "public"
-NANI, RATE = "en-US-AndrewMultilingualNeural", "-28%"   # US voice; slow enough for a 4-year-old to follow the words (~130 wpm, owner 2026-09-11)
+NANI, RATE = "en-US-AndrewMultilingualNeural", "-35%"   # US voice, slow enough to follow the words with a finger
+SENTENCE_PAUSE_MS = 420   # a bedtime reader stops at a full stop; edge-tts runs sentences together
 
 def ffmpeg():
     f = shutil.which("ffmpeg")
@@ -34,20 +35,51 @@ FF = ffmpeg()
 
 def norm(s): return re.sub(r"[^a-z]", "", s.lower())
 
-async def tts(text, out_m4a, voice=NANI, rate=RATE):
-    """Synthesize text → m4a (AAC, plays on iOS). Returns (duration_ms, [(word, start_ms)])."""
-    tmp = out_m4a.with_suffix(".mp3"); words = []
+def sentences(text):
+    """Split a page into sentences, keeping their punctuation. Quotes stay with the sentence they close."""
+    parts = re.split(r'(?<=[.!?])(?=[\s“"]|$)', text)
+    return [p.strip() for p in parts if p.strip()]
+
+async def _one(text, voice, rate):
+    """One synthesis pass: returns (mp3 bytes, [(word, start_ms)])."""
+    buf, words = bytearray(), []
     com = edge_tts.Communicate(text, voice, rate=rate, boundary="WordBoundary")
-    with open(tmp, "wb") as f:
-        async for ch in com.stream():
-            if ch["type"] == "audio": f.write(ch["data"])
-            elif ch["type"] == "WordBoundary": words.append((ch["text"], ch["offset"] / 1e4))
-    subprocess.run([FF, "-loglevel", "error", "-y", "-i", str(tmp), "-c:a", "aac", "-b:a", "96k", "-ar", "44100", "-ac", "1", str(out_m4a)], check=True)
-    tmp.unlink()
-    probe = subprocess.run([FF, "-i", str(out_m4a)], capture_output=True, text=True).stderr
+    async for ch in com.stream():
+        if ch["type"] == "audio": buf += ch["data"]
+        elif ch["type"] == "WordBoundary": words.append((ch["text"], ch["offset"] / 1e4))
+    return bytes(buf), words
+
+async def tts(text, out_m4a, voice=NANI, rate=RATE):
+    """
+    Synthesize text → m4a (AAC, plays on iOS). Returns (duration_ms, [(word, start_ms)]).
+    Sentences are synthesised separately and joined with a real pause: read straight through,
+    the voice runs one sentence into the next, which is what made it feel rushed even when the
+    words-per-minute figure looked fine.
+    """
+    tmp = out_m4a.with_suffix(".mp3")
+    parts, words, offset = [], [], 0.0
+    for i, sent in enumerate(sentences(text) or [text]):
+        buf, ws = await _one(sent, voice, rate)
+        piece = out_m4a.parent / f".part{i}.mp3"; piece.write_bytes(buf)
+        dur = _duration_ms(piece)
+        words += [(w, ms + offset) for w, ms in ws]
+        parts.append(piece); offset += dur + (SENTENCE_PAUSE_MS if i or True else 0)
+    # concat with silence between the pieces
+    listing = out_m4a.parent / ".concat.txt"
+    sil = out_m4a.parent / ".sil.mp3"
+    subprocess.run([FF, "-loglevel", "error", "-y", "-f", "lavfi", "-t", f"{SENTENCE_PAUSE_MS/1000}", "-i", "anullsrc=r=24000:cl=mono", "-c:a", "libmp3lame", str(sil)], check=True)
+    lines = []
+    for piece in parts: lines += [f"file '{piece.name}'", f"file '{sil.name}'"]
+    listing.write_text("\n".join(lines))
+    subprocess.run([FF, "-loglevel", "error", "-y", "-f", "concat", "-safe", "0", "-i", str(listing), "-c:a", "aac", "-b:a", "96k", "-ar", "44100", "-ac", "1", str(out_m4a)], check=True, cwd=out_m4a.parent)
+    for f in parts + [listing, sil]: f.unlink(missing_ok=True)
+    tmp.unlink(missing_ok=True)
+    return _duration_ms(out_m4a), words
+
+def _duration_ms(path):
+    probe = subprocess.run([FF, "-i", str(path)], capture_output=True, text=True).stderr
     m = re.search(r"Duration: (\d+):(\d+):([\d.]+)", probe)
-    ms = int((int(m[1]) * 3600 + int(m[2]) * 60 + float(m[3])) * 1000)
-    return ms, words
+    return int((int(m[1]) * 3600 + int(m[2]) * 60 + float(m[3])) * 1000) if m else 0
 
 def align(tokens, words):
     """Map TTS word boundaries onto display tokens 1:1 by normalised text, in order.

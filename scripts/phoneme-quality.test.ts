@@ -31,10 +31,24 @@ describe("phoneme clip quality", () => {
     const db = Object.values(man).map((c) => c.rms_db);
     expect(Math.max(...db) - Math.min(...db), "loudness spread").toBeLessThan(6);
   });
-  it("keeps a vowel long enough to stretch and a stop short enough not to be 'tuh'", () => {
+  it("keeps a vowel long enough to stretch, and a stop short enough not to become a syllable", () => {
+    // a voiceless stop is burst + aspiration only; a VOICED stop must carry its voicing, which is what
+    // makes /b/ a /b/ and not a /p/, so it is legitimately longer. The phonetic gate is
+    // scripts/audit/phonetics.py (voice onset time, voiced tail, vowel steadiness).
+    const voicedStops = new Set(["b", "d", "g"]);
     for (const [g, c] of Object.entries(man)) {
       if (c.kind === "vowel") expect(c.ms, g).toBeGreaterThanOrEqual(150);
-      if (c.kind === "stop") expect(c.ms, g).toBeLessThanOrEqual(60);
+      if (c.kind === "stop") expect(c.ms, g).toBeLessThanOrEqual(voicedStops.has(g) ? 110 : 60);
     }
   });
+});
+
+describe("phonetic gate", () => {
+  it("every sound would let a child blend: voice onset, no schwa tail, steady vowels", async () => {
+    const { execFileSync } = await import("node:child_process");
+    let out = "";
+    try { out = execFileSync("python3", ["scripts/audit/phonetics.py", "--strict"], { encoding: "utf8" }); }
+    catch (e) { out = String((e as { stdout?: string }).stdout ?? e); expect(out).toContain("every clip passes"); return; }
+    expect(out, out.split("\n").filter((l) => l.includes("✗")).join(" | ")).toContain("every clip passes");
+  }, 120_000);
 });

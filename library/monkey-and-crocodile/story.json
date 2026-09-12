@@ -27,193 +27,193 @@
    "tokens": [
     {
      "t": "A",
-     "ms": 104
+     "ms": 134
     },
     {
      "t": "monkey",
-     "ms": 173
+     "ms": 211
     },
     {
      "t": "lived",
-     "ms": 677
+     "ms": 846
     },
     {
      "t": "in",
-     "ms": 1250
+     "ms": 1423
     },
     {
      "t": "a",
-     "ms": 1354
+     "ms": 1538
     },
     {
      "t": "tree",
-     "ms": 1406
+     "ms": 1615
     },
     {
      "t": "by",
-     "ms": 2031
+     "ms": 2365
     },
     {
      "t": "the",
-     "ms": 2309
+     "ms": 2634
     },
     {
      "t": "river.",
-     "ms": 2413
+     "ms": 2769
     },
     {
      "t": "He",
-     "ms": 3593
+     "ms": 4573
     },
     {
      "t": "sat",
-     "ms": 3715
+     "ms": 4669
     },
     {
      "t": "and",
-     "ms": 4548
+     "ms": 5688
     },
     {
      "t": "ate",
-     "ms": 4930
+     "ms": 5823
     },
     {
      "t": "sweet",
-     "ms": 5086
+     "ms": 5996
     },
     {
      "t": "fruit",
-     "ms": 5520
+     "ms": 6496
     },
     {
      "t": "all",
-     "ms": 5902
+     "ms": 6900
     },
     {
      "t": "day.",
-     "ms": 6145
+     "ms": 7150
     }
    ],
    "audio": "p1.m4a",
-   "audioMs": 7150
+   "audioMs": 8770
   },
   {
    "art": "🐊",
    "tokens": [
     {
      "t": "A",
-     "ms": 121
+     "ms": 153
     },
     {
      "t": "crocodile",
-     "ms": 190
+     "ms": 211
     },
     {
      "t": "swam",
-     "ms": 989
+     "ms": 1057
     },
     {
      "t": "by.",
-     "ms": 1527
+     "ms": 1576
     },
     {
      "t": "The",
-     "ms": 2586
+     "ms": 3283
     },
     {
      "t": "monkey",
-     "ms": 2656
+     "ms": 3360
     },
     {
      "t": "gave",
-     "ms": 3333
+     "ms": 3975
     },
     {
      "t": "him",
-     "ms": 3784
+     "ms": 4417
     },
     {
      "t": "fruit,",
-     "ms": 3923
+     "ms": 4590
     },
     {
      "t": "and",
-     "ms": 5190
+     "ms": 5744
     },
     {
      "t": "they",
-     "ms": 5260
+     "ms": 6571
     },
     {
      "t": "became",
-     "ms": 5399
+     "ms": 6725
     },
     {
      "t": "friends.",
-     "ms": 5954
+     "ms": 7340
     }
    ],
    "audio": "p2.m4a",
-   "audioMs": 7370
+   "audioMs": 9370
   },
   {
    "art": "🐊",
    "tokens": [
     {
      "t": "The",
-     "ms": 138
+     "ms": 153
     },
     {
      "t": "crocodile’s",
-     "ms": 225
+     "ms": 230
     },
     {
      "t": "wife",
-     "ms": 1059
+     "ms": 1115
     },
     {
      "t": "wanted",
-     "ms": 1892
+     "ms": 2096
     },
     {
      "t": "the",
-     "ms": 2256
+     "ms": 2442
     },
     {
      "t": "monkey’s",
-     "ms": 2343
+     "ms": 2538
     },
     {
      "t": "heart.",
-     "ms": 3038
+     "ms": 3288
     },
     {
      "t": "“Bring",
-     "ms": 4288
+     "ms": 5129
     },
     {
      "t": "him",
-     "ms": 4392
+     "ms": 5379
     },
     {
      "t": "to",
-     "ms": 4565
+     "ms": 5571
     },
     {
      "t": "me,”",
-     "ms": 4687
+     "ms": 5706
     },
     {
      "t": "she",
-     "ms": 5677
+     "ms": 6821
     },
     {
      "t": "said.",
-     "ms": 5972
+     "ms": 7110
     }
    ],
    "audio": "p3.m4a",
-   "audioMs": 7030
+   "audioMs": 8770
   },
   {
    "art": "🐊",
@@ -223,126 +223,126 @@
    "tokens": [
     {
      "t": "The",
-     "ms": 156
+     "ms": 173
     },
     {
      "t": "crocodile",
-     "ms": 243
+     "ms": 250
     },
     {
      "t": "said,",
-     "ms": 1093
+     "ms": 1153
     },
     {
      "t": "“Come",
-     "ms": 1875
+     "ms": 1903
     },
     {
      "t": "to",
-     "ms": 2170
+     "ms": 2211
     },
     {
      "t": "my",
-     "ms": 2274
+     "ms": 2326
     },
     {
      "t": "house.”",
-     "ms": 2517
+     "ms": 2557
     },
     {
      "t": "The",
-     "ms": 3940
+     "ms": 4173
     },
     {
      "t": "monkey",
-     "ms": 4010
+     "ms": 4230
     },
     {
      "t": "got",
-     "ms": 4340
+     "ms": 4634
     },
     {
      "t": "on",
-     "ms": 4565
+     "ms": 4846
     },
     {
      "t": "his",
-     "ms": 4687
+     "ms": 4980
     },
     {
      "t": "back.",
-     "ms": 4826
+     "ms": 5115
     }
    ],
    "audio": "p4.m4a",
-   "audioMs": 5900
+   "audioMs": 6730
   },
   {
    "art": "🐒",
    "tokens": [
     {
      "t": "In",
-     "ms": 121
+     "ms": 134
     },
     {
      "t": "the",
-     "ms": 208
+     "ms": 230
     },
     {
      "t": "middle",
-     "ms": 295
+     "ms": 326
     },
     {
      "t": "of",
-     "ms": 729
+     "ms": 769
     },
     {
      "t": "the",
-     "ms": 868
+     "ms": 865
     },
     {
      "t": "river,",
-     "ms": 954
+     "ms": 961
     },
     {
      "t": "the",
-     "ms": 2100
+     "ms": 2211
     },
     {
      "t": "crocodile",
-     "ms": 2256
+     "ms": 2346
     },
     {
      "t": "told",
-     "ms": 3454
+     "ms": 3480
     },
     {
      "t": "the",
-     "ms": 3819
+     "ms": 3846
     },
     {
      "t": "truth.",
-     "ms": 3906
+     "ms": 3923
     },
     {
      "t": "The",
-     "ms": 5260
+     "ms": 5893
     },
     {
      "t": "monkey",
-     "ms": 5312
+     "ms": 5950
     },
     {
      "t": "thought",
-     "ms": 5659
+     "ms": 6393
     },
     {
      "t": "fast.",
-     "ms": 6059
+     "ms": 6854
     }
    ],
    "audio": "p5.m4a",
-   "audioMs": 7370
+   "audioMs": 8770
   },
   {
    "art": "🐒",
@@ -352,190 +352,190 @@
    "tokens": [
     {
      "t": "“My",
-     "ms": 208
+     "ms": 192
     },
     {
      "t": "heart",
-     "ms": 347
+     "ms": 384
     },
     {
      "t": "is",
-     "ms": 920
+     "ms": 1076
     },
     {
      "t": "in",
-     "ms": 1128
+     "ms": 1307
     },
     {
      "t": "the",
-     "ms": 1232
+     "ms": 1423
     },
     {
      "t": "tree!”",
-     "ms": 1319
+     "ms": 1538
     },
     {
      "t": "he",
-     "ms": 2378
+     "ms": 2692
     },
     {
      "t": "said.",
-     "ms": 2534
+     "ms": 2884
     },
     {
      "t": "The",
-     "ms": 3576
+     "ms": 4573
     },
     {
      "t": "crocodile",
-     "ms": 3663
+     "ms": 4669
     },
     {
      "t": "turned",
-     "ms": 4583
+     "ms": 5669
     },
     {
      "t": "back,",
-     "ms": 4965
+     "ms": 6073
     },
     {
      "t": "and",
-     "ms": 5989
+     "ms": 7380
     },
     {
      "t": "the",
-     "ms": 6059
+     "ms": 7438
     },
     {
      "t": "monkey",
-     "ms": 6145
+     "ms": 7534
     },
     {
      "t": "jumped",
-     "ms": 7395
+     "ms": 8842
     },
     {
      "t": "up",
-     "ms": 7934
+     "ms": 9400
     },
     {
      "t": "and",
-     "ms": 8541
+     "ms": 9880
     },
     {
      "t": "ran.",
-     "ms": 8767
+     "ms": 10073
     }
    ],
    "audio": "p6.m4a",
-   "audioMs": 9860
+   "audioMs": 11650
   },
   {
    "art": "🐒",
    "tokens": [
     {
      "t": "Safe",
-     "ms": 138
+     "ms": 153
     },
     {
      "t": "in",
-     "ms": 607
+     "ms": 692
     },
     {
      "t": "his",
-     "ms": 711
+     "ms": 788
     },
     {
      "t": "tree,",
-     "ms": 902
+     "ms": 961
     },
     {
      "t": "the",
-     "ms": 2065
+     "ms": 2038
     },
     {
      "t": "monkey",
-     "ms": 2170
+     "ms": 2134
     },
     {
      "t": "said,",
-     "ms": 2708
+     "ms": 2730
     },
     {
      "t": "“A",
-     "ms": 3871
+     "ms": 4057
     },
     {
      "t": "friend",
-     "ms": 3940
+     "ms": 4134
     },
     {
      "t": "who",
-     "ms": 4427
+     "ms": 4634
     },
     {
      "t": "tricks",
-     "ms": 4652
+     "ms": 4846
     },
     {
      "t": "you",
-     "ms": 5190
+     "ms": 5461
     },
     {
      "t": "is",
-     "ms": 5538
+     "ms": 5826
     },
     {
      "t": "no",
-     "ms": 5711
+     "ms": 6000
     },
     {
      "t": "friend",
-     "ms": 6128
+     "ms": 6423
     },
     {
      "t": "at",
-     "ms": 6545
+     "ms": 6865
     },
     {
      "t": "all.”",
-     "ms": 6631
+     "ms": 6980
     }
    ],
    "audio": "p7.m4a",
-   "audioMs": 7660
+   "audioMs": 8480
   }
  ],
  "moral": {
   "spoken": "Think fast and stay calm when someone tries to trick you.",
   "line": "I can run.",
   "audio": "moral.m4a",
-  "audioMs": 5280
+  "audioMs": 6470
  },
  "prompts": {
   "yes:sat": {
    "audio": "yes-sat.m4a",
-   "ms": 2400
+   "ms": 3560
   },
   "word:sat": {
    "audio": "word-sat.m4a",
-   "ms": 1180
+   "ms": 1720
   },
   "yes:got": {
    "audio": "yes-got.m4a",
-   "ms": 2180
+   "ms": 3440
   },
   "word:got": {
    "audio": "word-got.m4a",
-   "ms": 1080
+   "ms": 1600
   },
   "yes:ran": {
    "audio": "yes-ran.m4a",
-   "ms": 2450
+   "ms": 3560
   },
   "word:ran": {
    "audio": "word-ran.m4a",
-   "ms": 1130
+   "ms": 1720
   }
  }
 }
