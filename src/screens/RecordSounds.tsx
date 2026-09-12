@@ -74,6 +74,9 @@ export function RecordSoundsScreen({ onDone }: { onDone: () => void }) {
   const keep = async () => {
     if (!draft) return; setBusy(true);
     await saveFamilySound(clip, { blob: draft.blob, startMs: draft.startMs, endMs: draft.endMs, ms: draft.ms, at: Date.now() });
+    // in development the raw take is also written into the repo, so the whole family's devices can
+    // ship this voice instead of each one recording its own (see scripts/import-voice-pack.py)
+    if (import.meta.env.DEV) { try { await fetch(`/__voice/${clip}`, { method: "PUT", body: draft.blob }); } catch { /* not running from the dev server */ } }
     setHave(new Set([...have, clip])); setDraft(null); setBusy(false);
     if (blendWord) { setMsg(`Saved. Listen: ${blendWord.join("-")} …`); await playBlend(blendWord); }
     setMsg(null);

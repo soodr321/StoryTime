@@ -2,10 +2,37 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { VitePWA } from "vite-plugin-pwa";
+import { mkdirSync, writeFileSync } from "node:fs";
+
+/**
+ * Dev only: the recording screen posts each raw take straight into assets/voice-pack/, so the
+ * family's voice becomes a build asset like the Commons originals — pinned, re-processable, and
+ * shipped to every device. Nothing like this exists in the production build.
+ */
+const voicePack = () => ({
+  name: "voice-pack",
+  apply: "serve" as const,
+  configureServer(server: { middlewares: { use: (fn: (req: { url?: string; method?: string; on: (e: string, f: (c?: Buffer) => void) => void }, res: { statusCode: number; end: (s?: string) => void }, next: () => void) => void) => void } }) {
+    server.middlewares.use((req, res, next) => {
+      const m = req.url?.match(/^\/__voice\/([a-z]{1,3})(?:\?|$)/);
+      if (!m || req.method !== "PUT") return next();
+      const chunks: Buffer[] = [];
+      req.on("data", (c?: Buffer) => c && chunks.push(c));
+      req.on("end", () => {
+        try {
+          mkdirSync("assets/voice-pack", { recursive: true });
+          writeFileSync(`assets/voice-pack/${m[1]}.webm`, Buffer.concat(chunks));
+          res.statusCode = 204; res.end();
+        } catch (e) { res.statusCode = 500; res.end(String(e)); }
+      });
+    });
+  },
+});
 
 export default defineConfig({
   base: process.env.BASE_PATH ?? "/",
   plugins: [
+    voicePack(),
     react(),
     VitePWA({
       registerType: "autoUpdate",
