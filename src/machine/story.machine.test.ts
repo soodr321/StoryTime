@@ -53,3 +53,33 @@ describe("storyMachine", () => {
     a.send({ type: "HOME" }); expect(a.getSnapshot().value).toBe("idle");
   });
 });
+
+describe("v5: dismiss and volunteered words", () => {
+  const start = () => { const a = createActor(storyMachine, { input: { story } }).start(); a.send({ type: "START" }); return a; };
+  it("DISMISS returns to the page and records nothing", () => {
+    const a = start();
+    a.send({ type: "MAGIC_REACHED", word: "sat", index: 1 });
+    expect(a.getSnapshot().value).toBe("magicWord");
+    a.send({ type: "DISMISS" });
+    expect(a.getSnapshot().value).toBe("narrating");
+    expect(a.getSnapshot().context.results).toEqual([]);
+    expect(a.getSnapshot().context.magic).toBeNull();
+  });
+  it("DISMISS is ignored while the app is modelling", () => {
+    const a = start();
+    a.send({ type: "MAGIC_REACHED", word: "sat", index: 1 });
+    a.send({ type: "NOT_YET" });
+    a.send({ type: "DISMISS" });
+    expect(a.getSnapshot().value).toBe("modelling");
+  });
+  it("marks a volunteered word extra, and a designed word not", () => {
+    const a = start();
+    a.send({ type: "MAGIC_REACHED", word: "man", index: 2, extra: true });
+    a.send({ type: "YES", verdict: "first_try" });
+    expect(a.getSnapshot().context.results[0]).toMatchObject({ word: "man", extra: true });
+    a.send({ type: "RESUME" });   // read mode returns to the page after a verdict
+    a.send({ type: "MAGIC_REACHED", word: "sat", index: 1 });
+    a.send({ type: "YES", verdict: "first_try" });
+    expect(a.getSnapshot().context.results[1].extra).toBeUndefined();
+  });
+});

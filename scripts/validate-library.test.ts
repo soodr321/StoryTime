@@ -9,6 +9,7 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import type { Story } from "../src/lib/content/types";
 import { LEVELS } from "../src/lib/phonics/learner";
+import { resolveMagic } from "../src/lib/phonics/target";
 import { checkLine, checkMagicWord, normalise } from "../src/lib/phonics/validator";
 
 const LIB = join(__dirname, "..", "library");
@@ -56,7 +57,11 @@ describe.each(slugs)("library/%s", (slug) => {
         const r = checkMagicWord(w, level);
         expect(r.ok, `${w}: ${!r.ok ? r.reasons.join("; ") : ""}`).toBe(true);
         expect(text).toContain(normalise(w));
-        // when a magic word repeats on a page ("tap, tap, tap") only its first occurrence is the target
+        // the resolver skips capitalised copies; if every copy is capitalised the page would ask the child to
+        // decode a proper name, and at token 0 the narration stop time is ~110 ms (the page blips)
+        const idx = resolveMagic(p, w);
+        const tok = (p.tokens ?? [])[idx]?.t ?? "";
+        expect(/^[A-Z]/.test(tok.trim()), `${slug}: magic "${w}" resolves to ${JSON.stringify(tok)} — a capitalised token`).toBe(false);
       }
     }
   });

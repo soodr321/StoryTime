@@ -12,7 +12,10 @@ import { SpeakerIcon, CheckIcon } from "./Icons";
  * sweeps and reads it back. Adult records "spelled it" or "try together"; on ✗ the app models
  * oral segmentation once and the child rebuilds. Encoding evidence is stored separately.
  */
-export function SegmentPanel({ word, learner, kid, reader, listen, onDone }: { word: string; learner: LearnerModel; kid: string; reader: string; listen: boolean; onDone: (ok: boolean) => void }) {
+export type BuildOutcome = "spelled" | "together" | "not_tonight";
+
+/** Three outcomes, because "not tonight" is not a failure: only the first two are evidence. */
+export function SegmentPanel({ word, learner, kid, reader, listen, bedtime, onDone }: { word: string; learner: LearnerModel; kid: string; reader: string; listen: boolean; bedtime?: boolean; onDone: (outcome: BuildOutcome) => void }) {
   const target = useMemo(() => checkWord(word, learner).graphemes, [word, learner]);
   const bank = useMemo(() => {
     const vowels = ["a", "e", "i", "o", "u"].filter((v) => learner.gpcs.includes(v) && !target.includes(v));
@@ -38,7 +41,7 @@ export function SegmentPanel({ word, learner, kid, reader, listen, onDone }: { w
   return (
     <section className="panel" role="dialog" aria-label="Build the word">
       <div className="kicker">Build it · {kid}'s turn</div>
-      <h2 className="panel-h">{reader} says the word. {kid} counts the sounds on fingers, then builds it{learner.gpcs.filter((g) => "aeiou".includes(g)).length > 1 ? " — listen for the middle sound" : ""}.</h2>
+      <h2 className="panel-h">{bedtime ? `One more, only if ${kid} is up for it: ${reader} says a word and ${kid} builds it.` : `${reader} says the word. ${kid} counts the sounds on fingers, then builds it${learner.gpcs.filter((g) => "aeiou".includes(g)).length > 1 ? " — listen for the middle sound" : ""}.`}</h2>
       <div className="row center"><button className="small row" onClick={sayWord}><SpeakerIcon size={18} /> say the word</button><span className="legend">(the word stays hidden)</span></div>
       {!counted ? (
         <div className="row center"><span className="legend">How many sounds? Fingers up.</span><button className="small" onClick={() => setCounted(true)}>they held up {target.length} ✓</button></div>
@@ -51,9 +54,10 @@ export function SegmentPanel({ word, learner, kid, reader, listen, onDone }: { w
         <div className="hint"><span className="tag">{reader}</span> {full ? (correct ? `That spells ${word}. Did ${kid} read it back?` : `Not ${word} yet — try together?`) : "Let them pick the tiles."}</div>
         <div className="btns">
           <button className="no" disabled={busy} onClick={model}>Try together</button>
-          <button className="yes" disabled={!correct || busy} onClick={() => onDone(!modelled)}><CheckIcon /> Spelled it</button>
+          <button className="yes" disabled={!correct || busy} onClick={() => onDone(modelled ? "together" : "spelled")}><CheckIcon /> Spelled it</button>
         </div>
-        <button className="skip" onClick={() => onDone(false)}>skip building today →</button>
+        {/* not a miss: a tired child at 7:48pm is not evidence of anything, so this writes nothing */}
+        <button className={bedtime ? "small" : "skip"} onClick={() => onDone("not_tonight")}>Not tonight →</button>
       </div>
     </section>
   );

@@ -344,7 +344,7 @@
   {
    "art": "👨",
    "magic": [
-    "dad"
+    "pat"
    ],
    "tokens": [
     {
@@ -353,71 +353,83 @@
     },
     {
      "t": "barked,",
-     "ms": 375
+     "ms": 638
     },
     {
      "t": "“Woof!",
-     "ms": 694
+     "ms": 1472
     },
     {
      "t": "Woof!”",
-     "ms": 1388
+     "ms": 2208
     },
     {
      "t": "Dad",
-     "ms": 2125
+     "ms": 3013
     },
     {
      "t": "put",
-     "ms": 2555
+     "ms": 3291
     },
     {
      "t": "down",
-     "ms": 2736
+     "ms": 3458
     },
     {
      "t": "his",
-     "ms": 3027
+     "ms": 3750
     },
     {
      "t": "spade,",
-     "ms": 3152
-    },
-    {
-     "t": "reached",
-     "ms": 4138
-    },
-    {
-     "t": "into",
-     "ms": 4513
-    },
-    {
-     "t": "the",
-     "ms": 4652
-    },
-    {
-     "t": "pit,",
-     "ms": 4736
-    },
-    {
-     "t": "and",
-     "ms": 5652
+     "ms": 3902
     },
     {
      "t": "lifted",
-     "ms": 5861
+     "ms": 4750
     },
     {
      "t": "Sam",
-     "ms": 6222
+     "ms": 5166
     },
     {
-     "t": "out.",
-     "ms": 6597
+     "t": "out",
+     "ms": 5569
+    },
+    {
+     "t": "of",
+     "ms": 5694
+    },
+    {
+     "t": "the",
+     "ms": 5763
+    },
+    {
+     "t": "pit,",
+     "ms": 5847
+    },
+    {
+     "t": "and",
+     "ms": 6666
+    },
+    {
+     "t": "gave",
+     "ms": 6722
+    },
+    {
+     "t": "him",
+     "ms": 6944
+    },
+    {
+     "t": "a",
+     "ms": 7013
+    },
+    {
+     "t": "pat.",
+     "ms": 7083
     }
    ],
    "audio": "p5.m4a",
-   "audioMs": 7390
+   "audioMs": 7970
   },
   {
    "art": "😴",
@@ -511,7 +523,7 @@
  "prompts": {
   "yes:pit": {
    "audio": "yes-pit.m4a",
-   "ms": 1750
+   "ms": 1780
   },
   "word:pit": {
    "audio": "word-pit.m4a",
@@ -525,12 +537,12 @@
    "audio": "word-sat.m4a",
    "ms": 980
   },
-  "yes:dad": {
-   "audio": "yes-dad.m4a",
-   "ms": 1820
+  "yes:pat": {
+   "audio": "yes-pat.m4a",
+   "ms": 1730
   },
-  "word:dad": {
-   "audio": "word-dad.m4a",
+  "word:pat": {
+   "audio": "word-pat.m4a",
    "ms": 840
   },
   "yes:nap": {

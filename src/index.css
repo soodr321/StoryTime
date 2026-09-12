@@ -283,3 +283,7 @@ h1, h2, h3 { font-family: var(--display); }
 /* I'll try + voice follow */
 .w.try { border: 2px dashed var(--accent); background: transparent; color: var(--ink); font: inherit; }
 .voicebar .small.live { background: #f6d5cf; border-color: #c47a6a; animation: pulse 1s infinite; }
+
+/* the ledger is the grown-up's, not the child's celebration */
+.grownup-ledger { margin-top: 4px; opacity: .85; }
+.grownup-ledger li { background: #fff0d8; color: #7a4a12; }

@@ -17,4 +17,11 @@ export function fits(story: Story, learner: LearnerModel): boolean {
   return magicOk && checkLine(story.moral.line, learner).ok;
 }
 
+/**
+ * Below four sounds a child cannot decode anything, so the first nights are a listen-along:
+ * the grown-up reads a real book end to end and the child listens, points and taps words.
+ * It is always the same set-1 book, so the first decoding night still meets it as a new story.
+ */
+export const listenAlongStory = (): Story | undefined => LIBRARY.find((s) => s.level === "ls-phase2-set1");
+
 export const TRADITION_LABEL: Record<Story["tradition"], string> = { aesop: "Aesop", panchatantra: "Panchatantra", classic: "Classic", family: "Family story" };

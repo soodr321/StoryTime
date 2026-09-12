@@ -5,6 +5,7 @@
  * through the same fail-closed validator as the designed magic words.
  */
 import { checkMagicWord, normalise, type LearnerModel } from "./validator";
+import { magicTokens } from "./target";
 import type { Page } from "../content/types";
 
 export const ILL_TRY_WORDS = new Set([
@@ -17,12 +18,13 @@ export const ILL_TRY_WORDS = new Set([
   "lap", "lip", "lit", "log", "lot", "lid", "leg", "puff", "off", "huff", "cuff", "bell", "doll", "hill", "fill", "tell", "well", "hiss", "kiss", "mess", "less", "fuss",
 ]);
 
-/** The one extra word offered on this page, or -1. Never a designed magic word, never a word already graded. */
+/** The one extra word offered on this page, or -1. Never any copy of a designed magic word, never a name. */
 export function pickIllTry(page: Page, learner: LearnerModel, taken: Set<number>, graded: (i: number) => boolean): number {
+  const designed = magicTokens(page);
   for (let i = 0; i < page.tokens.length; i++) {
-    if (taken.has(i) || graded(i)) continue;
+    if (taken.has(i) || designed.has(i) || graded(i)) continue;
     const t = page.tokens[i].t;
-    if (i > 0 && /^[A-Z]/.test(t)) continue;                   // a name mid-sentence is never a decoding target
+    if (/^[A-Z]/.test(t.trim())) continue;                     // a capitalised token is a name, at any position
     const w = normalise(t);
     if (!ILL_TRY_WORDS.has(w)) continue;
     if (!checkMagicWord(w, learner).ok) continue;

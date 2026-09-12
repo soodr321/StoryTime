@@ -5,9 +5,12 @@ import { Art } from "../components/Art";
 import { playSound } from "../lib/sounds";
 import { GRAPHEME_SOUND } from "../lib/phonics/learner";
 
+/** the tricky words that come with each level, exactly as Welcome grants them: sounds without them lock every book */
+const trickyFor = (n: number) => (n >= 23 ? ALL_TRICKY : n >= 16 ? ALL_TRICKY.slice(0, 5) : n >= 12 ? ALL_TRICKY.slice(0, 4) : n >= 8 ? ALL_TRICKY.slice(0, 3) : []);
+
 const AVATARS = ["🦁", "🐣", "🐯", "🦊", "🐼", "🐸", "🦄", "🐬", "🐢", "🐝", "🌟", "🚀"];
 
-export function SettingsScreen({ onBack, onAddStory, onSounds }: { onBack: () => void; onAddStory: () => void; onSounds: () => void }) {
+export function SettingsScreen({ onBack, onAddStory, onSounds, onTeach }: { onBack: () => void; onAddStory: () => void; onSounds: () => void; onTeach: (replay?: boolean) => void }) {
   const { kids, updateKid, addKid, removeKid, settings, updateSettings, customs, removeCustom, activeKid, progress } = useFamily();
   const words = Object.values(progress).flatMap((p) => p.results);
   const count = (m: string) => words.filter((r) => r.ok && r.mode === m).length;
@@ -37,6 +40,12 @@ export function SettingsScreen({ onBack, onAddStory, onSounds }: { onBack: () =>
           <input value={readerDraft} onChange={(e) => setReaderDraft(e.target.value)} placeholder="e.g. Nani, Papa, Mama" aria-label="grown-up name" />
           <button className="small">Add</button>
         </form>
+      </section>
+
+      <section className="pc">
+        <h3>Teach a sound</h3>
+        <p className="legend">The 90-second routine: hear it, mouth cue, action, find it in words, trace it, blend it. Home suggests the next sound when there is evidence for it; you can always come here.</p>
+        <div className="row"><button className="small" onClick={() => onTeach(true)}>Go over today's sound</button><button className="next" onClick={() => onTeach(false)}>Teach the next sound</button></div>
       </section>
 
       <section className="pc">
@@ -78,7 +87,7 @@ function KidEditor({ kid, onChange, onRemove }: { kid: Kid; onChange: (k: Kid) =
         </select>
         {onRemove && <button className="linkbtn" onClick={onRemove}>remove</button>}
       </div>
-      <p className="legend">Sounds taught so far: <select value={known} onChange={(e) => onChange({ ...kid, gpcs: ALL_GPCS.slice(0, +e.target.value) })} aria-label="level">{[0, 1, 2, 3, 4, 8, 12, 16, 23].map((n) => <option key={n} value={n}>{n === 0 ? "none yet" : ALL_GPCS.slice(0, n).join(" ")}</option>)}</select></p>
+      <p className="legend">Sounds taught so far: <select value={known} onChange={(e) => { const n = +e.target.value; onChange({ ...kid, gpcs: ALL_GPCS.slice(0, n), tricky: [...new Set([...kid.tricky, ...trickyFor(n)])] }); }} aria-label="level">{[0, 1, 2, 3, 4, 8, 12, 16, 23].map((n) => <option key={n} value={n}>{n === 0 ? "none yet" : ALL_GPCS.slice(0, n).join(" ")}</option>)}</select></p>
       <p className="legend">Tap any sound to hear it (the sound, never the letter name). Taught sounds are green; change them with the list above or the 90-second teach routine on Home.</p>
       <div className="chips">
         {ALL_GPCS.map((g, i) => <button key={g} className={"tog" + (i < known ? " on" : "")} title="tap: hear the sound" onClick={() => void playSound(GRAPHEME_SOUND[g].clip)}>{g}</button>)}

@@ -24,13 +24,15 @@ function WeekStrip({ days }: { days: number[] }) {
   return <div className="week" aria-label="stories this week">{cells.map((c, i) => <span key={i} className={"day" + (c.on ? " on" : "") + (c.isToday ? " today" : "")}>{c.on ? <StarIcon size={16} /> : c.label}</span>)}</div>;
 }
 
-export function HomeScreen({ onStart, onLibrary, onSwitch, onWarmUp, onTeach }: { onStart: (story: Story, mode: Mode, resume: boolean) => void; onLibrary: () => void; onSwitch: () => void; onWarmUp: () => void; onTeach: () => void }) {
-  const { activeKid: kid, todayFor, repeatToday, session, stories, progress, settings, setSession, review, advanceReady, nights, storiesFor } = useFamily();
+export function HomeScreen({ onStart, onLibrary, onSwitch, onWarmUp, onTeach }: { onStart: (story: Story, mode: Mode, resume: boolean) => void; onLibrary: () => void; onSwitch: () => void; onWarmUp: () => void; onTeach: (replay?: boolean) => void }) {
+  const { activeKid: kid, todayFor, repeatToday, session, stories, progress, settings, setSession, review, advanceReady, nights, storiesFor, listensAlong } = useFamily();
   const resumable = session ? stories.find((s) => s.slug === session.slug) ?? null : null;
   const today = kid ? resumable ?? todayFor(kid) : null;
   useEffect(() => { if (today) void precache(today); }, [today]);
   if (!kid) return null;
-  const finished = Object.keys(progress).length;
+  const finished = Object.values(progress).filter((p) => p.timesFinished > 0).length;
+  const listenAlong = listensAlong(kid);
+  const taughtToday = (kid.teachDays ?? []).some((d) => new Date(d).toDateString() === new Date().toDateString());   // fewer than four sounds: tonight is a listen-along, not a reading
   const listener = kid.role === "listener";
   const lastFinished = Math.max(0, ...Object.values(progress).map((p) => p.lastFinished ?? 0));
   const doneTonight = settings.bedtime && lastFinished > 0 && sameDay(lastFinished, Date.now()) && !resumable;
@@ -42,13 +44,13 @@ export function HomeScreen({ onStart, onLibrary, onSwitch, onWarmUp, onTeach }: 
       <div className="row between" style={{ width: "min(100%, 420px)" }}><WeekStrip days={days} /><span className="nights">night <b>{Math.min(30, nights + 1)}</b> of 30</span></div>
       {!listener && nights >= 30 && <div className="champion"><span>🏅</span><b>30 nights of reading!</b><small>{kid.name} is a Reading Champion. Keep the ritual: one story, then a real book.</small></div>}
       {!listener && kid.gpcs.length < 4 && (
-        <button className="readycard" onClick={onTeach}><b>{(kid.teachDays ?? []).some((d) => new Date(d).toDateString() === new Date().toDateString()) ? `Replay today's sound: ${kid.gpcs[kid.gpcs.length - 1]}` : `Teach today's sound: ${LS_PHASE2_ORDER[kid.gpcs.length]}`}</b><small>90 seconds, one new sound a day. After four sounds the first story unlocks.</small></button>
+        <button className="readycard" onClick={() => onTeach(taughtToday)}><b>{taughtToday ? `Replay today's sound: ${kid.gpcs[kid.gpcs.length - 1]}` : `Teach today's sound: ${LS_PHASE2_ORDER[kid.gpcs.length]}`}</b><small>90 seconds, one new sound a day. After four sounds {kid.name} starts reading the magic words.</small></button>
       )}
       {!listener && advanceReady && kid.gpcs.length >= 4 && kid.gpcs.length < LS_PHASE2_ORDER.length && (
-        <button className="readycard" onClick={onTeach}><b>Ready for the next sound-spelling: {LS_PHASE2_ORDER[kid.gpcs.length]}</b><small>Two smooth sessions and a word built. 90 seconds to teach it — you decide when.</small></button>
+        <button className="readycard" onClick={() => onTeach(false)}><b>Ready for the next sound-spelling: {LS_PHASE2_ORDER[kid.gpcs.length]}</b><small>Two smooth sessions and a word built. 90 seconds to teach it — you decide when.</small></button>
       )}
       {!listener && advanceReady && kid.gpcs.length < LS_PHASE2_ORDER.length && (
-        <div className="nextsound"><span className="legend">Next sound:</span> <button className="soundbtn" onClick={() => void playSound(GRAPHEME_SOUND[LS_PHASE2_ORDER[kid.gpcs.length]].clip)}>{LS_PHASE2_ORDER[kid.gpcs.length]}</button> <button className="linkbtn" onClick={onTeach}>teach it · 90 s →</button></div>
+        <div className="nextsound"><span className="legend">Next sound:</span> <button className="soundbtn" onClick={() => void playSound(GRAPHEME_SOUND[LS_PHASE2_ORDER[kid.gpcs.length]].clip)}>{LS_PHASE2_ORDER[kid.gpcs.length]}</button> <button className="linkbtn" onClick={() => onTeach(false)}>teach it · 90 s →</button></div>
       )}
 
       {doneTonight ? (
@@ -60,12 +62,12 @@ export function HomeScreen({ onStart, onLibrary, onSwitch, onWarmUp, onTeach }: 
         </div>
       ) : today ? (
         <>
-          <div className="kicker">{resumable ? "Carry on where you stopped" : repeatToday ? "Same story — smoother today" : finished ? "Today's story" : "Your first story"}</div>
-          <div className="big-tile rise" role="group" aria-label={today.title}>
+          <div className="kicker">{resumable ? "Carry on where you stopped" : listenAlong ? "Tonight's story" : repeatToday ? "Same story — smoother today" : finished ? "Today's story" : "Your first story"}</div>
+          <button className="big-tile rise" aria-label={`Start ${today.title}`} onClick={() => (review.length > 0 && !listener ? onWarmUp() : onStart(today, resumable ? session!.mode : "listen", !!resumable))}>
             <span className="art rise"><Art art={today.pages[0].art} /></span>
             <span className="t">{today.title}</span>
-            <span className="s">{TRADITION_LABEL[today.tradition]} · {today.pages.filter((p) => p.magic?.length).length} magic words{resumable ? ` · page ${session!.page + 1}` : ""}</span>
-          </div>
+            <span className="s">{listenAlong ? `${TRADITION_LABEL[today.tradition]} · a story to listen to` : `${TRADITION_LABEL[today.tradition]} · ${today.pages.reduce((n, p) => n + (p.magic?.length ?? 0), 0)} magic words${resumable ? ` · page ${session!.page + 1}` : ""}`}</span>
+          </button>
           {resumable ? (
             <div className="modes">
               <button className="mode" onClick={() => onStart(today, session!.mode, true)}>
@@ -77,6 +79,13 @@ export function HomeScreen({ onStart, onLibrary, onSwitch, onWarmUp, onTeach }: 
             </div>
           ) : review.length > 0 && !listener ? (
             <button className="warmcard" onClick={onWarmUp}><b>Warm-up first</b><span>{review.map((r) => r.word).join(" · ")}</span><small>1 minute · words from last time, then the story</small></button>
+          ) : listenAlong ? (
+            <div className="modes rise2">
+              <button className="mode" onClick={() => onStart(today, "listen", false)}>
+                <span className="mi">{settings.bedtime ? <MoonIcon /> : <SpeakerIcon />}</span><b>{settings.tonight ?? "Nani"} reads it all</b>
+                <small>Tonight {kid.name} listens, points and taps the words. {4 - kid.gpcs.length === 0 ? "Magic words start tomorrow." : `${kid.name}'s first magic word comes in ${4 - kid.gpcs.length} sleep${4 - kid.gpcs.length > 1 ? "s" : ""}.`}</small>
+              </button>
+            </div>
           ) : (
             <div className="modes rise2">
               <button className="mode" onClick={() => onStart(today, "listen", false)}>
@@ -92,7 +101,7 @@ export function HomeScreen({ onStart, onLibrary, onSwitch, onWarmUp, onTeach }: 
           )}
         </>
       ) : (
-        <p className="note">{kid.gpcs.length < 4 ? `Four sounds, then the first story. ${4 - kid.gpcs.length} to go.` : `No story fits ${kid.name}'s sounds yet. A grown-up can add sounds in Settings.`}</p>
+        <p className="note">No story fits {kid.name}'s sounds yet. A grown-up can add sounds in Settings.</p>
       )}
       {today && !resumable && !doneTonight && !repeatToday && review.length === 0 && (() => { const alt = storiesFor(kid).find((s) => s.slug !== today.slug && !progress[s.slug]) ?? storiesFor(kid).find((s) => s.slug !== today.slug); return alt ? <button className="linkbtn" onClick={() => onStart(alt, "listen", false)}>or {kid.name} picks: {alt.pages[0].art} {alt.title} →</button> : null; })()}
       <button className="linkbtn" onClick={review.length > 0 && !listener ? onWarmUp : onLibrary}><BookIcon size={18} /> Bookshelf · {finished} finished{review.length > 0 && !listener ? " · after the warm-up" : ""}</button>

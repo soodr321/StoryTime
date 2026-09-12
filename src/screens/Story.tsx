@@ -17,6 +17,8 @@ import type { Verdict } from "../components/MagicPanel";
 import type { Mode } from "./Home";
 import { advanceCursor, hitWord, type WordRect } from "../lib/follow";
 import { pickIllTry } from "../lib/phonics/illtry";
+import { magicTokens, resolveMagic } from "../lib/phonics/target";
+import { designed, volunteered } from "../lib/results";
 import { align } from "../lib/voice/align";
 import { startVoice, voiceSupported, type VoiceSession, type VoiceState } from "../lib/voice/session";
 import { BookIcon, HomeIcon, LockIcon, MoonIcon, SpeakerIcon, CheckIcon } from "../components/Icons";
@@ -34,7 +36,8 @@ export function StoryScreen({ story, mode, resume, onHome }: { story: Story; mod
   const fam = useFamily();
   const kid = fam.activeKid!;
   const learner = useMemo(() => learnerOf(kid), [kid]);
-  const listener = kid.role === "listener";
+  const listenAlong = fam.listensAlong(kid);   // a reader with fewer than four sounds: a real book, read to them, nothing to decode yet
+  const listener = kid.role === "listener" || listenAlong;
   const listen = mode === "listen";
   const bedtime = fam.settings.bedtime;
   const reader = fam.settings.tonight ?? fam.settings.readers[0] ?? "Grown-up";
@@ -75,9 +78,7 @@ export function StoryScreen({ story, mode, resume, onHome }: { story: Story; mod
 
   /** first magic token on this page whose occurrence (page:word) has not been graded */
   const doneIds = useMemo(() => new Set(ctx.results.map((r) => r.id ?? "")), [ctx.results]);
-  /** the target is the FIRST occurrence of each magic word on the page; later repeats are read by the narrator */
-  const targetIdx = (p: Page, w: string) => p.tokens.findIndex((t) => normalise(t.t) === w);
-  const pendingMagicIdx = useCallback((p: Page, pageNo: number) => { if (listener) return -1; for (const w of p.magic ?? []) { const i = targetIdx(p, w); if (i >= 0 && !doneIds.has(`${pageNo}:${i}`)) return i; } return -1; }, [listener, doneIds]);
+  const pendingMagicIdx = useCallback((p: Page, pageNo: number) => { if (listener) return -1; for (const w of p.magic ?? []) { const i = resolveMagic(p, w); if (i >= 0 && !doneIds.has(`${pageNo}:${i}`)) return i; } return -1; }, [listener, doneIds]);
 
   const narratePage = useCallback(async (p: Page, pageNo: number, opts: { stopAtMagic: boolean; onDone: () => void }): Promise<void> => {
     const magicIdx = opts.stopAtMagic ? pendingMagicIdx(p, pageNo) : -1;
@@ -142,7 +143,7 @@ export function StoryScreen({ story, mode, resume, onHome }: { story: Story; mod
       void (async () => { await speak(story.moral.audio ? (isUrl(story.moral.audio) ? story.moral.audio : storyAsset(story, story.moral.audio)) : null, story.moral.spoken); if (!listener) await speakPrompt("line", "Now you. Read your line."); })();
     }
     if (state === "done") {
-      if (!finishedRef.current) { finishedRef.current = true; void fam.finish(kid.id, story.slug, ctx.results); }
+      if (!finishedRef.current) { finishedRef.current = true; void fam.finish(kid.id, story.slug, ctx.results, { listenOnly: listenAlong }); }
       const okWords = ctx.results.filter((r) => r.ok).map((r) => r.word);
       const said = okWords.length ? `You blended ${okWords.join(", ")}.` : "Good listening. Those words come back tomorrow.";
       setCaption(said); if (listen) { const h = speakText(said, { rate }); playing.current = h; }
@@ -184,9 +185,9 @@ export function StoryScreen({ story, mode, resume, onHome }: { story: Story; mod
       {inStory && page && (
         <StoryView
           page={page} pageNo={ctx.page} total={story.pages.length} token={listen ? ctx.token : -1} results={ctx.results}
-          readMode={!listen} listener={listener} reader={reader} kid={kid.name} stalled={stalled} pageHeld={pageHeld} hideArt={panelOpen} learner={learner} voiceFollow={!!fam.settings.voiceFollow && !bedtime}
+          readMode={!listen} listener={listener} reader={reader} kid={kid.name} stalled={stalled} pageHeld={pageHeld} hideArt={panelOpen} learner={learner} bedtime={bedtime} voiceFollow={!!fam.settings.voiceFollow && !bedtime}
           onRetry={() => { void unlock(); setStalled(false); setRetry((n) => n + 1); }}
-          onMagicTap={(w, i) => state === "narrating" && send({ type: "MAGIC_REACHED", word: w, index: i })}
+          onMagicTap={(w, i, extra) => state === "narrating" && send({ type: "MAGIC_REACHED", word: w, index: i, extra })}
           onWordTap={(tok) => { if (listener || !listen) { if (state === "narrating" && listen && !pageHeld) return; setCaption(tok); const h = speakText(tok, { rate }); playing.current = h; } }}
           onNext={() => state === "narrating" && send({ type: "PAGE_NEXT" })}
         />
@@ -195,6 +196,9 @@ export function StoryScreen({ story, mode, resume, onHome }: { story: Story; mod
       {panelOpen && (
         <MagicPanel
           word={ctx.magic!} learner={learner} modelling={state === "modelling"} modelledOnce={ctx.mode === "modelled"} sweep={sweep} kid={kid.name} reader={reader}
+          extra={ctx.extra} kicker={ctx.extra ? `Extra word · ${kid.name} asked for this one` : undefined}
+          modelScript={listen ? undefined : `${reader}: slide through the sounds and let them run into the word. Bouncy sounds like t and p stay short. Then ${kid.name} tries alone.`}
+          onDismiss={!listen ? () => send({ type: "DISMISS" }) : undefined}
           onSound={() => send({ type: "SOUND_TAPPED" })}
           onYes={async (v: Verdict) => { const w = ctx.magic!; if (listen) await speakPrompt(`yes:${w}`, `Yes! ${w}.`); else setCaption(`Yes! ${w}.`); send({ type: "YES", verdict: v }); }}
           onTogether={together}
@@ -202,7 +206,7 @@ export function StoryScreen({ story, mode, resume, onHome }: { story: Story; mod
         />
       )}
 
-      {state === "moral" && <Moral story={story} learner={learner} listener={listener} kid={kid.name} reader={reader} listen={listen} setCaption={setCaption} buildWord={fam.pendingBuild ?? ctx.results.find((r) => r.ok && r.mode === "first_try")?.word ?? null} onBuilt={(w, ok) => void fam.encodingDone(story.slug, w, ok)} onYes={() => send({ type: "LINE_YES" })} />}
+      {state === "moral" && <Moral story={story} learner={learner} listener={listener} kid={kid.name} reader={reader} listen={listen} bedtime={bedtime} setCaption={setCaption} buildWord={fam.pendingBuild ?? designed(ctx.results).find((r) => r.ok && r.mode === "first_try")?.word ?? null} onBuilt={(w, ok) => fam.encodingDone(story.slug, w, ok)} onYes={() => send({ type: "LINE_YES" })} />}
       {state === "done" && <Done story={story} results={ctx.results} bedtime={bedtime} kid={kid.name} learner={learner} onHome={home} />}
 
       <div className="cap" aria-live="polite">{caption}</div>
@@ -211,13 +215,13 @@ export function StoryScreen({ story, mode, resume, onHome }: { story: Story; mod
   );
 }
 
-function StoryView({ page, pageNo, total, token, results, readMode, listener, reader, kid, stalled, pageHeld, hideArt, learner, voiceFollow, onRetry, onMagicTap, onWordTap, onNext }: {
+function StoryView({ page, pageNo, total, token, results, readMode, listener, reader, kid, stalled, pageHeld, hideArt, learner, bedtime, voiceFollow, onRetry, onMagicTap, onWordTap, onNext }: {
   page: Page; pageNo: number; total: number; token: number; results: WordResult[];
-  readMode: boolean; listener: boolean; reader: string; kid: string; stalled: boolean; pageHeld: boolean; hideArt: boolean; learner: LearnerModel; voiceFollow: boolean;
-  onRetry: () => void; onMagicTap: (w: string, i: number) => void; onWordTap: (tok: string) => void; onNext: () => void;
+  readMode: boolean; listener: boolean; reader: string; kid: string; stalled: boolean; pageHeld: boolean; hideArt: boolean; learner: LearnerModel; bedtime: boolean; voiceFollow: boolean;
+  onRetry: () => void; onMagicTap: (w: string, i: number, extra?: boolean) => void; onWordTap: (tok: string) => void; onNext: () => void;
 }) {
   const resAt = (i: number) => results.find((r) => r.id === `${pageNo}:${i}`);
-  const firstIdx = new Set((page.magic ?? []).map((w) => page.tokens.findIndex((t) => normalise(t.t) === w)));
+  const firstIdx = new Set((page.magic ?? []).map((w) => resolveMagic(page, w)).filter((i) => i >= 0));   // the same resolver the narration stop uses
   const pending = listener ? [] : [...firstIdx].filter((i) => i >= 0 && !resAt(i));
   // trailing punctuation sits outside the highlight: the child decodes letters, not full stops
   const split = (tok: string) => { const m = tok.match(/^([^A-Za-z]*)([A-Za-z]+(?:['’][A-Za-z]+)?)([^A-Za-z]*)$/); return m ? [m[1], m[2], m[3]] : ["", tok, ""]; };
@@ -243,9 +247,9 @@ function StoryView({ page, pageNo, total, token, results, readMode, listener, re
   const wordCls = (i: number, base: string) => (readMode ? base + (i === pointer ? " now" : i <= cursor ? " read" : "") : base);
 
   // "I'll try": one extra decodable word per page, chosen on page open, offered only until the grown-up has read past it
-  const extra = useMemo(() => (readMode && !listener ? pickIllTry(page, learner, firstIdx, (i) => !!resAt(i)) : -1),
+  const extra = useMemo(() => (readMode && !listener && !bedtime ? pickIllTry(page, learner, magicTokens(page), (i) => !!resAt(i)) : -1),   // never a copy of the designed word, never at bedtime
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  [page, pageNo, readMode, listener, learner]);
+  [page, pageNo, readMode, listener, learner, bedtime]);
 
   // follow my voice (opt-in): the recogniser only ever moves the cursor forward, never onto the pending child word
   const [voice, setVoice] = useState<VoiceState>("off");
@@ -287,7 +291,7 @@ function StoryView({ page, pageNo, total, token, results, readMode, listener, re
             if (readMode && i === extra) {
               const r = resAt(i);
               if (r) return <span key={i} className="tokwrap">{lead}<span className={wordCls(i, "w magic " + (r.ok ? "done" : "skipped"))} data-i={i}>{core.toLowerCase()}</span>{punct} </span>;
-              if (i > cursor) return <span key={i} className="tokwrap">{lead}<button className={cls + " try"} data-i={i} onClick={() => onMagicTap(n, i)}>{core.toLowerCase()}</button>{punct} </span>;   // offered until the grown-up reads past it
+              if (i > cursor) return <span key={i} className="tokwrap">{lead}<button className={cls + " try"} data-i={i} onClick={() => onMagicTap(n, i, true)}>{core.toLowerCase()}</button>{punct} </span>;   // offered until the grown-up reads past it
             }
             if (listener) return <span key={i} className="tokwrap">{lead}<button className={cls + " listener-tap"} onClick={() => onWordTap(t.t)}>{core}</button>{punct} </span>;   // read mode: grey words are the grown-up's, never tap-to-hear
             if (readMode) return <span key={i} className="tokwrap">{lead}<span className={cls} data-i={i} onClick={() => land(i)}>{core}</span>{punct} </span>;   // tap-only alternative to the slide: the next word moves the cursor
@@ -326,7 +330,7 @@ function StoryView({ page, pageNo, total, token, results, readMode, listener, re
  * the app shows regular vs tricky parts (tricky word) or stretches the sounds (decodable word),
  * the child re-reads that word, then re-reads the whole line smoothly before ✓.
  */
-function Moral({ story, learner, listener, kid, reader, listen, setCaption, buildWord, onBuilt, onYes }: { story: Story; learner: LearnerModel; listener: boolean; kid: string; reader: string; listen: boolean; setCaption: (s: string) => void; buildWord: string | null; onBuilt: (w: string, ok: boolean) => void; onYes: () => void }) {
+function Moral({ story, learner, listener, kid, reader, listen, bedtime, setCaption, buildWord, onBuilt, onYes }: { story: Story; learner: LearnerModel; listener: boolean; kid: string; reader: string; listen: boolean; bedtime: boolean; setCaption: (s: string) => void; buildWord: string | null; onBuilt: (w: string, ok: boolean) => Promise<void>; onYes: () => void }) {
   const line = checkLine(story.moral.line, learner);
   const raw = story.moral.line.split(/\s+/);
   const parts = raw.map((w, i) => { const m = w.match(/^([^A-Za-z]*)([A-Za-z]+)([^A-Za-z]*)$/); const r = line.results[i]; const core = m ? m[2] : w; const shown = r?.ok ? (r.kind === "tricky" ? (r.word === "i" ? "I" : r.word) : core.toLowerCase()) : core; return { lead: m ? m[1] : "", core: shown, punct: m ? m[3] : "" }; });   // taught letterforms; punctuation outside
@@ -351,7 +355,8 @@ function Moral({ story, learner, listener, kid, reader, listen, setCaption, buil
   if (stage === "build" && buildWord) return (
     <div className="screen-wrap panel-open">
       <main className="moral"><div className="kicker">One more: build a word</div><p className="spoken">“{story.moral.spoken}”</p></main>
-      <SegmentPanel word={buildWord} learner={learner} kid={kid} reader={reader} listen={listen} onDone={(ok) => { onBuilt(buildWord, ok); onYes(); }} />
+      {/* the encoding write and the finish write both read-modify-write the same progress row: never race them */}
+      <SegmentPanel word={buildWord} learner={learner} kid={kid} reader={reader} listen={listen} bedtime={bedtime} onDone={async (outcome) => { if (outcome !== "not_tonight") await onBuilt(buildWord, outcome === "spelled"); onYes(); }} />
     </div>
   );
   return (
@@ -393,10 +398,13 @@ function Moral({ story, learner, listener, kid, reader, listen, setCaption, buil
 /** Specific feedback, not a trophy: what the child actually did with each word. */
 function Done({ story, results, bedtime, kid, learner, onHome }: { story: Story; results: WordResult[]; bedtime: boolean; kid: string; learner: LearnerModel; onHome: () => void }) {
   const ok = results.filter((r) => r.ok);
+  const tried = volunteered(results);
+  const later = designed(results).filter((r) => !r.ok);
+  const [ledger, setLedger] = useState(false);   // the child's screen shows the wins; the ledger is the grown-up's
   const line = (r: WordResult) => {
     const gs = checkWord(r.word, learner).graphemes.join("-");
-    if (!r.ok) return `${r.word} · tomorrow`;
-    if (r.mode === "first_try") return `${r.word} · slid through ${gs} first try`;
+    if (!r.ok) return `${r.word} · comes back in tomorrow's warm-up`;
+    if (r.mode === "first_try") return `${r.word} · slid through ${gs} first try${r.extra ? " (asked for this one)" : ""}`;
     if (r.mode === "prompted") return `${r.word} · blended it after a nudge`;
     return `${r.word} · heard it slid through, then did it`;
   };
@@ -405,10 +413,14 @@ function Done({ story, results, bedtime, kid, learner, onHome }: { story: Story;
       {!bedtime && ok.length > 0 && <Confetti />}
       <div className="badge rise">{bedtime ? <MoonIcon size={84} /> : <Art art={story.pages[0].art} />}</div>
       <h2 className="rise">{story.title}</h2>
-      {results.length > 0 && <ul className="results">{results.map((r, i) => <li key={(r.id ?? r.word) + i} className={r.ok ? "ok" : "no"}>{line(r)}</li>)}</ul>}
-      <p className="show">{bedtime ? `Lights low. One real book, then sleep.` : ok.length ? `Now go find someone and read them your ${ok.length === 1 ? "word" : "words"}, ${kid}!` : `Good listening, ${kid}. Those words come back tomorrow for a warm-up.`}</p>
+      {ok.length > 0 && <ul className="results">{ok.map((r, i) => <li key={(r.id ?? r.word) + i} className="ok">{line(r)}</li>)}</ul>}
+      <p className="show">{bedtime ? "Lights low. One real book, then sleep." : ok.length ? `Now go find someone and read them your ${ok.length === 1 ? "word" : "words"}, ${kid}!` : `Good listening, ${kid}. Those words come back tomorrow for a warm-up.`}</p>
       {!bedtime && ok.length > 0 && <p className="bigwords">{ok.map((r, i) => <span key={(r.id ?? r.word) + i}>{r.word}</span>)}</p>}
+      {tried.length > 0 && <p className="note">…and {kid} asked to try <b>{tried.map((r) => r.word).join(", ")}</b> without being asked.</p>}
       <div className="btns"><button className="yes" onClick={onHome}><CheckIcon /> Done</button></div>
+      {later.length > 0 && (ledger
+        ? <ul className="results grownup-ledger">{later.map((r, i) => <li key={(r.id ?? r.word) + i} className="no">{line(r)}</li>)}</ul>
+        : <button className="skip" onClick={() => setLedger(true)}>grown-up: tonight's words →</button>)}
     </main>
   );
 }

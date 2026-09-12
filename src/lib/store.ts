@@ -23,7 +23,7 @@ export interface Kid {
   teachDays?: string[];
 }
 
-export interface WordResult { word: string; ok: boolean; mode: string; at: number }
+export interface WordResult { id?: string; word: string; ok: boolean; mode: string; at: number; extra?: boolean }
 export interface StoryProgress {
   slug: string;
   timesFinished: number;
@@ -37,7 +37,7 @@ export interface Session {
   slug: string;
   mode: "listen" | "read";
   page: number;
-  results: { word: string; ok: boolean; mode: string }[];
+  results: { id?: string; word: string; ok: boolean; mode: string; extra?: boolean }[];   // same shape as WordResult: a resume must not lose ids or the extra flag
   updatedAt: number;
 }
 export interface Settings {
@@ -61,16 +61,25 @@ export async function loadSettings(): Promise<Settings> { return (await get<Sett
 export async function saveSettings(s: Settings): Promise<void> { await set(K.settings, s); }
 
 export async function loadProgress(kidId: string): Promise<Record<string, StoryProgress>> { return (await get(progressKey(kidId))) ?? {}; }
-export async function recordFinish(kidId: string, slug: string, results: { word: string; ok: boolean; mode: string }[]): Promise<void> {
+export async function recordFinish(kidId: string, slug: string, results: { word: string; ok: boolean; mode: string }[], opts: { listenOnly?: boolean } = {}): Promise<void> {
   const all = await loadProgress(kidId);
   const prev = all[slug];
-  all[slug] = { ...prev, slug, timesFinished: (prev?.timesFinished ?? 0) + 1, lastFinished: Date.now(), history: [...(prev?.history ?? (prev?.lastFinished ? [prev.lastFinished] : [])), Date.now()].slice(-60), results: results.map((r) => ({ ...r, at: Date.now() })) };
+  const history = [...(prev?.history ?? (prev?.lastFinished ? [prev.lastFinished] : [])), Date.now()].slice(-60);
+  // a listen-along night (the child has fewer than four sounds) counts for the ritual — week strip, night count —
+  // but it is not a reading of the book: timesFinished stays put so the first decoding night still gets this story
+  all[slug] = opts.listenOnly
+    ? { ...prev, slug, timesFinished: prev?.timesFinished ?? 0, lastFinished: Date.now(), history, results: prev?.results ?? [] }
+    : { ...prev, slug, timesFinished: (prev?.timesFinished ?? 0) + 1, lastFinished: Date.now(), history, results: results.map((r) => ({ ...r, at: Date.now() })) };
   await set(progressKey(kidId), all);
 }
 
 export async function recordEncoding(kidId: string, slug: string, word: string, ok: boolean): Promise<void> {
-  const all = await loadProgress(kidId); const p = all[slug]; if (!p) return;
-  p.encoding = [...(p.encoding ?? []), { word, ok, at: Date.now() }].slice(-30); await set(progressKey(kidId), all);
+  const all = await loadProgress(kidId);
+  // the build runs before the story is finished, so on a first read there is no row yet: create one, or the
+  // evidence is dropped and readyToAdvance (which needs one successful build) can never become true
+  const p = (all[slug] ??= { slug, timesFinished: 0, results: [] });
+  p.encoding = [...(p.encoding ?? []), { word, ok, at: Date.now() }].slice(-30);
+  await set(progressKey(kidId), all);
 }
 
 /** One finished reading session (the same story twice counts twice), stamped with how many sounds the child knew. */

@@ -8,7 +8,7 @@ import type { Story } from "../lib/content/types";
 
 export type VerdictMode = "first_try" | "prompted" | "modelled" | "skipped";
 /** id = `${page}:${tokenIndex}` so every occurrence of a magic word gets its own turn */
-export interface WordResult { id?: string; word: string; ok: boolean; mode: VerdictMode }
+export interface WordResult { id?: string; word: string; ok: boolean; mode: VerdictMode; extra?: boolean }   // extra = a word the child volunteered for; never counted as evidence
 
 export interface Ctx {
   story: Story;
@@ -19,6 +19,8 @@ export interface Ctx {
   magic: string | null;
   magicIdx: number;
   mode: VerdictMode;
+  /** the open word was volunteered ("I'll try"), not one the story designed */
+  extra: boolean;
   results: WordResult[];
 }
 
@@ -26,12 +28,13 @@ export type Ev =
   | { type: "START" }
   | { type: "TOKEN"; index: number }
   | { type: "NARRATION_DONE" }
-  | { type: "MAGIC_REACHED"; word: string; index: number }
+  | { type: "MAGIC_REACHED"; word: string; index: number; extra?: boolean }
   | { type: "SOUND_TAPPED" }
   | { type: "YES"; verdict?: "first_try" | "prompted" }
   | { type: "NOT_YET" }
   | { type: "MODEL_DONE" }
   | { type: "SKIP" }
+  | { type: "DISMISS" }   // closed without a verdict (a sibling's tap): nothing is recorded
   | { type: "REREAD_DONE" }
   | { type: "RESUME" }
   | { type: "PAGE_NEXT" }
@@ -45,21 +48,22 @@ export const storyMachine = setup({
     hasNextPage: ({ context }) => context.page + 1 < context.story.pages.length,
   },
   actions: {
-    nextPage: assign({ page: ({ context }) => context.page + 1, token: -1, magic: null, mode: "first_try" }),
+    nextPage: assign({ page: ({ context }) => context.page + 1, token: -1, magic: null, mode: "first_try", extra: false }),
     setToken: assign({ token: ({ event }) => (event.type === "TOKEN" ? event.index : -1) }),
-    openMagic: assign({ magic: ({ event }) => (event.type === "MAGIC_REACHED" ? event.word : null), magicIdx: ({ event }) => (event.type === "MAGIC_REACHED" ? event.index : -1), mode: "first_try" }),
+    openMagic: assign({ magic: ({ event }) => (event.type === "MAGIC_REACHED" ? event.word : null), magicIdx: ({ event }) => (event.type === "MAGIC_REACHED" ? event.index : -1), mode: "first_try", extra: ({ event }) => (event.type === "MAGIC_REACHED" ? !!event.extra : false) }),
+    closeMagic: assign({ magic: null, magicIdx: -1, mode: "first_try", extra: false }),
     sounded: assign({ mode: ({ context }) => context.mode }),   // tile taps play sounds; they never decide the label
     modelled: assign({ mode: "modelled" }),
     record: assign({
       results: ({ context, event }) => [
         ...context.results,
-        { id: `${context.page}:${context.magicIdx}`, word: context.magic ?? "", ok: event.type === "YES", mode: event.type === "SKIP" ? "skipped" : context.mode === "modelled" ? "modelled" : event.type === "YES" && event.verdict ? event.verdict : context.mode },
+        { id: `${context.page}:${context.magicIdx}`, word: context.magic ?? "", ok: event.type === "YES", mode: event.type === "SKIP" ? "skipped" : context.mode === "modelled" ? "modelled" : event.type === "YES" && event.verdict ? event.verdict : context.mode, ...(context.extra ? { extra: true } : {}) },
       ],
     }),
   },
 }).createMachine({
   id: "story",
-  context: ({ input }) => ({ story: input.story, page: input.page ?? 0, token: -1, magic: null, magicIdx: -1, mode: "first_try", results: input.results ?? [] }),
+  context: ({ input }) => ({ story: input.story, page: input.page ?? 0, token: -1, magic: null, magicIdx: -1, mode: "first_try", extra: false, results: input.results ?? [] }),
   initial: "idle",
   on: { HOME: ".idle" },
   states: {
@@ -79,6 +83,8 @@ export const storyMachine = setup({
         YES: { target: "reread", actions: "record" },
         SKIP: { target: "reread", actions: "record" },
         NOT_YET: { target: "modelling", actions: "modelled" },
+        // closed without a verdict: back to the page, nothing written. Read mode only (listen mode would replay the page).
+        DISMISS: { target: "narrating", actions: "closeMagic" },
       },
     },
     modelling: {

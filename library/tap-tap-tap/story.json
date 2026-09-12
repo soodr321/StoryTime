@@ -242,64 +242,68 @@
    "art": "🌰",
    "tokens": [
     {
-     "t": "Tap!",
-     "ms": 111
+     "t": "One",
+     "ms": 0
     },
     {
-     "t": "A",
-     "ms": 958
+     "t": "hard",
+     "ms": 0
     },
     {
-     "t": "nut",
-     "ms": 1000
-    },
-    {
-     "t": "came",
-     "ms": 1222
-    },
-    {
-     "t": "loose",
-     "ms": 1513
+     "t": "tap,",
+     "ms": 0
     },
     {
      "t": "and",
-     "ms": 1916
+     "ms": 0
     },
     {
-     "t": "dropped.",
-     "ms": 1986
+     "t": "a",
+     "ms": 0
+    },
+    {
+     "t": "nut",
+     "ms": 0
+    },
+    {
+     "t": "came",
+     "ms": 0
+    },
+    {
+     "t": "loose.",
+     "ms": 0
     },
     {
      "t": "It",
-     "ms": 3000
+     "ms": 0
     },
     {
      "t": "bounced",
-     "ms": 3138
+     "ms": 0
     },
     {
      "t": "right",
-     "ms": 3583
+     "ms": 0
     },
     {
      "t": "off",
-     "ms": 3847
+     "ms": 0
     },
     {
      "t": "the",
-     "ms": 4069
+     "ms": 0
     },
     {
      "t": "cat's",
-     "ms": 4138
+     "ms": 0
     },
     {
      "t": "head.",
-     "ms": 4500
+     "ms": 0
     },
     {
      "t": "Bonk!",
-     "ms": 5277
+     "ms": 0
     }
    ],
    "audio": "p4.m4a",
@@ -444,7 +448,7 @@
  ],
  "moral": {
   "spoken": "Little noises can turn into big surprises.",
-  "line": "Tap, tap, tap.",
+  "line": "Tap, tap. Pat, pat.",
   "audio": "moral.m4a",
   "audioMs": 3170
  },
