@@ -27,67 +27,67 @@
    "tokens": [
     {
      "t": "All",
-     "ms": 111
+     "ms": 138
     },
     {
      "t": "summer,",
-     "ms": 305
+     "ms": 364
     },
     {
      "t": "an",
-     "ms": 1250
+     "ms": 1527
     },
     {
      "t": "ant",
-     "ms": 1513
+     "ms": 1684
     },
     {
      "t": "carried",
-     "ms": 1777
+     "ms": 2048
     },
     {
      "t": "seeds",
-     "ms": 2291
+     "ms": 2690
     },
     {
      "t": "to",
-     "ms": 2930
+     "ms": 3559
     },
     {
      "t": "her",
-     "ms": 3041
+     "ms": 3697
     },
     {
      "t": "nest.",
-     "ms": 3166
+     "ms": 3854
     },
     {
      "t": "She",
-     "ms": 4180
+     "ms": 5104
     },
     {
      "t": "worked",
-     "ms": 4347
+     "ms": 5312
     },
     {
      "t": "in",
-     "ms": 4611
+     "ms": 5659
     },
     {
      "t": "the",
-     "ms": 4666
+     "ms": 5729
     },
     {
      "t": "hot",
-     "ms": 4736
+     "ms": 5781
     },
     {
      "t": "sun.",
-     "ms": 5000
+     "ms": 6111
     }
    ],
    "audio": "p1.m4a",
-   "audioMs": 5860
+   "audioMs": 7180
   },
   {
    "art": "🦗",
@@ -97,173 +97,173 @@
    "tokens": [
     {
      "t": "A",
-     "ms": 111
+     "ms": 138
     },
     {
      "t": "grasshopper",
-     "ms": 180
+     "ms": 208
     },
     {
      "t": "sat",
-     "ms": 1361
+     "ms": 1631
     },
     {
      "t": "in",
-     "ms": 1763
+     "ms": 2118
     },
     {
      "t": "the",
-     "ms": 1847
+     "ms": 2222
     },
     {
      "t": "grass",
-     "ms": 1916
+     "ms": 2326
     },
     {
      "t": "and",
-     "ms": 2458
+     "ms": 3055
     },
     {
      "t": "sang.",
-     "ms": 2541
+     "ms": 3194
     },
     {
      "t": "“Come",
-     "ms": 3625
+     "ms": 4513
     },
     {
      "t": "and",
-     "ms": 3666
+     "ms": 4565
     },
     {
      "t": "play!”",
-     "ms": 3736
+     "ms": 4652
     },
     {
      "t": "he",
-     "ms": 4083
+     "ms": 5104
     },
     {
      "t": "called.",
-     "ms": 4194
+     "ms": 5260
     }
    ],
    "audio": "p2.m4a",
-   "audioMs": 5020
+   "audioMs": 6260
   },
   {
    "art": "🐜",
    "tokens": [
     {
      "t": "“I",
-     "ms": 152
+     "ms": 190
     },
     {
      "t": "must",
-     "ms": 180
+     "ms": 225
     },
     {
      "t": "get",
-     "ms": 361
+     "ms": 451
     },
     {
      "t": "food",
-     "ms": 500
+     "ms": 607
     },
     {
      "t": "for",
-     "ms": 805
+     "ms": 1024
     },
     {
      "t": "winter,”",
-     "ms": 1041
+     "ms": 1284
     },
     {
      "t": "said",
-     "ms": 1722
+     "ms": 2170
     },
     {
      "t": "the",
-     "ms": 1944
+     "ms": 2430
     },
     {
      "t": "ant,",
-     "ms": 2083
+     "ms": 2569
     },
     {
      "t": "and",
-     "ms": 2902
+     "ms": 3559
     },
     {
      "t": "she",
-     "ms": 3000
+     "ms": 3680
     },
     {
      "t": "kept",
-     "ms": 3208
+     "ms": 4010
     },
     {
      "t": "working.",
-     "ms": 3541
+     "ms": 4427
     }
    ],
    "audio": "p3.m4a",
-   "audioMs": 4420
+   "audioMs": 5520
   },
   {
    "art": "❄️",
    "tokens": [
     {
      "t": "Then",
-     "ms": 97
+     "ms": 138
     },
     {
      "t": "winter",
-     "ms": 347
+     "ms": 364
     },
     {
      "t": "came.",
-     "ms": 666
+     "ms": 746
     },
     {
      "t": "Snow",
-     "ms": 1486
+     "ms": 1840
     },
     {
      "t": "covered",
-     "ms": 1791
+     "ms": 2239
     },
     {
      "t": "the",
-     "ms": 2041
+     "ms": 2638
     },
     {
      "t": "grass.",
-     "ms": 2111
+     "ms": 2708
     },
     {
      "t": "The",
-     "ms": 3263
+     "ms": 4062
     },
     {
      "t": "grasshopper",
-     "ms": 3319
+     "ms": 4114
     },
     {
      "t": "had",
-     "ms": 3916
+     "ms": 4878
     },
     {
      "t": "no",
-     "ms": 4138
+     "ms": 5138
     },
     {
      "t": "food.",
-     "ms": 4402
+     "ms": 5520
     }
    ],
    "audio": "p4.m4a",
-   "audioMs": 5330
+   "audioMs": 6650
   },
   {
    "art": "🐜",
@@ -273,146 +273,146 @@
    "tokens": [
     {
      "t": "He",
-     "ms": 111
+     "ms": 138
     },
     {
      "t": "knocked",
-     "ms": 166
+     "ms": 208
     },
     {
      "t": "on",
-     "ms": 430
+     "ms": 590
     },
     {
      "t": "the",
-     "ms": 486
+     "ms": 659
     },
     {
      "t": "ant’s",
-     "ms": 555
+     "ms": 729
     },
     {
      "t": "door.",
-     "ms": 888
+     "ms": 1128
     },
     {
      "t": "The",
-     "ms": 1708
+     "ms": 2187
     },
     {
      "t": "ant",
-     "ms": 1819
+     "ms": 2343
     },
     {
      "t": "shared",
-     "ms": 2027
+     "ms": 2552
     },
     {
      "t": "her",
-     "ms": 2333
+     "ms": 2934
     },
     {
      "t": "seeds,",
-     "ms": 2444
+     "ms": 3072
     },
     {
      "t": "and",
-     "ms": 3305
+     "ms": 4236
     },
     {
      "t": "he",
-     "ms": 3416
+     "ms": 4340
     },
     {
      "t": "got",
-     "ms": 3569
+     "ms": 4461
     },
     {
      "t": "warm.",
-     "ms": 3819
+     "ms": 4756
     }
    ],
    "audio": "p5.m4a",
-   "audioMs": 4680
+   "audioMs": 5780
   },
   {
    "art": "🦗",
    "tokens": [
     {
      "t": "Next",
-     "ms": 111
+     "ms": 138
     },
     {
      "t": "summer,",
-     "ms": 347
+     "ms": 486
     },
     {
      "t": "the",
-     "ms": 1194
+     "ms": 1475
     },
     {
      "t": "grasshopper",
-     "ms": 1277
+     "ms": 1579
     },
     {
      "t": "helped",
-     "ms": 1930
+     "ms": 2621
     },
     {
      "t": "the",
-     "ms": 2166
+     "ms": 2916
     },
     {
      "t": "ant",
-     "ms": 2402
+     "ms": 3246
     },
     {
      "t": "dig",
-     "ms": 2777
+     "ms": 3663
     },
     {
      "t": "and",
-     "ms": 3347
+     "ms": 4427
     },
     {
      "t": "carry.",
-     "ms": 3458
+     "ms": 4565
     }
    ],
    "audio": "p6.m4a",
-   "audioMs": 4420
+   "audioMs": 5740
   }
  ],
  "moral": {
   "spoken": "Do the work now, and later you will be glad.",
   "line": "I can dig.",
   "audio": "moral.m4a",
-  "audioMs": 3100
+  "audioMs": 3720
  },
  "prompts": {
   "yes:sun": {
    "audio": "yes-sun.m4a",
-   "ms": 1970
+   "ms": 2380
   },
   "word:sun": {
    "audio": "word-sun.m4a",
-   "ms": 940
+   "ms": 1180
   },
   "yes:sat": {
    "audio": "yes-sat.m4a",
-   "ms": 1940
+   "ms": 2400
   },
   "word:sat": {
    "audio": "word-sat.m4a",
-   "ms": 980
+   "ms": 1180
   },
   "yes:got": {
    "audio": "yes-got.m4a",
-   "ms": 1820
+   "ms": 2180
   },
   "word:got": {
    "audio": "word-got.m4a",
-   "ms": 840
+   "ms": 1080
   }
  }
 }

@@ -7,7 +7,7 @@ const mods = import.meta.glob("../../library/*/story.json", { eager: true, impor
 export const LIBRARY: Story[] = Object.values(mods).sort((a, b) => a.title.localeCompare(b.title));
 
 export const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
-export const AUDIO_V = "3";   // bump with any change to narration/timings or public/sounds so a cached install never pairs new timings with old audio
+export const AUDIO_V = "4";   // bump with any change to narration/timings or public/sounds so a cached install never pairs new timings with old audio
 export const storyAsset = (story: Story, file: string) => (story.tradition === "family" ? file : `${BASE}/library/${story.slug}/${file}?v=${AUDIO_V}`);
 export const promptAsset = (file: string) => `${BASE}/prompts/${file}?v=${AUDIO_V}`;
 

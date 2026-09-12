@@ -27,146 +27,146 @@
    "tokens": [
     {
      "t": "High",
-     "ms": 111
+     "ms": 156
     },
     {
      "t": "in",
-     "ms": 291
+     "ms": 399
     },
     {
      "t": "the",
-     "ms": 375
+     "ms": 503
     },
     {
      "t": "old",
-     "ms": 500
+     "ms": 625
     },
     {
      "t": "tree",
-     "ms": 763
+     "ms": 937
     },
     {
      "t": "lived",
-     "ms": 1250
+     "ms": 1701
     },
     {
      "t": "a",
-     "ms": 1583
+     "ms": 2326
     },
     {
      "t": "little",
-     "ms": 1638
+     "ms": 2413
     },
     {
      "t": "woodpecker.",
-     "ms": 2013
+     "ms": 2847
     },
     {
      "t": "All",
-     "ms": 3236
+     "ms": 4340
     },
     {
      "t": "day",
-     "ms": 3347
+     "ms": 4461
     },
     {
      "t": "long",
-     "ms": 3486
+     "ms": 4670
     },
     {
      "t": "he",
-     "ms": 3833
+     "ms": 5121
     },
     {
      "t": "went",
-     "ms": 3916
+     "ms": 5225
     },
     {
      "t": "tap,",
-     "ms": 4097
+     "ms": 5434
     },
     {
      "t": "tap,",
-     "ms": 4458
+     "ms": 5972
     },
     {
      "t": "tap.",
-     "ms": 4819
+     "ms": 6406
     }
    ],
    "audio": "p1.m4a",
-   "audioMs": 5640
+   "audioMs": 7370
   },
   {
    "art": "🐈",
    "tokens": [
     {
      "t": "Under",
-     "ms": 83
+     "ms": 104
     },
     {
      "t": "the",
-     "ms": 236
+     "ms": 295
     },
     {
      "t": "tree",
-     "ms": 319
+     "ms": 399
     },
     {
      "t": "a",
-     "ms": 625
+     "ms": 781
     },
     {
      "t": "cat",
-     "ms": 694
+     "ms": 868
     },
     {
      "t": "was",
-     "ms": 1319
+     "ms": 1597
     },
     {
      "t": "curled",
-     "ms": 1500
+     "ms": 1857
     },
     {
      "t": "up",
-     "ms": 1861
+     "ms": 2326
     },
     {
      "t": "in",
-     "ms": 2013
+     "ms": 2482
     },
     {
      "t": "the",
-     "ms": 2083
+     "ms": 2569
     },
     {
      "t": "grass.",
-     "ms": 2152
+     "ms": 2673
     },
     {
      "t": "The",
-     "ms": 3305
+     "ms": 4131
     },
     {
      "t": "noise",
-     "ms": 3361
+     "ms": 4201
     },
     {
      "t": "woke",
-     "ms": 3708
+     "ms": 4687
     },
     {
      "t": "her",
-     "ms": 3972
+     "ms": 5034
     },
     {
      "t": "up.",
-     "ms": 4125
+     "ms": 5243
     }
    ],
    "audio": "p2.m4a",
-   "audioMs": 4780
+   "audioMs": 6020
   },
   {
    "art": "🐈",
@@ -176,138 +176,138 @@
    "tokens": [
     {
      "t": "She",
-     "ms": 125
+     "ms": 138
     },
     {
      "t": "sat",
-     "ms": 277
+     "ms": 347
     },
     {
      "t": "up",
-     "ms": 611
+     "ms": 763
     },
     {
      "t": "and",
-     "ms": 1138
+     "ms": 1250
     },
     {
      "t": "looked",
-     "ms": 1263
+     "ms": 1458
     },
     {
      "t": "at",
-     "ms": 1472
+     "ms": 1718
     },
     {
      "t": "the",
-     "ms": 1555
+     "ms": 1788
     },
     {
      "t": "branches.",
-     "ms": 1625
+     "ms": 1875
     },
     {
      "t": "“Who",
-     "ms": 2902
+     "ms": 3437
     },
     {
      "t": "is",
-     "ms": 2944
+     "ms": 3524
     },
     {
      "t": "making",
-     "ms": 3083
+     "ms": 3697
     },
     {
      "t": "that",
-     "ms": 3388
+     "ms": 4097
     },
     {
      "t": "noise?”",
-     "ms": 3583
+     "ms": 4340
     },
     {
      "t": "she",
-     "ms": 4555
+     "ms": 5607
     },
     {
      "t": "wondered.",
-     "ms": 4750
+     "ms": 5833
     }
    ],
    "audio": "p3.m4a",
-   "audioMs": 5640
+   "audioMs": 6860
   },
   {
    "art": "🌰",
    "tokens": [
     {
      "t": "One",
-     "ms": 111
+     "ms": 138
     },
     {
      "t": "hard",
-     "ms": 277
+     "ms": 312
     },
     {
      "t": "tap,",
-     "ms": 583
+     "ms": 711
     },
     {
      "t": "and",
-     "ms": 1305
+     "ms": 1545
     },
     {
      "t": "a",
-     "ms": 1361
+     "ms": 1614
     },
     {
      "t": "nut",
-     "ms": 1388
+     "ms": 1649
     },
     {
      "t": "came",
-     "ms": 1611
+     "ms": 1961
     },
     {
      "t": "loose.",
-     "ms": 1916
+     "ms": 2378
     },
     {
      "t": "It",
-     "ms": 2916
+     "ms": 3645
     },
     {
      "t": "bounced",
-     "ms": 3027
+     "ms": 3784
     },
     {
      "t": "right",
-     "ms": 3416
+     "ms": 4340
     },
     {
      "t": "off",
-     "ms": 3611
+     "ms": 4704
     },
     {
      "t": "the",
-     "ms": 3777
+     "ms": 4947
     },
     {
      "t": "cat's",
-     "ms": 3847
+     "ms": 5052
     },
     {
      "t": "head.",
-     "ms": 4180
+     "ms": 5503
     },
     {
      "t": "Bonk!",
-     "ms": 4958
+     "ms": 6475
     }
    ],
    "audio": "p4.m4a",
-   "audioMs": 5740,
+   "audioMs": 7390,
    "magic": [
     "tap"
    ]
@@ -320,162 +320,162 @@
    "tokens": [
     {
      "t": "The",
-     "ms": 111
+     "ms": 156
     },
     {
      "t": "woodpecker",
-     "ms": 180
+     "ms": 243
     },
     {
      "t": "peeped",
-     "ms": 680
+     "ms": 972
     },
     {
      "t": "down.",
-     "ms": 1013
+     "ms": 1510
     },
     {
      "t": "“Sorry!”",
-     "ms": 1972
+     "ms": 2743
     },
     {
      "t": "The",
-     "ms": 3430
+     "ms": 4722
     },
     {
      "t": "cat",
-     "ms": 3513
+     "ms": 4791
     },
     {
      "t": "gave",
-     "ms": 4027
+     "ms": 5190
     },
     {
      "t": "the",
-     "ms": 4250
+     "ms": 5468
     },
     {
      "t": "nut",
-     "ms": 4305
+     "ms": 5555
     },
     {
      "t": "a",
-     "ms": 4527
+     "ms": 5885
     },
     {
      "t": "little",
-     "ms": 4569
+     "ms": 5954
     },
     {
      "t": "pat,",
-     "ms": 4847
+     "ms": 6284
     },
     {
      "t": "and",
-     "ms": 5777
+     "ms": 7517
     },
     {
      "t": "rolled",
-     "ms": 5958
+     "ms": 7743
     },
     {
      "t": "it",
-     "ms": 6222
+     "ms": 8055
     },
     {
      "t": "back",
-     "ms": 6305
+     "ms": 8194
     },
     {
      "t": "to",
-     "ms": 6583
+     "ms": 8559
     },
     {
      "t": "him.",
-     "ms": 6680
+     "ms": 8715
     }
    ],
    "audio": "p5.m4a",
-   "audioMs": 7320
+   "audioMs": 9530
   },
   {
    "art": "🌳",
    "tokens": [
     {
      "t": "Now,",
-     "ms": 83
+     "ms": 121
     },
     {
      "t": "when",
-     "ms": 347
+     "ms": 885
     },
     {
      "t": "the",
-     "ms": 444
+     "ms": 1041
     },
     {
      "t": "cat",
-     "ms": 527
+     "ms": 1163
     },
     {
      "t": "naps,",
-     "ms": 861
+     "ms": 1527
     },
     {
      "t": "she",
-     "ms": 1680
+     "ms": 2517
     },
     {
      "t": "picks",
-     "ms": 1930
+     "ms": 2829
     },
     {
      "t": "a",
-     "ms": 2166
+     "ms": 3177
     },
     {
      "t": "different",
-     "ms": 2222
+     "ms": 3246
     },
     {
      "t": "tree.",
-     "ms": 2527
+     "ms": 3628
     }
    ],
    "audio": "p6.m4a",
-   "audioMs": 3340
+   "audioMs": 4700
   }
  ],
  "moral": {
   "spoken": "Little noises can turn into big surprises.",
   "line": "Tap, tap. Pat, pat.",
   "audio": "moral.m4a",
-  "audioMs": 3170
+  "audioMs": 4200
  },
  "prompts": {
   "yes:tap": {
    "audio": "yes-tap.m4a",
-   "ms": 1970
+   "ms": 2500
   },
   "word:tap": {
    "audio": "word-tap.m4a",
-   "ms": 980
+   "ms": 1200
   },
   "yes:sat": {
    "audio": "yes-sat.m4a",
-   "ms": 1940
+   "ms": 2400
   },
   "word:sat": {
    "audio": "word-sat.m4a",
-   "ms": 980
+   "ms": 1180
   },
   "yes:pat": {
    "audio": "yes-pat.m4a",
-   "ms": 1730
+   "ms": 2140
   },
   "word:pat": {
    "audio": "word-pat.m4a",
-   "ms": 840
+   "ms": 980
   }
  }
 }

@@ -24,67 +24,67 @@
    "tokens": [
     {
      "t": "A",
-     "ms": 97
+     "ms": 121
     },
     {
      "t": "boy",
-     "ms": 152
+     "ms": 190
     },
     {
      "t": "looked",
-     "ms": 388
+     "ms": 468
     },
     {
      "t": "after",
-     "ms": 902
+     "ms": 972
     },
     {
      "t": "sheep",
-     "ms": 1138
+     "ms": 1284
     },
     {
      "t": "on",
-     "ms": 1458
+     "ms": 1718
     },
     {
      "t": "a",
-     "ms": 1583
+     "ms": 1892
     },
     {
      "t": "hill.",
-     "ms": 1611
+     "ms": 1944
     },
     {
      "t": "It",
-     "ms": 2458
+     "ms": 2986
     },
     {
      "t": "was",
-     "ms": 2527
+     "ms": 3090
     },
     {
      "t": "quiet,",
-     "ms": 2666
+     "ms": 3229
     },
     {
      "t": "and",
-     "ms": 3736
+     "ms": 4409
     },
     {
      "t": "he",
-     "ms": 3791
+     "ms": 4496
     },
     {
      "t": "was",
-     "ms": 3916
+     "ms": 4652
     },
     {
      "t": "bored.",
-     "ms": 4069
+     "ms": 4843
     }
    ],
    "audio": "p1.m4a",
-   "audioMs": 4940
+   "audioMs": 6000
   },
   {
    "art": "🐺",
@@ -94,59 +94,59 @@
    "tokens": [
     {
      "t": "For",
-     "ms": 152
+     "ms": 173
     },
     {
      "t": "fun,",
-     "ms": 277
+     "ms": 295
     },
     {
      "t": "he",
-     "ms": 652
+     "ms": 781
     },
     {
      "t": "shouted,",
-     "ms": 847
+     "ms": 1006
     },
     {
      "t": "“Wolf!",
-     "ms": 1708
+     "ms": 2187
     },
     {
      "t": "Wolf!”",
-     "ms": 2625
+     "ms": 3385
     },
     {
      "t": "The",
-     "ms": 3458
+     "ms": 4392
     },
     {
      "t": "village",
-     "ms": 3527
+     "ms": 4479
     },
     {
      "t": "people",
-     "ms": 3944
+     "ms": 4982
     },
     {
      "t": "ran",
-     "ms": 4333
+     "ms": 5468
     },
     {
      "t": "up",
-     "ms": 4625
+     "ms": 5798
     },
     {
      "t": "the",
-     "ms": 4736
+     "ms": 5920
     },
     {
      "t": "hill.",
-     "ms": 4805
+     "ms": 6024
     }
    ],
    "audio": "p2.m4a",
-   "audioMs": 5640
+   "audioMs": 7030
   },
   {
    "art": "😜",
@@ -156,118 +156,118 @@
    "tokens": [
     {
      "t": "There",
-     "ms": 125
+     "ms": 156
     },
     {
      "t": "was",
-     "ms": 194
+     "ms": 243
     },
     {
      "t": "no",
-     "ms": 333
+     "ms": 399
     },
     {
      "t": "wolf.",
-     "ms": 638
+     "ms": 677
     },
     {
      "t": "The",
-     "ms": 1638
+     "ms": 1840
     },
     {
      "t": "boy",
-     "ms": 1680
+     "ms": 1892
     },
     {
      "t": "laughed.",
-     "ms": 1888
+     "ms": 2170
     },
     {
      "t": "He",
-     "ms": 2861
-    },
-    {
-     "t": "did",
-     "ms": 2902
-    },
-    {
-     "t": "it",
-     "ms": 3041
-    },
-    {
-     "t": "again",
-     "ms": 3111
-    },
-    {
-     "t": "the",
      "ms": 3402
     },
     {
+     "t": "did",
+     "ms": 3472
+    },
+    {
+     "t": "it",
+     "ms": 3663
+    },
+    {
+     "t": "again",
+     "ms": 3750
+    },
+    {
+     "t": "the",
+     "ms": 4097
+    },
+    {
      "t": "next",
-     "ms": 3444
+     "ms": 4184
     },
     {
      "t": "day.",
-     "ms": 3722
+     "ms": 4548
     }
    ],
    "audio": "p3.m4a",
-   "audioMs": 4510
+   "audioMs": 5520
   },
   {
    "art": "🐺",
    "tokens": [
     {
      "t": "Then",
-     "ms": 111
+     "ms": 138
     },
     {
      "t": "a",
-     "ms": 194
+     "ms": 277
     },
     {
      "t": "real",
-     "ms": 263
+     "ms": 381
     },
     {
      "t": "wolf",
-     "ms": 694
+     "ms": 920
     },
     {
      "t": "came.",
-     "ms": 972
+     "ms": 1284
     },
     {
      "t": "The",
-     "ms": 1847
+     "ms": 2395
     },
     {
      "t": "boy",
-     "ms": 1916
+     "ms": 2465
     },
     {
      "t": "shouted,",
-     "ms": 2138
+     "ms": 2760
     },
     {
      "t": "“Wolf!”",
-     "ms": 2958
+     "ms": 3958
     },
     {
      "t": "But",
-     "ms": 3972
+     "ms": 5156
     },
     {
      "t": "nobody",
-     "ms": 4041
+     "ms": 5260
     },
     {
      "t": "came.",
-     "ms": 4444
+     "ms": 5763
     }
    ],
    "audio": "p4.m4a",
-   "audioMs": 5330
+   "audioMs": 6840
   },
   {
    "art": "🐑",
@@ -277,138 +277,138 @@
    "tokens": [
     {
      "t": "The",
-     "ms": 125
+     "ms": 156
     },
     {
      "t": "wolf",
-     "ms": 208
+     "ms": 277
     },
     {
      "t": "chased",
-     "ms": 583
+     "ms": 833
     },
     {
      "t": "the",
-     "ms": 1000
+     "ms": 1371
     },
     {
      "t": "sheep",
-     "ms": 1069
+     "ms": 1440
     },
     {
      "t": "away.",
-     "ms": 1375
+     "ms": 1822
     },
     {
      "t": "The",
-     "ms": 2291
+     "ms": 2934
     },
     {
      "t": "boy",
-     "ms": 2347
+     "ms": 2986
     },
     {
      "t": "was",
-     "ms": 2541
+     "ms": 3211
     },
     {
      "t": "not",
-     "ms": 2680
+     "ms": 3402
     },
     {
      "t": "happy",
-     "ms": 2916
+     "ms": 3663
     },
     {
      "t": "now.",
-     "ms": 3236
+     "ms": 4045
     }
    ],
    "audio": "p5.m4a",
-   "audioMs": 4059
+   "audioMs": 5060
   },
   {
    "art": "👵",
    "tokens": [
     {
      "t": "“When",
-     "ms": 194
+     "ms": 225
     },
     {
      "t": "you",
-     "ms": 263
+     "ms": 295
     },
     {
      "t": "trick",
-     "ms": 375
+     "ms": 416
     },
     {
      "t": "people,”",
-     "ms": 750
+     "ms": 885
     },
     {
      "t": "said",
-     "ms": 1694
+     "ms": 2065
     },
     {
      "t": "his",
-     "ms": 1944
+     "ms": 2395
     },
     {
      "t": "grandmother,",
-     "ms": 2069
+     "ms": 2552
     },
     {
      "t": "“they",
-     "ms": 3194
+     "ms": 4045
     },
     {
      "t": "stop",
-     "ms": 3333
+     "ms": 4236
     },
     {
      "t": "believing",
-     "ms": 3763
+     "ms": 4739
     },
     {
      "t": "you.”",
-     "ms": 4430
+     "ms": 5520
     }
    ],
    "audio": "p6.m4a",
-   "audioMs": 5140
+   "audioMs": 6410
   }
  ],
  "moral": {
   "spoken": "If you keep telling lies, people will not believe you when it matters.",
   "line": "It is a sad kid.",
   "audio": "moral.m4a",
-  "audioMs": 4440
+  "audioMs": 5570
  },
  "prompts": {
   "yes:ran": {
    "audio": "yes-ran.m4a",
-   "ms": 1900
+   "ms": 2450
   },
   "word:ran": {
    "audio": "word-ran.m4a",
-   "ms": 910
+   "ms": 1130
   },
   "yes:did": {
    "audio": "yes-did.m4a",
-   "ms": 1700
+   "ms": 2180
   },
   "word:did": {
    "audio": "word-did.m4a",
-   "ms": 820
+   "ms": 960
   },
   "yes:not": {
    "audio": "yes-not.m4a",
-   "ms": 1850
+   "ms": 2330
   },
   "word:not": {
    "audio": "word-not.m4a",
-   "ms": 890
+   "ms": 1130
   }
  }
 }
