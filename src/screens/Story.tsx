@@ -208,7 +208,7 @@ export function StoryScreen({ story, mode, resume, onHome }: { story: Story; mod
       )}
 
       {state === "moral" && <Moral story={story} learner={learner} listener={listener} kid={kid.name} reader={reader} listen={listen} bedtime={bedtime} setCaption={setCaption} buildWord={fam.pendingBuild ?? designed(ctx.results).find((r) => r.ok && r.mode === "first_try")?.word ?? null} onBuilt={(w, ok) => fam.encodingDone(story.slug, w, ok)} onYes={() => send({ type: "LINE_YES" })} />}
-      {state === "done" && <Done story={story} results={ctx.results} bedtime={bedtime} kid={kid.name} learner={learner} onHome={home} />}
+      {state === "done" && <Done story={story} results={ctx.results} bedtime={bedtime} kid={kid.name} learner={learner} listenOnly={listener} onHome={home} />}
 
       <div className="cap" aria-live="polite">{caption}</div>
       {fam.toast && <div className="toast" role="status">{fam.toast}</div>}
@@ -406,7 +406,7 @@ function Moral({ story, learner, listener, kid, reader, listen, bedtime, setCapt
 }
 
 /** Specific feedback, not a trophy: what the child actually did with each word. */
-function Done({ story, results, bedtime, kid, learner, onHome }: { story: Story; results: WordResult[]; bedtime: boolean; kid: string; learner: LearnerModel; onHome: () => void }) {
+function Done({ story, results, bedtime, kid, learner, listenOnly, onHome }: { story: Story; results: WordResult[]; bedtime: boolean; kid: string; learner: LearnerModel; listenOnly: boolean; onHome: () => void }) {
   const ok = results.filter((r) => r.ok);
   const tried = volunteered(results);
   const later = designed(results).filter((r) => !r.ok);
@@ -420,11 +420,11 @@ function Done({ story, results, bedtime, kid, learner, onHome }: { story: Story;
   };
   return (
     <main className="done">
-      {!bedtime && ok.length > 0 && <Confetti />}
+      {!bedtime && (ok.length > 0 || listenOnly) && <Confetti />}
       <div className="badge rise">{bedtime ? <MoonIcon size={84} /> : <Art art={story.pages[0].art} />}</div>
       <h2 className="rise">{story.title}</h2>
       {ok.length > 0 && <ul className="results">{ok.map((r, i) => <li key={(r.id ?? r.word) + i} className="ok">{line(r)}</li>)}</ul>}
-      <p className="show">{bedtime ? "Lights low. One real book, then sleep." : ok.length ? `Now go find someone and read them your ${ok.length === 1 ? "word" : "words"}, ${kid}!` : `Good listening, ${kid}. Those words come back tomorrow for a warm-up.`}</p>
+      <p className="show">{bedtime ? "Lights low. One real book, then sleep." : listenOnly ? `A whole story, ${kid}! Tell someone what happened.` : ok.length ? `Now go find someone and read them your ${ok.length === 1 ? "word" : "words"}, ${kid}!` : `Good listening, ${kid}. Those words come back tomorrow for a warm-up.`}</p>
       {!bedtime && ok.length > 0 && <p className="bigwords">{ok.map((r, i) => <span key={(r.id ?? r.word) + i}>{r.word}</span>)}</p>}
       {tried.length > 0 && <p className="note">…and {kid} asked to try <b>{tried.map((r) => r.word).join(", ")}</b> without being asked.</p>}
       <div className="btns"><button className="yes" onClick={onHome}><CheckIcon /> Done</button></div>
