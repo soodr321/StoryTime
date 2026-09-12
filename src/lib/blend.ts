@@ -14,7 +14,8 @@ import { soundSource, soundVersion } from "./sounds";
 
 export const CONTINUANTS = new Set(["s", "ss", "f", "ff", "m", "n", "l", "ll", "r", "h"]);
 export const VOWELS = new Set(["a", "e", "i", "o", "u"]);
-const TARGET_MS = (g: string) => (CONTINUANTS.has(g) ? 450 : VOWELS.has(g) ? 320 : 0);
+// a model is a stretch, not a reading: a teacher holds each sound about half a second
+const TARGET_MS = (g: string) => (CONTINUANTS.has(g) ? 520 : VOWELS.has(g) ? 420 : 0);
 const LOOP_EDGE = 0.03;   // seconds kept out of the loop region at each end of a continuant
 
 let ctx: AudioContext | null = null;
@@ -63,7 +64,8 @@ export function timeline(graphemes: string[], dur: (g: string) => number, rate =
   graphemes.forEach((g, i) => {
     const clip = dur(g);
     const kind = CONTINUANTS.has(g) ? "continuant" : VOWELS.has(g) ? "vowel" : "stop";
-    const hold = kind === "continuant" ? TARGET_MS(g) / rate / 1000 : kind === "vowel" ? Math.min(clip, TARGET_MS(g) / rate / 1000) : clip;
+    // vowels are cut from a steady window, so they can be looped to the target like a continuant
+    const hold = kind === "stop" ? clip : TARGET_MS(g) / rate / 1000;
     const fade = kind === "stop" ? 0 : Math.min(0.07, hold / 3, i + 1 < graphemes.length ? Math.max(0.01, dur(graphemes[i + 1]) / 3) : 0.07);
     slots.push({ g, start: t, hold });
     t += kind === "stop" ? hold : hold - fade;   // the next sound starts inside this one's fade; after a burst it starts right away
@@ -90,7 +92,7 @@ export async function playBlend(graphemes: string[], opts: BlendOpts = {}): Prom
         const gain = ctx!.createGain(); src.connect(gain); gain.connect(ctx!.destination);
         const at = t0 + s.start; const stop = CONTINUANTS.has(s.g) || VOWELS.has(s.g);
         const fade = stop ? Math.min(0.07, s.hold / 3) : 0;
-        if (CONTINUANTS.has(s.g) && bufs[i].duration > LOOP_EDGE * 3) { src.loop = true; src.loopStart = LOOP_EDGE; src.loopEnd = bufs[i].duration - LOOP_EDGE; }   // a 180 ms "sss" held for 450 ms
+        if ((CONTINUANTS.has(s.g) || VOWELS.has(s.g)) && bufs[i].duration > LOOP_EDGE * 3 && s.hold > bufs[i].duration) { src.loop = true; src.loopStart = LOOP_EDGE; src.loopEnd = bufs[i].duration - LOOP_EDGE; }   // a 180 ms "sss" or a 190 ms "a" held to the target
         gain.gain.setValueAtTime(i === 0 || !stop ? 1 : 0.0001, at);
         if (i > 0 && stop) gain.gain.exponentialRampToValueAtTime(1, at + fade);
         if (stop) { gain.gain.setValueAtTime(1, at + s.hold - fade); gain.gain.exponentialRampToValueAtTime(0.0001, at + s.hold); }

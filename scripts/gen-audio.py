@@ -24,7 +24,7 @@ except ImportError:
 
 ROOT = Path(__file__).resolve().parents[1]
 LIB, PUB = ROOT / "library", ROOT / "public"
-NANI, RATE = "en-US-AndrewMultilingualNeural", "-10%"   # US voice (owner 2026-09-11); Jenny = en-US-JennyNeural
+NANI, RATE = "en-US-AndrewMultilingualNeural", "-28%"   # US voice; slow enough for a 4-year-old to follow the words (~130 wpm, owner 2026-09-11)
 
 def ffmpeg():
     f = shutil.which("ffmpeg")

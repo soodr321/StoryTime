@@ -29,7 +29,7 @@ export function WarmUpScreen({ onDone }: { onDone: () => void }) {
   const together = async () => {
     setModelling(true); setModelledOnce(true); const gs = checkWord(word, learner).graphemes;
     setCaption(`${stretched(gs)} … now you: slide through it.`);
-    await playBlend(gs, { onProgress: setSweep }); setModelling(false); setSweep(0);
+    await playBlend(gs, { rate: (settings.bedtime ? 0.88 : 1) * (settings.pace === "normal" ? 1 : 0.85), onProgress: setSweep }); setModelling(false); setSweep(0);
   };
 
   if (!kid || !word) return <main className="home-screen"><p className="note">Nothing to warm up today.</p><button className="yes" onClick={onDone}>Start the story</button></main>;

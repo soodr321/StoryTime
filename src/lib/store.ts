@@ -47,6 +47,7 @@ export interface Settings {
   onboarded?: boolean;
   activeKid?: string;
   voiceFollow?: boolean;   // experimental: "I read" follows the grown-up's voice (audio goes to Apple/Google while on)
+  pace?: "slower" | "normal";   // how fast the story is read aloud and how long each sound is held
 }
 
 const K = { kids: "st:kids", settings: "st:settings", customs: "st:custom-stories" };

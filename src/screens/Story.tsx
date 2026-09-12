@@ -64,7 +64,8 @@ export function StoryScreen({ story, mode, resume, onHome }: { story: Story; mod
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ctx.page, ctx.results.length, state]);
 
-  const rate = bedtime ? 0.88 : 1;
+  // one knob for everything the app says: the narration, the blend model and the spoken prompts
+  const rate = (bedtime ? 0.88 : 1) * (fam.settings.pace === "normal" ? 1 : 0.85);
   const speak = useCallback(async (src: string | null, text?: string) => {
     if (text) setCaption(text);
     playing.current?.stop();

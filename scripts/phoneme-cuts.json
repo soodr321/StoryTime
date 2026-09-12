@@ -1,5 +1,5 @@
 {
- "_note": "start/end in ms into the pinned original (assets/phonemes-src/<src>.ogg, sha256 in sources.json). Chosen from 10 ms energy/voicing maps: continuants = the steady sound before any vowel transition; vowels = the steady middle; stops = burst + a short release. fade in/out in ms. Listening is the gate: see docs/plan-v2.md A1.",
+ "_note": "start/end in ms into the pinned original (assets/phonemes-src/<src>.ogg, sha256 in sources.json). Vowels are cut from the first steady window: these recordings drift up in pitch towards the end, and a word must sound like ONE person. Loudness is matched by RMS (bursts by peak) so the blend does not jump. Verified by scripts/cut-phonemes.py --check against public/sounds/quality.json.",
  "s": {
   "src": "s",
   "start": 262,
@@ -58,42 +58,42 @@
  },
  "a": {
   "src": "a",
-  "start": 100,
-  "end": 400,
+  "start": 60,
+  "end": 250,
   "fadeIn": 8,
-  "fadeOut": 20,
+  "fadeOut": 25,
   "kind": "vowel"
  },
  "e": {
   "src": "e",
-  "start": 100,
-  "end": 400,
+  "start": 60,
+  "end": 310,
   "fadeIn": 8,
-  "fadeOut": 20,
+  "fadeOut": 25,
   "kind": "vowel"
  },
  "i": {
   "src": "i",
-  "start": 80,
-  "end": 380,
+  "start": 40,
+  "end": 230,
   "fadeIn": 8,
-  "fadeOut": 20,
+  "fadeOut": 25,
   "kind": "vowel"
  },
  "o": {
-  "src": "o-us",
-  "start": 80,
-  "end": 380,
+  "src": "o",
+  "start": 40,
+  "end": 290,
   "fadeIn": 8,
-  "fadeOut": 20,
+  "fadeOut": 25,
   "kind": "vowel"
  },
  "u": {
   "src": "u",
-  "start": 80,
-  "end": 380,
+  "start": 40,
+  "end": 290,
   "fadeIn": 8,
-  "fadeOut": 20,
+  "fadeOut": 25,
   "kind": "vowel"
  },
  "t": {
