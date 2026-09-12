@@ -1,6 +1,13 @@
 # state — morning summary (2026-09-11)
 
 **Design:** direction A "warm storybook" applied 2026-09-11 (commit a925b31): Baloo 2 + Literata self-hosted, paper ground, glow hero card, SVG icons and fox/crow mascots, stars, tonight strip, done badge. Canvas: https://claude.ai/code/artifact/d29dd5ae-7522-48b2-b17e-993f2af20b54 · working files in design/.
+**Sound fixes + audit plan (2026-09-11, late):** docs/audit-plan.md.
+- The fallback phoneme clips were **four different voices**: 112-394 Hz across the voiced set, with `o` at 334 Hz (an octave above the rest, in dog/got/pot/not) and `e` changing voice inside the clip. Every vowel is now cut from its first steady window and `o` comes from the same speaker: **117-158 Hz**, drift under 26 Hz. Loudness matched by RMS instead of peak (8.6 dB spread -> 3.6 dB). Gated by scripts/phoneme-quality.test.ts; scripts/audit/render-blend.py renders a word the way the app schedules it and reports pitch continuity (sat 1%, cup 7%, pin 13%, dog 30%).
+- The narration ran at **166 words per minute**; an adult reads aloud at ~150 and shared reading with a 4-year-old is 100-120. Re-rendered at **133 wpm**, and a **Reading pace** control in Settings (default slower, 0.85x = 113 wpm) also stretches the blend model. Gated by scripts/narration-rate.test.ts.
+- "I read" was proved silent by an audio probe, so the speed complaint was about the recorded narration and the blend, which is what changed.
+- Audio version bumped to v4 so an installed phone does not keep the old clips.
+**Audit plan:** docs/audit-plan.md - four instruments (flow driver, audio probe, signal analyser, state prober), twelve areas, numeric pass criteria, and the rule that a defect the family reports must leave a number behind. Not yet executed beyond the sound sections.
+
 **Plan v5 (2026-09-11, night) built:** docs/plan-v5.md. Two Opus reviews (docs/reviews/opus-*-v5 in the session transcript) plus a hands-on pass in a 390x844 viewport, corrected by Grok (docs/reviews/grok-plan-v5.md). Landed, in Grok's order:
 - **a story on night one.** A reader with fewer than four sounds now gets a real book read to them (pinned set-1 story, listener-shaped page prompts, honest copy). `recordFinish({listenOnly})` stamps the ritual but leaves `timesFinished` 0, so the first decoding night still meets that book as new. Before this, nights 1-3 had no story at all.
 - **the build's evidence survived nothing.** `recordEncoding` returned early when the story had no progress row yet, which is exactly the first-read case the picker prefers, so `readyToAdvance` could never turn true. Fixed, with the first tests for the write path (idb-keyval mocked).
@@ -17,7 +24,7 @@
 **Plan v4 (2026-09-11 evening) built:** docs/plan-v2.md, reviews in docs/reviews/grok-plan-v2.md and gpt-plan-v3.md. Phoneme clips hand-cut from pinned Commons originals (WAV, bursts only for stops); blend on a decoded-length timeline; family-voice sound recorder (Settings → Record the sounds); finger-follow under the line in "I read"; one "I'll try" word per page; tap-as-you-listen timings for family stories; voice follow behind Settings → Experimental (audio to Apple/Google while on); narrator now en-US Andrew; audio URLs versioned (v=3).
 **Owner to test on the phone:** (1) tap s, t, m tiles and blend sat/pin/dog/puff at normal and bedtime rate: the cuts were chosen from voicing maps, not by ear; (2) record the 18 sounds in your voice, which replaces the fallback clips; (3) slide a finger under a line in "I read"; (4) the experimental "Follow my voice" chip in the Safari tab and from the home-screen app.
 **Not done from plan v4:** timing taps for family stories recorded before today (only new recordings get the tap-along); voice follow wrong-word measurement (owner's phone).
-**Version:** v20 · 33 commits · 111 tests green · https://github.com/soodr321/StoryTime
+**Version:** v21 · 37 commits · 111 tests green · https://github.com/soodr321/StoryTime
 **Stable URL:** https://soodr321.github.io/StoryTime/
 **Vercel (production, public):** https://storytime-coral.vercel.app — project "storytime" in the owner's account, deployment protection off; redeploy with `npm run deploy:vercel`.
 **Reviews folded in (14):** engineering — Gemini v2, Grok v3, Gemini v5, Grok v6, GPT-5.6 v7; teacher loops — loop 1 GPT/Grok/Gemini, loop 2 GPT/Grok/Gemini, loop 3 GPT/Grok/Gemini. Transcripts in docs/reviews/.
