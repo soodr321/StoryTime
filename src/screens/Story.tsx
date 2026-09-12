@@ -215,7 +215,7 @@ export function StoryScreen({ story, mode, resume, onHome }: { story: Story; mod
       {state === "moral" && <Moral story={story} learner={learner} listener={listener} kid={kid.name} reader={reader} listen={listen} bedtime={bedtime} rate={rate} setCaption={setCaption} buildWord={fam.pendingBuild ?? designed(ctx.results).find((r) => r.ok && r.mode === "first_try")?.word ?? null} onBuilt={(w, ok) => fam.encodingDone(story.slug, w, ok)} onYes={() => send({ type: "LINE_YES" })} />}
       {state === "done" && <Done story={story} results={ctx.results} bedtime={bedtime} kid={kid.name} learner={learner} listenOnly={listener} onHome={home} />}
 
-      <div className="cap" aria-live="polite">{caption}</div>
+      <div className={"cap" + (caption ? "" : " empty")} aria-live="polite">{caption}</div>
       {fam.toast && <div className="toast" role="status">{fam.toast}</div>}
     </div>
   );

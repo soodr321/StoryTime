@@ -100,6 +100,7 @@ main { flex: 1; display: flex; flex-direction: column; padding: 8px 14px 14px; g
 .results li.no { background: #fff0d8; color: #7a4a12; }
 
 /* caption bar: the spoken line, for the grown-up */
+.cap.empty { min-height: 0; padding: 0; background: none; }   /* an empty black strip at the foot of a bedtime screen is just a bar */
 .cap { position: fixed; left: 0; right: 0; bottom: 0; min-height: var(--capH); padding: 8px 16px calc(8px + env(safe-area-inset-bottom)); background: rgba(43, 36, 24, .92); color: #fff; font-family: system-ui, sans-serif; font-size: 15px; display: flex; align-items: center; z-index: 4; }
 
 @media (min-width: 700px) and (orientation: landscape) {
