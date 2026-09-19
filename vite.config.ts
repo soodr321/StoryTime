@@ -53,15 +53,22 @@ export default defineConfig({
         ],
       },
       workbox: {
-        // App shell is precached. Library audio is cache-on-play with a small LRU so the
-        // audio cache can never push the origin over iOS quota and evict IndexedDB.
+        // App shell is precached. Library audio is cache-on-play with an LRU so the audio cache
+        // can never push the origin over iOS quota and evict IndexedDB. maxEntries must stay
+        // ABOVE the shipped inventory (plan-voice.md G3) or the LRU thrashes and nothing is
+        // reliably offline: today that inventory is 392 files (219 library m4a + 18 sounds wav +
+        // 8 prompts m4a + 147 blend m4a) against a 120-entry cap. Budget for the inventory AFTER
+        // this plan lands — 392 + 66 Teach chip words (C3's word:{w} prompts) + 8 tricky-word
+        // clips (C5) = 466 — plus headroom, not today's smaller number: keep this in sync with
+        // AUDIO_CACHE_NAME in src/lib/library.ts (see the sync test in
+        // src/lib/audioCache.test.ts).
         globPatterns: ["**/*.{js,css,html,png,svg,json,woff2}"],
         globIgnores: ["library/**", "prompts/**", "blends/**"],
         runtimeCaching: [
           {
             urlPattern: ({ url }) => /\/(library|prompts|sounds|blends)\/.*\.(m4a|mp3|wav|json)$/.test(url.pathname),
             handler: "CacheFirst",
-            options: { cacheName: "storytime-audio-v6", expiration: { maxEntries: 120, maxAgeSeconds: 60 * 60 * 24 * 30 } },
+            options: { cacheName: "storytime-audio-v6", expiration: { maxEntries: 520, maxAgeSeconds: 60 * 60 * 24 * 30 } },
           },
         ],
       },

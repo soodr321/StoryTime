@@ -8,6 +8,10 @@ export const LIBRARY: Story[] = Object.values(mods).sort((a, b) => a.title.local
 
 export const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
 export const AUDIO_V = "6";   // bump with any change to narration/timings or public/sounds so a cached install never pairs new timings with old audio
+/** The Workbox runtime-cache name for library/prompts/sounds/blends audio (vite.config.ts). Kept
+ * here, not just there, so a page-level helper (src/lib/audioCache.ts) can open the exact same
+ * cache Workbox's CacheFirst route reads from; a vitest checks the two stay in sync. */
+export const AUDIO_CACHE_NAME = `storytime-audio-v${AUDIO_V}`;
 export const storyAsset = (story: Story, file: string) => (story.tradition === "family" ? file : `${BASE}/library/${story.slug}/${file}?v=${AUDIO_V}`);
 export const promptAsset = (file: string) => `${BASE}/prompts/${file}?v=${AUDIO_V}`;
 /** the "slide through the word" model: the narration voice saying that word slowly (scripts/gen-blends.py) */
