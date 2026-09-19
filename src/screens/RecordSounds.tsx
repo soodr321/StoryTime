@@ -111,7 +111,7 @@ export function RecordSoundsScreen({ onDone }: { onDone: () => void }) {
         )}
         {have.has(clip) && !draft && <button className="linkbtn" onClick={useFallback}>use the built-in recording instead</button>}
       </section>
-      <p className="legend">Each sound plays in the word cards, the slide-through model and the teach routine. Until you record your own, the app uses {pack ? `${pack.title.toLowerCase()} — ${pack.attribution}, ${pack.license}` : "its built-in recordings"}, cut to the bare sound.</p>
+      <p className="legend">Each sound plays in the word cards, the slide-through model and the teach routine. Until you record your own, the app uses the built-in set. {pack?.credit}</p>
       <button className="linkbtn" onClick={onDone}>Done for now →</button>
     </main>
   );

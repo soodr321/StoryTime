@@ -10,11 +10,11 @@ this; nobody has to record again.
     python3 scripts/import-voice-pack.py            # process and report
     python3 scripts/import-voice-pack.py --check    # report only, change nothing
 """
-import json, shutil, subprocess, sys
+import json, os, shutil, subprocess, sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-RAW = ROOT / "assets" / "voice-pack"
+RAW = Path(os.environ.get("VOICE_PACK", ROOT / "assets" / "voice-pack"))
 OUT = ROOT / "public" / "sounds"
 TARGET_RMS_DB = -17.0
 
@@ -54,9 +54,53 @@ def trim(x, sr, keep_ms=40, floor=0.08):
     while b>a and env[b]<thr: b -= 1
     return max(0, a*10-keep_ms), min(len(x)*1000//sr, (b+1)*10+keep_ms)
 
+def burst_ms(path, start, end):
+    """where the stop's release begins and ends, measured rather than assumed: the 5 ms frames inside
+    the trimmed sound that carry real energy. Returns (burst, last)."""
+    m = measure(path, start, end)
+    if not m: return None
+    import numpy as np
+    sr, x = m["sr"], np.array(m["x"])
+    hop = max(1, sr // 200)
+    n = len(x) // hop
+    if n < 3: return None
+    e = np.array([float(np.sqrt((x[k*hop:(k+1)*hop] ** 2).mean())) for k in range(n)])
+    on = np.where(e > e.max() * 0.12)[0]
+    return (start + int(on[0]) * 5, start + int(on[-1]) * 5) if len(on) else None
+
+def steadiest(path, start, end, want=300, step=20):
+    """the window whose spectrum matches itself best, so the vowel does not slide under the child"""
+    want = min(want, end - start)
+    best, span = -1.0, (start, min(end, start + want))
+    for a in range(start, end - want + 1, step):
+        sc = _steady(path, a, a + want)
+        if sc > best: best, span = sc, (a, a + want)
+    return span
+
+def _steady(path, a, b):
+    """Exactly the measure the gate applies (scripts/audit/phonetics.py): the spectral envelope of
+    the middle three-quarters, in thirds, compared with itself. Searching with a different measure
+    optimised the wrong thing and made /e/ worse."""
+    import numpy as np
+    m = measure(path, a, b)
+    if not m: return 0.0
+    sr, x = m["sr"], np.array(m["x"])
+    lo, hi = int(len(x) * 0.12), int(len(x) * 0.88)
+    core = x[lo:hi]
+    third = len(core) // 3
+    if third < 80: return 0.0
+    edges = np.geomspace(180, 5000, 25)
+    def spec(seg):
+        mag = np.abs(np.fft.rfft(seg * np.hamming(len(seg)), 1024))
+        fr = np.fft.rfftfreq(1024, 1 / sr)
+        return np.array([mag[(fr >= edges[k]) & (fr < edges[k + 1])].sum() for k in range(len(edges) - 1)]) ** 0.5
+    A, B, C = spec(core[:third]), spec(core[third:2 * third]), spec(core[2 * third:3 * third])
+    cos = lambda u, v: float(u @ v / max(1e-9, np.linalg.norm(u) * np.linalg.norm(v)))
+    return min(cos(A, B), cos(B, C), cos(A, C))
+
 def main():
     check = "--check" in sys.argv
-    takes = sorted(RAW.glob("*.webm")) + sorted(RAW.glob("*.m4a")) + sorted(RAW.glob("*.wav"))
+    takes = sorted(RAW.glob("*.webm")) + sorted(RAW.glob("*.m4a")) + sorted(RAW.glob("*.wav")) + sorted(RAW.glob("*.mp3"))
     if not takes: sys.exit(f"no recordings in {RAW} — record them in the app first (dev server)")
     man = json.loads((OUT / "manifest.json").read_text()) if (OUT / "manifest.json").exists() else {}
     kinds = {g: man.get(g, {}).get("kind", "continuant") for g in [t.stem for t in takes]}
@@ -68,8 +112,22 @@ def main():
         cut = trim(m["x"], m["sr"])
         if not cut: report.append((g, "silent — hold the phone closer")); continue
         start, end = cut
-        if end - start > 1400: report.append((g, f"{end-start} ms is a word, not a sound")); continue
+        if end - start > 1600: report.append((g, f"{end-start} ms is a word, not a sound")); continue
         if end - start < 60: report.append((g, f"{end-start} ms is too short")); continue
+        # A vowel recorded by a person drifts; the app needs the part that holds still, because a
+        # child blends a steady target. Search for the steadiest window inside the trimmed sound.
+        # A stop is its burst and the release. A voiceless stop cannot sound like "tuh" however long
+        # its aspiration runs, because there is no voice in it - so it keeps its whole release. A
+        # voiced stop is different: its voicing is what makes /b/ a /b/ rather than /p/, but 200 ms of
+        # it IS "buh", so it is cut to a short voiced release.
+        if kinds.get(g) == "stop":
+            span = burst_ms(t, start, end)
+            if span is not None:
+                burst, last = span
+                start = max(0, burst - 10)
+                end = min(end, burst + 90) if g in ("b", "d", "g") else min(end, last + 15)
+        if kinds.get(g) == "vowel" and end - start > 200:
+            start, end = steadiest(t, start, end, want=max(140, min(320, end - start - 70)))
         seg = measure(t, start, end)
         gain = TARGET_RMS_DB - seg["rms_db"]
         if seg["peak_db"] + gain > -1.0: gain = -1.0 - seg["peak_db"]

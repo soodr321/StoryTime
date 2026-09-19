@@ -1,6 +1,6 @@
 {
  "_note": "Which recorded sound set the app ships, and what we are allowed to do with it. Switch with `npm run sounds:build <pack>`; the shipped manifest records which pack it came from, and the deploy scripts refuse a pack we may not redistribute.",
- "active": "commons",
+ "active": "soundcity",
  "packs": {
   "commons": {
    "title": "Wikimedia Commons phonetics recordings",
@@ -8,7 +8,8 @@
    "license": "CC BY-SA 3.0",
    "redistributable": true,
    "source": "assets/phonemes-src",
-   "builder": "scripts/cut-phonemes.py"
+   "builder": "scripts/cut-phonemes.py",
+   "credit": "Letter sounds from Wikimedia Commons phonetics recordings, CC BY-SA 3.0."
   },
   "family": {
    "title": "Recorded at home",
@@ -16,16 +17,18 @@
    "license": "The family's own recordings",
    "redistributable": true,
    "source": "assets/voice-pack",
-   "builder": "scripts/import-voice-pack.py"
+   "builder": "scripts/import-voice-pack.py",
+   "credit": "Letter sounds recorded at home."
   },
   "soundcity": {
    "title": "Sound City Reading alphabet sounds",
    "attribution": "Kathryn J. Davis, soundcityreading.net",
-   "license": "All rights reserved; used by written permission",
-   "redistributable": false,
+   "license": "Copyright Kathryn J. Davis; used by written permission, credit required",
+   "redistributable": true,
    "source": "assets/packs/soundcity",
    "builder": "scripts/import-voice-pack.py",
-   "note": "Permission requested by email 2026-09-18. Until it is granted in writing this pack stays out of git and off both hosts: the deploy scripts refuse it."
+   "note": "Permission granted by email 2026-09-19: “Yes, I give you permission to use the alphabet sounds from my website in the app you are creating. You may share the app as long as you give me credit, as you indicated.” The credit is the condition: it is shown on the Sounds screen from the pack stamp, and in the README. Do not ship this pack without it. See assets/packs/soundcity/NOTICE.md.",
+   "credit": "Letter sounds recorded by Kathryn J. Davis, soundcityreading.net, used with permission."
   }
  }
 }

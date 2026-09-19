@@ -73,10 +73,21 @@ def centroid(seg, sr):
     fr = np.fft.rfftfreq(len(seg), 1 / sr)
     return float((sp * fr).sum() / max(sp.sum(), 1e-9))
 
+def _exceptions():
+    """clips a person has inspected and accepted despite a gate; see scripts/phoneme-exceptions.json"""
+    import json as _j
+    f = ROOT / "scripts" / "phoneme-exceptions.json"
+    if not f.exists(): return {}
+    data = _j.loads(f.read_text())
+    man = _j.loads((ROOT / "public" / "sounds" / "manifest.json").read_text())
+    pack = (man.get("_pack") or {}).get("name", "")
+    return {k: v for k, v in (data.get(pack) or {}).items() if not k.startswith("_")}
+
 def report():
     man = json.loads((SOUNDS / "manifest.json").read_text())
     fails = []
     print(f"{'clip':5s} {'kind':10s}  measurement")
+    allowed = _exceptions()
     for g in sorted(k for k in man if not k.startswith("_")):
         sr, x = load(SOUNDS / f"{g}.wav")
         kind = man[g]["kind"]
@@ -124,7 +135,14 @@ def report():
             vs = [voiced(s, sr) for _, s in frames(x, sr)]
             note = f"voiced in {sum(1 for v in vs if v > 0.45) * 100 // max(1, len(vs))}% of frames"
         print(f"{g:5s} {kind:10s}  {note}")
+    # a clip a person has inspected and accepted is reported, not hidden, and is not a failure
+    excused = [f for f in fails if f.split(":")[0] in allowed]
+    fails = [f for f in fails if f.split(":")[0] not in allowed]
     print()
+    if excused:
+        print(f"{len(excused)} clip(s) accepted with a written reason:")
+        for f in excused: print(f"  · {f}\n    {allowed[f.split(':')[0]]}")
+        print()
     if fails:
         print(f"{len(fails)} clips would not help a child blend:")
         for f in fails: print(f"  ✗ {f}")

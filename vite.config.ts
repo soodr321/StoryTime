@@ -61,7 +61,7 @@ export default defineConfig({
           {
             urlPattern: ({ url }) => /\/(library|prompts|sounds|blends)\/.*\.(m4a|mp3|wav|json)$/.test(url.pathname),
             handler: "CacheFirst",
-            options: { cacheName: "storytime-audio-v5", expiration: { maxEntries: 120, maxAgeSeconds: 60 * 60 * 24 * 30 } },
+            options: { cacheName: "storytime-audio-v6", expiration: { maxEntries: 120, maxAgeSeconds: 60 * 60 * 24 * 30 } },
           },
         ],
       },

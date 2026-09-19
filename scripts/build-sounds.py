@@ -11,7 +11,7 @@ is built locally but refused by the deploy scripts.
     python3 scripts/build-sounds.py family      # switch to the family's recordings and rebuild
     python3 scripts/build-sounds.py --list
 """
-import json, subprocess, sys
+import json, os, subprocess, sys
 from pathlib import Path
 from datetime import datetime, timezone
 
@@ -41,11 +41,13 @@ def main():
     if not takes(src):
         sys.exit(f"{p['source']} has no recordings yet, so {name!r} cannot be built.\n{p.get('note', '')}".rstrip())
     print(f"building {name}: {p['title']} ({p['license']})")
-    r = subprocess.run([sys.executable, str(ROOT / p["builder"])], cwd=ROOT)
+    env = {**os.environ, "VOICE_PACK": str(src)}
+    r = subprocess.run([sys.executable, str(ROOT / p["builder"])], cwd=ROOT, env=env)
     if r.returncode: sys.exit(r.returncode)
     man = json.loads(MANIFEST.read_text())
     man["_pack"] = {"name": name, "title": p["title"], "attribution": p["attribution"],
-                    "license": p["license"], "redistributable": p["redistributable"],
+                    "credit": p.get("credit", p["attribution"]), "license": p["license"],
+                    "redistributable": p["redistributable"],
                     "builtAt": datetime.now(timezone.utc).strftime("%Y-%m-%d")}
     MANIFEST.write_text(json.dumps(man, indent=1))
     if name != reg["active"]:

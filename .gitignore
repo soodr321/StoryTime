@@ -13,4 +13,5 @@ design/storytime-redesign.html
 docs/demo/
 
 # recorded sound packs we are not licensed to redistribute (see scripts/sound-packs.json)
-assets/packs/
+assets/packs/*
+!assets/packs/soundcity/

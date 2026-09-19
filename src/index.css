@@ -323,3 +323,5 @@ h1, h2, h3 { font-family: var(--display); }
 /* the one-tap way past a word: quiet, always there, never a red state */
 .skip.bypass { align-self: center; margin-top: 2px; color: var(--muted); opacity: .85; }
 .skip.bypass:hover { opacity: 1; }
+
+.legend.credit { margin: 4px 0 0; line-height: 1.4; }

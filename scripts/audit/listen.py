@@ -119,7 +119,7 @@ def clips():
     print("LETTER SOUNDS — what a listener hears when the app plays one sound, and a whole word")
     print("═" * 100)
     man = json.loads((ROOT / "public" / "sounds" / "manifest.json").read_text())
-    for g in sorted(man):
+    for g in sorted(k for k in man if not k.startswith("_")):
         p = ROOT / "public" / "sounds" / f"{g}.wav"
         w = wav(p, f"clip-{g}")
         heard, _ = asr(w)

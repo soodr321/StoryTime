@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFamily } from "../lib/family";
 import { ALL_GPCS, ALL_TRICKY, uid, type Kid } from "../lib/store";
 import { Art } from "../components/Art";
 import { designed } from "../lib/results";
-import { playSound } from "../lib/sounds";
+import { playSound, soundPack, type SoundPack } from "../lib/sounds";
 import { GRAPHEME_SOUND } from "../lib/phonics/learner";
 
 /** the tricky words that come with each level, exactly as Welcome grants them: sounds without them lock every book */
@@ -16,6 +16,8 @@ export function SettingsScreen({ onBack, onAddStory, onSounds, onTeach }: { onBa
   const words = designed(Object.values(progress).flatMap((p) => p.results));   // volunteered words are practice, not a score
   const count = (m: string) => words.filter((r) => r.ok && r.mode === m).length;
   const [readerDraft, setReaderDraft] = useState("");
+  const [pack, setPack] = useState<SoundPack | null>(null);
+  useEffect(() => { void soundPack().then(setPack); }, []);
   return (
     <main className="settings">
       <div className="row"><button className="linkbtn" onClick={onBack}>← Back</button><div className="kicker">Grown-up settings</div></div>
@@ -53,6 +55,7 @@ export function SettingsScreen({ onBack, onAddStory, onSounds, onTeach }: { onBa
         <h3>Sounds in your voice</h3>
         <p className="legend">Record the 18 pure sounds once (two minutes). Your voice then plays on every letter tile and in the slide-through model instead of the built-in clips.</p>
         <button className="next" onClick={onSounds}>Record the sounds</button>
+        <p className="legend credit">{pack?.credit}</p>
       </section>
 
       <section className="pc">
