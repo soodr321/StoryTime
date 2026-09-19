@@ -61,12 +61,10 @@ export const ShepherdArt = ({ view }: { view?: string } = {}) => (
 /** the net on the ground, and a hole under the roots */
 export const LionAndMouseArt = ({ view }: { view?: string } = {}) => (
   <Stage view={view} sky="#e9dcbf" ground="#cdd9ae" far="#bccb9c">
-    <g transform="translate(96 156)" opacity="0.95">
-      <path d="M0 0 L140 14 M6 22 L146 36 M12 44 L152 58" {...L} strokeWidth={3} />
-      <path d="M8 -4 L-4 48 M48 1 L36 53 M88 6 L76 58 M128 11 L116 62" {...L} strokeWidth={3} />
-    </g>
-    <path d="M40 176 C48 166 64 166 72 176 C64 182 48 182 40 176 Z" fill="#4a3a2c" stroke={INK} strokeWidth={3} strokeLinejoin="round" />
-    <path d="M286 150 C300 146 316 152 318 164 C300 168 288 162 286 150 Z" fill="#9fb98a" stroke={INK} strokeWidth={3} strokeLinejoin="round" />
+    <path d="M132 178 C144 164 176 164 188 178 C176 188 144 188 132 178 Z" fill="#4a3a2c" stroke={INK} strokeWidth={3} strokeLinejoin="round" />
+    <path d="M128 176 C120 162 128 150 140 150" {...L} strokeWidth={4} />
+    <path d="M254 158 C270 152 292 160 294 174 C272 178 256 172 254 158 Z" fill="#9fb98a" stroke={INK} strokeWidth={3} strokeLinejoin="round" />
+    <path d="M258 162 C272 166 284 170 292 174" {...L} strokeWidth={2.5} />
   </Stage>
 );
 
@@ -83,9 +81,8 @@ export const HareAndTortoiseArt = ({ view }: { view?: string } = {}) => (
 /** a mound of grain, and the dry grass of late summer */
 export const AntAndGrasshopperArt = ({ view }: { view?: string } = {}) => (
   <Stage view={view} sky="#f0e0bc" ground="#d9cf9e" far="#cdc28e">
-    <Sun x={74} y={54} r={21} />
     <path d="M196 174 C206 138 244 138 254 174 Z" fill="#e3b964" stroke={INK} strokeWidth={3} strokeLinejoin="round" />
-    <circle cx="214" cy="164" r="2.4" fill="#a97c2c" /><circle cx="228" cy="156" r="2.4" fill="#a97c2c" /><circle cx="238" cy="166" r="2.4" fill="#a97c2c" />
+    <path d="M212 166 L217 164 M226 158 L231 156 M236 168 L241 166" {...L} strokeWidth={2.5} />   {/* grain, not ants: three specks would be figures */}
     {[70, 92, 114, 300, 322].map((x, i) => <path key={i} d={`M${x} 178 C${x - 4} 160 ${x + 2} 148 ${x - 2} 138`} {...L} strokeWidth={3} />)}
   </Stage>
 );
@@ -107,26 +104,20 @@ export const MonkeyAndCrocodileArt = ({ view }: { view?: string } = {}) => (
 /** the pot the jackal fell into, and what came out of it */
 export const BlueJackalArt = ({ view }: { view?: string } = {}) => (
   <Stage view={view} sky="#e6dcc8" ground="#cbd9be">
-    <path d="M150 128 L206 128 L200 182 C198 194 158 194 156 182 Z" fill="#7d8fc4" stroke={INK} strokeWidth={3} strokeLinejoin="round" />
-    <ellipse cx="178" cy="128" rx="28" ry="9" fill="#5f74b0" stroke={INK} strokeWidth={3} />
-    <path d="M200 176 C224 180 246 190 252 200 L224 200 C216 190 208 184 198 182 Z" fill="#5f74b0" stroke={INK} strokeWidth={3} strokeLinejoin="round" />
-    <circle cx="268" cy="202" r="5" fill="#5f74b0" stroke={INK} strokeWidth={2.5} />
-    <circle cx="284" cy="196" r="3.4" fill="#5f74b0" stroke={INK} strokeWidth={2.5} />
-    <path d="M70 172 C66 150 74 136 70 122 M92 176 C88 158 96 146 92 134" {...L} strokeWidth={3} />
+    <path d="M128 178 C158 168 196 182 236 176 C258 172 274 180 288 190 C250 202 190 200 150 192 C136 189 128 184 128 178 Z" fill="#7d8fc4" stroke={INK} strokeWidth={3} strokeLinejoin="round" />
+    <circle cx="106" cy="186" r="6" fill="#5f74b0" stroke={INK} strokeWidth={2.5} />
+    <circle cx="88" cy="196" r="4" fill="#5f74b0" stroke={INK} strokeWidth={2.5} />
+    <path d="M70 176 C66 150 74 136 70 120 M92 180 C88 158 96 146 92 132 M300 176 C296 156 304 144 300 130" {...L} strokeWidth={3} />
   </Stage>
 );
 
 /** Pat and the Tap: a tap over a pail, dripping */
 export const PatAndTheTapArt = ({ view }: { view?: string } = {}) => (
   <Stage view={view} sky="#eadfc6" ground="#cfe0c0">
-    <path d="M150 96 L150 132 L188 132" {...L} strokeWidth={9} />
-    <path d="M138 90 L162 90" {...L} strokeWidth={7} />
-    <path d="M150 90 L150 78" {...L} strokeWidth={5} />
-    <path d="M140 74 L160 74" {...L} strokeWidth={6} />
-    <path d="M188 144 C188 152 186 158 186 164" {...L} strokeWidth={3} />
-    <ellipse cx="186" cy="176" rx="5" ry="7" fill="#9fc3cc" stroke={INK} strokeWidth={2.5} />
-    <path d="M160 180 L214 180 L208 214 L166 214 Z" fill="#c9a06a" stroke={INK} strokeWidth={3} strokeLinejoin="round" />
-    <path d="M164 190 C180 196 194 196 210 190" {...L} strokeWidth={2.5} />
+    <path d="M146 160 L200 160 L194 200 L152 200 Z" fill="#c9a06a" stroke={INK} strokeWidth={3} strokeLinejoin="round" />
+    <path d="M150 170 C166 176 180 176 196 170" {...L} strokeWidth={2.5} />
+    <ellipse cx="228" cy="196" rx="26" ry="8" fill="#a7c6cd" stroke={INK} strokeWidth={3} />
+    <ellipse cx="256" cy="184" rx="9" ry="4" fill="#a7c6cd" stroke={INK} strokeWidth={2.5} />
   </Stage>
 );
 
@@ -134,8 +125,8 @@ export const PatAndTheTapArt = ({ view }: { view?: string } = {}) => (
 export const SamAndThePitArt = ({ view }: { view?: string } = {}) => (
   <Stage view={view} sky="#e8dcc2" ground="#d3dfba">
     <path d="M140 132 C128 160 104 186 44 216 L150 216 C196 188 214 156 216 132 Z" fill="#e6d7b6" stroke={INK} strokeWidth={3} strokeLinejoin="round" />
-    <ellipse cx="128" cy="184" rx="30" ry="15" fill="#4a3a2c" stroke={INK} strokeWidth={3} />
-    <ellipse cx="128" cy="180" rx="30" ry="15" fill="#6b563f" stroke={INK} strokeWidth={3} />
+    <path d="M96 190 C106 168 150 168 160 190 Z" fill="#8d6a48" stroke={INK} strokeWidth={3} strokeLinejoin="round" />
+    <path d="M112 182 L118 178 M132 176 L138 174 M144 184 L150 181" {...L} strokeWidth={2.5} />
     <path d="M276 166 C272 138 280 122 276 106" {...L} strokeWidth={8} />
     <circle cx="272" cy="94" r="22" fill="#8fae7a" stroke={INK} strokeWidth={3} />
     <circle cx="300" cy="106" r="14" fill="#7fa06a" stroke={INK} strokeWidth={3} />
@@ -149,7 +140,6 @@ export const TapTapTapArt = ({ view }: { view?: string } = {}) => (
     <path d="M144 88 L210 88 L210 128 L144 128 Z M144 140 L210 140 L210 178 L144 178 Z" {...L} strokeWidth={3} />
     <circle cx="206" cy="136" r="4.5" fill="#f4dc9e" stroke={INK} strokeWidth={3} />
     <path d="M120 190 L234 190" {...L} strokeWidth={5} />
-    <path d="M250 110 C266 106 268 122 252 124 M256 140 C274 136 276 152 258 154" {...L} strokeWidth={3} />
   </Stage>
 );
 
@@ -161,10 +151,48 @@ export const PLATE_COVERS = new Set(["fox-and-crow", "lion-and-mouse", "hare-and
 export const COVER_ZOOM: Record<string, string> = {
   "boy-who-cried-wolf": "46 130 120 120",
   "monkey-and-crocodile": "78 68 120 120",
-  "blue-jackal": "130 108 110 110",
-  "pat-and-the-tap": "126 62 110 110",
-  "sam-and-the-pit": "78 134 110 110",
   "tap-tap-tap": "120 66 114 114",
+};
+
+/** A cover may show the title object; the reading stage may not. These three are drawn only here. */
+const CoverFrame = ({ bg = "#e9dcc2", ground = "#cfe0c0", children }: { bg?: string; ground?: string; children: React.ReactNode }) => (
+  <svg viewBox="0 0 120 120" className="ill" preserveAspectRatio="xMidYMid slice" aria-hidden>
+    <rect x="-10" y="-10" width="140" height="140" fill={bg} />
+    <path d="M-10 84 C30 76 80 88 130 80 L130 130 L-10 130 Z" fill={ground} />
+    <path d="M-10 84 C30 76 80 88 130 80" {...L} />
+    {children}
+  </svg>
+);
+export const BlueJackalCover = () => (
+  <CoverFrame>
+    <path d="M40 40 L86 40 L80 86 C78 96 46 96 44 86 Z" fill="#7d8fc4" stroke={INK} strokeWidth={3} strokeLinejoin="round" />
+    <ellipse cx="63" cy="40" rx="23" ry="7" fill="#5f74b0" stroke={INK} strokeWidth={3} />
+    <path d="M80 82 C94 86 104 94 108 102 L88 102 C84 94 78 90 78 88 Z" fill="#5f74b0" stroke={INK} strokeWidth={3} strokeLinejoin="round" />
+  </CoverFrame>
+);
+export const PatAndTheTapCover = () => (
+  <CoverFrame>
+    <path d="M52 20 L52 58 L84 58" {...L} strokeWidth={9} />
+    <path d="M40 16 L64 16" {...L} strokeWidth={8} />
+    <path d="M84 70 C84 76 83 80 83 84" {...L} strokeWidth={3} />
+    <path d="M60 86 L106 86 L100 112 L66 112 Z" fill="#c9a06a" stroke={INK} strokeWidth={3} strokeLinejoin="round" />
+  </CoverFrame>
+);
+export const SamAndThePitCover = () => (
+  <CoverFrame ground="#d6dfc0">
+    {/* a dark oval alone is a blob: the rim of turned earth and the heap beside it make it a hole */}
+    <ellipse cx="54" cy="80" rx="36" ry="19" fill="#b99a6e" stroke={INK} strokeWidth={3} />
+    <ellipse cx="54" cy="78" rx="27" ry="13" fill="#3b2f22" stroke={INK} strokeWidth={3} />
+    <path d="M32 74 C40 68 68 68 76 74" fill="none" stroke="#6b563f" strokeWidth={3} strokeLinecap="round" />
+    <path d="M86 66 C94 50 112 52 116 68 Z" fill="#8d6a48" stroke={INK} strokeWidth={3} strokeLinejoin="round" />
+    <path d="M95 62 L99 58 M105 60 L109 57" {...L} strokeWidth={2.5} />
+    <path d="M14 70 C12 60 18 54 15 46" {...L} strokeWidth={3} />
+  </CoverFrame>
+);
+export const COVER_ART: Record<string, () => React.JSX.Element> = {
+  "blue-jackal": BlueJackalCover,
+  "pat-and-the-tap": PatAndTheTapCover,
+  "sam-and-the-pit": SamAndThePitCover,
 };
 
 export const STORY_ART: Record<string, (p?: { view?: string }) => React.JSX.Element> = {

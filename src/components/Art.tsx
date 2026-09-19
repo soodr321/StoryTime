@@ -3,7 +3,7 @@
  * (the square on the shelf); four of the Aesop books use Milo Winter's 1919 plates as their cover.
  * Family stories keep their emoji or the photograph the family chose.
  */
-import { COVER_ZOOM, PLATE_COVERS, STORY_ART } from "./art/Banners";
+import { COVER_ART, COVER_ZOOM, PLATE_COVERS, STORY_ART } from "./art/Banners";
 import { BASE } from "../lib/library";
 
 export const coverUrl = (slug: string) => `${BASE}/covers/cover-${slug}.jpg`;
@@ -19,7 +19,9 @@ export function Banner({ slug, art }: { slug?: string; art?: string }) {
 /** The square on the bookshelf, the home card and the end screen. */
 export function Cover({ slug, art, className }: { slug?: string; art?: string; className?: string }) {
   if (slug && PLATE_COVERS.has(slug)) return <img className={className ?? "art-img"} src={coverUrl(slug)} alt="" />;
-  const Drawn = slug ? STORY_ART[slug] : undefined;
+  const Own = slug ? COVER_ART[slug] : undefined;                       // a cover may show the title object; the reading stage may not
+  if (Own) return <span className={className ?? "art-img"}><Own /></span>;
+  const Drawn = slug && COVER_ZOOM[slug] ? STORY_ART[slug] : undefined;
   if (Drawn) return <span className={className ?? "art-img"}><Drawn view={COVER_ZOOM[slug!]} /></span>;
   if (art?.startsWith("data:")) return <img className={className ?? "art-img"} src={art} alt="" />;
   return <span className={className}>{art}</span>;
