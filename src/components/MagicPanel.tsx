@@ -74,8 +74,11 @@ export function MagicPanel({ word, learner, modelling, modelledOnce, sweep, kid,
         <div className="row center">
           <button className="skip" disabled={modelling} onClick={() => setSaid(0)}>look again — start here ↺</button>
           {onDismiss && <button className="skip" disabled={modelling} onClick={onDismiss}>↓ not yet</button>}
-          {help && onSkip && <button className="skip" disabled={modelling} onClick={onSkip}>skip for today →</button>}
         </div>
+        {/* One tap, silent, from the first moment: a tired child at 7:40 does not need a routine, and
+            the grown-up should not have to work through "Needs help" and a nudge to end it kindly.
+            The word is recorded as told, so it comes back in tomorrow's warm-up. */}
+        {onSkip && <button className="skip bypass" disabled={modelling} onClick={onSkip}>you say it, and carry on →</button>}
         {help && <p className="adultnote">Sounds, not letter names · any accent is fine · ✓ only after the whole word.</p>}
       </div>
     </section>

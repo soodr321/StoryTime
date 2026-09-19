@@ -319,3 +319,7 @@ h1, h2, h3 { font-family: var(--display); }
 .books .bk .ico .cover-img { width: 56px; height: 56px; border-radius: 12px; border: 1px solid var(--line); overflow: hidden; }
 .done .badge .cover-img { width: 128px; height: 128px; border-radius: 50%; object-fit: cover; }
 .art-emoji { font-size: 96px; line-height: 1; }
+
+/* the one-tap way past a word: quiet, always there, never a red state */
+.skip.bypass { align-self: center; margin-top: 2px; color: var(--muted); opacity: .85; }
+.skip.bypass:hover { opacity: 1; }

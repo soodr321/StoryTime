@@ -11,7 +11,7 @@ import { useFamily } from "../lib/family";
 import { learnerOf } from "../lib/store";
 import { Banner, Cover } from "../components/Art";
 import { MagicPanel } from "../components/MagicPanel";
-import { stretched, playBlend, playWord, stopBlend } from "../lib/blend";
+import { stretched, playWord, stopBlend } from "../lib/blend";
 import { SegmentPanel } from "../components/SegmentPanel";
 import type { Verdict } from "../components/MagicPanel";
 import type { Mode } from "./Home";
@@ -208,7 +208,11 @@ export function StoryScreen({ story, mode, resume, onHome, onAgain }: { story: S
           onSound={() => send({ type: "SOUND_TAPPED" })}
           onYes={async (v: Verdict) => { const w = ctx.magic!; if (listen) await speakPrompt(`yes:${w}`, `Yes! ${w}.`); else setCaption(`Yes! ${w}.`); send({ type: "YES", verdict: v }); }}
           onTogether={together}
-          onSkip={async () => { const w = ctx.magic!; setCaption("We'll practise it tomorrow." + (listen ? "" : ` ${reader}, read the word for them once.`)); if (listen) { await playBlend(checkWord(w, learner).graphemes, { rate }); await speakPrompt("practise", "We'll practise it tomorrow."); } send({ type: "SKIP" }); }}
+          onSkip={() => {   // the quiet way out: instant, silent, and the word comes back tomorrow
+            runRef.current++; playing.current?.stop(); stopAll(); stopBlend();
+            setCaption(`${reader} says it, and the story carries on.`);
+            send({ type: "SKIP" });
+          }}
         />
       )}
 
