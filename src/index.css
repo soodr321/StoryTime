@@ -325,3 +325,6 @@ h1, h2, h3 { font-family: var(--display); }
 .skip.bypass:hover { opacity: 1; }
 
 .legend.credit { margin: 4px 0 0; line-height: 1.4; }
+
+.soundrow { gap: 6px; align-items: center; }
+.soundrow .tog { min-width: 40px; height: 40px; font-family: var(--print); font-weight: 700; }

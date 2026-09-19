@@ -52,10 +52,11 @@ export function SettingsScreen({ onBack, onAddStory, onSounds, onTeach }: { onBa
       </section>
 
       <section className="pc">
-        <h3>Sounds in your voice</h3>
-        <p className="legend">Record the 18 pure sounds once (two minutes). Your voice then plays on every letter tile and in the slide-through model instead of the built-in clips.</p>
-        <button className="next" onClick={onSounds}>Record the sounds</button>
-        <p className="legend credit">{pack?.credit}</p>
+        <h3>The letter sounds</h3>
+        <p className="legend credit">{pack?.credit ?? "\u00a0"}</p>
+        <div className="row wrap soundrow">{["s", "a", "t", "p", "i", "n"].map((g) => <button key={g} className="tog" onClick={() => void playSound(g)}>{g}</button>)}<span className="legend">tap to hear</span></div>
+        <p className="legend">A teacher's voice, one sound each, cut so there is no “uh” on the end. You can put your own voice there instead: eighteen sounds, about two minutes, and every letter tile and slide-through model uses yours from then on.</p>
+        <button className="small" onClick={onSounds}>Record them in your voice →</button>
       </section>
 
       <section className="pc">
