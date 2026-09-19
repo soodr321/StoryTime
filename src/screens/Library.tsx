@@ -5,7 +5,7 @@ import { TRADITION_LABEL, fits } from "../lib/library";
 import { learnerOf } from "../lib/store";
 import { designed } from "../lib/results";
 import type { Story } from "../lib/content/types";
-import { Art } from "../components/Art";
+import { Cover } from "../components/Art";
 import type { Mode } from "./Home";
 
 const p2 = (progress: Record<string, { timesFinished: number }>, slug: string) => (progress[slug] ? `read ${progress[slug].timesFinished}× · reading it again builds fluency` : "new");
@@ -60,7 +60,7 @@ export function LibraryScreen({ onStart, onBack, onWarmUp }: { onStart: (s: Stor
                 const mid = session?.slug === s.slug;
                 return (
                   <button key={s.slug} className={"bk" + (p ? " done" : "") + (ok || p ? "" : " locked") + (mid ? " mid" : "")} disabled={!ok && !p} onClick={() => pick(s)}>
-                    <span className="ico"><Art art={s.pages[0].art} /></span>
+                    <span className="ico"><Cover slug={s.tradition === "family" ? undefined : s.slug} art={s.pages[0].art} className="cover-img sm" /></span>
                     <b>{s.title}</b>
                     <small>{mid ? `page ${session!.page + 1} · continue` : p ? `read ${p.timesFinished}× · ${designed(p.results).filter((r) => r.ok).length}/${designed(p.results).length} magic words` : ok ? "new" : "needs more sounds"}</small>
                   </button>

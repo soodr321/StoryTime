@@ -3,6 +3,7 @@
  * Everything a reload must survive lives here: kids, their levels, progress,
  * the in-flight session (resume on the exact page/word), custom stories, settings.
  */
+import { DAY_START_HOUR } from "./day";
 import { get, set, del } from "idb-keyval";
 import type { LearnerModel } from "./phonics/validator";
 import { LEVELS, LS_PHASE2_ORDER, TRICKY_PHASE2 } from "./phonics/learner";
@@ -119,7 +120,18 @@ export async function reviewSnoozedUntil(kidId: string): Promise<number> { retur
 const reviewKey = (kidId: string) => `st:review:${kidId}`;
 const DAY = 86_400_000;
 /** "Tomorrow" means the next morning, not 24 hours later: a word missed at 7 pm is due at 5 am. */
-export function nextMorning(from = Date.now()): number { const d = new Date(from); d.setDate(d.getDate() + 1); d.setHours(5, 0, 0, 0); return d.getTime(); }
+/**
+ * When a word the child struggled with comes back: the morning after THIS reading day.
+ * Read at 00:26 and the wall calendar has already turned over, so counting from it pushed the word
+ * past the coming evening and lost it for a whole day. The reading day starts at 4am, so a session
+ * in the small hours still belongs to the night before.
+ */
+export function nextMorning(from = Date.now()): number {
+  const d = new Date(from);
+  if (d.getHours() < DAY_START_HOUR) d.setDate(d.getDate() - 1);
+  d.setDate(d.getDate() + 1); d.setHours(5, 0, 0, 0);
+  return d.getTime();
+}
 export async function loadReview(kidId: string): Promise<Record<string, ReviewItem>> { return (await get(reviewKey(kidId))) ?? {}; }
 export async function scheduleReview(kidId: string, results: { word: string; ok: boolean; mode: string }[]): Promise<void> {
   const all = await loadReview(kidId); const now = Date.now();

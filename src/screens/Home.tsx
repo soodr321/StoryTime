@@ -3,7 +3,7 @@ import { dayStamp, sameDay } from "../lib/day";
 import { TRADITION_LABEL, storyAsset } from "../lib/library";
 import { useEffect } from "react";
 import type { Story } from "../lib/content/types";
-import { Art } from "../components/Art";
+import { Cover } from "../components/Art";
 import { playSound } from "../lib/sounds";
 import { GRAPHEME_SOUND, LS_PHASE2_ORDER } from "../lib/phonics/learner";
 import { BookIcon, MoonIcon, RedoIcon, SpeakerIcon, StarIcon } from "../components/Icons";
@@ -65,7 +65,7 @@ export function HomeScreen({ onStart, onLibrary, onSwitch, onWarmUp, onTeach }: 
         <>
           <div className="kicker">{resumable ? "Carry on where you stopped" : listenAlong ? "Tonight's story" : repeatToday ? "Same story — smoother today" : finished ? "Today's story" : "Your first story"}</div>
           <button className="big-tile rise" aria-label={`Start ${today.title}`} onClick={() => (review.length > 0 && !listener ? onWarmUp() : onStart(today, resumable ? session!.mode : "listen", !!resumable))}>
-            <span className="art rise"><Art art={today.pages[0].art} /></span>
+            <span className="art rise"><Cover slug={today.tradition === "family" ? undefined : today.slug} art={today.pages[0].art} className="cover-img" /></span>
             <span className="t">{today.title}</span>
             <span className="s">{listenAlong ? `${TRADITION_LABEL[today.tradition]} · a story to listen to` : `${TRADITION_LABEL[today.tradition]} · ${today.pages.reduce((n, p) => n + (p.magic?.length ?? 0), 0)} magic words${resumable ? ` · page ${session!.page + 1}` : ""}`}</span>
           </button>

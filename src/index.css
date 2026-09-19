@@ -306,3 +306,12 @@ h1, h2, h3 { font-family: var(--display); }
 .readbar .legend { display: block; margin-top: 2px; }
 .blockednote { font-family: system-ui, -apple-system, sans-serif; font-size: 15px; text-align: center; color: var(--accent); }
 .blockednote b { font-family: var(--display); font-size: 19px; background: var(--magic); color: var(--magic-ink); border-radius: 8px; padding: 0 8px; }
+
+/* ===== story pictures: one drawn banner per book, a square cover on the shelf ===== */
+.art-box .ill { width: 100%; height: 100%; display: block; }
+.cover-img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: inherit; }
+.big-tile .art .cover-img, .big-tile .art img.cover-img { width: 128px; height: 128px; border-radius: 18px; border: 2px solid var(--line); object-fit: cover; }
+.big-tile .art .cover-img .ill, .books .bk .ico .cover-img .ill { width: 100%; height: 100%; border-radius: inherit; }
+.books .bk .ico .cover-img { width: 56px; height: 56px; border-radius: 12px; border: 1px solid var(--line); overflow: hidden; }
+.done .badge .cover-img { width: 128px; height: 128px; border-radius: 50%; object-fit: cover; }
+.art-emoji { font-size: 96px; line-height: 1; }

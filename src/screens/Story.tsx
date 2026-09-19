@@ -9,7 +9,7 @@ import { promptAsset, storyAsset } from "../lib/library";
 import { speakText, type SpeakHandle } from "../lib/audio/speech";
 import { useFamily } from "../lib/family";
 import { learnerOf } from "../lib/store";
-import { Art } from "../components/Art";
+import { Banner, Cover } from "../components/Art";
 import { MagicPanel } from "../components/MagicPanel";
 import { stretched, playBlend, playWord, stopBlend } from "../lib/blend";
 import { SegmentPanel } from "../components/SegmentPanel";
@@ -191,7 +191,7 @@ export function StoryScreen({ story, mode, resume, onHome, onAgain }: { story: S
       {inStory && page && (
         <StoryView
           page={page} pageNo={ctx.page} total={story.pages.length} token={listen ? ctx.token : -1} results={ctx.results}
-          readMode={!listen} listener={listener} reader={reader} kid={kid.name} stalled={stalled} pageHeld={pageHeld} hideArt={panelOpen} learner={learner} bedtime={bedtime} voiceFollow={!!fam.settings.voiceFollow && !bedtime}
+          slug={story.slug} family={story.tradition === "family"} readMode={!listen} listener={listener} reader={reader} kid={kid.name} stalled={stalled} pageHeld={pageHeld} hideArt={panelOpen} learner={learner} bedtime={bedtime} voiceFollow={!!fam.settings.voiceFollow && !bedtime}
           onRetry={() => { void unlock(); setStalled(false); setRetry((n) => n + 1); }}
           onMagicTap={(w, i, extra) => state === "narrating" && send({ type: "MAGIC_REACHED", word: w, index: i, extra })}
           onWordTap={(tok) => { if (listener || !listen) { if (state === "narrating" && listen && !pageHeld) return; setCaption(tok); const h = speakText(tok, { rate }); playing.current = h; } }}
@@ -221,8 +221,8 @@ export function StoryScreen({ story, mode, resume, onHome, onAgain }: { story: S
   );
 }
 
-function StoryView({ page, pageNo, total, token, results, readMode, listener, reader, kid, stalled, pageHeld, hideArt, learner, bedtime, voiceFollow, onRetry, onMagicTap, onWordTap, onNext }: {
-  page: Page; pageNo: number; total: number; token: number; results: WordResult[];
+function StoryView({ page, pageNo, total, slug, family, token, results, readMode, listener, reader, kid, stalled, pageHeld, hideArt, learner, bedtime, voiceFollow, onRetry, onMagicTap, onWordTap, onNext }: {
+  page: Page; pageNo: number; total: number; slug: string; family: boolean; token: number; results: WordResult[];
   readMode: boolean; listener: boolean; reader: string; kid: string; stalled: boolean; pageHeld: boolean; hideArt: boolean; learner: LearnerModel; bedtime: boolean; voiceFollow: boolean;
   onRetry: () => void; onMagicTap: (w: string, i: number, extra?: boolean) => void; onWordTap: (tok: string) => void; onNext: () => void;
 }) {
@@ -291,7 +291,7 @@ function StoryView({ page, pageNo, total, token, results, readMode, listener, re
   return (
     <main className="story">
       {/* the picture is hidden while a magic word is open: the child reads the letters, not the picture */}
-      <div className={"art-box" + (hideArt ? " veiled" : "")}>{hideArt ? <span className="veil"><LockIcon size={28} />read the letters</span> : <Art art={page.art} />}</div>
+      <div className={"art-box" + (hideArt ? " veiled" : "")}>{hideArt ? <span className="veil"><LockIcon size={28} />read the letters</span> : <Banner slug={family ? undefined : slug} art={page.art} />}</div>
       <div className={"text-card" + (readMode ? " follow" : "")} ref={cardRef} onPointerDown={onDown} onPointerMove={onMove} onPointerUp={onUp} onPointerCancel={onUp} onLostPointerCapture={onUp}>
         <div className="pg">Page {pageNo + 1} of {total}</div>
         <p className={"sentence" + (readMode ? " follow" : "")} ref={sentenceRef}>
@@ -431,7 +431,7 @@ function Done({ story, results, bedtime, kid, learner, listenOnly, mode, onAgain
   return (
     <main className="done">
       {!bedtime && (ok.length > 0 || listenOnly) && <Confetti />}
-      <div className="badge rise">{bedtime ? <MoonIcon size={84} /> : <Art art={story.pages[0].art} />}</div>
+      <div className="badge rise">{bedtime ? <MoonIcon size={84} /> : <Cover slug={story.tradition === "family" ? undefined : story.slug} art={story.pages[0].art} className="cover-img" />}</div>
       <h2 className="rise">{story.title}</h2>
       {ok.length > 0 && <ul className="results">{ok.map((r, i) => <li key={(r.id ?? r.word) + i} className="ok">{line(r)}</li>)}</ul>}
       <p className="show">{bedtime ? "Lights low. One real book, then sleep." : listenOnly ? `A whole story, ${kid}! Tell someone what happened.` : ok.length ? `Now go find someone and read them your ${ok.length === 1 ? "word" : "words"}, ${kid}!` : `Good listening, ${kid}. Those words come back tomorrow for a warm-up.`}</p>

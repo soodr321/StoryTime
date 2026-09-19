@@ -9,7 +9,7 @@ vi.mock("idb-keyval", () => ({
   keys: async () => [...db.keys()],
 }));
 
-const { recordEncoding, recordFinish, loadProgress, scheduleReview, loadReview, dueReview, readyToAdvance, recordAttempt, loadAttempts } = await import("./store");
+const { recordEncoding, recordFinish, loadProgress, scheduleReview, loadReview, dueReview, readyToAdvance, recordAttempt, loadAttempts, nextMorning } = await import("./store");
 
 beforeEach(() => db.clear());
 
@@ -58,5 +58,18 @@ describe("review scheduling", () => {
     const due = dueReview(await loadReview("k1"), Date.now() + 24 * 3600e3);
     expect(due.map((r) => r.word)).toContain("duck");
     expect(due.map((r) => r.word)).not.toContain("sat");
+  });
+});
+
+describe("reading past midnight", () => {
+  it("brings a missed word back the next evening, not the one after", () => {
+    const lateNight = new Date("2026-09-19T00:26:00").getTime();     // really the night of the 18th
+    const back = new Date(nextMorning(lateNight));
+    expect(back.getDate()).toBe(19);                                  // in time for the 19th's bedtime
+    expect(back.getHours()).toBe(5);
+  });
+  it("still uses tomorrow for an ordinary evening session", () => {
+    const evening = new Date("2026-09-18T19:40:00").getTime();
+    expect(new Date(nextMorning(evening)).getDate()).toBe(19);
   });
 });
