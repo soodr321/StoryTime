@@ -1,0 +1,590 @@
+{
+ "slug": "nan-and-the-pin",
+ "title": "Nan and the Pin",
+ "tradition": "classic",
+ "source": {
+  "work": "Original shared-reading story (decodable targets only)",
+  "author": "StoryTime",
+  "rights": "public-domain"
+ },
+ "retelling": {
+  "level": "ls-phase2-set2",
+  "checklist": {
+   "setup": true,
+   "want": true,
+   "action": true,
+   "consequence": true,
+   "feeling": true
+  }
+ },
+ "level": "ls-phase2-set2",
+ "pages": [
+  {
+   "art": "📖",
+   "tokens": [
+    {
+     "t": "Nan",
+     "ms": 0
+    },
+    {
+     "t": "was",
+     "ms": 280
+    },
+    {
+     "t": "making",
+     "ms": 460
+    },
+    {
+     "t": "a",
+     "ms": 780
+    },
+    {
+     "t": "quilt",
+     "ms": 1040
+    },
+    {
+     "t": "from",
+     "ms": 1460
+    },
+    {
+     "t": "the",
+     "ms": 1720
+    },
+    {
+     "t": "shirts",
+     "ms": 1840
+    },
+    {
+     "t": "that",
+     "ms": 2160
+    },
+    {
+     "t": "everyone",
+     "ms": 2640
+    },
+    {
+     "t": "had",
+     "ms": 3280
+    },
+    {
+     "t": "grown",
+     "ms": 3780
+    },
+    {
+     "t": "out",
+     "ms": 4300
+    },
+    {
+     "t": "of,",
+     "ms": 4860
+    },
+    {
+     "t": "and",
+     "ms": 5080
+    },
+    {
+     "t": "she",
+     "ms": 6120
+    },
+    {
+     "t": "was",
+     "ms": 6440
+    },
+    {
+     "t": "nearly",
+     "ms": 6620
+    },
+    {
+     "t": "finished.",
+     "ms": 7020
+    }
+   ],
+   "audio": "p1.m4a",
+   "audioMs": 9060
+  },
+  {
+   "art": "📖",
+   "tokens": [
+    {
+     "t": "She",
+     "ms": 0
+    },
+    {
+     "t": "kept",
+     "ms": 360
+    },
+    {
+     "t": "her",
+     "ms": 540
+    },
+    {
+     "t": "pins",
+     "ms": 740
+    },
+    {
+     "t": "in",
+     "ms": 1100
+    },
+    {
+     "t": "a",
+     "ms": 1460
+    },
+    {
+     "t": "small",
+     "ms": 1540
+    },
+    {
+     "t": "tin",
+     "ms": 1940
+    },
+    {
+     "t": "with",
+     "ms": 2540
+    },
+    {
+     "t": "a",
+     "ms": 3140
+    },
+    {
+     "t": "picture",
+     "ms": 3220
+    },
+    {
+     "t": "of",
+     "ms": 3700
+    },
+    {
+     "t": "a",
+     "ms": 3920
+    },
+    {
+     "t": "ship",
+     "ms": 3980
+    },
+    {
+     "t": "on",
+     "ms": 4320
+    },
+    {
+     "t": "the",
+     "ms": 4560
+    },
+    {
+     "t": "lid,",
+     "ms": 4720
+    },
+    {
+     "t": "and",
+     "ms": 5060
+    },
+    {
+     "t": "she",
+     "ms": 6080
+    },
+    {
+     "t": "counted",
+     "ms": 6340
+    },
+    {
+     "t": "them",
+     "ms": 6780
+    },
+    {
+     "t": "every",
+     "ms": 7140
+    },
+    {
+     "t": "time.",
+     "ms": 7600
+    }
+   ],
+   "magic": [
+    "tin"
+   ],
+   "audio": "p2.m4a",
+   "audioMs": 9320
+  },
+  {
+   "art": "📖",
+   "tokens": [
+    {
+     "t": "One",
+     "ms": 0
+    },
+    {
+     "t": "afternoon",
+     "ms": 380
+    },
+    {
+     "t": "the",
+     "ms": 840
+    },
+    {
+     "t": "tin",
+     "ms": 1360
+    },
+    {
+     "t": "went",
+     "ms": 1760
+    },
+    {
+     "t": "over.",
+     "ms": 2100
+    },
+    {
+     "t": "The",
+     "ms": 3940
+    },
+    {
+     "t": "pins",
+     "ms": 4080
+    },
+    {
+     "t": "went",
+     "ms": 4460
+    },
+    {
+     "t": "everywhere,",
+     "ms": 4940
+    },
+    {
+     "t": "and",
+     "ms": 5640
+    },
+    {
+     "t": "one",
+     "ms": 6620
+    },
+    {
+     "t": "pin",
+     "ms": 6940
+    },
+    {
+     "t": "did",
+     "ms": 7420
+    },
+    {
+     "t": "not",
+     "ms": 8060
+    },
+    {
+     "t": "turn",
+     "ms": 8400
+    },
+    {
+     "t": "up",
+     "ms": 8800
+    },
+    {
+     "t": "again.",
+     "ms": 8960
+    }
+   ],
+   "magic": [
+    "pin"
+   ],
+   "audio": "p3.m4a",
+   "audioMs": 10500
+  },
+  {
+   "art": "📖",
+   "tokens": [
+    {
+     "t": "Nan",
+     "ms": 80
+    },
+    {
+     "t": "would",
+     "ms": 280
+    },
+    {
+     "t": "not",
+     "ms": 460
+    },
+    {
+     "t": "let",
+     "ms": 920
+    },
+    {
+     "t": "anyone",
+     "ms": 1520
+    },
+    {
+     "t": "walk",
+     "ms": 1900
+    },
+    {
+     "t": "in",
+     "ms": 2560
+    },
+    {
+     "t": "the",
+     "ms": 2760
+    },
+    {
+     "t": "room",
+     "ms": 2960
+    },
+    {
+     "t": "without",
+     "ms": 3340
+    },
+    {
+     "t": "slippers,",
+     "ms": 4059
+    },
+    {
+     "t": "and",
+     "ms": 4980
+    },
+    {
+     "t": "she",
+     "ms": 6060
+    },
+    {
+     "t": "said",
+     "ms": 6300
+    },
+    {
+     "t": "so",
+     "ms": 6780
+    },
+    {
+     "t": "about",
+     "ms": 7740
+    },
+    {
+     "t": "eleven",
+     "ms": 8280
+    },
+    {
+     "t": "times.",
+     "ms": 8820
+    }
+   ],
+   "audio": "p4.m4a",
+   "audioMs": 10960
+  },
+  {
+   "art": "📖",
+   "tokens": [
+    {
+     "t": "Tim",
+     "ms": 0
+    },
+    {
+     "t": "got",
+     "ms": 340
+    },
+    {
+     "t": "down",
+     "ms": 560
+    },
+    {
+     "t": "on",
+     "ms": 900
+    },
+    {
+     "t": "his",
+     "ms": 1160
+    },
+    {
+     "t": "front",
+     "ms": 1320
+    },
+    {
+     "t": "with",
+     "ms": 1740
+    },
+    {
+     "t": "his",
+     "ms": 2340
+    },
+    {
+     "t": "cheek",
+     "ms": 2540
+    },
+    {
+     "t": "flat",
+     "ms": 2920
+    },
+    {
+     "t": "on",
+     "ms": 3380
+    },
+    {
+     "t": "the",
+     "ms": 3740
+    },
+    {
+     "t": "floorboards",
+     "ms": 3860
+    },
+    {
+     "t": "and",
+     "ms": 4660
+    },
+    {
+     "t": "looked",
+     "ms": 5440
+    },
+    {
+     "t": "sideways",
+     "ms": 5800
+    },
+    {
+     "t": "along",
+     "ms": 6440
+    },
+    {
+     "t": "the",
+     "ms": 7520
+    },
+    {
+     "t": "wood.",
+     "ms": 7860
+    }
+   ],
+   "audio": "p5.m4a",
+   "audioMs": 9250
+  },
+  {
+   "art": "📖",
+   "tokens": [
+    {
+     "t": "He",
+     "ms": 0
+    },
+    {
+     "t": "found",
+     "ms": 260
+    },
+    {
+     "t": "it",
+     "ms": 580
+    },
+    {
+     "t": "under",
+     "ms": 780
+    },
+    {
+     "t": "the",
+     "ms": 980
+    },
+    {
+     "t": "edge",
+     "ms": 1200
+    },
+    {
+     "t": "of",
+     "ms": 1520
+    },
+    {
+     "t": "the",
+     "ms": 1760
+    },
+    {
+     "t": "rug,",
+     "ms": 1880
+    },
+    {
+     "t": "exactly",
+     "ms": 3040
+    },
+    {
+     "t": "where",
+     "ms": 3620
+    },
+    {
+     "t": "nobody",
+     "ms": 4220
+    },
+    {
+     "t": "could",
+     "ms": 4900
+    },
+    {
+     "t": "see",
+     "ms": 5660
+    },
+    {
+     "t": "it",
+     "ms": 6180
+    },
+    {
+     "t": "unless",
+     "ms": 6600
+    },
+    {
+     "t": "they",
+     "ms": 7080
+    },
+    {
+     "t": "went",
+     "ms": 7440
+    },
+    {
+     "t": "down",
+     "ms": 7660
+    },
+    {
+     "t": "to",
+     "ms": 7950
+    },
+    {
+     "t": "sit",
+     "ms": 8240
+    },
+    {
+     "t": "on",
+     "ms": 8480
+    },
+    {
+     "t": "the",
+     "ms": 8680
+    },
+    {
+     "t": "floor.",
+     "ms": 8800
+    }
+   ],
+   "magic": [
+    "sit"
+   ],
+   "audio": "p6.m4a",
+   "audioMs": 10500
+  }
+ ],
+ "moral": {
+  "spoken": "Four eyes near the floor are better than two eyes up high.",
+  "line": "I am sad.",
+  "audio": "moral.m4a",
+  "audioMs": 5840
+ },
+ "prompts": {
+  "yes:tin": {
+   "audio": "yes-tin.m4a",
+   "ms": 4640
+  },
+  "word:tin": {
+   "audio": "word-tin.m4a",
+   "ms": 2290
+  },
+  "yes:pin": {
+   "audio": "yes-pin.m4a",
+   "ms": 4640
+  },
+  "word:pin": {
+   "audio": "word-pin.m4a",
+   "ms": 2290
+  },
+  "yes:sit": {
+   "audio": "yes-sit.m4a",
+   "ms": 4070
+  },
+  "word:sit": {
+   "audio": "word-sit.m4a",
+   "ms": 2290
+  }
+ }
+}

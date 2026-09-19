@@ -161,6 +161,8 @@ export const COVER_ZOOM: Record<string, string> = {
   "tap-tap-tap": "120 66 114 114",
   "the-pot-on-the-fire": "126 96 116 116",
   "the-map-in-the-tin": "204 74 116 116",
+  "dad-did-nap": "56 168 110 110",
+  "nan-and-the-pin": "92 110 116 116",
 };
 
 /** The Pot on the Fire: the hearth, waiting. The pot is the word, so it is not here. */
@@ -203,6 +205,30 @@ export const MapInTheTinArt = ({ view }: { view?: string } = {}) => (
     <path d="M62 186 L150 186 L150 208 L62 208 Z" fill="#c2b7a4" stroke={INK} strokeWidth={3} strokeLinejoin="round" />
     <path d="M92 186 L92 208 M122 186 L122 208" {...L} strokeWidth={2.5} />
     <path d="M100 178 L138 178 L138 190 L100 190 Z" fill="#b08a63" stroke={INK} strokeWidth={3} strokeLinejoin="round" transform="rotate(-9 119 184)" />
+  </Stage>
+);
+
+/** Dad Did Nap: the step, the toolbox, the jasmine. Nobody on it. */
+export const DadDidNapArt = ({ view }: { view?: string } = {}) => (
+  <Stage view={view} sky="#ebdfc4" ground="#cfe0c0">
+    <path d="M118 196 L246 196 L246 176 L140 176 L140 158 L246 158" {...L} strokeWidth={4} />
+    <path d="M118 196 L246 196 L246 216 L118 216 Z" fill="#c2b7a4" stroke={INK} strokeWidth={3} strokeLinejoin="round" />
+    <path d="M62 190 L112 190 L108 214 L66 214 Z" fill="#a0784f" stroke={INK} strokeWidth={3} strokeLinejoin="round" />
+    <path d="M70 190 L70 178 C70 172 100 172 100 178 L100 190" {...L} strokeWidth={3} />
+    <path d="M286 200 C282 172 292 156 288 136 M306 202 C302 180 312 166 308 148" {...L} strokeWidth={3} />
+    <circle cx="288" cy="132" r="5" fill="#f4dc9e" stroke={INK} strokeWidth={2.5} />
+    <circle cx="308" cy="144" r="4" fill="#f4dc9e" stroke={INK} strokeWidth={2.5} />
+  </Stage>
+);
+
+/** Nan and the Pin: the quilt on the frame, and the rug it rolled under. */
+export const NanAndThePinArt = ({ view }: { view?: string } = {}) => (
+  <Stage view={view} sky="#e9ddc6" ground="#cbd9be">
+    <path d="M96 118 L250 118 L250 186 L96 186 Z" fill="#e4cfa8" stroke={INK} strokeWidth={3} strokeLinejoin="round" />
+    <path d="M96 141 L250 141 M96 164 L250 164 M147 118 L147 186 M199 118 L199 186" {...L} strokeWidth={2.5} />
+    <path d="M84 118 L262 118" {...L} strokeWidth={6} />
+    <path d="M110 186 L110 206 M236 186 L236 206" {...L} strokeWidth={5} />
+    <path d="M40 206 C70 198 108 206 140 202 L140 216 L40 216 Z" fill="#b9856a" stroke={INK} strokeWidth={3} strokeLinejoin="round" />
   </Stage>
 );
 
@@ -270,6 +296,8 @@ export const STORY_ART: Record<string, (p?: { view?: string }) => React.JSX.Elem
   "the-cat-in-the-tin": CatInTheTinArt,
   "dad-and-the-pig": DadAndThePigArt,
   "the-map-in-the-tin": MapInTheTinArt,
+  "dad-did-nap": DadDidNapArt,
+  "nan-and-the-pin": NanAndThePinArt,
   "fox-and-crow": FoxAndCrowArt,
   "boy-who-cried-wolf": ShepherdArt,
   "lion-and-mouse": LionAndMouseArt,
