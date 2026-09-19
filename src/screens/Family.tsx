@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useFamily } from "../lib/family";
+import { dayStamp } from "../lib/day";
 import { loadProgress } from "../lib/store";
 import { StarIcon } from "../components/Icons";
 
@@ -12,7 +13,7 @@ export function FamilyScreen({ onPick, onSettings }: { onPick: (id: string) => v
   const [nights, setNights] = useState<Record<string, number>>({});
   useEffect(() => {   // distinct reading days per child, for the stars; best effort
     let live = true;
-    void Promise.all(kids.map(async (k) => { try { const p = await loadProgress(k.id); const days = new Set([...Object.values(p).flatMap((x) => x.history ?? []).map((t) => new Date(t).toDateString()), ...(k.teachDays ?? []).map((d) => new Date(d).toDateString())]); return [k.id, days.size + (days.has(new Date().toDateString()) ? 0 : 1)] as const; } catch { return [k.id, 0] as const; } }))
+    void Promise.all(kids.map(async (k) => { try { const p = await loadProgress(k.id); const days = new Set([...Object.values(p).flatMap((x) => x.history ?? []), ...(k.teachDays ?? [])].map((t) => dayStamp(typeof t === "string" ? new Date(t) : t))); return [k.id, days.size + (days.has(dayStamp()) ? 0 : 1)] as const; } catch { return [k.id, 0] as const; } }))
       .then((rows) => { if (live) setNights(Object.fromEntries(rows)); });
     return () => { live = false; };
   }, [kids]);

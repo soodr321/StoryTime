@@ -14,7 +14,7 @@ import { TeachSoundScreen } from "./screens/TeachSound";
 import { RecordSoundsScreen } from "./screens/RecordSounds";
 import { FamilyIcon, GearIcon } from "./components/Icons";
 
-type Route = { name: "family" } | { name: "home" } | { name: "warmup"; then?: string } | { name: "teach"; replay?: boolean } | { name: "library" } | { name: "settings" } | { name: "add" } | { name: "sounds" } | { name: "story"; story: Story; mode: Mode; resume: boolean };
+type Route = { name: "family" } | { name: "home" } | { name: "warmup"; then?: string } | { name: "teach"; replay?: boolean } | { name: "library" } | { name: "settings" } | { name: "add" } | { name: "sounds" } | { name: "story"; story: Story; mode: Mode; resume: boolean; nonce?: number };
 
 export default function App() {
   return <FamilyProvider><Shell /></FamilyProvider>;
@@ -27,11 +27,11 @@ function Shell() {
   if (!fam.ready) return <div className="app"><main className="home-screen"><p className="note">Opening StoryTime…</p></main></div>;
   if (fam.fatal && !ignoreFatal) return <div className="app"><main className="home-screen"><h2>Storage needs a hand</h2><p className="note">This phone would not open StoryTime's saved data ({fam.fatal}). Private browsing or a full phone can cause this.</p><div className="btns"><button className="yes" onClick={() => setIgnoreFatal(true)}>Read tonight without saving</button><button className="no" onClick={() => location.reload()}>Try again</button></div><button className="linkbtn" onClick={async () => { try { indexedDB.deleteDatabase("keyval-store"); } catch { /* ignore */ } location.reload(); }}>reset saved data</button></main></div>;
 
-  const start = (story: Story, mode: Mode, resume = false) => { void unlock(); setRoute({ name: "story", story, mode, resume }); };
+  const start = (story: Story, mode: Mode, resume = false) => { void unlock(); setRoute({ name: "story", story, mode, resume, nonce: Date.now() }); };
   const dim = fam.settings.bedtime ? " bedtime" : "";
 
   if (!fam.settings.onboarded) return <div className="app"><WelcomeScreen onDone={() => setRoute({ name: "home" })} />{fam.toast && <div className="toast" role="status">{fam.toast}</div>}</div>;
-  if (route.name === "story") return <div className={"app" + dim}><StoryScreen key={route.story.slug + route.mode} story={route.story} mode={route.mode} resume={route.resume} onHome={() => setRoute({ name: "home" })} /></div>;
+  if (route.name === "story") return <div className={"app" + dim}><StoryScreen key={route.story.slug + route.mode + (route.nonce ?? 0)} story={route.story} mode={route.mode} resume={route.resume} onHome={() => setRoute({ name: "home" })} onAgain={(m) => start(route.story, m, false)} /></div>;
 
   return (
     <div className={"app" + dim}>

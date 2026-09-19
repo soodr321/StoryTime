@@ -53,5 +53,14 @@ reports has to leave a number behind.**
 
 - No test runs on real hardware, so audio/visual desync on a slow phone, a child spamming the letter
   tiles, and a screen at 2% brightness with Night Shift are uncovered (Gemini's list).
-- One `dayStamp()` across the six places with their own midnight.
-- "Again" on the end screen; set-3 books; real illustrations.
+- Set-3 books; real illustrations.
+
+## Closed since (2026-09-18)
+
+- **One reading day.** `src/lib/day.ts` replaces the six separate `toDateString()` calls. The day
+  turns over at 4am, not midnight, so a story that runs from 11:50pm to 12:05am is one night: the
+  night count no longer jumps by two, the week strip lights one circle, and "one new sound a day"
+  cannot be beaten by waiting for midnight.
+- **"Read it again" on the end screen.** Re-reading a favourite is how fluency is built. Hidden at
+  bedtime, where the ritual is one story then a real book. After "Nani reads" there is also a quiet
+  "this time <child> reads it" link, which reopens the same story in read mode.

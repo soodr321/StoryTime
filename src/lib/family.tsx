@@ -1,4 +1,5 @@
 /** Family context: kids, settings, custom stories, session — loaded once, saved on change. */
+import { dayStamp } from "./day";
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import type { Story } from "./content/types";
 import { LIBRARY, fits, listenAlongStory } from "./library";
@@ -113,7 +114,7 @@ export function FamilyProvider({ children }: { children: ReactNode }) {
     advanceReady: !!activeKid && readyToAdvance(attempts, activeKid.gpcs.length, progress, review.length),
     // distinct days the family did something, counting today as one whether or not it is already in the set:
     // the card used to read "night 1" before the story and "night 2" after it, on the same evening
-    nights: (() => { const days = new Set([...Object.values(progress).flatMap((p) => p.history ?? []).map((t) => new Date(t).toDateString()), ...(activeKid?.teachDays ?? []).map((d) => new Date(d).toDateString())]); const today = new Date().toDateString(); return days.size + (days.has(today) ? 0 : 1); })(),
+    nights: (() => { const days = new Set([...Object.values(progress).flatMap((p) => p.history ?? []), ...(activeKid?.teachDays ?? [])].map((t) => dayStamp(typeof t === "string" ? new Date(t) : t))); return days.size + (days.has(dayStamp()) ? 0 : 1); })(),
     pendingBuild: (() => { const enc = Object.values(progress).flatMap((p) => p.encoding ?? []).sort((a, b) => a.at - b.at); const failed = enc.filter((e) => !e.ok).map((e) => e.word); return failed.find((w) => !enc.some((e) => e.word === w && e.ok && e.at > (enc.find((f) => f.word === w && !f.ok)?.at ?? 0))) ?? null; })(),
     reviewDone: async (results) => { if (!activeKid) return; await scheduleReview(activeKid.id, results); setReview(dueReview(await loadReview(activeKid.id))); },
     snoozeWarmUp: async () => { if (!activeKid) return; try { await snoozeReview(activeKid.id); } catch { /* a snooze that cannot be saved still clears tonight */ } setReview([]); },

@@ -5,6 +5,7 @@
  */
 import { useState } from "react";
 import { useFamily } from "../lib/family";
+import { sameDay } from "../lib/day";
 import { TEACH } from "../lib/phonics/teach";
 import { playSound } from "../lib/sounds";
 import { GRAPHEME_SOUND, LS_PHASE2_ORDER } from "../lib/phonics/learner";
@@ -16,8 +17,7 @@ import { LEVELS, TRICKY_PARTS } from "../lib/phonics/learner";
 /** replay = go over the sound taught today; it must never target (or mark taught) the NEXT sound. */
 export function TeachSoundScreen({ onDone, replay = false }: { onDone: () => void; replay?: boolean }) {
   const { activeKid: kid, updateKid, settings, advanceReady: ready } = useFamily();
-  const today = new Date().toDateString();
-  const taughtToday = (kid?.teachDays ?? []).some((d) => new Date(d).toDateString() === today);
+  const taughtToday = (kid?.teachDays ?? []).some((d) => sameDay(new Date(d)));
   const advanceReady = (ready || (kid?.gpcs.length ?? 0) < 4) && !taughtToday;   // the first four sounds need no story evidence, but one new sound per day
   const [override, setOverride] = useState(false);
   const reader = settings.tonight ?? settings.readers[0] ?? "Grown-up";

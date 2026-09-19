@@ -23,7 +23,7 @@ import { keepAwake } from "../lib/wakelock";
 import { nextHighlight } from "../lib/highlight";
 import { align } from "../lib/voice/align";
 import { startVoice, voiceSupported, type VoiceSession, type VoiceState } from "../lib/voice/session";
-import { BookIcon, HomeIcon, LockIcon, MoonIcon, SpeakerIcon, CheckIcon } from "../components/Icons";
+import { RedoIcon, BookIcon, HomeIcon, LockIcon, MoonIcon, SpeakerIcon, CheckIcon } from "../components/Icons";
 
 type Prompts = Record<string, { audio: string; ms: number }>;
 let promptsCache: Prompts | null = null;
@@ -34,7 +34,7 @@ async function prompts(): Promise<Prompts> {
 }
 const isUrl = (a: string) => /^(data|blob):/.test(a);
 
-export function StoryScreen({ story, mode, resume, onHome }: { story: Story; mode: Mode; resume: boolean; onHome: () => void }) {
+export function StoryScreen({ story, mode, resume, onHome, onAgain }: { story: Story; mode: Mode; resume: boolean; onHome: () => void; onAgain?: (mode: Mode) => void }) {
   const fam = useFamily();
   const kid = fam.activeKid!;
   const learner = useMemo(() => learnerOf(kid), [kid]);
@@ -213,7 +213,7 @@ export function StoryScreen({ story, mode, resume, onHome }: { story: Story; mod
       )}
 
       {state === "moral" && <Moral story={story} learner={learner} listener={listener} kid={kid.name} reader={reader} listen={listen} bedtime={bedtime} rate={rate} setCaption={setCaption} buildWord={fam.pendingBuild ?? designed(ctx.results).find((r) => r.ok && r.mode === "first_try")?.word ?? null} onBuilt={(w, ok) => fam.encodingDone(story.slug, w, ok)} onYes={() => send({ type: "LINE_YES" })} />}
-      {state === "done" && <Done story={story} results={ctx.results} bedtime={bedtime} kid={kid.name} learner={learner} listenOnly={listener} onHome={home} />}
+      {state === "done" && <Done story={story} results={ctx.results} bedtime={bedtime} kid={kid.name} learner={learner} listenOnly={listener} onHome={home} mode={mode} onAgain={onAgain ? (m) => { runRef.current++; playing.current?.stop(); stopAll(); stopBlend(); onAgain(m); } : undefined} />}
 
       <div className={"cap" + (caption ? "" : " empty")} aria-live="polite">{caption}</div>
       {fam.toast && <div className="toast" role="status">{fam.toast}</div>}
@@ -416,7 +416,7 @@ function Moral({ story, learner, listener, kid, reader, listen, bedtime, rate, s
 }
 
 /** Specific feedback, not a trophy: what the child actually did with each word. */
-function Done({ story, results, bedtime, kid, learner, listenOnly, onHome }: { story: Story; results: WordResult[]; bedtime: boolean; kid: string; learner: LearnerModel; listenOnly: boolean; onHome: () => void }) {
+function Done({ story, results, bedtime, kid, learner, listenOnly, mode, onAgain, onHome }: { story: Story; results: WordResult[]; bedtime: boolean; kid: string; learner: LearnerModel; listenOnly: boolean; mode: Mode; onAgain?: (mode: Mode) => void; onHome: () => void }) {
   const ok = results.filter((r) => r.ok);
   const tried = volunteered(results);
   const later = designed(results).filter((r) => !r.ok);
@@ -437,7 +437,12 @@ function Done({ story, results, bedtime, kid, learner, listenOnly, onHome }: { s
       <p className="show">{bedtime ? "Lights low. One real book, then sleep." : listenOnly ? `A whole story, ${kid}! Tell someone what happened.` : ok.length ? `Now go find someone and read them your ${ok.length === 1 ? "word" : "words"}, ${kid}!` : `Good listening, ${kid}. Those words come back tomorrow for a warm-up.`}</p>
       {!bedtime && ok.length > 0 && <p className="bigwords">{ok.map((r, i) => <span key={(r.id ?? r.word) + i}>{r.word}</span>)}</p>}
       {tried.length > 0 && <p className="note">…and {kid} asked to try <b>{tried.map((r) => r.word).join(", ")}</b> without being asked.</p>}
-      <div className="btns"><button className="yes" onClick={onHome}><CheckIcon /> Done</button></div>
+      <div className="btns">
+        {/* a favourite read straight back is how fluency is built; not at bedtime, where the ritual is one story then a real book */}
+        {!bedtime && onAgain && <button className="no" onClick={() => onAgain(mode)}><RedoIcon /> Read it again</button>}
+        <button className="yes" onClick={onHome}><CheckIcon /> Done</button>
+      </div>
+      {!bedtime && onAgain && mode === "listen" && !listenOnly && <button className="skip" onClick={() => onAgain("read")}>this time {kid} reads it →</button>}
       {later.length > 0 && (ledger
         ? <ul className="results grownup-ledger">{later.map((r, i) => <li key={(r.id ?? r.word) + i} className="no">{line(r)}</li>)}</ul>
         : <button className="skip" onClick={() => setLedger(true)}>grown-up: tonight's words →</button>)}

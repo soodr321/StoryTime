@@ -1,4 +1,5 @@
 import { useFamily } from "../lib/family";
+import { dayStamp, sameDay } from "../lib/day";
 import { TRADITION_LABEL, storyAsset } from "../lib/library";
 import { useEffect } from "react";
 import type { Story } from "../lib/content/types";
@@ -9,7 +10,7 @@ import { BookIcon, MoonIcon, RedoIcon, SpeakerIcon, StarIcon } from "../componen
 
 export type Mode = "listen" | "read";
 
-const sameDay = (a: number, b: number) => new Date(a).toDateString() === new Date(b).toDateString();
+
 
 /** Warm the audio cache for a story so it plays in the car / on the plane. Best effort. */
 async function precache(story: Story) {
@@ -20,7 +21,7 @@ async function precache(story: Story) {
 
 function WeekStrip({ days }: { days: number[] }) {
   const today = new Date(); const cells = [] as { label: string; on: boolean; isToday: boolean }[];
-  for (let i = 6; i >= 0; i--) { const d = new Date(today); d.setDate(today.getDate() - i); cells.push({ label: d.toLocaleDateString(undefined, { weekday: "narrow" }), on: days.some((t) => sameDay(t, d.getTime())), isToday: i === 0 }); }
+  for (let i = 6; i >= 0; i--) { const d = new Date(today); d.setDate(today.getDate() - i); const stamp = dayStamp(d); cells.push({ label: d.toLocaleDateString(undefined, { weekday: "narrow" }), on: days.some((t) => dayStamp(t) === stamp), isToday: i === 0 }); }
   return <div className="week" aria-label="stories this week">{cells.map((c, i) => <span key={i} className={"day" + (c.on ? " on" : "") + (c.isToday ? " today" : "")}>{c.on ? <StarIcon size={16} /> : c.label}</span>)}</div>;
 }
 
@@ -32,7 +33,7 @@ export function HomeScreen({ onStart, onLibrary, onSwitch, onWarmUp, onTeach }: 
   if (!kid) return null;
   const finished = Object.values(progress).filter((p) => p.timesFinished > 0).length;
   const listenAlong = listensAlong(kid);
-  const taughtToday = (kid.teachDays ?? []).some((d) => new Date(d).toDateString() === new Date().toDateString());   // fewer than four sounds: tonight is a listen-along, not a reading
+  const taughtToday = (kid.teachDays ?? []).some((d) => sameDay(new Date(d)));   // fewer than four sounds: tonight is a listen-along, not a reading
   const listener = kid.role === "listener";
   const lastFinished = Math.max(0, ...Object.values(progress).map((p) => p.lastFinished ?? 0));
   const doneTonight = settings.bedtime && lastFinished > 0 && sameDay(lastFinished, Date.now()) && !resumable;
