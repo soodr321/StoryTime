@@ -7,6 +7,15 @@ export interface Token {
   t: string;
   /** Start time in ms within the page audio. Filled by scripts/gen-audio.py. */
   ms: number;
+  /**
+   * End time in ms within the page audio, from ASR (Whisper) word-end when the token was matched,
+   * or the next token's `ms` when it was interpolated. Filled by scripts/gen-audio.py's realign();
+   * never `nextStart` on its own — that is 100 ms for "the" and 1,640 ms for a sentence-final
+   * word. Optional so library JSON generated before this field existed still validates; a reader
+   * of `endMs` must treat its absence as "not measured," never invent it from `ms` of the next
+   * token (that guess is exactly the bug this field exists to prevent).
+   */
+  endMs?: number;
 }
 
 export interface Page {
