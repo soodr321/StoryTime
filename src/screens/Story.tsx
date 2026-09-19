@@ -251,7 +251,12 @@ function StoryView({ page, pageNo, total, slug, family, token, results, readMode
     });
   };
   const measure = (): WordRect[] => Array.from(sentenceRef.current?.querySelectorAll<HTMLElement>("[data-i]") ?? []).map((el) => { const b = el.getBoundingClientRect(); return { index: Number(el.dataset.i), left: b.left, right: b.right, top: b.top, bottom: b.bottom }; });
-  const onDown = (e: React.PointerEvent) => { if (!readMode) return; drag.current = { x: e.clientX, y: e.clientY, on: false, rects: [], id: e.pointerId }; };
+  const EDGE = 18;   // a thumb resting on the bezel while the phone is held in bed is not a reading finger
+  const onDown = (e: React.PointerEvent) => {
+    if (!readMode) return;
+    if (e.clientX < EDGE || e.clientX > window.innerWidth - EDGE) return;
+    drag.current = { x: e.clientX, y: e.clientY, on: false, rects: [], id: e.pointerId };
+  };
   const onMove = (e: React.PointerEvent) => {
     const d = drag.current; if (!d || !readMode) return;
     let fresh = false;
