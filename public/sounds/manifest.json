@@ -7,10 +7,10 @@
   "f0": 0,
   "f0_drift": 0,
   "rms_db": -17.4,
-  "source": "recorded by the family",
-  "license": "family",
-  "artist": "family",
-  "edit": "raw take assets/voice-pack/s.mp3, trimmed 920-1480 ms, level-matched (+6.4 dB)"
+  "source": "recorded for Sound City Reading alphabet sounds (Kathryn J. Davis, soundcityreading.net)",
+  "license": "Copyright Kathryn J. Davis; used by written permission, credit required",
+  "artist": "Kathryn J. Davis, soundcityreading.net",
+  "edit": "raw take assets/packs/soundcity/s.mp3, trimmed 920-1480 ms, level-matched (+6.4 dB)"
  },
  "f": {
   "audio": "f.wav",
@@ -20,10 +20,10 @@
   "f0": 0,
   "f0_drift": 0,
   "rms_db": -17.0,
-  "source": "recorded by the family",
-  "license": "family",
-  "artist": "family",
-  "edit": "raw take assets/voice-pack/f.mp3, trimmed 740-1190 ms, level-matched (+5.5 dB)"
+  "source": "recorded for Sound City Reading alphabet sounds (Kathryn J. Davis, soundcityreading.net)",
+  "license": "Copyright Kathryn J. Davis; used by written permission, credit required",
+  "artist": "Kathryn J. Davis, soundcityreading.net",
+  "edit": "raw take assets/packs/soundcity/f.mp3, trimmed 740-1190 ms, level-matched (+5.5 dB)"
  },
  "h": {
   "audio": "h.wav",
@@ -33,10 +33,10 @@
   "f0": 0,
   "f0_drift": 0,
   "rms_db": -17.2,
-  "source": "recorded by the family",
-  "license": "family",
-  "artist": "family",
-  "edit": "raw take assets/voice-pack/h.mp3, trimmed 790-1070 ms, level-matched (+2.6 dB)"
+  "source": "recorded for Sound City Reading alphabet sounds (Kathryn J. Davis, soundcityreading.net)",
+  "license": "Copyright Kathryn J. Davis; used by written permission, credit required",
+  "artist": "Kathryn J. Davis, soundcityreading.net",
+  "edit": "raw take assets/packs/soundcity/h.mp3, trimmed 790-1070 ms, level-matched (+2.6 dB)"
  },
  "m": {
   "audio": "m.wav",
@@ -46,10 +46,10 @@
   "f0": 0,
   "f0_drift": 0,
   "rms_db": -17.0,
-  "source": "recorded by the family",
-  "license": "family",
-  "artist": "family",
-  "edit": "raw take assets/voice-pack/m.mp3, trimmed 640-1440 ms, level-matched (-4.5 dB)"
+  "source": "recorded for Sound City Reading alphabet sounds (Kathryn J. Davis, soundcityreading.net)",
+  "license": "Copyright Kathryn J. Davis; used by written permission, credit required",
+  "artist": "Kathryn J. Davis, soundcityreading.net",
+  "edit": "raw take assets/packs/soundcity/m.mp3, trimmed 640-1440 ms, level-matched (-4.5 dB)"
  },
  "n": {
   "audio": "n.wav",
@@ -59,10 +59,10 @@
   "f0": 0,
   "f0_drift": 0,
   "rms_db": -17.0,
-  "source": "recorded by the family",
-  "license": "family",
-  "artist": "family",
-  "edit": "raw take assets/voice-pack/n.mp3, trimmed 640-1390 ms, level-matched (-3.1 dB)"
+  "source": "recorded for Sound City Reading alphabet sounds (Kathryn J. Davis, soundcityreading.net)",
+  "license": "Copyright Kathryn J. Davis; used by written permission, credit required",
+  "artist": "Kathryn J. Davis, soundcityreading.net",
+  "edit": "raw take assets/packs/soundcity/n.mp3, trimmed 640-1390 ms, level-matched (-3.1 dB)"
  },
  "l": {
   "audio": "l.wav",
@@ -72,10 +72,10 @@
   "f0": 0,
   "f0_drift": 0,
   "rms_db": -17.0,
-  "source": "recorded by the family",
-  "license": "family",
-  "artist": "family",
-  "edit": "raw take assets/voice-pack/l.mp3, trimmed 790-1550 ms, level-matched (-2.0 dB)"
+  "source": "recorded for Sound City Reading alphabet sounds (Kathryn J. Davis, soundcityreading.net)",
+  "license": "Copyright Kathryn J. Davis; used by written permission, credit required",
+  "artist": "Kathryn J. Davis, soundcityreading.net",
+  "edit": "raw take assets/packs/soundcity/l.mp3, trimmed 790-1550 ms, level-matched (-2.0 dB)"
  },
  "r": {
   "audio": "r.wav",
@@ -85,10 +85,10 @@
   "f0": 0,
   "f0_drift": 0,
   "rms_db": -17.0,
-  "source": "recorded by the family",
-  "license": "family",
-  "artist": "family",
-  "edit": "raw take assets/voice-pack/r.mp3, trimmed 760-1620 ms, level-matched (-1.0 dB)"
+  "source": "recorded for Sound City Reading alphabet sounds (Kathryn J. Davis, soundcityreading.net)",
+  "license": "Copyright Kathryn J. Davis; used by written permission, credit required",
+  "artist": "Kathryn J. Davis, soundcityreading.net",
+  "edit": "raw take assets/packs/soundcity/r.mp3, trimmed 760-1620 ms, level-matched (-1.0 dB)"
  },
  "a": {
   "audio": "a.wav",
@@ -98,10 +98,10 @@
   "f0": 0,
   "f0_drift": 0,
   "rms_db": -17.0,
-  "source": "recorded by the family",
-  "license": "family",
-  "artist": "family",
-  "edit": "raw take assets/voice-pack/a.mp3, trimmed 1230-1550 ms, level-matched (+4.8 dB)"
+  "source": "recorded for Sound City Reading alphabet sounds (Kathryn J. Davis, soundcityreading.net)",
+  "license": "Copyright Kathryn J. Davis; used by written permission, credit required",
+  "artist": "Kathryn J. Davis, soundcityreading.net",
+  "edit": "raw take assets/packs/soundcity/a.mp3, trimmed 1230-1550 ms, level-matched (+4.8 dB)"
  },
  "e": {
   "audio": "e.wav",
@@ -111,10 +111,10 @@
   "f0": 0,
   "f0_drift": 0,
   "rms_db": -17.0,
-  "source": "recorded by the family",
-  "license": "family",
-  "artist": "family",
-  "edit": "raw take assets/voice-pack/e.mp3, trimmed 910-1230 ms, level-matched (+0.3 dB)"
+  "source": "recorded for Sound City Reading alphabet sounds (Kathryn J. Davis, soundcityreading.net)",
+  "license": "Copyright Kathryn J. Davis; used by written permission, credit required",
+  "artist": "Kathryn J. Davis, soundcityreading.net",
+  "edit": "raw take assets/packs/soundcity/e.mp3, trimmed 910-1230 ms, level-matched (+0.3 dB)"
  },
  "i": {
   "audio": "i.wav",
@@ -124,10 +124,10 @@
   "f0": 0,
   "f0_drift": 0,
   "rms_db": -17.0,
-  "source": "recorded by the family",
-  "license": "family",
-  "artist": "family",
-  "edit": "raw take assets/voice-pack/i.mp3, trimmed 830-1020 ms, level-matched (-1.8 dB)"
+  "source": "recorded for Sound City Reading alphabet sounds (Kathryn J. Davis, soundcityreading.net)",
+  "license": "Copyright Kathryn J. Davis; used by written permission, credit required",
+  "artist": "Kathryn J. Davis, soundcityreading.net",
+  "edit": "raw take assets/packs/soundcity/i.mp3, trimmed 830-1020 ms, level-matched (-1.8 dB)"
  },
  "o": {
   "audio": "o.wav",
@@ -137,10 +137,10 @@
   "f0": 0,
   "f0_drift": 0,
   "rms_db": -17.1,
-  "source": "recorded by the family",
-  "license": "family",
-  "artist": "family",
-  "edit": "raw take assets/voice-pack/o.mp3, trimmed 620-940 ms, level-matched (-3.8 dB)"
+  "source": "recorded for Sound City Reading alphabet sounds (Kathryn J. Davis, soundcityreading.net)",
+  "license": "Copyright Kathryn J. Davis; used by written permission, credit required",
+  "artist": "Kathryn J. Davis, soundcityreading.net",
+  "edit": "raw take assets/packs/soundcity/o.mp3, trimmed 620-940 ms, level-matched (-3.8 dB)"
  },
  "u": {
   "audio": "u.wav",
@@ -150,10 +150,10 @@
   "f0": 0,
   "f0_drift": 0,
   "rms_db": -17.0,
-  "source": "recorded by the family",
-  "license": "family",
-  "artist": "family",
-  "edit": "raw take assets/voice-pack/u.mp3, trimmed 1230-1550 ms, level-matched (+0.1 dB)"
+  "source": "recorded for Sound City Reading alphabet sounds (Kathryn J. Davis, soundcityreading.net)",
+  "license": "Copyright Kathryn J. Davis; used by written permission, credit required",
+  "artist": "Kathryn J. Davis, soundcityreading.net",
+  "edit": "raw take assets/packs/soundcity/u.mp3, trimmed 1230-1550 ms, level-matched (+0.1 dB)"
  },
  "t": {
   "audio": "t.wav",
@@ -163,10 +163,10 @@
   "f0": 0,
   "f0_drift": 0,
   "rms_db": -17.0,
-  "source": "recorded by the family",
-  "license": "family",
-  "artist": "family",
-  "edit": "raw take assets/voice-pack/t.mp3, trimmed 585-720 ms, level-matched (+4.7 dB)"
+  "source": "recorded for Sound City Reading alphabet sounds (Kathryn J. Davis, soundcityreading.net)",
+  "license": "Copyright Kathryn J. Davis; used by written permission, credit required",
+  "artist": "Kathryn J. Davis, soundcityreading.net",
+  "edit": "raw take assets/packs/soundcity/t.mp3, trimmed 585-720 ms, level-matched (+4.7 dB)"
  },
  "p": {
   "audio": "p.wav",
@@ -176,10 +176,10 @@
   "f0": 0,
   "f0_drift": 0,
   "rms_db": -17.1,
-  "source": "recorded by the family",
-  "license": "family",
-  "artist": "family",
-  "edit": "raw take assets/voice-pack/p.mp3, trimmed 695-765 ms, level-matched (+2.9 dB)"
+  "source": "recorded for Sound City Reading alphabet sounds (Kathryn J. Davis, soundcityreading.net)",
+  "license": "Copyright Kathryn J. Davis; used by written permission, credit required",
+  "artist": "Kathryn J. Davis, soundcityreading.net",
+  "edit": "raw take assets/packs/soundcity/p.mp3, trimmed 695-765 ms, level-matched (+2.9 dB)"
  },
  "k": {
   "audio": "k.wav",
@@ -189,10 +189,10 @@
   "f0": 0,
   "f0_drift": 0,
   "rms_db": -17.0,
-  "source": "recorded by the family",
-  "license": "family",
-  "artist": "family",
-  "edit": "raw take assets/voice-pack/k.mp3, trimmed 840-985 ms, level-matched (+4.8 dB)"
+  "source": "recorded for Sound City Reading alphabet sounds (Kathryn J. Davis, soundcityreading.net)",
+  "license": "Copyright Kathryn J. Davis; used by written permission, credit required",
+  "artist": "Kathryn J. Davis, soundcityreading.net",
+  "edit": "raw take assets/packs/soundcity/k.mp3, trimmed 840-985 ms, level-matched (+4.8 dB)"
  },
  "b": {
   "audio": "b.wav",
@@ -202,10 +202,10 @@
   "f0": 0,
   "f0_drift": 0,
   "rms_db": -17.8,
-  "source": "recorded by the family",
-  "license": "family",
-  "artist": "family",
-  "edit": "raw take assets/voice-pack/b.mp3, trimmed 1255-1355 ms, level-matched (+10.6 dB)"
+  "source": "recorded for Sound City Reading alphabet sounds (Kathryn J. Davis, soundcityreading.net)",
+  "license": "Copyright Kathryn J. Davis; used by written permission, credit required",
+  "artist": "Kathryn J. Davis, soundcityreading.net",
+  "edit": "raw take assets/packs/soundcity/b.mp3, trimmed 1255-1355 ms, level-matched (+10.6 dB)"
  },
  "d": {
   "audio": "d.wav",
@@ -215,10 +215,10 @@
   "f0": 0,
   "f0_drift": 0,
   "rms_db": -18.1,
-  "source": "recorded by the family",
-  "license": "family",
-  "artist": "family",
-  "edit": "raw take assets/voice-pack/d.mp3, trimmed 820-920 ms, level-matched (+4.8 dB)"
+  "source": "recorded for Sound City Reading alphabet sounds (Kathryn J. Davis, soundcityreading.net)",
+  "license": "Copyright Kathryn J. Davis; used by written permission, credit required",
+  "artist": "Kathryn J. Davis, soundcityreading.net",
+  "edit": "raw take assets/packs/soundcity/d.mp3, trimmed 820-920 ms, level-matched (+4.8 dB)"
  },
  "g": {
   "audio": "g.wav",
@@ -228,10 +228,10 @@
   "f0": 0,
   "f0_drift": 0,
   "rms_db": -18.2,
-  "source": "recorded by the family",
-  "license": "family",
-  "artist": "family",
-  "edit": "raw take assets/voice-pack/g.mp3, trimmed 755-855 ms, level-matched (+8.5 dB)"
+  "source": "recorded for Sound City Reading alphabet sounds (Kathryn J. Davis, soundcityreading.net)",
+  "license": "Copyright Kathryn J. Davis; used by written permission, credit required",
+  "artist": "Kathryn J. Davis, soundcityreading.net",
+  "edit": "raw take assets/packs/soundcity/g.mp3, trimmed 755-855 ms, level-matched (+8.5 dB)"
  },
  "_pack": {
   "name": "soundcity",

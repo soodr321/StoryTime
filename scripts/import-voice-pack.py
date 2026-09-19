@@ -18,6 +18,21 @@ RAW = Path(os.environ.get("VOICE_PACK", ROOT / "assets" / "voice-pack"))
 OUT = ROOT / "public" / "sounds"
 TARGET_RMS_DB = -17.0
 
+def active_pack():
+    """Which entry in scripts/sound-packs.json actually points at RAW, so the shipped manifest
+    can credit the pack that really built these wavs instead of a hardcoded default. Matched by
+    resolved source path (build-sounds.py sets VOICE_PACK to a pack's own "source" directory), not
+    by name, since this script only ever sees the directory, never the pack it belongs to.
+    Falls back to the "family" entry (this script's own default RAW) if nothing matches, so running
+    it directly against assets/voice-pack still behaves as it always has."""
+    reg_path = ROOT / "scripts" / "sound-packs.json"
+    reg = json.loads(reg_path.read_text())
+    for name, p in reg["packs"].items():
+        if (ROOT / p["source"]).resolve() == RAW.resolve():
+            return name, p
+    fam = reg["packs"].get("family", {})
+    return "family", fam
+
 def ffmpeg():
     f = shutil.which("ffmpeg")
     if f: return f
@@ -102,6 +117,13 @@ def main():
     check = "--check" in sys.argv
     takes = sorted(RAW.glob("*.webm")) + sorted(RAW.glob("*.m4a")) + sorted(RAW.glob("*.wav")) + sorted(RAW.glob("*.mp3"))
     if not takes: sys.exit(f"no recordings in {RAW} — record them in the app first (dev server)")
+    pack_name, pack_info = active_pack()
+    provenance = {
+        "source": f"recorded for {pack_info.get('title', pack_name)} ({pack_info.get('attribution', pack_name)})",
+        "license": pack_info.get("license", pack_name),
+        "artist": pack_info.get("attribution", pack_name),
+    }
+    edit_prefix = pack_info.get("source", "assets/voice-pack")
     man = json.loads((OUT / "manifest.json").read_text()) if (OUT / "manifest.json").exists() else {}
     kinds = {g: man.get(g, {}).get("kind", "continuant") for g in [t.stem for t in takes]}
     report, wrote = [], 0
@@ -139,8 +161,8 @@ def main():
             after = measure(OUT / f"{g}.wav")
             man[g] = {"audio": f"{g}.wav", "ms": end - start, "kind": kinds.get(g, "continuant"), "recorded": True,
                       "f0": 0, "f0_drift": 0, "rms_db": round(after["rms_db"], 1),
-                      "source": "recorded by the family", "license": "family", "artist": "family",
-                      "edit": f"raw take assets/voice-pack/{t.name}, trimmed {start}-{end} ms, level-matched ({gain:+.1f} dB)"}
+                      **provenance,
+                      "edit": f"raw take {edit_prefix}/{t.name}, trimmed {start}-{end} ms, level-matched ({gain:+.1f} dB)"}
             wrote += 1
         report.append((g, f"{end-start} ms, {gain:+.1f} dB"))
     if not check and wrote:
