@@ -2,5 +2,8 @@
  "_note": "Clips that fail a phonetic gate and are shipped anyway, each with a reason a person checked. The gate still fails anything not named here, so a regression cannot hide behind a blanket threshold.",
  "soundcity": {
   "i": "Her /i/ is 190 ms and scores 0.89 against a 0.93 threshold. The threshold was calibrated on sustained IPA cardinal vowels, which no teacher produces: a real short /i/ is quick and moves a little. All four copies of this recording on her site are the same take, so there is no steadier one, and the alternative - taking /i/ from another speaker - would put a second voice inside every word with an i in it, which is the defect this whole pipeline exists to prevent. Checked by ear against sit, pin and dig. 2026-09-19."
+ },
+ "_watch": {
+  "soundcity.e": "Steadiness 0.93 sits exactly on the 0.93 bar (the gate fails below it, so /e/ passes by a hair). If a re-cut or a new measure nudges it, it will flip to failing - look at the clip rather than moving the bar. Noted 2026-09-19."
  }
 }
