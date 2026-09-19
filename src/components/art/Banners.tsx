@@ -61,10 +61,17 @@ export const ShepherdArt = ({ view }: { view?: string } = {}) => (
 /** the net on the ground, and a hole under the roots */
 export const LionAndMouseArt = ({ view }: { view?: string } = {}) => (
   <Stage view={view} sky="#e9dcbf" ground="#cdd9ae" far="#bccb9c">
-    <path d="M132 178 C144 164 176 164 188 178 C176 188 144 188 132 178 Z" fill="#4a3a2c" stroke={INK} strokeWidth={3} strokeLinejoin="round" />
-    <path d="M128 176 C120 162 128 150 140 150" {...L} strokeWidth={4} />
-    <path d="M254 158 C270 152 292 160 294 174 C272 178 256 172 254 158 Z" fill="#9fb98a" stroke={INK} strokeWidth={3} strokeLinejoin="round" />
-    <path d="M258 162 C272 166 284 170 292 174" {...L} strokeWidth={2.5} />
+    {/* no hole: a dark rimmed oval is the pit Sam falls into two books away, and this fable's word is
+        "net". Tall grass instead, in tufts - evenly spaced blades over a band edge read as a mesh. */}
+    {[[38, 1], [116, 0.85], [212, 1.05], [292, 0.78]].map(([x, k], i) => (
+      <g key={i}>
+        <path d={`M${x} 236 C${x - 16} 218 ${x - 14} 206 ${x - 24} ${236 - 46 * (k as number)}`} {...L} strokeWidth={3.5} />
+        <path d={`M${x + 4} 238 C${x + 2} 216 ${x + 8} 206 ${x + 4} ${238 - 58 * (k as number)}`} {...L} strokeWidth={3.5} />
+        <path d={`M${x + 9} 236 C${x + 20} 220 ${x + 20} 208 ${x + 30} ${236 - 40 * (k as number)}`} {...L} strokeWidth={3.5} />
+      </g>
+    ))}
+    <path d="M250 176 C266 170 288 178 290 192 C268 196 252 190 250 176 Z" fill="#9fb98a" stroke={INK} strokeWidth={3} strokeLinejoin="round" />
+    <path d="M254 180 C268 184 280 188 288 192" {...L} strokeWidth={2.5} />
   </Stage>
 );
 
