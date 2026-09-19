@@ -1,0 +1,31 @@
+{
+ "_note": "Which recorded sound set the app ships, and what we are allowed to do with it. Switch with `npm run sounds:build <pack>`; the shipped manifest records which pack it came from, and the deploy scripts refuse a pack we may not redistribute.",
+ "active": "commons",
+ "packs": {
+  "commons": {
+   "title": "Wikimedia Commons phonetics recordings",
+   "attribution": "Volunteer phoneticians at Wikimedia Commons",
+   "license": "CC BY-SA 3.0",
+   "redistributable": true,
+   "source": "assets/phonemes-src",
+   "builder": "scripts/cut-phonemes.py"
+  },
+  "family": {
+   "title": "Recorded at home",
+   "attribution": "Recorded by the family",
+   "license": "The family's own recordings",
+   "redistributable": true,
+   "source": "assets/voice-pack",
+   "builder": "scripts/import-voice-pack.py"
+  },
+  "soundcity": {
+   "title": "Sound City Reading alphabet sounds",
+   "attribution": "Kathryn J. Davis, soundcityreading.net",
+   "license": "All rights reserved; used by written permission",
+   "redistributable": false,
+   "source": "assets/packs/soundcity",
+   "builder": "scripts/import-voice-pack.py",
+   "note": "Permission requested by email 2026-09-18. Until it is granted in writing this pack stays out of git and off both hosts: the deploy scripts refuse it."
+  }
+ }
+}

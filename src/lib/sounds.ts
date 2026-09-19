@@ -47,3 +47,11 @@ export async function soundSource(clip: string): Promise<SoundSrc> {
 export async function playSound(clip: string): Promise<void> {
   try { const s = await soundSource(clip); await playClip(s.url, s.family ? { startMs: s.startMs, endMs: s.endMs } : undefined).done; } catch { /* clip missing: the tile still shows the letter */ }
 }
+
+export interface SoundPack { name: string; title: string; attribution: string; license: string; builtAt: string }
+let packPromise: Promise<SoundPack | null> | null = null;
+/** Who recorded the built-in sounds, read from the set the app actually ships. */
+export function soundPack(): Promise<SoundPack | null> {
+  packPromise ??= fetch(`${BASE}/sounds/manifest.json?v=${AUDIO_V}`).then((r) => (r.ok ? r.json() : null)).then((m) => m?._pack ?? null).catch(() => null);
+  return packPromise;
+}

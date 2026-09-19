@@ -232,5 +232,13 @@
   "license": "CC BY-SA 3.0",
   "artist": "?",
   "edit": "cut 722\u2013808 ms of the original to the isolated sound, level-matched (+6.1 dB)"
+ },
+ "_pack": {
+  "name": "commons",
+  "title": "Wikimedia Commons phonetics recordings",
+  "attribution": "Volunteer phoneticians at Wikimedia Commons",
+  "license": "CC BY-SA 3.0",
+  "redistributable": true,
+  "builtAt": "2026-09-19"
  }
 }

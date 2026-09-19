@@ -3,6 +3,15 @@
 set -e
 cd "$(dirname "$0")/.."
 for d in library/*/; do s=$(basename "$d"); [ -f "public/library/$s/p1.m4a" ] || { echo "missing narration for $s → generating"; npm run audio >/dev/null || exit 1; break; }; done
+python3 - <<'GUARD' || exit 1
+import json, sys
+from pathlib import Path
+m = json.loads(Path("public/sounds/manifest.json").read_text())
+pack = m.get("_pack")
+if pack and not pack.get("redistributable", True):
+    sys.exit(f"refusing to deploy: the letter sounds come from {pack['name']!r} ({pack['license']}).\n"
+             f"Run `npm run sounds:build commons` (or `family`) before deploying.")
+GUARD
 npx vitest run >/dev/null || { echo "tests failed; not deploying"; exit 1; }
 BASE_PATH=/StoryTime/ npm run build >/dev/null
 cp vercel.json dist/ 2>/dev/null || true

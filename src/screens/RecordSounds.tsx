@@ -10,7 +10,7 @@ import { TEACH } from "../lib/phonics/teach";
 import { CONTINUANTS, VOWELS, playBlend } from "../lib/blend";   // the raw clip chain: this screen is checking the clips themselves
 import { canRecord, prepareMic, startRecording, type Recorder } from "../lib/audio/record";
 import { trimSilence } from "../lib/audio/trim";
-import { familySoundClips, playSound, removeFamilySound, saveFamilySound } from "../lib/sounds";
+import { familySoundClips, playSound, removeFamilySound, saveFamilySound, soundPack, type SoundPack } from "../lib/sounds";
 import { playClip } from "../lib/audio/player";
 import { CheckIcon, SpeakerIcon } from "../components/Icons";
 
@@ -41,7 +41,8 @@ export function RecordSoundsScreen({ onDone }: { onDone: () => void }) {
   const t = TEACH[clip] ?? TEACH[graphemesFor(clip)[0]];
   const kind = kindOf(clip);
   const blendWord = useMemo(() => t?.blend?.length ? t.blend : null, [t]);
-  useEffect(() => { void familySoundClips().then((c) => setHave(new Set(c))); }, []);
+  const [pack, setPack] = useState<SoundPack | null>(null);
+  useEffect(() => { void familySoundClips().then((c) => setHave(new Set(c))); void soundPack().then(setPack); }, []);
   const preview = useRef<string | null>(null);   // one object URL at a time: a recording blob is not small
   const previewUrl = (b: Blob) => { if (preview.current) URL.revokeObjectURL(preview.current); preview.current = URL.createObjectURL(b); return preview.current; };
   useEffect(() => () => { void rec.current?.stop(); if (preview.current) URL.revokeObjectURL(preview.current); }, []);   // leaving mid-hold must not leave the mic open
@@ -110,7 +111,7 @@ export function RecordSoundsScreen({ onDone }: { onDone: () => void }) {
         )}
         {have.has(clip) && !draft && <button className="linkbtn" onClick={useFallback}>use the built-in recording instead</button>}
       </section>
-      <p className="legend">Each sound plays in the word cards, the slide-through model and the teach routine. The built-in clips are real recordings too (Wikimedia Commons, CC BY-SA), cut to the bare sound.</p>
+      <p className="legend">Each sound plays in the word cards, the slide-through model and the teach routine. Until you record your own, the app uses {pack ? `${pack.title.toLowerCase()} — ${pack.attribution}, ${pack.license}` : "its built-in recordings"}, cut to the bare sound.</p>
       <button className="linkbtn" onClick={onDone}>Done for now →</button>
     </main>
   );

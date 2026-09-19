@@ -77,7 +77,7 @@ def report():
     man = json.loads((SOUNDS / "manifest.json").read_text())
     fails = []
     print(f"{'clip':5s} {'kind':10s}  measurement")
-    for g in sorted(man):
+    for g in sorted(k for k in man if not k.startswith("_")):
         sr, x = load(SOUNDS / f"{g}.wav")
         kind = man[g]["kind"]
         env = np.array([float(np.sqrt((s @ s) / max(1, len(s)))) for _, s in frames(x, sr)])

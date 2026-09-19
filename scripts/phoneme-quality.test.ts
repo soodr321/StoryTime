@@ -13,7 +13,9 @@ const MANIFEST = join(process.cwd(), "public", "sounds", "manifest.json");
 
 describe("phoneme clip quality", () => {
   if (!existsSync(MANIFEST)) { it.skip("clips not generated", () => {}); return; }
-  const man = JSON.parse(readFileSync(MANIFEST, "utf8")) as Record<string, { kind: string; ms: number; f0: number; f0_drift: number; rms_db: number }>;
+  const all = JSON.parse(readFileSync(MANIFEST, "utf8")) as Record<string, { kind: string; ms: number; f0: number; f0_drift: number; rms_db: number }>;
+  // keys beginning with "_" are metadata about the pack these clips came from, not clips
+  const man = Object.fromEntries(Object.entries(all).filter(([k]) => !k.startsWith("_")));
   const voiced = Object.entries(man).filter(([g, c]) => c.kind !== "stop" && c.f0 > 0 && g !== "h");   // /h/ is breath: its pitch estimate is noise
 
   it("has every taught sound", () => {

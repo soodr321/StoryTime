@@ -13,6 +13,8 @@
     "test:watch": "vitest",
     "audio": "python3 scripts/gen-audio.py",
     "voice:import": "python3 scripts/import-voice-pack.py",
+    "sounds:build": "python3 scripts/build-sounds.py",
+    "sounds:list": "python3 scripts/build-sounds.py --list",
     "deploy:pages": "zsh scripts/deploy-pages.sh",
     "deploy:vercel": "zsh scripts/deploy-vercel.sh"
   },
