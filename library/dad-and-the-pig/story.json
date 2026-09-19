@@ -1,0 +1,526 @@
+{
+ "slug": "dad-and-the-pig",
+ "title": "Dad and the Pig",
+ "tradition": "classic",
+ "source": {
+  "work": "Original shared-reading story (decodable targets only)",
+  "author": "StoryTime",
+  "rights": "public-domain"
+ },
+ "retelling": {
+  "level": "ls-phase2-set3",
+  "checklist": {
+   "setup": true,
+   "want": true,
+   "action": true,
+   "consequence": true,
+   "feeling": true
+  }
+ },
+ "level": "ls-phase2-set3",
+ "pages": [
+  {
+   "art": "📖",
+   "tokens": [
+    {
+     "t": "Next",
+     "ms": 0
+    },
+    {
+     "t": "door",
+     "ms": 420
+    },
+    {
+     "t": "to",
+     "ms": 760
+    },
+    {
+     "t": "Nan's",
+     "ms": 1340
+    },
+    {
+     "t": "house",
+     "ms": 2000
+    },
+    {
+     "t": "lived",
+     "ms": 2320
+    },
+    {
+     "t": "a",
+     "ms": 3000
+    },
+    {
+     "t": "pig.",
+     "ms": 3220
+    },
+    {
+     "t": "The",
+     "ms": 4340
+    },
+    {
+     "t": "pig",
+     "ms": 4960
+    },
+    {
+     "t": "was",
+     "ms": 5220
+    },
+    {
+     "t": "fat",
+     "ms": 5520
+    },
+    {
+     "t": "and",
+     "ms": 6040
+    },
+    {
+     "t": "pink",
+     "ms": 6580
+    },
+    {
+     "t": "and",
+     "ms": 7160
+    },
+    {
+     "t": "extremely",
+     "ms": 7920
+    },
+    {
+     "t": "clever.",
+     "ms": 8400
+    }
+   ],
+   "audio": "p1.m4a",
+   "audioMs": 10500
+  },
+  {
+   "art": "📖",
+   "tokens": [
+    {
+     "t": "Every",
+     "ms": 0
+    },
+    {
+     "t": "week",
+     "ms": 480
+    },
+    {
+     "t": "the",
+     "ms": 960
+    },
+    {
+     "t": "pig",
+     "ms": 1280
+    },
+    {
+     "t": "found",
+     "ms": 1600
+    },
+    {
+     "t": "the",
+     "ms": 2070
+    },
+    {
+     "t": "loose",
+     "ms": 2540
+    },
+    {
+     "t": "board",
+     "ms": 2840
+    },
+    {
+     "t": "in",
+     "ms": 3380
+    },
+    {
+     "t": "the",
+     "ms": 3560
+    },
+    {
+     "t": "fence",
+     "ms": 3680
+    },
+    {
+     "t": "and",
+     "ms": 4160
+    },
+    {
+     "t": "came",
+     "ms": 5180
+    },
+    {
+     "t": "through",
+     "ms": 5540
+    },
+    {
+     "t": "it",
+     "ms": 6180
+    },
+    {
+     "t": "into",
+     "ms": 6480
+    },
+    {
+     "t": "Dad's",
+     "ms": 6760
+    },
+    {
+     "t": "vegetables.",
+     "ms": 7460
+    }
+   ],
+   "magic": [
+    "pig"
+   ],
+   "audio": "p2.m4a",
+   "audioMs": 9540
+  },
+  {
+   "art": "📖",
+   "tokens": [
+    {
+     "t": "Dad",
+     "ms": 0
+    },
+    {
+     "t": "would",
+     "ms": 460
+    },
+    {
+     "t": "run",
+     "ms": 760
+    },
+    {
+     "t": "out",
+     "ms": 1180
+    },
+    {
+     "t": "waving",
+     "ms": 1540
+    },
+    {
+     "t": "his",
+     "ms": 2100
+    },
+    {
+     "t": "hat,",
+     "ms": 2500
+    },
+    {
+     "t": "and",
+     "ms": 3660
+    },
+    {
+     "t": "the",
+     "ms": 3820
+    },
+    {
+     "t": "pig",
+     "ms": 3940
+    },
+    {
+     "t": "would",
+     "ms": 4220
+    },
+    {
+     "t": "trot",
+     "ms": 4580
+    },
+    {
+     "t": "away",
+     "ms": 5260
+    },
+    {
+     "t": "looking",
+     "ms": 5280
+    },
+    {
+     "t": "pleased",
+     "ms": 5800
+    },
+    {
+     "t": "with",
+     "ms": 6440
+    },
+    {
+     "t": "herself.",
+     "ms": 6880
+    }
+   ],
+   "audio": "p3.m4a",
+   "audioMs": 8840
+  },
+  {
+   "art": "📖",
+   "tokens": [
+    {
+     "t": "One",
+     "ms": 0
+    },
+    {
+     "t": "morning",
+     "ms": 380
+    },
+    {
+     "t": "Nan",
+     "ms": 840
+    },
+    {
+     "t": "found",
+     "ms": 1180
+    },
+    {
+     "t": "Dad",
+     "ms": 1880
+    },
+    {
+     "t": "at",
+     "ms": 2420
+    },
+    {
+     "t": "the",
+     "ms": 2640
+    },
+    {
+     "t": "fence",
+     "ms": 2760
+    },
+    {
+     "t": "with",
+     "ms": 3100
+    },
+    {
+     "t": "a",
+     "ms": 3440
+    },
+    {
+     "t": "hammer,",
+     "ms": 3580
+    },
+    {
+     "t": "laughing",
+     "ms": 4860
+    },
+    {
+     "t": "to",
+     "ms": 5320
+    },
+    {
+     "t": "himself.",
+     "ms": 5820
+    }
+   ],
+   "audio": "p4.m4a",
+   "audioMs": 7760
+  },
+  {
+   "art": "📖",
+   "tokens": [
+    {
+     "t": "“I",
+     "ms": 0
+    },
+    {
+     "t": "have",
+     "ms": 320
+    },
+    {
+     "t": "chased",
+     "ms": 420
+    },
+    {
+     "t": "that",
+     "ms": 680
+    },
+    {
+     "t": "pig",
+     "ms": 1060
+    },
+    {
+     "t": "for",
+     "ms": 1400
+    },
+    {
+     "t": "a",
+     "ms": 1740
+    },
+    {
+     "t": "month,”",
+     "ms": 1900
+    },
+    {
+     "t": "he",
+     "ms": 2520
+    },
+    {
+     "t": "said.",
+     "ms": 2600
+    },
+    {
+     "t": "“It",
+     "ms": 4200
+    },
+    {
+     "t": "made",
+     "ms": 4360
+    },
+    {
+     "t": "me",
+     "ms": 4520
+    },
+    {
+     "t": "mad",
+     "ms": 4720
+    },
+    {
+     "t": "every",
+     "ms": 5200
+    },
+    {
+     "t": "single",
+     "ms": 5960
+    },
+    {
+     "t": "time.",
+     "ms": 6440
+    },
+    {
+     "t": "Today",
+     "ms": 8119
+    },
+    {
+     "t": "I",
+     "ms": 9240
+    },
+    {
+     "t": "am",
+     "ms": 9460
+    },
+    {
+     "t": "mending",
+     "ms": 9630
+    },
+    {
+     "t": "the",
+     "ms": 9800
+    },
+    {
+     "t": "board",
+     "ms": 10040
+    },
+    {
+     "t": "instead.”",
+     "ms": 10360
+    }
+   ],
+   "magic": [
+    "mad"
+   ],
+   "audio": "p5.m4a",
+   "audioMs": 12320
+  },
+  {
+   "art": "📖",
+   "tokens": [
+    {
+     "t": "They",
+     "ms": 0
+    },
+    {
+     "t": "mended",
+     "ms": 280
+    },
+    {
+     "t": "it",
+     "ms": 640
+    },
+    {
+     "t": "together.",
+     "ms": 820
+    },
+    {
+     "t": "Then",
+     "ms": 2740
+    },
+    {
+     "t": "they",
+     "ms": 2960
+    },
+    {
+     "t": "went",
+     "ms": 3100
+    },
+    {
+     "t": "to",
+     "ms": 3280
+    },
+    {
+     "t": "dig",
+     "ms": 3480
+    },
+    {
+     "t": "up",
+     "ms": 3760
+    },
+    {
+     "t": "the",
+     "ms": 3920
+    },
+    {
+     "t": "carrots",
+     "ms": 4120
+    },
+    {
+     "t": "that",
+     "ms": 4520
+    },
+    {
+     "t": "were",
+     "ms": 4880
+    },
+    {
+     "t": "left.",
+     "ms": 5000
+    }
+   ],
+   "magic": [
+    "dig"
+   ],
+   "audio": "p6.m4a",
+   "audioMs": 6730
+  }
+ ],
+ "moral": {
+  "spoken": "It is easier to fix the fence than to chase the pig.",
+  "line": "Dad is not mad.",
+  "audio": "moral.m4a",
+  "audioMs": 5320
+ },
+ "prompts": {
+  "yes:pig": {
+   "audio": "yes-pig.m4a",
+   "ms": 4640
+  },
+  "word:pig": {
+   "audio": "word-pig.m4a",
+   "ms": 2290
+  },
+  "yes:mad": {
+   "audio": "yes-mad.m4a",
+   "ms": 4640
+  },
+  "word:mad": {
+   "audio": "word-mad.m4a",
+   "ms": 2290
+  },
+  "yes:dig": {
+   "audio": "yes-dig.m4a",
+   "ms": 4640
+  },
+  "word:dig": {
+   "audio": "word-dig.m4a",
+   "ms": 2290
+  }
+ }
+}

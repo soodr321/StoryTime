@@ -1,0 +1,554 @@
+{
+ "slug": "the-pot-on-the-fire",
+ "title": "The Pot on the Fire",
+ "tradition": "classic",
+ "source": {
+  "work": "Original shared-reading story (decodable targets only)",
+  "author": "StoryTime",
+  "rights": "public-domain"
+ },
+ "retelling": {
+  "level": "ls-phase2-set3",
+  "checklist": {
+   "setup": true,
+   "want": true,
+   "action": true,
+   "consequence": true,
+   "feeling": true
+  }
+ },
+ "level": "ls-phase2-set3",
+ "pages": [
+  {
+   "art": "📖",
+   "tokens": [
+    {
+     "t": "Nani",
+     "ms": 180
+    },
+    {
+     "t": "set",
+     "ms": 380
+    },
+    {
+     "t": "the",
+     "ms": 800
+    },
+    {
+     "t": "big",
+     "ms": 1160
+    },
+    {
+     "t": "black",
+     "ms": 1840
+    },
+    {
+     "t": "cooking",
+     "ms": 2280
+    },
+    {
+     "t": "pot",
+     "ms": 2840
+    },
+    {
+     "t": "on",
+     "ms": 3240
+    },
+    {
+     "t": "the",
+     "ms": 3400
+    },
+    {
+     "t": "fire.",
+     "ms": 3560
+    },
+    {
+     "t": "Tonight",
+     "ms": 4940
+    },
+    {
+     "t": "she",
+     "ms": 6080
+    },
+    {
+     "t": "was",
+     "ms": 6340
+    },
+    {
+     "t": "making",
+     "ms": 6520
+    },
+    {
+     "t": "dal.",
+     "ms": 6920
+    }
+   ],
+   "audio": "p1.m4a",
+   "audioMs": 8630
+  },
+  {
+   "art": "📖",
+   "tokens": [
+    {
+     "t": "“Can",
+     "ms": 0
+    },
+    {
+     "t": "I",
+     "ms": 160
+    },
+    {
+     "t": "stir",
+     "ms": 360
+    },
+    {
+     "t": "the",
+     "ms": 620
+    },
+    {
+     "t": "pot?”",
+     "ms": 820
+    },
+    {
+     "t": "asked",
+     "ms": 1720
+    },
+    {
+     "t": "Nan.",
+     "ms": 2060
+    },
+    {
+     "t": "Nani",
+     "ms": 3090
+    },
+    {
+     "t": "gave",
+     "ms": 4120
+    },
+    {
+     "t": "her",
+     "ms": 4360
+    },
+    {
+     "t": "the",
+     "ms": 4600
+    },
+    {
+     "t": "long",
+     "ms": 4760
+    },
+    {
+     "t": "wooden",
+     "ms": 5100
+    },
+    {
+     "t": "spoon",
+     "ms": 5520
+    },
+    {
+     "t": "and",
+     "ms": 6080
+    },
+    {
+     "t": "let",
+     "ms": 6820
+    },
+    {
+     "t": "her",
+     "ms": 7080
+    },
+    {
+     "t": "stir,",
+     "ms": 7240
+    },
+    {
+     "t": "once",
+     "ms": 8740
+    },
+    {
+     "t": "around,",
+     "ms": 9080
+    },
+    {
+     "t": "slowly.",
+     "ms": 10380
+    }
+   ],
+   "magic": [
+    "pot"
+   ],
+   "audio": "p2.m4a",
+   "audioMs": 12540
+  },
+  {
+   "art": "📖",
+   "tokens": [
+    {
+     "t": "Nan",
+     "ms": 40
+    },
+    {
+     "t": "wanted",
+     "ms": 240
+    },
+    {
+     "t": "to",
+     "ms": 500
+    },
+    {
+     "t": "eat",
+     "ms": 680
+    },
+    {
+     "t": "it",
+     "ms": 920
+    },
+    {
+     "t": "right",
+     "ms": 1140
+    },
+    {
+     "t": "away.",
+     "ms": 1540
+    },
+    {
+     "t": "She",
+     "ms": 3320
+    },
+    {
+     "t": "lifted",
+     "ms": 3640
+    },
+    {
+     "t": "the",
+     "ms": 3960
+    },
+    {
+     "t": "lid",
+     "ms": 4360
+    },
+    {
+     "t": "and",
+     "ms": 4680
+    },
+    {
+     "t": "the",
+     "ms": 5320
+    },
+    {
+     "t": "steam",
+     "ms": 5460
+    },
+    {
+     "t": "went",
+     "ms": 5980
+    },
+    {
+     "t": "up",
+     "ms": 6700
+    },
+    {
+     "t": "in",
+     "ms": 6980
+    },
+    {
+     "t": "a",
+     "ms": 7320
+    },
+    {
+     "t": "cloud.",
+     "ms": 7420
+    },
+    {
+     "t": "Not",
+     "ms": 8780
+    },
+    {
+     "t": "yet.",
+     "ms": 9420
+    }
+   ],
+   "audio": "p3.m4a",
+   "audioMs": 11510
+  },
+  {
+   "art": "📖",
+   "tokens": [
+    {
+     "t": "“Dal",
+     "ms": 160
+    },
+    {
+     "t": "is",
+     "ms": 360
+    },
+    {
+     "t": "not",
+     "ms": 520
+    },
+    {
+     "t": "fast,”",
+     "ms": 800
+    },
+    {
+     "t": "said",
+     "ms": 1340
+    },
+    {
+     "t": "Nani.",
+     "ms": 2470
+    },
+    {
+     "t": "“Go",
+     "ms": 3600
+    },
+    {
+     "t": "and",
+     "ms": 4120
+    },
+    {
+     "t": "sit.”",
+     "ms": 4260
+    },
+    {
+     "t": "So",
+     "ms": 5580
+    },
+    {
+     "t": "Nan",
+     "ms": 5780
+    },
+    {
+     "t": "went",
+     "ms": 5980
+    },
+    {
+     "t": "to",
+     "ms": 6140
+    },
+    {
+     "t": "sit",
+     "ms": 6300
+    },
+    {
+     "t": "on",
+     "ms": 6540
+    },
+    {
+     "t": "the",
+     "ms": 6720
+    },
+    {
+     "t": "step",
+     "ms": 6820
+    },
+    {
+     "t": "by",
+     "ms": 7200
+    },
+    {
+     "t": "the",
+     "ms": 7600
+    },
+    {
+     "t": "door.",
+     "ms": 7780
+    }
+   ],
+   "magic": [
+    "sit"
+   ],
+   "audio": "p4.m4a",
+   "audioMs": 9400
+  },
+  {
+   "art": "📖",
+   "tokens": [
+    {
+     "t": "She",
+     "ms": 0
+    },
+    {
+     "t": "waited",
+     "ms": 400
+    },
+    {
+     "t": "while",
+     "ms": 660
+    },
+    {
+     "t": "the",
+     "ms": 980
+    },
+    {
+     "t": "sun",
+     "ms": 1180
+    },
+    {
+     "t": "went",
+     "ms": 1520
+    },
+    {
+     "t": "low.",
+     "ms": 2020
+    },
+    {
+     "t": "She",
+     "ms": 3600
+    },
+    {
+     "t": "waited",
+     "ms": 4000
+    },
+    {
+     "t": "while",
+     "ms": 4260
+    },
+    {
+     "t": "the",
+     "ms": 4640
+    },
+    {
+     "t": "smell",
+     "ms": 4800
+    },
+    {
+     "t": "grew",
+     "ms": 5220
+    },
+    {
+     "t": "thicker",
+     "ms": 5680
+    },
+    {
+     "t": "and",
+     "ms": 6400
+    },
+    {
+     "t": "warmer",
+     "ms": 6860
+    },
+    {
+     "t": "and",
+     "ms": 7400
+    },
+    {
+     "t": "better.",
+     "ms": 7900
+    }
+   ],
+   "audio": "p5.m4a",
+   "audioMs": 9680
+  },
+  {
+   "art": "📖",
+   "tokens": [
+    {
+     "t": "At",
+     "ms": 0
+    },
+    {
+     "t": "last",
+     "ms": 300
+    },
+    {
+     "t": "Nani",
+     "ms": 710
+    },
+    {
+     "t": "filled",
+     "ms": 1120
+    },
+    {
+     "t": "a",
+     "ms": 1480
+    },
+    {
+     "t": "bowl.",
+     "ms": 1840
+    },
+    {
+     "t": "Nan",
+     "ms": 2760
+    },
+    {
+     "t": "got",
+     "ms": 3680
+    },
+    {
+     "t": "the",
+     "ms": 3920
+    },
+    {
+     "t": "first",
+     "ms": 4100
+    },
+    {
+     "t": "one,",
+     "ms": 4500
+    },
+    {
+     "t": "because",
+     "ms": 5420
+    },
+    {
+     "t": "she",
+     "ms": 5740
+    },
+    {
+     "t": "had",
+     "ms": 6040
+    },
+    {
+     "t": "waited",
+     "ms": 6240
+    },
+    {
+     "t": "the",
+     "ms": 6540
+    },
+    {
+     "t": "longest.",
+     "ms": 6900
+    }
+   ],
+   "magic": [
+    "got"
+   ],
+   "audio": "p6.m4a",
+   "audioMs": 9060
+  }
+ ],
+ "moral": {
+  "spoken": "Good things take the time they take.",
+  "line": "I sit on the mat.",
+  "audio": "moral.m4a",
+  "audioMs": 3730
+ },
+ "prompts": {
+  "yes:pot": {
+   "audio": "yes-pot.m4a",
+   "ms": 4640
+  },
+  "word:pot": {
+   "audio": "word-pot.m4a",
+   "ms": 2290
+  },
+  "yes:sit": {
+   "audio": "yes-sit.m4a",
+   "ms": 4640
+  },
+  "word:sit": {
+   "audio": "word-sit.m4a",
+   "ms": 2290
+  },
+  "yes:got": {
+   "audio": "yes-got.m4a",
+   "ms": 4640
+  },
+  "word:got": {
+   "audio": "word-got.m4a",
+   "ms": 2290
+  }
+ }
+}

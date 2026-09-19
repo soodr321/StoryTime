@@ -1,0 +1,550 @@
+{
+ "slug": "the-cat-in-the-tin",
+ "title": "The Cat in the Tin",
+ "tradition": "classic",
+ "source": {
+  "work": "Original shared-reading story (decodable targets only)",
+  "author": "StoryTime",
+  "rights": "public-domain"
+ },
+ "retelling": {
+  "level": "ls-phase2-set3",
+  "checklist": {
+   "setup": true,
+   "want": true,
+   "action": true,
+   "consequence": true,
+   "feeling": true
+  }
+ },
+ "level": "ls-phase2-set3",
+ "pages": [
+  {
+   "art": "📖",
+   "tokens": [
+    {
+     "t": "There",
+     "ms": 0
+    },
+    {
+     "t": "was",
+     "ms": 280
+    },
+    {
+     "t": "a",
+     "ms": 440
+    },
+    {
+     "t": "small",
+     "ms": 580
+    },
+    {
+     "t": "grey",
+     "ms": 1080
+    },
+    {
+     "t": "cat",
+     "ms": 1580
+    },
+    {
+     "t": "who",
+     "ms": 2140
+    },
+    {
+     "t": "lived",
+     "ms": 2540
+    },
+    {
+     "t": "behind",
+     "ms": 2880
+    },
+    {
+     "t": "the",
+     "ms": 3360
+    },
+    {
+     "t": "flats,",
+     "ms": 3640
+    },
+    {
+     "t": "and",
+     "ms": 5220
+    },
+    {
+     "t": "she",
+     "ms": 5380
+    },
+    {
+     "t": "was",
+     "ms": 5580
+    },
+    {
+     "t": "always",
+     "ms": 5740
+    },
+    {
+     "t": "hungry.",
+     "ms": 6180
+    }
+   ],
+   "audio": "p1.m4a",
+   "audioMs": 8080
+  },
+  {
+   "art": "📖",
+   "tokens": [
+    {
+     "t": "Someone",
+     "ms": 0
+    },
+    {
+     "t": "had",
+     "ms": 460
+    },
+    {
+     "t": "left",
+     "ms": 640
+    },
+    {
+     "t": "an",
+     "ms": 940
+    },
+    {
+     "t": "old",
+     "ms": 1200
+    },
+    {
+     "t": "biscuit",
+     "ms": 1560
+    },
+    {
+     "t": "tin",
+     "ms": 2300
+    },
+    {
+     "t": "outside",
+     "ms": 2560
+    },
+    {
+     "t": "with",
+     "ms": 3160
+    },
+    {
+     "t": "a",
+     "ms": 4240
+    },
+    {
+     "t": "little",
+     "ms": 4400
+    },
+    {
+     "t": "food",
+     "ms": 4720
+    },
+    {
+     "t": "still",
+     "ms": 5260
+    },
+    {
+     "t": "in",
+     "ms": 5720
+    },
+    {
+     "t": "the",
+     "ms": 6180
+    },
+    {
+     "t": "bottom.",
+     "ms": 6280
+    }
+   ],
+   "audio": "p2.m4a",
+   "audioMs": 7760
+  },
+  {
+   "art": "📖",
+   "tokens": [
+    {
+     "t": "The",
+     "ms": 0
+    },
+    {
+     "t": "cat",
+     "ms": 260
+    },
+    {
+     "t": "pushed",
+     "ms": 500
+    },
+    {
+     "t": "her",
+     "ms": 900
+    },
+    {
+     "t": "head",
+     "ms": 1200
+    },
+    {
+     "t": "right",
+     "ms": 1540
+    },
+    {
+     "t": "in",
+     "ms": 1980
+    },
+    {
+     "t": "to",
+     "ms": 2200
+    },
+    {
+     "t": "lick",
+     "ms": 2420
+    },
+    {
+     "t": "it",
+     "ms": 2550
+    },
+    {
+     "t": "clean.",
+     "ms": 2680
+    },
+    {
+     "t": "Then",
+     "ms": 3580
+    },
+    {
+     "t": "she",
+     "ms": 4480
+    },
+    {
+     "t": "tried",
+     "ms": 4680
+    },
+    {
+     "t": "to",
+     "ms": 4920
+    },
+    {
+     "t": "pull",
+     "ms": 5080
+    },
+    {
+     "t": "her",
+     "ms": 5320
+    },
+    {
+     "t": "head",
+     "ms": 5460
+    },
+    {
+     "t": "out",
+     "ms": 5760
+    },
+    {
+     "t": "again.",
+     "ms": 6000
+    }
+   ],
+   "magic": [
+    "cat"
+   ],
+   "audio": "p3.m4a",
+   "audioMs": 7690
+  },
+  {
+   "art": "📖",
+   "tokens": [
+    {
+     "t": "The",
+     "ms": 0
+    },
+    {
+     "t": "tin",
+     "ms": 210
+    },
+    {
+     "t": "would",
+     "ms": 420
+    },
+    {
+     "t": "not",
+     "ms": 580
+    },
+    {
+     "t": "come",
+     "ms": 820
+    },
+    {
+     "t": "off.",
+     "ms": 1100
+    },
+    {
+     "t": "She",
+     "ms": 2760
+    },
+    {
+     "t": "backed",
+     "ms": 3080
+    },
+    {
+     "t": "up.",
+     "ms": 3340
+    },
+    {
+     "t": "She",
+     "ms": 4820
+    },
+    {
+     "t": "shook",
+     "ms": 5380
+    },
+    {
+     "t": "her",
+     "ms": 5620
+    },
+    {
+     "t": "head.",
+     "ms": 5880
+    },
+    {
+     "t": "The",
+     "ms": 7420
+    },
+    {
+     "t": "tin",
+     "ms": 7640
+    },
+    {
+     "t": "stayed",
+     "ms": 7860
+    },
+    {
+     "t": "on.",
+     "ms": 8340
+    }
+   ],
+   "magic": [
+    "tin"
+   ],
+   "audio": "p4.m4a",
+   "audioMs": 10040
+  },
+  {
+   "art": "📖",
+   "tokens": [
+    {
+     "t": "Nan",
+     "ms": 0
+    },
+    {
+     "t": "heard",
+     "ms": 320
+    },
+    {
+     "t": "the",
+     "ms": 680
+    },
+    {
+     "t": "clanking",
+     "ms": 900
+    },
+    {
+     "t": "and",
+     "ms": 1520
+    },
+    {
+     "t": "came",
+     "ms": 2120
+    },
+    {
+     "t": "out.",
+     "ms": 2420
+    },
+    {
+     "t": "The",
+     "ms": 3820
+    },
+    {
+     "t": "poor",
+     "ms": 4320
+    },
+    {
+     "t": "thing",
+     "ms": 4580
+    },
+    {
+     "t": "looked",
+     "ms": 4960
+    },
+    {
+     "t": "sad",
+     "ms": 5260
+    },
+    {
+     "t": "and",
+     "ms": 5900
+    },
+    {
+     "t": "cross",
+     "ms": 6280
+    },
+    {
+     "t": "at",
+     "ms": 6700
+    },
+    {
+     "t": "the",
+     "ms": 7140
+    },
+    {
+     "t": "same",
+     "ms": 7280
+    },
+    {
+     "t": "time,",
+     "ms": 7640
+    },
+    {
+     "t": "with",
+     "ms": 8740
+    },
+    {
+     "t": "a",
+     "ms": 8920
+    },
+    {
+     "t": "tin",
+     "ms": 9040
+    },
+    {
+     "t": "for",
+     "ms": 9380
+    },
+    {
+     "t": "a",
+     "ms": 9820
+    },
+    {
+     "t": "hat.",
+     "ms": 9980
+    }
+   ],
+   "magic": [
+    "sad"
+   ],
+   "audio": "p5.m4a",
+   "audioMs": 11600
+  },
+  {
+   "art": "📖",
+   "tokens": [
+    {
+     "t": "Then",
+     "ms": 0
+    },
+    {
+     "t": "she",
+     "ms": 280
+    },
+    {
+     "t": "pulled,",
+     "ms": 500
+    },
+    {
+     "t": "gently,",
+     "ms": 940
+    },
+    {
+     "t": "and",
+     "ms": 2120
+    },
+    {
+     "t": "the",
+     "ms": 3280
+    },
+    {
+     "t": "cat",
+     "ms": 3400
+    },
+    {
+     "t": "came",
+     "ms": 3680
+    },
+    {
+     "t": "out",
+     "ms": 4140
+    },
+    {
+     "t": "blinking,",
+     "ms": 4440
+    },
+    {
+     "t": "and",
+     "ms": 4880
+    },
+    {
+     "t": "went",
+     "ms": 5840
+    },
+    {
+     "t": "straight",
+     "ms": 6000
+    },
+    {
+     "t": "back",
+     "ms": 6540
+    },
+    {
+     "t": "to",
+     "ms": 7080
+    },
+    {
+     "t": "licking",
+     "ms": 7400
+    },
+    {
+     "t": "the",
+     "ms": 7660
+    },
+    {
+     "t": "tin.",
+     "ms": 8020
+    }
+   ],
+   "audio": "p6.m4a",
+   "audioMs": 9540
+  }
+ ],
+ "moral": {
+  "spoken": "When something is stuck, go slowly and talk to it kindly.",
+  "line": "The cat is sad.",
+  "audio": "moral.m4a",
+  "audioMs": 5960
+ },
+ "prompts": {
+  "yes:cat": {
+   "audio": "yes-cat.m4a",
+   "ms": 4640
+  },
+  "word:cat": {
+   "audio": "word-cat.m4a",
+   "ms": 2290
+  },
+  "yes:tin": {
+   "audio": "yes-tin.m4a",
+   "ms": 4640
+  },
+  "word:tin": {
+   "audio": "word-tin.m4a",
+   "ms": 2290
+  },
+  "yes:sad": {
+   "audio": "yes-sad.m4a",
+   "ms": 4640
+  },
+  "word:sad": {
+   "audio": "word-sad.m4a",
+   "ms": 2290
+  }
+ }
+}

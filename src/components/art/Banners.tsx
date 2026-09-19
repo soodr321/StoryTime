@@ -159,7 +159,52 @@ export const COVER_ZOOM: Record<string, string> = {
   "boy-who-cried-wolf": "46 130 120 120",
   "monkey-and-crocodile": "78 68 120 120",
   "tap-tap-tap": "120 66 114 114",
+  "the-pot-on-the-fire": "126 96 116 116",
+  "the-map-in-the-tin": "204 74 116 116",
 };
+
+/** The Pot on the Fire: the hearth, waiting. The pot is the word, so it is not here. */
+export const PotOnTheFireArt = ({ view }: { view?: string } = {}) => (
+  <Stage view={view} sky="#e9dcc2" ground="#cfe0c0">
+    <path d="M140 196 L210 196 L204 172 L146 172 Z" fill="#a08a70" stroke={INK} strokeWidth={3} strokeLinejoin="round" />
+    <path d="M152 172 C158 150 172 152 176 166 C182 148 196 152 198 172 Z" fill="#e0913f" stroke={INK} strokeWidth={3} strokeLinejoin="round" />
+    <path d="M168 142 C158 126 176 118 170 102 M186 146 C176 128 194 122 188 106" {...L} strokeWidth={3} />
+    <path d="M118 196 L232 196" {...L} strokeWidth={4} />
+  </Stage>
+);
+
+/** The Cat in the Tin: the back step and the milk saucer. No cat, no tin. */
+export const CatInTheTinArt = ({ view }: { view?: string } = {}) => (
+  <Stage view={view} sky="#e7dcc4" ground="#cbd9be">
+    <path d="M128 196 L236 196 L236 176 L146 176 L146 156 L236 156" {...L} strokeWidth={4} />
+    <path d="M128 196 L236 196 L236 214 L128 214 Z" fill="#c2b7a4" stroke={INK} strokeWidth={3} strokeLinejoin="round" />
+    <ellipse cx="96" cy="200" rx="22" ry="8" fill="#eef3f4" stroke={INK} strokeWidth={3} />
+    <path d="M78 198 C88 204 106 204 114 198" {...L} strokeWidth={2.5} />
+    <path d="M276 190 C272 166 280 152 276 136" {...L} strokeWidth={3} />
+  </Stage>
+);
+
+/** Dad and the Pig: the mended fence and the vegetable rows. No pig, no hole. */
+export const DadAndThePigArt = ({ view }: { view?: string } = {}) => (
+  <Stage view={view} sky="#e8ddc3" ground="#cfe0c0" far="#bcd3ab">
+    {[126, 168, 210, 252].map((x, i) => <path key={i} d={`M${x} 200 L${x} 138`} {...L} strokeWidth={6} />)}
+    <path d="M112 154 L266 150 M112 180 L266 176" {...L} strokeWidth={5} />
+    <path d="M40 206 C60 198 84 202 104 196 M36 222 C56 214 80 218 100 212" {...L} strokeWidth={4} />
+    <path d="M52 200 C48 188 54 182 51 174 M74 198 C70 186 76 180 73 172" {...L} strokeWidth={3} />
+  </Stage>
+);
+
+/** The Map in the Tin: the loose brick by the back step, and the old tree. No map, no tin. */
+export const MapInTheTinArt = ({ view }: { view?: string } = {}) => (
+  <Stage view={view} sky="#e9ddc4" ground="#d2dfbc">
+    <path d="M250 190 C246 160 254 138 250 112" {...L} strokeWidth={10} />
+    <circle cx="244" cy="96" r="26" fill="#8fae7a" stroke={INK} strokeWidth={3} />
+    <circle cx="276" cy="112" r="16" fill="#7fa06a" stroke={INK} strokeWidth={3} />
+    <path d="M62 186 L150 186 L150 208 L62 208 Z" fill="#c2b7a4" stroke={INK} strokeWidth={3} strokeLinejoin="round" />
+    <path d="M92 186 L92 208 M122 186 L122 208" {...L} strokeWidth={2.5} />
+    <path d="M100 178 L138 178 L138 190 L100 190 Z" fill="#b08a63" stroke={INK} strokeWidth={3} strokeLinejoin="round" transform="rotate(-9 119 184)" />
+  </Stage>
+);
 
 /** A cover may show the title object; the reading stage may not. These three are drawn only here. */
 const CoverFrame = ({ bg = "#e9dcc2", ground = "#cfe0c0", children }: { bg?: string; ground?: string; children: React.ReactNode }) => (
@@ -196,13 +241,35 @@ export const SamAndThePitCover = () => (
     <path d="M14 70 C12 60 18 54 15 46" {...L} strokeWidth={3} />
   </CoverFrame>
 );
+export const DadAndThePigCover = () => (
+  <CoverFrame ground="#cfe0c0">
+    {/* the fence reads as a mesh at 56px, so the cover is what they dug up */}
+    <path d="M52 40 C46 30 58 24 64 34 C70 24 82 30 76 40 Z" fill="#6f9a5c" stroke={INK} strokeWidth={3} strokeLinejoin="round" />
+    <path d="M56 40 C56 74 70 96 64 112 C58 96 72 74 72 40 Z" fill="#e08a3c" stroke={INK} strokeWidth={3} strokeLinejoin="round" />
+    <path d="M60 58 L70 54 M60 76 L70 72" {...L} strokeWidth={2.5} />
+  </CoverFrame>
+);
+export const CatInTheTinCover = () => (
+  <CoverFrame ground="#cbd9be">
+    <ellipse cx="60" cy="74" rx="40" ry="15" fill="#eef3f4" stroke={INK} strokeWidth={3} />
+    <ellipse cx="60" cy="70" rx="30" ry="10" fill="#dfe9ea" stroke={INK} strokeWidth={3} />
+    <path d="M38 68 C48 76 72 76 82 68" {...L} strokeWidth={2.5} />
+    <path d="M96 58 C92 44 100 36 96 24" {...L} strokeWidth={3} />
+  </CoverFrame>
+);
 export const COVER_ART: Record<string, () => React.JSX.Element> = {
+  "dad-and-the-pig": DadAndThePigCover,
+  "the-cat-in-the-tin": CatInTheTinCover,
   "blue-jackal": BlueJackalCover,
   "pat-and-the-tap": PatAndTheTapCover,
   "sam-and-the-pit": SamAndThePitCover,
 };
 
 export const STORY_ART: Record<string, (p?: { view?: string }) => React.JSX.Element> = {
+  "the-pot-on-the-fire": PotOnTheFireArt,
+  "the-cat-in-the-tin": CatInTheTinArt,
+  "dad-and-the-pig": DadAndThePigArt,
+  "the-map-in-the-tin": MapInTheTinArt,
   "fox-and-crow": FoxAndCrowArt,
   "boy-who-cried-wolf": ShepherdArt,
   "lion-and-mouse": LionAndMouseArt,

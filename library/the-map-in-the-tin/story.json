@@ -1,0 +1,594 @@
+{
+ "slug": "the-map-in-the-tin",
+ "title": "The Map in the Tin",
+ "tradition": "classic",
+ "source": {
+  "work": "Original shared-reading story (decodable targets only)",
+  "author": "StoryTime",
+  "rights": "public-domain"
+ },
+ "retelling": {
+  "level": "ls-phase2-set3",
+  "checklist": {
+   "setup": true,
+   "want": true,
+   "action": true,
+   "consequence": true,
+   "feeling": true
+  }
+ },
+ "level": "ls-phase2-set3",
+ "pages": [
+  {
+   "art": "📖",
+   "tokens": [
+    {
+     "t": "Under",
+     "ms": 0
+    },
+    {
+     "t": "the",
+     "ms": 320
+    },
+    {
+     "t": "loose",
+     "ms": 520
+    },
+    {
+     "t": "brick",
+     "ms": 840
+    },
+    {
+     "t": "by",
+     "ms": 1480
+    },
+    {
+     "t": "the",
+     "ms": 2020
+    },
+    {
+     "t": "back",
+     "ms": 2200
+    },
+    {
+     "t": "step,",
+     "ms": 2580
+    },
+    {
+     "t": "Nan",
+     "ms": 3620
+    },
+    {
+     "t": "found",
+     "ms": 4140
+    },
+    {
+     "t": "something",
+     "ms": 4680
+    },
+    {
+     "t": "that",
+     "ms": 5140
+    },
+    {
+     "t": "had",
+     "ms": 5340
+    },
+    {
+     "t": "been",
+     "ms": 5440
+    },
+    {
+     "t": "there",
+     "ms": 5640
+    },
+    {
+     "t": "a",
+     "ms": 5860
+    },
+    {
+     "t": "long",
+     "ms": 6000
+    },
+    {
+     "t": "time.",
+     "ms": 6260
+    }
+   ],
+   "audio": "p1.m4a",
+   "audioMs": 7960
+  },
+  {
+   "art": "📖",
+   "tokens": [
+    {
+     "t": "It",
+     "ms": 0
+    },
+    {
+     "t": "was",
+     "ms": 240
+    },
+    {
+     "t": "a",
+     "ms": 380
+    },
+    {
+     "t": "flat",
+     "ms": 520
+    },
+    {
+     "t": "tin,",
+     "ms": 980
+    },
+    {
+     "t": "rusted",
+     "ms": 2400
+    },
+    {
+     "t": "at",
+     "ms": 3040
+    },
+    {
+     "t": "the",
+     "ms": 3280
+    },
+    {
+     "t": "corners,",
+     "ms": 3420
+    },
+    {
+     "t": "and",
+     "ms": 4900
+    },
+    {
+     "t": "inside",
+     "ms": 5140
+    },
+    {
+     "t": "it",
+     "ms": 5900
+    },
+    {
+     "t": "was",
+     "ms": 6340
+    },
+    {
+     "t": "a",
+     "ms": 6480
+    },
+    {
+     "t": "folded",
+     "ms": 6620
+    },
+    {
+     "t": "piece",
+     "ms": 7100
+    },
+    {
+     "t": "of",
+     "ms": 7620
+    },
+    {
+     "t": "paper.",
+     "ms": 7900
+    }
+   ],
+   "audio": "p2.m4a",
+   "audioMs": 9610
+  },
+  {
+   "art": "📖",
+   "tokens": [
+    {
+     "t": "She",
+     "ms": 0
+    },
+    {
+     "t": "opened",
+     "ms": 380
+    },
+    {
+     "t": "it",
+     "ms": 700
+    },
+    {
+     "t": "very",
+     "ms": 940
+    },
+    {
+     "t": "carefully.",
+     "ms": 1220
+    },
+    {
+     "t": "Someone",
+     "ms": 2980
+    },
+    {
+     "t": "had",
+     "ms": 3800
+    },
+    {
+     "t": "drawn",
+     "ms": 4140
+    },
+    {
+     "t": "the",
+     "ms": 4560
+    },
+    {
+     "t": "garden",
+     "ms": 4840
+    },
+    {
+     "t": "on",
+     "ms": 5120
+    },
+    {
+     "t": "it,",
+     "ms": 5500
+    },
+    {
+     "t": "a",
+     "ms": 6100
+    },
+    {
+     "t": "map,",
+     "ms": 6580
+    },
+    {
+     "t": "with",
+     "ms": 6980
+    },
+    {
+     "t": "a",
+     "ms": 7980
+    },
+    {
+     "t": "small",
+     "ms": 8100
+    },
+    {
+     "t": "mark",
+     "ms": 8500
+    },
+    {
+     "t": "near",
+     "ms": 9060
+    },
+    {
+     "t": "the",
+     "ms": 9480
+    },
+    {
+     "t": "old",
+     "ms": 9700
+    },
+    {
+     "t": "tree.",
+     "ms": 10000
+    }
+   ],
+   "magic": [
+    "map"
+   ],
+   "audio": "p3.m4a",
+   "audioMs": 11750
+  },
+  {
+   "art": "📖",
+   "tokens": [
+    {
+     "t": "Nan",
+     "ms": 60
+    },
+    {
+     "t": "showed",
+     "ms": 260
+    },
+    {
+     "t": "Dad.",
+     "ms": 1290
+    },
+    {
+     "t": "He",
+     "ms": 2320
+    },
+    {
+     "t": "looked",
+     "ms": 2540
+    },
+    {
+     "t": "at",
+     "ms": 2740
+    },
+    {
+     "t": "it",
+     "ms": 2960
+    },
+    {
+     "t": "for",
+     "ms": 3060
+    },
+    {
+     "t": "a",
+     "ms": 3280
+    },
+    {
+     "t": "while",
+     "ms": 3380
+    },
+    {
+     "t": "and",
+     "ms": 3860
+    },
+    {
+     "t": "said,",
+     "ms": 4380
+    },
+    {
+     "t": "“That",
+     "ms": 5700
+    },
+    {
+     "t": "is",
+     "ms": 5800
+    },
+    {
+     "t": "my",
+     "ms": 5920
+    },
+    {
+     "t": "handwriting.",
+     "ms": 6120
+    },
+    {
+     "t": "I",
+     "ms": 7880
+    },
+    {
+     "t": "was",
+     "ms": 8420
+    },
+    {
+     "t": "seven.”",
+     "ms": 8600
+    }
+   ],
+   "audio": "p4.m4a",
+   "audioMs": 10600
+  },
+  {
+   "art": "📖",
+   "tokens": [
+    {
+     "t": "They",
+     "ms": 0
+    },
+    {
+     "t": "took",
+     "ms": 280
+    },
+    {
+     "t": "the",
+     "ms": 520
+    },
+    {
+     "t": "spade",
+     "ms": 720
+    },
+    {
+     "t": "to",
+     "ms": 1240
+    },
+    {
+     "t": "the",
+     "ms": 1440
+    },
+    {
+     "t": "old",
+     "ms": 1560
+    },
+    {
+     "t": "tree",
+     "ms": 1800
+    },
+    {
+     "t": "and",
+     "ms": 2280
+    },
+    {
+     "t": "began",
+     "ms": 3100
+    },
+    {
+     "t": "to",
+     "ms": 3500
+    },
+    {
+     "t": "dig,",
+     "ms": 3880
+    },
+    {
+     "t": "and",
+     "ms": 5060
+    },
+    {
+     "t": "it",
+     "ms": 5280
+    },
+    {
+     "t": "took",
+     "ms": 5380
+    },
+    {
+     "t": "much",
+     "ms": 5580
+    },
+    {
+     "t": "longer",
+     "ms": 5920
+    },
+    {
+     "t": "than",
+     "ms": 6440
+    },
+    {
+     "t": "either",
+     "ms": 6840
+    },
+    {
+     "t": "of",
+     "ms": 7220
+    },
+    {
+     "t": "them",
+     "ms": 7560
+    },
+    {
+     "t": "expected.",
+     "ms": 7720
+    }
+   ],
+   "magic": [
+    "dig"
+   ],
+   "audio": "p5.m4a",
+   "audioMs": 9560
+  },
+  {
+   "art": "📖",
+   "tokens": [
+    {
+     "t": "What",
+     "ms": 0
+    },
+    {
+     "t": "they",
+     "ms": 260
+    },
+    {
+     "t": "got,",
+     "ms": 400
+    },
+    {
+     "t": "in",
+     "ms": 680
+    },
+    {
+     "t": "the",
+     "ms": 1580
+    },
+    {
+     "t": "end,",
+     "ms": 1740
+    },
+    {
+     "t": "was",
+     "ms": 2140
+    },
+    {
+     "t": "another",
+     "ms": 2540
+    },
+    {
+     "t": "tin",
+     "ms": 2970
+    },
+    {
+     "t": "with",
+     "ms": 3400
+    },
+    {
+     "t": "four",
+     "ms": 3700
+    },
+    {
+     "t": "marbles",
+     "ms": 4160
+    },
+    {
+     "t": "in",
+     "ms": 4920
+    },
+    {
+     "t": "it,",
+     "ms": 5180
+    },
+    {
+     "t": "and",
+     "ms": 5340
+    },
+    {
+     "t": "a",
+     "ms": 5840
+    },
+    {
+     "t": "note",
+     "ms": 5960
+    },
+    {
+     "t": "that",
+     "ms": 6300
+    },
+    {
+     "t": "said:",
+     "ms": 6580
+    },
+    {
+     "t": "hello,",
+     "ms": 7040
+    },
+    {
+     "t": "whoever",
+     "ms": 8400
+    },
+    {
+     "t": "you",
+     "ms": 9180
+    },
+    {
+     "t": "are.",
+     "ms": 9700
+    }
+   ],
+   "magic": [
+    "got"
+   ],
+   "audio": "p6.m4a",
+   "audioMs": 11240
+  }
+ ],
+ "moral": {
+  "spoken": "The best treasure is usually the one you go looking for together.",
+  "line": "I got a map.",
+  "audio": "moral.m4a",
+  "audioMs": 6660
+ },
+ "prompts": {
+  "yes:map": {
+   "audio": "yes-map.m4a",
+   "ms": 4640
+  },
+  "word:map": {
+   "audio": "word-map.m4a",
+   "ms": 2290
+  },
+  "yes:dig": {
+   "audio": "yes-dig.m4a",
+   "ms": 4640
+  },
+  "word:dig": {
+   "audio": "word-dig.m4a",
+   "ms": 2290
+  },
+  "yes:got": {
+   "audio": "yes-got.m4a",
+   "ms": 4640
+  },
+  "word:got": {
+   "audio": "word-got.m4a",
+   "ms": 2290
+  }
+ }
+}
