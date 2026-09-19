@@ -1,0 +1,594 @@
+{
+ "slug": "dad-did-nap",
+ "title": "Dad Did Nap",
+ "tradition": "classic",
+ "source": {
+  "work": "Original shared-reading story (decodable targets only)",
+  "author": "StoryTime",
+  "rights": "public-domain"
+ },
+ "retelling": {
+  "level": "ls-phase2-set2",
+  "checklist": {
+   "setup": true,
+   "want": true,
+   "action": true,
+   "consequence": true,
+   "feeling": true
+  }
+ },
+ "level": "ls-phase2-set2",
+ "pages": [
+  {
+   "art": "📖",
+   "tokens": [
+    {
+     "t": "On",
+     "ms": 0
+    },
+    {
+     "t": "Sunday",
+     "ms": 320
+    },
+    {
+     "t": "afternoon",
+     "ms": 660
+    },
+    {
+     "t": "Dad",
+     "ms": 1900
+    },
+    {
+     "t": "said",
+     "ms": 2220
+    },
+    {
+     "t": "he",
+     "ms": 3040
+    },
+    {
+     "t": "was",
+     "ms": 3320
+    },
+    {
+     "t": "going",
+     "ms": 3440
+    },
+    {
+     "t": "to",
+     "ms": 3620
+    },
+    {
+     "t": "fix",
+     "ms": 3720
+    },
+    {
+     "t": "the",
+     "ms": 4019
+    },
+    {
+     "t": "gate.",
+     "ms": 4240
+    },
+    {
+     "t": "He",
+     "ms": 5700
+    },
+    {
+     "t": "carried",
+     "ms": 5960
+    },
+    {
+     "t": "out",
+     "ms": 6240
+    },
+    {
+     "t": "his",
+     "ms": 6580
+    },
+    {
+     "t": "toolbox",
+     "ms": 6780
+    },
+    {
+     "t": "and",
+     "ms": 7640
+    },
+    {
+     "t": "a",
+     "ms": 8360
+    },
+    {
+     "t": "glass",
+     "ms": 8460
+    },
+    {
+     "t": "of",
+     "ms": 8760
+    },
+    {
+     "t": "water.",
+     "ms": 9120
+    }
+   ],
+   "audio": "p1.m4a",
+   "audioMs": 10810
+  },
+  {
+   "art": "📖",
+   "tokens": [
+    {
+     "t": "He",
+     "ms": 0
+    },
+    {
+     "t": "sat",
+     "ms": 280
+    },
+    {
+     "t": "down",
+     "ms": 540
+    },
+    {
+     "t": "on",
+     "ms": 960
+    },
+    {
+     "t": "the",
+     "ms": 1140
+    },
+    {
+     "t": "step",
+     "ms": 1240
+    },
+    {
+     "t": "first,",
+     "ms": 1540
+    },
+    {
+     "t": "just",
+     "ms": 2080
+    },
+    {
+     "t": "for",
+     "ms": 2720
+    },
+    {
+     "t": "a",
+     "ms": 2960
+    },
+    {
+     "t": "minute,",
+     "ms": 3100
+    },
+    {
+     "t": "to",
+     "ms": 3420
+    },
+    {
+     "t": "work",
+     "ms": 4080
+    },
+    {
+     "t": "out",
+     "ms": 4420
+    },
+    {
+     "t": "which",
+     "ms": 4780
+    },
+    {
+     "t": "screw",
+     "ms": 5460
+    },
+    {
+     "t": "went",
+     "ms": 6160
+    },
+    {
+     "t": "where.",
+     "ms": 6720
+    }
+   ],
+   "magic": [
+    "sat"
+   ],
+   "audio": "p2.m4a",
+   "audioMs": 8360
+  },
+  {
+   "art": "📖",
+   "tokens": [
+    {
+     "t": "The",
+     "ms": 0
+    },
+    {
+     "t": "sun",
+     "ms": 260
+    },
+    {
+     "t": "was",
+     "ms": 520
+    },
+    {
+     "t": "warm",
+     "ms": 840
+    },
+    {
+     "t": "on",
+     "ms": 1320
+    },
+    {
+     "t": "his",
+     "ms": 1600
+    },
+    {
+     "t": "face.",
+     "ms": 1760
+    },
+    {
+     "t": "The",
+     "ms": 3680
+    },
+    {
+     "t": "bees",
+     "ms": 3840
+    },
+    {
+     "t": "were",
+     "ms": 4100
+    },
+    {
+     "t": "busy",
+     "ms": 4480
+    },
+    {
+     "t": "in",
+     "ms": 5280
+    },
+    {
+     "t": "the",
+     "ms": 5780
+    },
+    {
+     "t": "jasmine.",
+     "ms": 5920
+    },
+    {
+     "t": "Nobody",
+     "ms": 7560
+    },
+    {
+     "t": "said",
+     "ms": 8160
+    },
+    {
+     "t": "anything",
+     "ms": 8680
+    },
+    {
+     "t": "at",
+     "ms": 9300
+    },
+    {
+     "t": "all.",
+     "ms": 9820
+    }
+   ],
+   "audio": "p3.m4a",
+   "audioMs": 11360
+  },
+  {
+   "art": "📖",
+   "tokens": [
+    {
+     "t": "Ten",
+     "ms": 0
+    },
+    {
+     "t": "minutes",
+     "ms": 360
+    },
+    {
+     "t": "later",
+     "ms": 600
+    },
+    {
+     "t": "he",
+     "ms": 1560
+    },
+    {
+     "t": "was",
+     "ms": 1840
+    },
+    {
+     "t": "asleep",
+     "ms": 2020
+    },
+    {
+     "t": "with",
+     "ms": 2600
+    },
+    {
+     "t": "the",
+     "ms": 3140
+    },
+    {
+     "t": "screwdriver",
+     "ms": 3300
+    },
+    {
+     "t": "still",
+     "ms": 4280
+    },
+    {
+     "t": "in",
+     "ms": 4860
+    },
+    {
+     "t": "his",
+     "ms": 5240
+    },
+    {
+     "t": "hand.",
+     "ms": 5400
+    },
+    {
+     "t": "It",
+     "ms": 6640
+    },
+    {
+     "t": "was",
+     "ms": 7280
+    },
+    {
+     "t": "a",
+     "ms": 7420
+    },
+    {
+     "t": "proper",
+     "ms": 7560
+    },
+    {
+     "t": "afternoon",
+     "ms": 7840
+    },
+    {
+     "t": "nap,",
+     "ms": 8720
+    },
+    {
+     "t": "with",
+     "ms": 9180
+    },
+    {
+     "t": "snoring.",
+     "ms": 9780
+    }
+   ],
+   "magic": [
+    "nap"
+   ],
+   "audio": "p4.m4a",
+   "audioMs": 11770
+  },
+  {
+   "art": "📖",
+   "tokens": [
+    {
+     "t": "Nan",
+     "ms": 740
+    },
+    {
+     "t": "tiptoed",
+     "ms": 940
+    },
+    {
+     "t": "out",
+     "ms": 1140
+    },
+    {
+     "t": "and",
+     "ms": 1320
+    },
+    {
+     "t": "put",
+     "ms": 2040
+    },
+    {
+     "t": "a",
+     "ms": 2360
+    },
+    {
+     "t": "cushion",
+     "ms": 2460
+    },
+    {
+     "t": "behind",
+     "ms": 2940
+    },
+    {
+     "t": "his",
+     "ms": 3320
+    },
+    {
+     "t": "head.",
+     "ms": 3680
+    },
+    {
+     "t": "Tim",
+     "ms": 5040
+    },
+    {
+     "t": "put",
+     "ms": 5460
+    },
+    {
+     "t": "the",
+     "ms": 5680
+    },
+    {
+     "t": "glass",
+     "ms": 5840
+    },
+    {
+     "t": "of",
+     "ms": 6200
+    },
+    {
+     "t": "water",
+     "ms": 6580
+    },
+    {
+     "t": "in",
+     "ms": 6960
+    },
+    {
+     "t": "the",
+     "ms": 7200
+    },
+    {
+     "t": "shade",
+     "ms": 7300
+    },
+    {
+     "t": "so",
+     "ms": 7760
+    },
+    {
+     "t": "it",
+     "ms": 8620
+    },
+    {
+     "t": "would",
+     "ms": 8800
+    },
+    {
+     "t": "stay",
+     "ms": 8900
+    },
+    {
+     "t": "cool.",
+     "ms": 9240
+    }
+   ],
+   "audio": "p5.m4a",
+   "audioMs": 11000
+  },
+  {
+   "art": "📖",
+   "tokens": [
+    {
+     "t": "The",
+     "ms": 0
+    },
+    {
+     "t": "gate",
+     "ms": 260
+    },
+    {
+     "t": "is",
+     "ms": 580
+    },
+    {
+     "t": "still",
+     "ms": 1300
+    },
+    {
+     "t": "broken.",
+     "ms": 1680
+    },
+    {
+     "t": "Nobody",
+     "ms": 3440
+    },
+    {
+     "t": "minds.",
+     "ms": 3840
+    },
+    {
+     "t": "Everyone",
+     "ms": 5460
+    },
+    {
+     "t": "did",
+     "ms": 6380
+    },
+    {
+     "t": "agree",
+     "ms": 6760
+    },
+    {
+     "t": "it",
+     "ms": 7240
+    },
+    {
+     "t": "was",
+     "ms": 7940
+    },
+    {
+     "t": "the",
+     "ms": 8100
+    },
+    {
+     "t": "best",
+     "ms": 8280
+    },
+    {
+     "t": "afternoon",
+     "ms": 8740
+    },
+    {
+     "t": "of",
+     "ms": 9320
+    },
+    {
+     "t": "the",
+     "ms": 9680
+    },
+    {
+     "t": "week.",
+     "ms": 9800
+    }
+   ],
+   "magic": [
+    "did"
+   ],
+   "audio": "p6.m4a",
+   "audioMs": 11530
+  }
+ ],
+ "moral": {
+  "spoken": "The best afternoons are the ones nobody planned.",
+  "line": "Dad did nap.",
+  "audio": "moral.m4a",
+  "audioMs": 4670
+ },
+ "prompts": {
+  "yes:sat": {
+   "audio": "yes-sat.m4a",
+   "ms": 4640
+  },
+  "word:sat": {
+   "audio": "word-sat.m4a",
+   "ms": 2290
+  },
+  "yes:nap": {
+   "audio": "yes-nap.m4a",
+   "ms": 4640
+  },
+  "word:nap": {
+   "audio": "word-nap.m4a",
+   "ms": 2290
+  },
+  "yes:did": {
+   "audio": "yes-did.m4a",
+   "ms": 4640
+  },
+  "word:did": {
+   "audio": "word-did.m4a",
+   "ms": 2290
+  }
+ }
+}

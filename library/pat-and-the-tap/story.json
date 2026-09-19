@@ -1,0 +1,462 @@
+{
+ "slug": "pat-and-the-tap",
+ "title": "Pat and the Tap",
+ "tradition": "classic",
+ "source": {
+  "work": "Original shared-reading story (decodable targets only)",
+  "author": "StoryTime",
+  "rights": "public-domain"
+ },
+ "retelling": {
+  "level": "ls-phase2-set1",
+  "checklist": {
+   "setup": true,
+   "want": true,
+   "action": true,
+   "consequence": true,
+   "feeling": true
+  }
+ },
+ "level": "ls-phase2-set1",
+ "pages": [
+  {
+   "art": "🥵",
+   "tokens": [
+    {
+     "t": "Pat",
+     "ms": 0
+    },
+    {
+     "t": "was",
+     "ms": 340
+    },
+    {
+     "t": "hot.",
+     "ms": 580
+    },
+    {
+     "t": "The",
+     "ms": 1820
+    },
+    {
+     "t": "sun",
+     "ms": 2540
+    },
+    {
+     "t": "was",
+     "ms": 2780
+    },
+    {
+     "t": "high",
+     "ms": 3040
+    },
+    {
+     "t": "and",
+     "ms": 4240
+    },
+    {
+     "t": "her",
+     "ms": 4260
+    },
+    {
+     "t": "cheeks",
+     "ms": 4420
+    },
+    {
+     "t": "were",
+     "ms": 4780
+    },
+    {
+     "t": "pink.",
+     "ms": 5140
+    }
+   ],
+   "audio": "p1.m4a",
+   "audioMs": 6830
+  },
+  {
+   "art": "🚰",
+   "magic": [
+    "tap"
+   ],
+   "tokens": [
+    {
+     "t": "In",
+     "ms": 0
+    },
+    {
+     "t": "the",
+     "ms": 240
+    },
+    {
+     "t": "garden",
+     "ms": 340
+    },
+    {
+     "t": "a",
+     "ms": 590
+    },
+    {
+     "t": "tap",
+     "ms": 840
+    },
+    {
+     "t": "went",
+     "ms": 1180
+    },
+    {
+     "t": "drip,",
+     "ms": 1860
+    },
+    {
+     "t": "drip,",
+     "ms": 2960
+    },
+    {
+     "t": "drip.",
+     "ms": 3320
+    },
+    {
+     "t": "Pat",
+     "ms": 5440
+    },
+    {
+     "t": "put",
+     "ms": 5920
+    },
+    {
+     "t": "a",
+     "ms": 6200
+    },
+    {
+     "t": "cup",
+     "ms": 6300
+    },
+    {
+     "t": "under",
+     "ms": 6560
+    },
+    {
+     "t": "the",
+     "ms": 6840
+    },
+    {
+     "t": "tap.",
+     "ms": 7060
+    }
+   ],
+   "audio": "p2.m4a",
+   "audioMs": 8630
+  },
+  {
+   "art": "🧒",
+   "magic": [
+    "sat"
+   ],
+   "tokens": [
+    {
+     "t": "Pat",
+     "ms": 400
+    },
+    {
+     "t": "sat",
+     "ms": 600
+    },
+    {
+     "t": "on",
+     "ms": 860
+    },
+    {
+     "t": "the",
+     "ms": 1120
+    },
+    {
+     "t": "step",
+     "ms": 1220
+    },
+    {
+     "t": "to",
+     "ms": 1600
+    },
+    {
+     "t": "wait.",
+     "ms": 1880
+    },
+    {
+     "t": "Drip.",
+     "ms": 2080
+    },
+    {
+     "t": "Drip.",
+     "ms": 2280
+    },
+    {
+     "t": "Drip.",
+     "ms": 2480
+    }
+   ],
+   "audio": "p3.m4a",
+   "audioMs": 10430
+  },
+  {
+   "art": "💦",
+   "tokens": [
+    {
+     "t": "Then",
+     "ms": 0
+    },
+    {
+     "t": "the",
+     "ms": 260
+    },
+    {
+     "t": "cup",
+     "ms": 340
+    },
+    {
+     "t": "was",
+     "ms": 580
+    },
+    {
+     "t": "full!",
+     "ms": 800
+    },
+    {
+     "t": "Water",
+     "ms": 2300
+    },
+    {
+     "t": "ran",
+     "ms": 2940
+    },
+    {
+     "t": "over",
+     "ms": 3360
+    },
+    {
+     "t": "the",
+     "ms": 3640
+    },
+    {
+     "t": "top",
+     "ms": 3800
+    },
+    {
+     "t": "and",
+     "ms": 4160
+    },
+    {
+     "t": "splashed",
+     "ms": 4760
+    },
+    {
+     "t": "all",
+     "ms": 5840
+    },
+    {
+     "t": "over",
+     "ms": 6360
+    },
+    {
+     "t": "Pat's",
+     "ms": 6660
+    },
+    {
+     "t": "feet.",
+     "ms": 7260
+    }
+   ],
+   "audio": "p4.m4a",
+   "audioMs": 8840
+  },
+  {
+   "art": "😆",
+   "tokens": [
+    {
+     "t": "Pat",
+     "ms": 960
+    },
+    {
+     "t": "laughed.",
+     "ms": 1160
+    },
+    {
+     "t": "She",
+     "ms": 1360
+    },
+    {
+     "t": "turned",
+     "ms": 2620
+    },
+    {
+     "t": "the",
+     "ms": 2860
+    },
+    {
+     "t": "tap",
+     "ms": 3020
+    },
+    {
+     "t": "off",
+     "ms": 3260
+    },
+    {
+     "t": "and",
+     "ms": 3760
+    },
+    {
+     "t": "gave",
+     "ms": 4400
+    },
+    {
+     "t": "it",
+     "ms": 4920
+    },
+    {
+     "t": "a",
+     "ms": 5140
+    },
+    {
+     "t": "little",
+     "ms": 5200
+    },
+    {
+     "t": "pat,",
+     "ms": 5380
+    },
+    {
+     "t": "as",
+     "ms": 5800
+    },
+    {
+     "t": "if",
+     "ms": 6700
+    },
+    {
+     "t": "to",
+     "ms": 6880
+    },
+    {
+     "t": "say",
+     "ms": 7060
+    },
+    {
+     "t": "thank",
+     "ms": 7420
+    },
+    {
+     "t": "you.",
+     "ms": 8060
+    }
+   ],
+   "audio": "p5.m4a",
+   "audioMs": 9560,
+   "magic": [
+    "pat"
+   ]
+  },
+  {
+   "art": "☀️",
+   "tokens": [
+    {
+     "t": "Then",
+     "ms": 0
+    },
+    {
+     "t": "she",
+     "ms": 260
+    },
+    {
+     "t": "sat",
+     "ms": 440
+    },
+    {
+     "t": "in",
+     "ms": 700
+    },
+    {
+     "t": "the",
+     "ms": 980
+    },
+    {
+     "t": "sun",
+     "ms": 1080
+    },
+    {
+     "t": "with",
+     "ms": 1420
+    },
+    {
+     "t": "her",
+     "ms": 2200
+    },
+    {
+     "t": "cool",
+     "ms": 2380
+    },
+    {
+     "t": "drink.",
+     "ms": 2680
+    },
+    {
+     "t": "Drip,",
+     "ms": 4440
+    },
+    {
+     "t": "drip,",
+     "ms": 5240
+    },
+    {
+     "t": "drip,",
+     "ms": 5940
+    },
+    {
+     "t": "said",
+     "ms": 6080
+    },
+    {
+     "t": "the",
+     "ms": 6780
+    },
+    {
+     "t": "tap.",
+     "ms": 6980
+    }
+   ],
+   "audio": "p6.m4a",
+   "audioMs": 8560
+  }
+ ],
+ "moral": {
+  "spoken": "A little wait can bring a cool drink.",
+  "line": "Pat sat. Tap, tap.",
+  "audio": "moral.m4a",
+  "audioMs": 4019
+ },
+ "prompts": {
+  "yes:tap": {
+   "audio": "yes-tap.m4a",
+   "ms": 4640
+  },
+  "word:tap": {
+   "audio": "word-tap.m4a",
+   "ms": 2290
+  },
+  "yes:sat": {
+   "audio": "yes-sat.m4a",
+   "ms": 4640
+  },
+  "word:sat": {
+   "audio": "word-sat.m4a",
+   "ms": 2290
+  },
+  "yes:pat": {
+   "audio": "yes-pat.m4a",
+   "ms": 4640
+  },
+  "word:pat": {
+   "audio": "word-pat.m4a",
+   "ms": 2290
+  }
+ }
+}

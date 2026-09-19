@@ -1,0 +1,34 @@
+{
+ "yours": {
+  "audio": "yours.m4a",
+  "ms": 8170
+ },
+ "fast": {
+  "audio": "fast.m4a",
+  "ms": 3060
+ },
+ "notyet": {
+  "audio": "notyet.m4a",
+  "ms": 8119
+ },
+ "yourturn": {
+  "audio": "yourturn.m4a",
+  "ms": 5510
+ },
+ "practise": {
+  "audio": "practise.m4a",
+  "ms": 2870
+ },
+ "line": {
+  "audio": "line.m4a",
+  "ms": 4640
+ },
+ "done": {
+  "audio": "done.m4a",
+  "ms": 5700
+ },
+ "pick": {
+  "audio": "pick.m4a",
+  "ms": 4860
+ }
+}

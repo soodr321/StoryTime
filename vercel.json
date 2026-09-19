@@ -1,0 +1,1 @@
+{ "rewrites": [{ "source": "/((?!library/|prompts/|sounds/|assets/).*)", "destination": "/index.html" }] }
