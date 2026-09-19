@@ -1,44 +1,41 @@
-# state — morning summary (2026-09-11)
+# state — 2026-09-19
 
-**Design:** direction A "warm storybook" applied 2026-09-11 (commit a925b31): Baloo 2 + Literata self-hosted, paper ground, glow hero card, SVG icons and fox/crow mascots, stars, tonight strip, done badge. Canvas: https://claude.ai/code/artifact/d29dd5ae-7522-48b2-b17e-993f2af20b54 · working files in design/.
-**End-to-end audit (2026-09-11/12):** docs/audit-findings.md · plan docs/audit-plan.md · reviews docs/reviews/gpt-audit-plan.md and gemini-audit-plan.md (Gemini via Antigravity CLI `agy`, model gemini-3.1-pro-high; the gemini-cli OAuth path is retired for individual accounts).
-The app was walked screen by screen in both modes and every sound it makes was captured and transcribed (faster-whisper). 13 audio findings and 11 visual ones; all fixed except two that need the owner's ear.
-- **The blend model was not a word.** Concatenated phoneme clips transcribe as "Ssssssss" (sat), "hehehe" (pin), nothing (dog). Now the narration voice says the word slowly: 143 pre-rendered words in public/blends/, with the phone's voice and the clip chain as fallbacks. Letter tiles are still real human recordings.
-- **/b/ /d/ /g/ had no voicing** — cut to their bursts, the app was saying /p/ /t/ /k/. Now 45-60 ms of voicing, VOT 5 ms. **Every vowel wandered**; each is now chosen by search for the steadiest window inside the speaker's own pitch range (steadiness 0.94-0.98, 122-144 Hz).
-- **The narration ran sentences together** (39 of 63 pages) and the **karaoke highlight sat up to 1.9 s from the spoken word**. Sentences are now synthesised separately with a 420 ms pause (58/63 stop at full stops) and the timings are measured from the file we ship by ASR, aligned by edit distance: average offset 9 ms. Speed 109 wpm overall, 170 while speaking.
-- **18% of words are spoken under 200 ms apart**, faster than a 4-year-old's eye: the highlight now holds a minimum dwell and jumps to where the voice is.
-- **The spoken prompt said "Can you read it?"** while the screen said "slide through the word" — it invited the picture-guessing the script forbids. Every prompt now matches the screen.
-- Visually: the green karaoke trail was a wall of boxes; punctuation floated away from its word; the adult script ran to five lines every page; "Next page" sat disabled with no explanation; the extra word looked like an error; the card buried the sentence. All fixed — see docs/audit-findings.md.
-**New instruments** (scripts/audit/): listen.py (transcribe and measure every sound), phonetics.py (voice onset, voiced tail, vowel steadiness, fricative centre of gravity), render-blend.py, lib.mjs + step*.mjs (walk the app and capture what it shows and plays). Gated in the test suite by scripts/phoneme-quality.test.ts and scripts/narration-rate.test.ts.
-**Owner's turn:** whether the sounds and the blended word are right to a human ear at both paces, and two suspected mispronunciations ("Sam" heard as "Some" at the start of a sentence).
+**Live:** https://storytime-coral.vercel.app · https://soodr321.github.io/StoryTime/ · repo soodr321/StoryTime
 
-**Sound fixes + audit plan (2026-09-11, late):** docs/audit-plan.md.
-- The fallback phoneme clips were **four different voices**: 112-394 Hz across the voiced set, with `o` at 334 Hz (an octave above the rest, in dog/got/pot/not) and `e` changing voice inside the clip. Every vowel is now cut from its first steady window and `o` comes from the same speaker: **117-158 Hz**, drift under 26 Hz. Loudness matched by RMS instead of peak (8.6 dB spread -> 3.6 dB). Gated by scripts/phoneme-quality.test.ts; scripts/audit/render-blend.py renders a word the way the app schedules it and reports pitch continuity (sat 1%, cup 7%, pin 13%, dog 30%).
-- The narration ran at **166 words per minute**; an adult reads aloud at ~150 and shared reading with a 4-year-old is 100-120. Re-rendered at **133 wpm**, and a **Reading pace** control in Settings (default slower, 0.85x = 113 wpm) also stretches the blend model. Gated by scripts/narration-rate.test.ts.
-- "I read" was proved silent by an audio probe, so the speed complaint was about the recorded narration and the blend, which is what changed.
-- Audio version bumped to v4 so an installed phone does not keep the old clips.
-**Audit plan:** docs/audit-plan.md - four instruments (flow driver, audio probe, signal analyser, state prober), twelve areas, numeric pass criteria, and the rule that a defect the family reports must leave a number behind. Not yet executed beyond the sound sections.
+## This session
+**Pictures.** Ten drawn banners, one per book: sky band, ground band, one prop, no figures, and never
+the word the child must decode that night. Four Milo Winter plates from the 1919 Aesop for Children
+(public domain) survive as bookshelf covers, square-cropped; the shepherd-boy plate was dropped (a
+wolf mid-attack on a lamb). Reviewed by Grok four times: the first drafts had figures I could not
+draw, the second still pictured five nights' words, the third gave the lion the same pit as Sam.
+APPROVED on the fourth.
+**Four set-3 books**, where the shelf had none: The Pot on the Fire, The Cat in the Tin, Dad and the
+Pig, The Map in the Tin. A child at 12 sounds could previously only re-read books below their level.
+**Letterforms.** Everything a child decodes is now Andika (single-storey a and g). The tiles were
+Baloo 2, whose a is double-storey; the story text was Literata, whose g has a looped tail.
+**Bedtime.** "First try" and "Needs help" had a contrast ratio of 1.0 - invisible - because their
+backgrounds were hardcoded while their text colour came from a token the night palette flips. Now
+7.9 and 8.3, gated by scripts/bedtime-palette.test.ts.
+**One quiet tap past a word**: "you say it, and carry on", silent, no error state, word returns tomorrow.
+**A word missed after midnight** came back a day late; nextMorning now counts from the reading day.
+**Sound packs**: `npm run sounds:build <commons|family|soundcity>` swaps the whole set through the
+same gates; a pack marked non-redistributable is refused by both deploy scripts.
 
-**Plan v5 (2026-09-11, night) built:** docs/plan-v5.md. Two Opus reviews (docs/reviews/opus-*-v5 in the session transcript) plus a hands-on pass in a 390x844 viewport, corrected by Grok (docs/reviews/grok-plan-v5.md). Landed, in Grok's order:
-- **a story on night one.** A reader with fewer than four sounds now gets a real book read to them (pinned set-1 story, listener-shaped page prompts, honest copy). `recordFinish({listenOnly})` stamps the ritual but leaves `timesFinished` 0, so the first decoding night still meets that book as new. Before this, nights 1-3 had no story at all.
-- **the build's evidence survived nothing.** `recordEncoding` returned early when the story had no progress row yet, which is exactly the first-read case the picker prefers, so `readyToAdvance` could never turn true. Fixed, with the first tests for the write path (idb-keyval mocked).
-- **one `resolveMagic()`.** The narration stop, the pink highlight and the extra-word picker were three copies of `findIndex`. A capitalised token is never the target now (it is a name, and at token 0 the page blipped after ~110 ms). Rewrote `tap-tap-tap` p4 and `sam-and-the-pit` p5, which no resolver could save; the library test asserts it.
-- **a failed boot no longer wipes the family** (saves gated on a loadedOk ref; the read-without-saving escape hatch keeps its in-memory defaults).
-- **the word card is self-contained**: the read-mode modelling script is on the sheet instead of behind it, the two prohibitions show on the first card, and "not yet" closes it without writing anything.
-- **"I'll try" is quarantined**: never a copy of the page's own magic word, never a name, never at bedtime, marked `extra` and filtered out of the advancement gate, the warm-up, the dictation word and every total.
-- **the warm-up gate opens**: "not tonight" clears it until morning and records nothing; a word back three times without progress steps out of the queue; a bookshelf tap runs the warm-up and then opens the book that was tapped.
-- **the build has three outcomes** ("Not tonight" writes nothing) and its write is awaited before the finish write (same IndexedDB row).
-- Also: "Replay today's sound: s" replayed the NEXT sound; the teach routine is reachable from Settings; the level dropdown grants that level's tricky words; the story tile is tappable; Done shows the child the wins and puts the misses behind a grown-up disclosure; the screen stays awake during a story; the night counter no longer jumps within one evening; the sound recorder releases the mic; a family story needs at least one magic word.
-**Not done from plan v5 (stated, not half-done):** one `dayStamp()` across the six places with their own midnight; orphaned per-kid keys on remove; "Again" on Done (needs a page/results reset to avoid double-counting); set-3 books (nights ~8-15 still run on three books); real illustrations (every page is one emoji — the largest remaining gap); a job for the sibling who is present during the reader's session.
-**Owner to try:** night one as a beginner ("none yet" at Welcome); "I read" with the finger under the line and the "not yet" way out of the word card; the bookshelf while words are due.
+## Reviews
+Grok APPROVED the pictures (docs/reviews/grok-art-1..4.md). Gemini 3.8 Flash gave GO on the build
+(docs/reviews/gemini-plan-v6.md, gemini-build-v6.md).
 
-**Plan v4 (2026-09-11 evening) built:** docs/plan-v2.md, reviews in docs/reviews/grok-plan-v2.md and gpt-plan-v3.md. Phoneme clips hand-cut from pinned Commons originals (WAV, bursts only for stops); blend on a decoded-length timeline; family-voice sound recorder (Settings → Record the sounds); finger-follow under the line in "I read"; one "I'll try" word per page; tap-as-you-listen timings for family stories; voice follow behind Settings → Experimental (audio to Apple/Google while on); narrator now en-US Andrew; audio URLs versioned (v=3).
-**Owner to test on the phone:** (1) tap s, t, m tiles and blend sat/pin/dog/puff at normal and bedtime rate: the cuts were chosen from voicing maps, not by ear; (2) record the 18 sounds in your voice, which replaces the fallback clips; (3) slide a finger under a line in "I read"; (4) the experimental "Follow my voice" chip in the Safari tab and from the home-screen app.
-**Not done from plan v4:** timing taps for family stories recorded before today (only new recordings get the tap-along); voice follow wrong-word measurement (owner's phone).
-**Version:** v22 · 45 commits · 111 tests green · https://github.com/soodr321/StoryTime
-**Stable URL:** https://soodr321.github.io/StoryTime/
-**Vercel (production, public):** https://storytime-coral.vercel.app — project "storytime" in the owner's account, deployment protection off; redeploy with `npm run deploy:vercel`.
-**Reviews folded in (14):** engineering — Gemini v2, Grok v3, Gemini v5, Grok v6, GPT-5.6 v7; teacher loops — loop 1 GPT/Grok/Gemini, loop 2 GPT/Grok/Gemini, loop 3 GPT/Grok/Gemini. Transcripts in docs/reviews/.
+## Waiting on the owner
+- Permission from Kathryn J. Davis (Sound City Reading) for her alphabet sounds, requested by email
+  2026-09-18. If it comes: drop the files in assets/packs/soundcity, `npm run sounds:build soundcity`,
+  flip redistributable, deploy. If not: nothing changes.
+- Record the family's own sounds: `npm run dev`, open the printed address on the phone, Settings →
+  Record the sounds. Each take lands in assets/voice-pack/; then `npm run voice:import`.
+- Two minutes on the real phone in the dark bedroom (Gemini's ask): check the iOS bars do not cover
+  the bottom controls and that the 18px edge rejection feels right in the hand.
+
+## Not done
+Calm role cues (Gemini [P2]). Real illustrations beyond the four plates. Real-hardware testing.
 
 ## What changed per loop (K–1 phonics teacher lens)
 **Loop 1** — blending is continuous, not chopped; the picture is hidden while the child reads the word card; a "look again" cue; read-back routine (whole line → help one word → ✓ on that word → reread smoothly); tricky words show the regular part with the odd bit underlined; "independent", never "sight"; onboarding starts low with tap-to-hear sounds; spaced warm-up of yesterday's helped/skipped words is mandatory when due; CVC-only targets at phase 2 (no consonant clusters until taught); set-1 and set-2 original stories so honest onboarding has a book; a shaky story repeats tomorrow; the adult and the device never say the whole word before the child blends; grey words are never tap-to-hear in read mode; the bookshelf lets a favourite be reread in either mode.
