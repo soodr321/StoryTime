@@ -117,6 +117,33 @@ Four voices, three degraded, plus a fourth surface v1 missed entirely (`public/p
   the 147 existing clips are in the **old** voice. Ship A3/A6 alone and narration becomes Sarah while
   the slow model of `nap` — the single moment the child most needs to trust — stays Andrew. That is
   principle 2 failing at the worst possible point.
+  - **A7a. Never synthesise a bare word — use a carrier phrase and slice it out.** Found by the
+    parent's ear 2026-09-20 ("the beginning of all 4 words are wrong at all speeds") and confirmed
+    acoustically: Kokoro given one isolated word produces a missing or vestigial onset consonant.
+    Measured spectral centroid over the first 60 ms — `sat` bare came out **616 688 969 Hz**, which
+    is a vowel: there is no /s/ in it at all. The word the child heard was "at".
+    Not a speed problem — it is identical at every speed — and punctuation (`"Sat."`) does not fix
+    it. `"sat, sat, sat."` does not fix the FIRST instance either, which is the proof of mechanism:
+    **it is utterance-initial position that breaks, not isolation.** The acoustic model has not
+    settled when the first phoneme is due.
+    The fix is C1's pattern at generation time: synthesise `"The word is {w}, okay."`, then cut the
+    token out using Kokoro's word timestamps with **the same clamp C1 uses**
+    (`end = min(asrEnd + pad, nextStart)`, `pad = min(60 ms, room)`) so no part of the next word
+    bleeds in. Verified across all four benchmark words at both candidate speeds:
+    | word | bare | carrier-sliced | target |
+    |---|---|---|---|
+    | sat | 616 688 969 | **6122 5969 6291** | /s/ fricative, high |
+    | nap | 646 418 460 | **298 346 401** | /n/ nasal murmur, low |
+    | pin | 2181 3261 4039 | **3202 3455 3506** | /p/ aspiration, sustained |
+    | dog | 3725 2767 4405 | **5198 4028 → 1303** | /d/ burst then vowel |
+    Durations also improve to 555–811 ms (Andrew ships 853–981 ms), inside the working-memory window.
+    **Gate this**: assert the onset centroid of every regenerated clip against the expected class for
+    its initial grapheme (fricative high, nasal low, stop burst-then-drop). This is the one automated
+    check that genuinely detects the defect — Whisper cannot, because its language prior transcribes
+    an onsetless "at" as "sat".
+  - **A7b. The same defect applies to any other bare-word synthesis** — the `word:{w}` clips for the
+    66 Teach chips and 8 tricky words (C3) are single words too. They must use the carrier-and-slice
+    path, not a bare call. Check this before generating them.
   - Regenerate every clip in C2's set with the chosen narrator.
   - **The blend speed is its own decision, made by ear, and it is not 0.65.** A blend model is
     deliberately slower than narration. But Gemini's round-1 warning bites hardest here: a TTS model
