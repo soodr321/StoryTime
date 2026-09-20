@@ -53,7 +53,11 @@ Four voices, three degraded, plus a fourth surface v1 missed entirely (`public/p
 ### A. Narrator
 
 - **A1.** `DEEPINFRA_API_KEY` from `.env.local` (gitignored). **Done — key verified live.**
-- **A2 (blocking). Parent picks the voice by ear.** First cut published (14 candidates, one sentence).
+- **A2 — RESOLVED 2026-09-20. The narrator is Kokoro `af_sarah` at `speed: 0.65`** (~108 wpm on a
+  full two-sentence page), chosen by the parent by ear from a nine-speed sweep. Apache-licensed
+  weights, word timestamps confirmed live, runs locally as well as hosted. Everything downstream
+  uses exactly this voice and speed; no other voice appears in a library session.
+  *(Original blocking criteria, kept for the record:)* First cut published (14 candidates, one sentence).
   Empirically confirmed on live calls: **Inworld 37–38 word timestamps, Kokoro 21, Qwen 0.**
   **Qwen is eliminated** — it cannot drive karaoke. Before the final pick, extend the test to a
   **full *Dad Did Nap* page** (multi-sentence, with the 420 ms joins), a magic prompt, a CVC model,
@@ -106,6 +110,22 @@ Four voices, three degraded, plus a fourth surface v1 missed entirely (`public/p
   **F1 tests bedtime as a *mode*** (palette, moon, the one take heard in bedtime conditions), which
   resolves Gemini's contradiction: there is no bedtime-specific *audio* left to test.
 - **A6.** Regenerate `public/prompts/` with the same voice. **Add a prompt-coverage gate.**
+
+- **A7. The blend clips must become the narrator's voice too — a hole in v1–v5, found 2026-09-20.**
+  `gen-blends.py:23` hardcodes `VOICE = "en-US-AndrewMultilingualNeural"` at `RATE = "-55%"`. Every
+  earlier version of this plan argued about *which words* get a blend clip (C2) and never once said
+  the 147 existing clips are in the **old** voice. Ship A3/A6 alone and narration becomes Sarah while
+  the slow model of `nap` — the single moment the child most needs to trust — stays Andrew. That is
+  principle 2 failing at the worst possible point.
+  - Regenerate every clip in C2's set with the chosen narrator.
+  - **The blend speed is its own decision, made by ear, and it is not 0.65.** A blend model is
+    deliberately slower than narration. But Gemini's round-1 warning bites hardest here: a TTS model
+    given a very low speed slurs vowels, and a slurred CVC is not merely ugly, it teaches the wrong
+    phonemes. Sweep the narrator across blend speeds, listen to real CVCs (`sat`, `nap`, `pin`,
+    `dog`), and pick the slowest that still articulates every phoneme cleanly.
+  - **Gate it.** Run the existing phoneme/ASR instruments over the regenerated clips: a clip whose
+    vowel is unrecognisable to the ASR gate fails the build. Never ship a slurred model silently.
+  - Bump `AUDIO_V` with this, like every other audio change (E6/G2).
 
 ### B. Letter sounds — metadata only
 
