@@ -2,6 +2,8 @@ node_modules
 dist
 dev-dist
 .vercel
+# secrets (DEEPINFRA_API_KEY etc.) — plan-voice.md A1 assumes this is already ignored; it was not
+.env.local
 # deploy-time audio artefacts (regenerate with scripts/gen-audio.py)
 public/library/
 public/prompts/

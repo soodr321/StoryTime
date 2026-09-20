@@ -65,8 +65,10 @@ export function StoryScreen({ story, mode, resume, onHome, onAgain }: { story: S
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ctx.page, ctx.results.length, state]);
 
-  // one knob for everything the app says: the narration, the blend model and the spoken prompts
-  const rate = (bedtime ? 0.88 : 1) * (fam.settings.pace === "normal" ? 1 : 0.85);
+  // plan-voice.md A4/A5: no speech path applies a playback-time rate any more — the one slowdown
+  // is at synthesis (Kokoro af_sarah, speed 0.65). `rate` stays at a constant 1 rather than being
+  // unthreaded from every call site (Moral, SegmentPanel) that still accepts it as a prop.
+  const rate = 1;
   const speak = useCallback(async (src: string | null, text?: string) => {
     if (text) setCaption(text);
     playing.current?.stop();

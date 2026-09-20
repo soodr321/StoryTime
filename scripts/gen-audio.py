@@ -6,26 +6,60 @@ shared narrator prompts, into public/library/<slug>/ and public/prompts/.
   python3 scripts/gen-audio.py            # all stories
   python3 scripts/gen-audio.py fox-and-crow
 
-Voice: edge-tts en-IN-NeerjaNeural ($0, word boundaries built in). Audio is a
-deploy-time artefact: public/library/**/*.m4a is gitignored. Recorded phoneme
-clips live in public/sounds/ and are committed; this script only creates
+Voice: Kokoro `af_sarah` at speed 0.65 (~108 wpm on a full page), hosted on DeepInfra
+(plan-voice.md A2, resolved 2026-09-20 — chosen by ear from a nine-speed sweep; Apache-2.0
+weights, word timestamps confirmed live). Requires DEEPINFRA_API_KEY, read from the environment
+or from .env.local (gitignored, never committed) — see require_api_key(). Fail loud, not silent:
+no key means this script refuses to generate rather than falling back to another voice
+(principle 4). Audio is a deploy-time artefact: public/library/**/*.m4a and public/prompts/ are
+gitignored. Recorded phoneme clips live in public/sounds/ and are committed; this script creates
 nothing under public/sounds/ — phoneme clips are real recordings fetched by
-scripts/fetch-phonemes.py (Wikimedia Commons IPA set, CC BY-SA).
+scripts/fetch-phonemes.py (Wikimedia Commons IPA set, CC BY-SA). The "slide through the word"
+blend clips are a separate, still-Andrew-voiced pipeline (scripts/gen-blends.py, plan-voice.md
+A7) — not touched here.
 
-Requires: pip install edge-tts ; ffmpeg on PATH (or imageio-ffmpeg).
+Requires: pip install aiohttp ; ffmpeg on PATH (or imageio-ffmpeg).
 """
-import asyncio, json, os, re, shutil, subprocess, sys
+import asyncio, base64, json, os, re, shutil, subprocess, sys
 from pathlib import Path
 
 try:
-    import edge_tts
+    import aiohttp
 except ImportError:
-    sys.exit("pip install edge-tts")
+    sys.exit("pip install aiohttp")
 
 ROOT = Path(__file__).resolve().parents[1]
 LIB, PUB = ROOT / "library", ROOT / "public"
-NANI, RATE = "en-US-AndrewMultilingualNeural", "-35%"   # US voice, slow enough to follow the words with a finger
-SENTENCE_PAUSE_MS = 420   # a bedtime reader stops at a full stop; edge-tts runs sentences together
+DEEPINFRA_URL = "https://api.deepinfra.com/v1/inference/hexgrad/Kokoro-82M"
+VOICE, SPEED = "af_sarah", 0.65   # plan-voice.md A2 — locked by ear; nothing downstream may override this
+SENTENCE_PAUSE_MS = 420   # a bedtime reader stops at a full stop; the vendor runs sentences together
+
+_API_KEY = None   # set once by require_api_key() at the top of main(); never guessed
+
+def _read_env_local() -> dict[str, str]:
+    """.env.local is a plain `KEY=value` file, gitignored (plan-voice.md A1). No python-dotenv
+    dependency for one file with no quoting/escaping needs."""
+    path = ROOT / ".env.local"
+    out: dict[str, str] = {}
+    if path.exists():
+        for line in path.read_text().splitlines():
+            line = line.strip()
+            if not line or line.startswith("#") or "=" not in line: continue
+            k, v = line.split("=", 1)
+            out[k.strip()] = v.strip().strip('"').strip("'")
+    return out
+
+def require_api_key() -> str:
+    """
+    Fail loud (plan-voice.md principle 4): no key means this script refuses to touch
+    public/library or public/prompts at all — never a silent fallback to another voice. Checked
+    once, before build_shared()/build_story() run any I/O.
+    """
+    key = os.environ.get("DEEPINFRA_API_KEY") or _read_env_local().get("DEEPINFRA_API_KEY")
+    if not key:
+        sys.exit("DEEPINFRA_API_KEY not set (checked the environment and .env.local): refusing "
+                  "to generate. No silent fallback to another voice (plan-voice.md principle 4).")
+    return key
 
 def ffmpeg():
     f = shutil.which("ffmpeg")
@@ -54,16 +88,34 @@ def sentence_offsets(durations_ms, pause_ms):
         acc += dur + pause_ms
     return offsets
 
-async def _one(text, voice, rate):
-    """One synthesis pass: returns (mp3 bytes, [(word, start_ms)])."""
-    buf, words = bytearray(), []
-    com = edge_tts.Communicate(text, voice, rate=rate, boundary="WordBoundary")
-    async for ch in com.stream():
-        if ch["type"] == "audio": buf += ch["data"]
-        elif ch["type"] == "WordBoundary": words.append((ch["text"], ch["offset"] / 1e4))
-    return bytes(buf), words
+async def _one(text, voice, speed):
+    """
+    One synthesis pass against DeepInfra Kokoro: returns (mp3 bytes, [(word, start_ms)]).
+    Response shape verified live (plan-voice.md): {"audio": "data:audio/mp3;base64,...", "words":
+    [{"id","start","end","text"}], ...} with start/end in SECONDS. Only the start is kept here —
+    align() (below) only ever consumed a word's start, and realign_from_heard() derives every
+    endMs from ASR, never from the vendor. A fresh session per call: this script makes at most a
+    few hundred calls per run, and a short-lived session avoids any cleanup edge case on the
+    fail-loud abort paths (AbortPage, sys.exit) that skip an orderly close.
+    """
+    if not _API_KEY:
+        raise RuntimeError("require_api_key() must run before any synthesis")
+    async with aiohttp.ClientSession() as session:
+        async with session.post(
+            DEEPINFRA_URL,
+            headers={"Authorization": f"bearer {_API_KEY}"},
+            json={"text": text, "preset_voice": voice, "speed": speed, "output_format": "mp3", "return_timestamps": True},
+            timeout=aiohttp.ClientTimeout(total=120),
+        ) as resp:
+            resp.raise_for_status()
+            data = await resp.json()
+    audio_field = data["audio"]
+    b64 = audio_field.split(",", 1)[1] if audio_field.startswith("data:") else audio_field
+    buf = base64.b64decode(b64)
+    words = [(w["text"], float(w["start"]) * 1000.0) for w in (data.get("words") or [])]
+    return buf, words
 
-async def tts(text, out_m4a, voice=NANI, rate=RATE):
+async def tts(text, out_m4a, voice=VOICE, speed=SPEED):
     """
     Synthesize text → m4a (AAC, plays on iOS). Returns (duration_ms, [(word, start_ms)]).
     Sentences are synthesised separately and joined with a real pause: read straight through,
@@ -73,7 +125,7 @@ async def tts(text, out_m4a, voice=NANI, rate=RATE):
     """
     tmp = out_m4a.with_suffix(".mp3")
     parts_text = sentences(text) or [text]
-    raw = [await _one(sent, voice, rate) for sent in parts_text]
+    raw = [await _one(sent, voice, speed) for sent in parts_text]
     parts = []
     for i, (buf, _) in enumerate(raw):
         piece = out_m4a.parent / f".part{i}.mp3"; piece.write_bytes(buf); parts.append(piece)
@@ -317,6 +369,8 @@ async def build_shared():
     print("  shared prompts done (phoneme clips come from scripts/fetch-phonemes.py, not TTS)")
 
 async def main():
+    global _API_KEY
+    _API_KEY = require_api_key()   # fail loud before anything under public/ is touched (principle 4)
     slugs = sys.argv[1:] or [p.name for p in LIB.iterdir() if (p / "story.json").exists()]
     await build_shared()
     aborted = []
@@ -332,6 +386,6 @@ async def main():
 
 if __name__ == "__main__":
     # Guarded: importing this module (e.g. to unit-test the pure gating functions above, see
-    # scripts/test_gen_audio_gating.py) must never itself talk to edge-tts or touch public/library
+    # scripts/test_gen_audio_gating.py) must never itself talk to DeepInfra or touch public/library
     # or public/prompts. Before this guard, `import`ing the module ran the whole generator.
     asyncio.run(main())
