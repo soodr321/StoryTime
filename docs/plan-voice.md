@@ -123,8 +123,26 @@ Four voices, three degraded, plus a fourth surface v1 missed entirely (`public/p
     given a very low speed slurs vowels, and a slurred CVC is not merely ugly, it teaches the wrong
     phonemes. Sweep the narrator across blend speeds, listen to real CVCs (`sat`, `nap`, `pin`,
     `dog`), and pick the slowest that still articulates every phoneme cleanly.
-  - **Gate it.** Run the existing phoneme/ASR instruments over the regenerated clips: a clip whose
-    vowel is unrecognisable to the ASR gate fails the build. Never ship a slurred model silently.
+  - **Gate it — but not the way v6 first said.** "Run the existing phoneme/ASR instruments over the
+    clips" is unexecutable and would have been theatre (Gemini, round 5): the phoneme gate was built
+    for isolated single-phoneme wavs and has no forced aligner, and Whisper's language prior will
+    happily transcribe a badly slurred `nap` as "nap". Neither can judge vowel quality. Instead:
+    1. **The parent's ear is the articulation gate.** The CVC sweep decides the speed. Automation
+       catches regressions, it does not choose.
+    2. **Whisper exact whole-word match** per clip (`heard.strip().lower() == word`) — catches a
+       dropped consonant or a truncated clip, which it genuinely can do.
+    3. **Post-trim duration envelope**, asserted in CI. Measured: the trimmed Andrew `sat.m4a`
+       ships at **920 ms**; Sarah at 0.55 is 2,090 ms before trim. Bound it and fail the build
+       outside the bound.
+  - **A working-memory ceiling, not just a slurring floor.** At speed ≤0.35 a CVC runs 2.6–3.4 s.
+    A four-year-old cannot hold the initial consonant across three seconds to bind it to the coda —
+    the clip is then well-articulated and pedagogically useless. Target a **trimmed ~1.0–1.3 s**,
+    which puts the usable range around 0.55–0.65, not lower. (Gemini, round 5.)
+  - **`gen-blends.py` already trims** (`:52`: bidirectional `silenceremove` at −50 dB, a deliberate
+    120 ms breath either side so the opening stop is not clipped, then `loudnorm`). Keep it; Kokoro's
+    padding is handled by the existing filter. Do not add a second trim.
+  - **Purge `public/blends/` before writing.** It is gitignored, so a word dropped from C2's set
+    leaves an orphaned Andrew clip on disk that `playWord` would still find and play.
   - Bump `AUDIO_V` with this, like every other audio change (E6/G2).
 
 ### B. Letter sounds — metadata only
@@ -264,7 +282,9 @@ Four voices, three degraded, plus a fourth surface v1 missed entirely (`public/p
 
 1. B2/B4, E4, G1/G3 — no key needed, no audio touched, exposes the truth and makes rollback possible.
 2. **A2 + A2b — blocking.** Parent picks; ToS cleared. Generator refuses to run until both.
-3. A3/A4/A6 + E6/G2 in one commit with A4's multiplier deletion (per G5). **C6 lands here too if
+3. A3/A4/A6 **+ A7** + E6/G2 in one commit with A4's multiplier deletion (per G5) — all audio
+   regeneration and the single `AUDIO_V`/cacheName bump land together, or an install pairs one
+   voice's clips with another's. **C6 lands here too if
    E1 is enabled here; otherwise E1 waits for step 4.** `main` stays green throughout — the deploy
    scripts run vitest, so a red gate blocks an unrelated bedtime fix.
 4. C1–C8, then E1/E2/E3/E5.
