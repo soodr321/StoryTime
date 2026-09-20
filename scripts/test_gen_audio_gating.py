@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Unit tests for the pure gating/timing logic in gen-audio.py (plan-voice.md A3). These import the
-module but never call tts()/asr_words()/build_story() — no ffmpeg, no edge-tts network call, no
+module but never call tts()/asr_words()/build_story() — no ffmpeg, no DeepInfra network call, no
 Whisper model load, and nothing under public/ or library/ is touched. Safe to run any time:
 
     python3 scripts/test_gen_audio_gating.py

@@ -26,7 +26,9 @@ Stable URL: **https://soodr321.github.io/StoryTime/** · install with Share → 
 
 ```bash
 npm install
-pip install edge-tts                 # narration voice for the built-in library ($0). ffmpeg on PATH or `pip install imageio-ffmpeg`
+pip install aiohttp                  # narration voice for the built-in library: Kokoro `af_sarah` via DeepInfra.
+                                      # needs DEEPINFRA_API_KEY in .env.local (gitignored) or the environment;
+                                      # ffmpeg on PATH or `pip install imageio-ffmpeg`; faster-whisper measures timings
 python3 scripts/fetch-phonemes.py    # once: real phoneme recordings → public/sounds/ (committed)
 npm run audio                        # narration + prompts → public/library/**, public/prompts/** (deploy-time)
 npm run dev
