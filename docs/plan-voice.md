@@ -141,9 +141,28 @@ Four voices, three degraded, plus a fourth surface v1 missed entirely (`public/p
     its initial grapheme (fricative high, nasal low, stop burst-then-drop). This is the one automated
     check that genuinely detects the defect — Whisper cannot, because its language prior transcribes
     an onsetless "at" as "sat".
-  - **A7b. The same defect applies to any other bare-word synthesis** — the `word:{w}` clips for the
-    66 Teach chips and 8 tricky words (C3) are single words too. They must use the carrier-and-slice
-    path, not a bare call. Check this before generating them.
+  - **A7b. Every bare-word synthesis site, and there are more than C3's.** Measured 2026-09-20:
+    | live site | form | onset centroid | verdict |
+    |---|---|---|---|
+    | `gen-audio.py:291` `word:{w}` | `f"{w}."` | 650 854 496 | **broken** — this is the form already shipping |
+    | `gen-audio.py:291` `yes:{w}` | `f"Yes! {w}."` | 1434 1512 1326 | **also broken** |
+    | carrier-and-slice | `"The word is {w}, okay."` | 6122 5969 6291 | correct |
+    `yes:{w}` is the surprise and it contradicts the obvious reading: the word is not utterance-initial
+    there, yet the onset is still weak — the `!` inserts a pause that resets the model just as a fresh
+    utterance does. So **position after a sentence break is as bad as position zero**, and every
+    `word:{w}` and `yes:{w}` clip — the celebration Veer hears on every word he gets right — carries
+    the defect today. All of them move to carrier-and-slice, not just C3's 66+8.
+  - **A7c. The onset gate needs a fourth class: vowel-initial.** C2's set contains 11 vowel-initial
+    words (`a am at i in is it off on up us`). A "high centroid expected" rule fails every one of
+    them. Vowel-initial words assert the opposite — no high-frequency onset — and vowel *quality*
+    there is not measurable by centroid at all, so those clips fall to the parent's ear plus the
+    duration envelope. Fail closed: a word whose initial grapheme has no class rule does not ship.
+  - **Reconcile the three duration numbers before implementation.** v7 says target ~1.0–1.3 s
+    trimmed; A7a measured carrier-sliced clips at 555–811 ms; and "a model is deliberately slower
+    than narration" implies longer still. These conflict. The carrier-sliced measurement is the real
+    one — it is what the child will hear — and it already sits near Andrew's shipping 853–981 ms.
+    Set the CI envelope from the chosen speed's measured set with margin; do not encode 1.0–1.3 s
+    as a gate that the actual fix would fail.
   - Regenerate every clip in C2's set with the chosen narrator.
   - **The blend speed is its own decision, made by ear, and it is not 0.65.** A blend model is
     deliberately slower than narration. But Gemini's round-1 warning bites hardest here: a TTS model
@@ -168,8 +187,18 @@ Four voices, three degraded, plus a fourth surface v1 missed entirely (`public/p
   - **`gen-blends.py` already trims** (`:52`: bidirectional `silenceremove` at −50 dB, a deliberate
     120 ms breath either side so the opening stop is not clipped, then `loudnorm`). Keep it; Kokoro's
     padding is handled by the existing filter. Do not add a second trim.
-  - **Purge `public/blends/` before writing.** It is gitignored, so a word dropped from C2's set
-    leaves an orphaned Andrew clip on disk that `playWord` would still find and play.
+  - **`public/blends/` is NOT gitignored — 148 files are tracked.** v7 asserted the opposite and was
+    wrong (Grok, round 6; `git check-ignore` confirms `.gitignore` names only `public/library/` and
+    `public/prompts/`). Two consequences. Good: git restore is a real rollback for blends, so G1's
+    snapshot is not the only safety net here. Bad: **"purge then write" is a destructive operation on
+    tracked files** — purge, then a failed key or a gate rejection, and the published tree is empty
+    or half Sarah/half Andrew while `playWord` falls through to the OS drawl.
+    Required, exactly as A3: **synthesise into staging, swap only on full success** (whole C2 set
+    written *and* gated), leave the published tree untouched on abort, and **only after a successful
+    swap** delete files outside C2's set — so `a.m4a`/`the.m4a` cannot linger as Andrew.
+  - **Principle 4 extends to `public/blends/`.** `gen-blends.py` is a second publisher with no key
+    or voice gate, still hardcoding Andrew. No key or no chosen voice ⇒ do not touch the tree at
+    all: no purge, and never an edge-tts fallback. `deploy-vercel.sh` does not check blends; add it.
   - Bump `AUDIO_V` with this, like every other audio change (E6/G2).
 
 ### B. Letter sounds — metadata only
