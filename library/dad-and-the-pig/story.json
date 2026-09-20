@@ -24,503 +24,608 @@
    "tokens": [
     {
      "t": "Next",
-     "ms": 0
+     "ms": 660,
+     "endMs": 1000
     },
     {
      "t": "door",
-     "ms": 420
+     "ms": 1000,
+     "endMs": 1380
     },
     {
      "t": "to",
-     "ms": 780
+     "ms": 1380,
+     "endMs": 1580
     },
     {
      "t": "Nan's",
-     "ms": 1340
+     "ms": 1580,
+     "endMs": 2100
     },
     {
      "t": "house",
-     "ms": 2000
+     "ms": 2100,
+     "endMs": 2440
     },
     {
      "t": "lived",
-     "ms": 2340
+     "ms": 2440,
+     "endMs": 2840
     },
     {
      "t": "a",
-     "ms": 3000
+     "ms": 2840,
+     "endMs": 3080
     },
     {
      "t": "pig.",
-     "ms": 3220
+     "ms": 3080,
+     "endMs": 3380
     },
     {
      "t": "The",
-     "ms": 4340
+     "ms": 5640,
+     "endMs": 5760
     },
     {
      "t": "pig",
-     "ms": 4960
+     "ms": 5760,
+     "endMs": 6000
     },
     {
      "t": "was",
-     "ms": 5220
+     "ms": 6000,
+     "endMs": 6320
     },
     {
      "t": "fat",
-     "ms": 5520
+     "ms": 6320,
+     "endMs": 6720
     },
     {
      "t": "and",
-     "ms": 6040
+     "ms": 6720,
+     "endMs": 7020
     },
     {
      "t": "pink",
-     "ms": 6580
+     "ms": 7020,
+     "endMs": 7400
     },
     {
      "t": "and",
-     "ms": 7160
+     "ms": 7400,
+     "endMs": 8020
     },
     {
      "t": "extremely",
-     "ms": 7920
+     "ms": 8020,
+     "endMs": 8560
     },
     {
      "t": "clever.",
-     "ms": 8400
+     "ms": 8560,
+     "endMs": 9300
     }
    ],
    "audio": "p1.m4a",
-   "audioMs": 10500
+   "audioMs": 11120
   },
   {
    "art": "📖",
    "tokens": [
     {
      "t": "Every",
-     "ms": 0
+     "ms": 0,
+     "endMs": 900
     },
     {
      "t": "week",
-     "ms": 480
+     "ms": 900,
+     "endMs": 1380
     },
     {
      "t": "the",
-     "ms": 980
+     "ms": 1380,
+     "endMs": 1660
     },
     {
      "t": "pig",
-     "ms": 1280
+     "ms": 1660,
+     "endMs": 1920
     },
     {
      "t": "found",
-     "ms": 1600
+     "ms": 1920,
+     "endMs": 2620
     },
     {
      "t": "the",
-     "ms": 2070
+     "ms": 2620,
+     "endMs": 2780
     },
     {
      "t": "loose",
-     "ms": 2540
+     "ms": 2780,
+     "endMs": 3080
     },
     {
      "t": "board",
-     "ms": 2860
+     "ms": 3080,
+     "endMs": 3500
     },
     {
      "t": "in",
-     "ms": 3380
+     "ms": 3500,
+     "endMs": 3820
     },
     {
      "t": "the",
-     "ms": 3560
+     "ms": 3820,
+     "endMs": 3980
     },
     {
      "t": "fence",
-     "ms": 3680
+     "ms": 3980,
+     "endMs": 4320
     },
     {
      "t": "and",
-     "ms": 4160
+     "ms": 4320,
+     "endMs": 5440
     },
     {
      "t": "came",
-     "ms": 5180
+     "ms": 5440,
+     "endMs": 5740
     },
     {
      "t": "through",
-     "ms": 5520
+     "ms": 5740,
+     "endMs": 6180
     },
     {
      "t": "it",
-     "ms": 6160
+     "ms": 6180,
+     "endMs": 6400
     },
     {
      "t": "into",
-     "ms": 6480
+     "ms": 6400,
+     "endMs": 6780
     },
     {
      "t": "Dad's",
-     "ms": 6780
+     "ms": 6780,
+     "endMs": 7440
     },
     {
      "t": "vegetables.",
-     "ms": 7460
+     "ms": 7440,
+     "endMs": 7940
     }
    ],
    "magic": [
     "pig"
    ],
    "audio": "p2.m4a",
+   "audioMs": 9800
+  },
+  {
+   "art": "📖",
+   "tokens": [
+    {
+     "t": "Dad",
+     "ms": 0,
+     "endMs": 980
+    },
+    {
+     "t": "would",
+     "ms": 980,
+     "endMs": 1300
+    },
+    {
+     "t": "run",
+     "ms": 1300,
+     "endMs": 1600
+    },
+    {
+     "t": "out",
+     "ms": 1600,
+     "endMs": 1920
+    },
+    {
+     "t": "waving",
+     "ms": 1920,
+     "endMs": 2360
+    },
+    {
+     "t": "his",
+     "ms": 2360,
+     "endMs": 2760
+    },
+    {
+     "t": "hat,",
+     "ms": 2760,
+     "endMs": 3180
+    },
+    {
+     "t": "and",
+     "ms": 3180,
+     "endMs": 4240
+    },
+    {
+     "t": "the",
+     "ms": 4240,
+     "endMs": 4400
+    },
+    {
+     "t": "pig",
+     "ms": 4400,
+     "endMs": 4660
+    },
+    {
+     "t": "would",
+     "ms": 4660,
+     "endMs": 5020
+    },
+    {
+     "t": "trot",
+     "ms": 5020,
+     "endMs": 5520
+    },
+    {
+     "t": "away",
+     "ms": 5520,
+     "endMs": 5680
+    },
+    {
+     "t": "looking",
+     "ms": 5680,
+     "endMs": 6220
+    },
+    {
+     "t": "pleased",
+     "ms": 6220,
+     "endMs": 6840
+    },
+    {
+     "t": "with",
+     "ms": 6840,
+     "endMs": 7260
+    },
+    {
+     "t": "herself.",
+     "ms": 7260,
+     "endMs": 7580
+    }
+   ],
+   "audio": "p3.m4a",
    "audioMs": 9540
   },
   {
    "art": "📖",
    "tokens": [
     {
-     "t": "Dad",
-     "ms": 0
-    },
-    {
-     "t": "would",
-     "ms": 460
-    },
-    {
-     "t": "run",
-     "ms": 760
-    },
-    {
-     "t": "out",
-     "ms": 1180
-    },
-    {
-     "t": "waving",
-     "ms": 1540
-    },
-    {
-     "t": "his",
-     "ms": 2100
-    },
-    {
-     "t": "hat,",
-     "ms": 2500
-    },
-    {
-     "t": "and",
-     "ms": 3680
-    },
-    {
-     "t": "the",
-     "ms": 3820
-    },
-    {
-     "t": "pig",
-     "ms": 3940
-    },
-    {
-     "t": "would",
-     "ms": 4220
-    },
-    {
-     "t": "trot",
-     "ms": 4580
-    },
-    {
-     "t": "away",
-     "ms": 5260
-    },
-    {
-     "t": "looking",
-     "ms": 5640
-    },
-    {
-     "t": "pleased",
-     "ms": 5860
-    },
-    {
-     "t": "with",
-     "ms": 6420
-    },
-    {
-     "t": "herself.",
-     "ms": 6880
-    }
-   ],
-   "audio": "p3.m4a",
-   "audioMs": 8840
-  },
-  {
-   "art": "📖",
-   "tokens": [
-    {
      "t": "One",
-     "ms": 0
+     "ms": 0,
+     "endMs": 920
     },
     {
      "t": "morning",
-     "ms": 380
+     "ms": 920,
+     "endMs": 1380
     },
     {
      "t": "Nan",
-     "ms": 830
+     "ms": 1740,
+     "endMs": 1820
     },
     {
      "t": "found",
-     "ms": 1280
+     "ms": 1820,
+     "endMs": 2480
     },
     {
      "t": "Dad",
-     "ms": 1860
+     "ms": 2480,
+     "endMs": 2740
     },
     {
      "t": "at",
-     "ms": 2420
+     "ms": 2740,
+     "endMs": 3040
     },
     {
      "t": "the",
-     "ms": 2640
+     "ms": 3040,
+     "endMs": 3200
     },
     {
      "t": "fence",
-     "ms": 2760
+     "ms": 3200,
+     "endMs": 3520
     },
     {
      "t": "with",
-     "ms": 3100
+     "ms": 3520,
+     "endMs": 3860
     },
     {
      "t": "a",
-     "ms": 3440
+     "ms": 3860,
+     "endMs": 4019
     },
     {
      "t": "hammer,",
-     "ms": 3580
+     "ms": 4019,
+     "endMs": 4380
     },
     {
      "t": "laughing",
-     "ms": 4580
+     "ms": 5220,
+     "endMs": 5520
     },
     {
      "t": "to",
-     "ms": 5320
+     "ms": 5520,
+     "endMs": 6020
     },
     {
      "t": "himself.",
-     "ms": 5820
+     "ms": 6020,
+     "endMs": 6440
     }
    ],
    "audio": "p4.m4a",
-   "audioMs": 7760
+   "audioMs": 8360
   },
   {
    "art": "📖",
    "tokens": [
     {
      "t": "“I",
-     "ms": 0
+     "ms": 740,
+     "endMs": 920
     },
     {
      "t": "have",
-     "ms": 320
+     "ms": 920,
+     "endMs": 1080
     },
     {
      "t": "chased",
-     "ms": 440
+     "ms": 1080,
+     "endMs": 1340
     },
     {
      "t": "that",
-     "ms": 680
+     "ms": 1340,
+     "endMs": 1840
     },
     {
      "t": "pig",
-     "ms": 1060
+     "ms": 1840,
+     "endMs": 2080
     },
     {
      "t": "for",
-     "ms": 1380
+     "ms": 2080,
+     "endMs": 2460
     },
     {
      "t": "a",
-     "ms": 1740
+     "ms": 2460,
+     "endMs": 2600
     },
     {
      "t": "month,”",
-     "ms": 1900
+     "ms": 2600,
+     "endMs": 2940
     },
     {
      "t": "he",
-     "ms": 2520
+     "ms": 3420,
+     "endMs": 3600
     },
     {
      "t": "said.",
-     "ms": 2600
+     "ms": 3600,
+     "endMs": 3960
     },
     {
      "t": "“It",
-     "ms": 4260
+     "ms": 6020,
+     "endMs": 6200
     },
     {
      "t": "made",
-     "ms": 4360
+     "ms": 6200,
+     "endMs": 6520
     },
     {
      "t": "me",
-     "ms": 4520
+     "ms": 6520,
+     "endMs": 6820
     },
     {
      "t": "mad",
-     "ms": 4720
+     "ms": 6820,
+     "endMs": 7240
     },
     {
      "t": "every",
-     "ms": 5200
+     "ms": 7240,
+     "endMs": 7760
     },
     {
      "t": "single",
-     "ms": 5960
+     "ms": 7760,
+     "endMs": 8300
     },
     {
      "t": "time.",
-     "ms": 6440
+     "ms": 8300,
+     "endMs": 10240
     },
     {
      "t": "Today",
-     "ms": 8119
+     "ms": 11080,
+     "endMs": 11360
     },
     {
      "t": "I",
-     "ms": 9240
+     "ms": 11360,
+     "endMs": 12100
     },
     {
      "t": "am",
-     "ms": 9460
+     "ms": 12100,
+     "endMs": 12260
     },
     {
      "t": "mending",
-     "ms": 9630
+     "ms": 12260,
+     "endMs": 12680
     },
     {
      "t": "the",
-     "ms": 9800
+     "ms": 12680,
+     "endMs": 12980
     },
     {
      "t": "board",
-     "ms": 10040
+     "ms": 12980,
+     "endMs": 13280
     },
     {
      "t": "instead.”",
-     "ms": 10360
+     "ms": 13280,
+     "endMs": 13900
     }
    ],
    "magic": [
     "mad"
    ],
    "audio": "p5.m4a",
-   "audioMs": 12320
+   "audioMs": 15970
   },
   {
    "art": "📖",
    "tokens": [
     {
      "t": "They",
-     "ms": 0
+     "ms": 700,
+     "endMs": 880
     },
     {
      "t": "mended",
-     "ms": 280
+     "ms": 880,
+     "endMs": 1300
     },
     {
      "t": "it",
-     "ms": 640
+     "ms": 1300,
+     "endMs": 1620
     },
     {
      "t": "together.",
-     "ms": 820
+     "ms": 1620,
+     "endMs": 2060
     },
     {
      "t": "Then",
-     "ms": 2740
+     "ms": 4220,
+     "endMs": 4620
     },
     {
      "t": "they",
-     "ms": 2960
+     "ms": 4620,
+     "endMs": 4920
     },
     {
      "t": "went",
-     "ms": 3100
+     "ms": 4920,
+     "endMs": 5200
     },
     {
      "t": "to",
-     "ms": 3280
+     "ms": 5200,
+     "endMs": 5440
     },
     {
      "t": "dig",
-     "ms": 3480
+     "ms": 5440,
+     "endMs": 5700
     },
     {
      "t": "up",
-     "ms": 3760
+     "ms": 5700,
+     "endMs": 5980
     },
     {
      "t": "the",
-     "ms": 3940
+     "ms": 5980,
+     "endMs": 6220
     },
     {
      "t": "carrots",
-     "ms": 4120
+     "ms": 6220,
+     "endMs": 6560
     },
     {
      "t": "that",
-     "ms": 4520
+     "ms": 6560,
+     "endMs": 7020
     },
     {
      "t": "were",
-     "ms": 4880
+     "ms": 7020,
+     "endMs": 7220
     },
     {
      "t": "left.",
-     "ms": 5000
+     "ms": 7220,
+     "endMs": 7620
     }
    ],
    "magic": [
     "dig"
    ],
    "audio": "p6.m4a",
-   "audioMs": 6730
+   "audioMs": 9440
   }
  ],
  "moral": {
   "spoken": "It is easier to fix the fence than to chase the pig.",
   "line": "Dad is not mad.",
   "audio": "moral.m4a",
-  "audioMs": 5320
+  "audioMs": 6420
  },
  "prompts": {
   "yes:pig": {
    "audio": "yes-pig.m4a",
-   "ms": 4640
+   "ms": 5390
   },
   "word:pig": {
    "audio": "word-pig.m4a",
-   "ms": 2290
+   "ms": 2580
   },
   "yes:mad": {
    "audio": "yes-mad.m4a",
-   "ms": 4640
+   "ms": 5580
   },
   "word:mad": {
    "audio": "word-mad.m4a",
-   "ms": 2290
+   "ms": 2770
   },
   "yes:dig": {
    "audio": "yes-dig.m4a",
-   "ms": 4640
+   "ms": 5460
   },
   "word:dig": {
    "audio": "word-dig.m4a",
-   "ms": 2290
+   "ms": 2650
   }
  }
 }

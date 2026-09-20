@@ -24,571 +24,693 @@
    "tokens": [
     {
      "t": "On",
-     "ms": 0
+     "ms": 0,
+     "endMs": 920
     },
     {
      "t": "Sunday",
-     "ms": 320
+     "ms": 920,
+     "endMs": 1340
     },
     {
      "t": "afternoon",
-     "ms": 660
+     "ms": 1340,
+     "endMs": 2140
     },
     {
      "t": "Dad",
-     "ms": 1900
+     "ms": 2580,
+     "endMs": 2880
     },
     {
      "t": "said",
-     "ms": 2220
+     "ms": 2880,
+     "endMs": 3440
     },
     {
      "t": "he",
-     "ms": 3040
+     "ms": 3440,
+     "endMs": 3680
     },
     {
      "t": "was",
-     "ms": 3320
+     "ms": 3680,
+     "endMs": 3820
     },
     {
      "t": "going",
-     "ms": 3440
+     "ms": 3820,
+     "endMs": 4160
     },
     {
      "t": "to",
-     "ms": 3620
+     "ms": 4160,
+     "endMs": 4320
     },
     {
      "t": "fix",
-     "ms": 3720
+     "ms": 4320,
+     "endMs": 4580
     },
     {
      "t": "the",
-     "ms": 4019
+     "ms": 4580,
+     "endMs": 4940
     },
     {
      "t": "gate.",
-     "ms": 4240
+     "ms": 4940,
+     "endMs": 5280
     },
     {
      "t": "He",
-     "ms": 5700
+     "ms": 7040,
+     "endMs": 7500
     },
     {
      "t": "carried",
-     "ms": 5960
+     "ms": 7500,
+     "endMs": 7960
     },
     {
      "t": "out",
-     "ms": 6240
+     "ms": 7960,
+     "endMs": 8340
     },
     {
      "t": "his",
-     "ms": 6580
+     "ms": 8340,
+     "endMs": 8580
     },
     {
      "t": "toolbox",
-     "ms": 6780
+     "ms": 8580,
+     "endMs": 9320
     },
     {
      "t": "and",
-     "ms": 7640
+     "ms": 9320,
+     "endMs": 9980
     },
     {
      "t": "a",
-     "ms": 8360
+     "ms": 9980,
+     "endMs": 10180
     },
     {
      "t": "glass",
-     "ms": 8460
+     "ms": 10180,
+     "endMs": 10480
     },
     {
      "t": "of",
-     "ms": 8760
+     "ms": 10480,
+     "endMs": 10820
     },
     {
      "t": "water.",
-     "ms": 9120
+     "ms": 10820,
+     "endMs": 11340
     }
    ],
    "audio": "p1.m4a",
-   "audioMs": 10810
+   "audioMs": 13040
   },
   {
    "art": "📖",
    "tokens": [
     {
      "t": "He",
-     "ms": 0
+     "ms": 0,
+     "endMs": 680
     },
     {
      "t": "sat",
-     "ms": 280
+     "ms": 680,
+     "endMs": 1120
     },
     {
      "t": "down",
-     "ms": 540
+     "ms": 1120,
+     "endMs": 1500
     },
     {
      "t": "on",
-     "ms": 960
+     "ms": 1500,
+     "endMs": 1860
     },
     {
      "t": "the",
-     "ms": 1140
+     "ms": 1860,
+     "endMs": 2020
     },
     {
      "t": "step",
-     "ms": 1240
+     "ms": 2020,
+     "endMs": 2320
     },
     {
      "t": "first,",
-     "ms": 1540
+     "ms": 2320,
+     "endMs": 2800
     },
     {
      "t": "just",
-     "ms": 2080
+     "ms": 3620,
+     "endMs": 3940
     },
     {
      "t": "for",
-     "ms": 2720
+     "ms": 3940,
+     "endMs": 4260
     },
     {
      "t": "a",
-     "ms": 2960
+     "ms": 4260,
+     "endMs": 4420
     },
     {
      "t": "minute,",
-     "ms": 3100
+     "ms": 4420,
+     "endMs": 4720
     },
     {
      "t": "to",
-     "ms": 3420
+     "ms": 5120,
+     "endMs": 5320
     },
     {
      "t": "work",
-     "ms": 4080
+     "ms": 5320,
+     "endMs": 5580
     },
     {
      "t": "out",
-     "ms": 4420
+     "ms": 5580,
+     "endMs": 5880
     },
     {
      "t": "which",
-     "ms": 4780
+     "ms": 5880,
+     "endMs": 6300
     },
     {
      "t": "screw",
-     "ms": 5460
+     "ms": 6300,
+     "endMs": 6620
     },
     {
      "t": "went",
-     "ms": 6160
+     "ms": 6620,
+     "endMs": 7040
     },
     {
      "t": "where.",
-     "ms": 6720
+     "ms": 7040,
+     "endMs": 7440
     }
    ],
    "magic": [
     "sat"
    ],
    "audio": "p2.m4a",
-   "audioMs": 8360
+   "audioMs": 9110
   },
   {
    "art": "📖",
    "tokens": [
     {
      "t": "The",
-     "ms": 0
+     "ms": 0,
+     "endMs": 700
     },
     {
      "t": "sun",
-     "ms": 260
+     "ms": 700,
+     "endMs": 1200
     },
     {
      "t": "was",
-     "ms": 520
+     "ms": 1200,
+     "endMs": 1460
     },
     {
      "t": "warm",
-     "ms": 840
+     "ms": 1460,
+     "endMs": 1900
     },
     {
      "t": "on",
-     "ms": 1320
+     "ms": 1900,
+     "endMs": 2200
     },
     {
      "t": "his",
-     "ms": 1600
+     "ms": 2200,
+     "endMs": 2400
     },
     {
      "t": "face.",
-     "ms": 1760
+     "ms": 2400,
+     "endMs": 2840
     },
     {
      "t": "The",
-     "ms": 3680
+     "ms": 4920,
+     "endMs": 5200
     },
     {
      "t": "bees",
-     "ms": 3840
+     "ms": 5200,
+     "endMs": 5560
     },
     {
      "t": "were",
-     "ms": 4100
+     "ms": 5560,
+     "endMs": 6000
     },
     {
      "t": "busy",
-     "ms": 4480
+     "ms": 6000,
+     "endMs": 6380
     },
     {
      "t": "in",
-     "ms": 5280
+     "ms": 6380,
+     "endMs": 6720
     },
     {
      "t": "the",
-     "ms": 5780
+     "ms": 6720,
+     "endMs": 6840
     },
     {
      "t": "jasmine.",
-     "ms": 5920
+     "ms": 6840,
+     "endMs": 7480
     },
     {
      "t": "Nobody",
-     "ms": 7560
+     "ms": 8640,
+     "endMs": 10040
     },
     {
      "t": "said",
-     "ms": 8160
+     "ms": 10040,
+     "endMs": 10600
     },
     {
      "t": "anything",
-     "ms": 8680
+     "ms": 10600,
+     "endMs": 11040
     },
     {
      "t": "at",
-     "ms": 9300
+     "ms": 11040,
+     "endMs": 11440
     },
     {
      "t": "all.",
-     "ms": 9820
+     "ms": 11440,
+     "endMs": 11760
     }
    ],
    "audio": "p3.m4a",
-   "audioMs": 11360
+   "audioMs": 13620
   },
   {
    "art": "📖",
    "tokens": [
     {
      "t": "Ten",
-     "ms": 0
+     "ms": 720,
+     "endMs": 920
     },
     {
      "t": "minutes",
-     "ms": 360
+     "ms": 920,
+     "endMs": 1280
     },
     {
      "t": "later",
-     "ms": 600
+     "ms": 1280,
+     "endMs": 1820
     },
     {
      "t": "he",
-     "ms": 1560
+     "ms": 2340,
+     "endMs": 2700
     },
     {
      "t": "was",
-     "ms": 1840
+     "ms": 2700,
+     "endMs": 2860
     },
     {
      "t": "asleep",
-     "ms": 2020
+     "ms": 2860,
+     "endMs": 3340
     },
     {
      "t": "with",
-     "ms": 2600
+     "ms": 3340,
+     "endMs": 3720
     },
     {
      "t": "the",
-     "ms": 3140
+     "ms": 3720,
+     "endMs": 3920
     },
     {
      "t": "screwdriver",
-     "ms": 3300
+     "ms": 3920,
+     "endMs": 4660
     },
     {
      "t": "still",
-     "ms": 4280
+     "ms": 4660,
+     "endMs": 5160
     },
     {
      "t": "in",
-     "ms": 4860
+     "ms": 5160,
+     "endMs": 5460
     },
     {
      "t": "his",
-     "ms": 5240
+     "ms": 5460,
+     "endMs": 5660
     },
     {
      "t": "hand.",
-     "ms": 5400
+     "ms": 5660,
+     "endMs": 6200
     },
     {
      "t": "It",
-     "ms": 6640
+     "ms": 7480,
+     "endMs": 8460
     },
     {
      "t": "was",
-     "ms": 7280
+     "ms": 8460,
+     "endMs": 8760
     },
     {
      "t": "a",
-     "ms": 7420
+     "ms": 8760,
+     "endMs": 8920
     },
     {
      "t": "proper",
-     "ms": 7560
+     "ms": 8920,
+     "endMs": 9200
     },
     {
      "t": "afternoon",
-     "ms": 7840
+     "ms": 9200,
+     "endMs": 10120
     },
     {
      "t": "nap,",
-     "ms": 8720
+     "ms": 10120,
+     "endMs": 10640
     },
     {
      "t": "with",
-     "ms": 9180
+     "ms": 10640,
+     "endMs": 11220
     },
     {
      "t": "snoring.",
-     "ms": 9780
+     "ms": 11220,
+     "endMs": 11980
     }
    ],
    "magic": [
     "nap"
    ],
    "audio": "p4.m4a",
-   "audioMs": 11770
+   "audioMs": 13670
   },
   {
    "art": "📖",
    "tokens": [
     {
      "t": "Nan",
-     "ms": 740
+     "ms": 780,
+     "endMs": 980
     },
     {
      "t": "tiptoed",
-     "ms": 940
+     "ms": 980,
+     "endMs": 1840
     },
     {
      "t": "out",
-     "ms": 1140
+     "ms": 1840,
+     "endMs": 2020
     },
     {
      "t": "and",
-     "ms": 1320
+     "ms": 2020,
+     "endMs": 2720
     },
     {
      "t": "put",
-     "ms": 2040
+     "ms": 2720,
+     "endMs": 3000
     },
     {
      "t": "a",
-     "ms": 2360
+     "ms": 3000,
+     "endMs": 3140
     },
     {
      "t": "cushion",
-     "ms": 2460
+     "ms": 3140,
+     "endMs": 3540
     },
     {
      "t": "behind",
-     "ms": 2940
+     "ms": 3540,
+     "endMs": 4019
     },
     {
      "t": "his",
-     "ms": 3320
+     "ms": 4019,
+     "endMs": 4540
     },
     {
      "t": "head.",
-     "ms": 3680
+     "ms": 4540,
+     "endMs": 5040
     },
     {
      "t": "Tim",
-     "ms": 5040
+     "ms": 7180,
+     "endMs": 7380
     },
     {
      "t": "put",
-     "ms": 5460
+     "ms": 7380,
+     "endMs": 7780
     },
     {
      "t": "the",
-     "ms": 5680
+     "ms": 7780,
+     "endMs": 7980
     },
     {
      "t": "glass",
-     "ms": 5840
+     "ms": 7980,
+     "endMs": 8320
     },
     {
      "t": "of",
-     "ms": 6200
+     "ms": 8320,
+     "endMs": 8640
     },
     {
      "t": "water",
-     "ms": 6580
+     "ms": 8640,
+     "endMs": 9040
     },
     {
      "t": "in",
-     "ms": 6960
+     "ms": 9040,
+     "endMs": 9400
     },
     {
      "t": "the",
-     "ms": 7200
+     "ms": 9400,
+     "endMs": 9540
     },
     {
      "t": "shade",
-     "ms": 7300
+     "ms": 9540,
+     "endMs": 9880
     },
     {
      "t": "so",
-     "ms": 7760
+     "ms": 9880,
+     "endMs": 10960
     },
     {
      "t": "it",
-     "ms": 8620
+     "ms": 10960,
+     "endMs": 11140
     },
     {
      "t": "would",
-     "ms": 8800
+     "ms": 11140,
+     "endMs": 11320
     },
     {
      "t": "stay",
-     "ms": 8900
+     "ms": 11320,
+     "endMs": 11640
     },
     {
      "t": "cool.",
-     "ms": 9240
+     "ms": 11640,
+     "endMs": 12100
     }
    ],
    "audio": "p5.m4a",
-   "audioMs": 11000
+   "audioMs": 13910
   },
   {
    "art": "📖",
    "tokens": [
     {
      "t": "The",
-     "ms": 0
+     "ms": 0,
+     "endMs": 720
     },
     {
      "t": "gate",
-     "ms": 260
+     "ms": 720,
+     "endMs": 1060
     },
     {
      "t": "is",
-     "ms": 580
+     "ms": 1060,
+     "endMs": 1440
     },
     {
      "t": "still",
-     "ms": 1300
+     "ms": 1440,
+     "endMs": 1760
     },
     {
      "t": "broken.",
-     "ms": 1680
+     "ms": 1760,
+     "endMs": 2360
     },
     {
      "t": "Nobody",
-     "ms": 3440
+     "ms": 4660,
+     "endMs": 5000
     },
     {
      "t": "minds.",
-     "ms": 3840
+     "ms": 5000,
+     "endMs": 5700
     },
     {
      "t": "Everyone",
-     "ms": 5460
+     "ms": 6660,
+     "endMs": 8520
     },
     {
      "t": "did",
-     "ms": 6380
+     "ms": 8520,
+     "endMs": 8980
     },
     {
      "t": "agree",
-     "ms": 6760
+     "ms": 8980,
+     "endMs": 9440
     },
     {
      "t": "it",
-     "ms": 7240
+     "ms": 9440,
+     "endMs": 10200
     },
     {
      "t": "was",
-     "ms": 7940
+     "ms": 10200,
+     "endMs": 10420
     },
     {
      "t": "the",
-     "ms": 8100
+     "ms": 10420,
+     "endMs": 10640
     },
     {
      "t": "best",
-     "ms": 8280
+     "ms": 10640,
+     "endMs": 11020
     },
     {
      "t": "afternoon",
-     "ms": 8740
+     "ms": 11020,
+     "endMs": 11660
     },
     {
      "t": "of",
-     "ms": 9320
+     "ms": 11660,
+     "endMs": 12120
     },
     {
      "t": "the",
-     "ms": 9680
+     "ms": 12120,
+     "endMs": 12260
     },
     {
      "t": "week.",
-     "ms": 9800
+     "ms": 12260,
+     "endMs": 12600
     }
    ],
    "magic": [
     "did"
    ],
    "audio": "p6.m4a",
-   "audioMs": 11530
+   "audioMs": 14480
   }
  ],
  "moral": {
   "spoken": "The best afternoons are the ones nobody planned.",
   "line": "Dad did nap.",
   "audio": "moral.m4a",
-  "audioMs": 4670
+  "audioMs": 6130
  },
  "prompts": {
   "yes:sat": {
    "audio": "yes-sat.m4a",
-   "ms": 4640
+   "ms": 5290
   },
   "word:sat": {
    "audio": "word-sat.m4a",
-   "ms": 2290
+   "ms": 2480
   },
   "yes:nap": {
    "audio": "yes-nap.m4a",
-   "ms": 4640
+   "ms": 5460
   },
   "word:nap": {
    "audio": "word-nap.m4a",
-   "ms": 2290
+   "ms": 2650
   },
   "yes:did": {
    "audio": "yes-did.m4a",
-   "ms": 4640
+   "ms": 5360
   },
   "word:did": {
    "audio": "word-did.m4a",
-   "ms": 2290
+   "ms": 2560
   }
  }
 }
