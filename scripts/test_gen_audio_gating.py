@@ -157,5 +157,83 @@ class RealignFromHeard(unittest.TestCase):
             self.assertGreater(ms[k], ms[k - 1])
 
 
+class BridgeSubstitutions(unittest.TestCase):
+    """
+    A7d: Whisper spells `hare` "hair", `howled` "held", `dal` "doll". Dropping those words cost the
+    token its real measurement AND put a synthetic time inside the measured span of the word before
+    it, which failed the endMs <= next.ms gate and aborted three of the sixteen books, identically
+    on every retry. One unmatched token with exactly one unclaimed heard word between its matched
+    neighbours is that word.
+    """
+
+    def test_a_single_substituted_word_takes_the_heard_word_in_its_place(self):
+        toks = "The hare ran fast".split(" ")
+        heard = [("The", 0, 100), ("hair", 100, 380), ("ran", 380, 680), ("fast", 680, 1240)]
+        self.assertEqual(ga._match_tokens(toks, heard), {0: 0, 1: 1, 2: 2, 3: 3})
+
+    def test_it_reaches_the_first_and_last_token_too(self):
+        toks = "Nani was making dal.".split(" ")
+        heard = [("Nanny", 0, 240), ("was", 240, 400), ("making", 400, 840), ("doll.", 840, 1220)]
+        self.assertEqual(ga._match_tokens(toks, heard), {0: 0, 1: 1, 2: 2, 3: 3})
+
+    def test_the_bridged_token_gets_ASRs_own_times_not_an_interpolation(self):
+        toks = "the other jackals howled at".split(" ")
+        heard = [("the", 0, 50), ("other", 50, 350), ("jackals", 350, 950),
+                 ("held", 950, 1250), ("at", 1250, 1570)]
+        ms, end = ga.realign_from_heard(toks, heard, None, 2000)
+        self.assertEqual((ms[3], end[3]), (950, 1250))   # interpolation would have said 800, inside `jackals`
+
+    def test_two_unmatched_tokens_in_a_row_are_left_alone(self):
+        """The correspondence is no longer forced, so the page falls back to interpolation and,
+        if that is inconsistent, fails loud — exactly as it did before."""
+        toks = "one two three four".split(" ")
+        heard = [("one", 0, 100), ("XX", 100, 200), ("YY", 200, 300), ("four", 300, 400)]
+        self.assertEqual(ga._match_tokens(toks, heard), {0: 0, 3: 3})
+
+    def test_a_deleted_word_is_not_bridged(self):
+        """Whisper heard fewer words than there are tokens: there is no candidate to pair with."""
+        toks = "one two three".split(" ")
+        heard = [("one", 0, 100), ("three", 100, 200)]
+        self.assertNotIn(1, ga._match_tokens(toks, heard))
+
+
+class SnapStartsOutOfSilence(unittest.TestCase):
+    """
+    A7d: Whisper stretches the word that opens a segment back to the segment boundary, and that
+    boundary sits in silence — 26 of the 49 shipped pages had tokens[0].ms == 0 in a file whose
+    first 580 ms are silent. That read as a 1.6-2.8x elongated opening word and was blamed on the
+    synthesiser. A word cannot begin during silence.
+    """
+
+    def _with_profile(self, db_frames, heard):
+        import numpy as np
+        orig_db, orig_pcm = ga._rms_db, ga._pcm
+        ga._rms_db = lambda *a, **k: np.array(db_frames, dtype="float64")
+        ga._pcm = lambda *a, **k: np.zeros(16, dtype="float32")
+        try:
+            return ga._snap_starts_out_of_silence(Path("unused"), heard)
+        finally:
+            ga._rms_db, ga._pcm = orig_db, orig_pcm
+
+    def test_a_start_inside_the_leading_silence_moves_to_where_sound_begins(self):
+        db = [-100.0] * 58 + [0.0] * 142          # silence for 580 ms, then speech
+        (_, st, en) = self._with_profile(db, [("On", 0.0, 920.0)])[0]
+        self.assertEqual(st, 580.0)
+        self.assertEqual(en, 920.0)
+
+    def test_a_start_already_on_speech_does_not_move(self):
+        db = [-100.0] * 58 + [0.0] * 142
+        (_, st, _) = self._with_profile(db, [("crow", 900.0, 1200.0)])[0]
+        self.assertEqual(st, 900.0)
+
+    def test_a_word_whose_whole_span_is_silent_is_left_alone(self):
+        """Snapping it would push the start onto its own end and manufacture a zero-width span —
+        exactly the thing the ms < endMs gate exists to catch."""
+        db = [-100.0] * 50 + [0.0] * 150
+        (_, st, en) = self._with_profile(db, [("down", 0.0, 500.0)])[0]
+        self.assertLess(st, en)
+        self.assertEqual(st, 0.0)
+
+
 if __name__ == "__main__":
     unittest.main()

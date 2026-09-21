@@ -109,7 +109,10 @@ Four voices, three degraded, plus a fourth surface v1 missed entirely (`public/p
   selected together. Also update the bedtime Settings copy, which still promises a "slower voice".
   **F1 tests bedtime as a *mode*** (palette, moon, the one take heard in bedtime conditions), which
   resolves Gemini's contradiction: there is no bedtime-specific *audio* left to test.
-- **A6.** Regenerate `public/prompts/` with the same voice. **Add a prompt-coverage gate.**
+- **A6. Done 2026-09-20.** `public/prompts/` regenerated in the narrator's voice, extended with
+  `word:{w}` for the 66 `TEACH.*.words` chips and the 8 `TRICKY_PHASE2` words (C3), all through
+  A7d's carrier. `scripts/prompt-coverage.test.ts` is E3's prompt half. Still open: pointing
+  Teach and SegmentPanel's "say the word" at the new clips, which is C3's other half.
 
 - **A7. The blend clips must become the narrator's voice too — a hole in v1–v5, found 2026-09-20.**
   `gen-blends.py:23` hardcodes `VOICE = "en-US-AndrewMultilingualNeural"` at `RATE = "-55%"`. Every
@@ -157,6 +160,69 @@ Four voices, three degraded, plus a fourth surface v1 missed entirely (`public/p
     them. Vowel-initial words assert the opposite — no high-frequency onset — and vowel *quality*
     there is not measurable by centroid at all, so those clips fall to the parent's ear plus the
     duration envelope. Fail closed: a word whose initial grapheme has no class rule does not ship.
+  - **A7d. It is not just isolated words — it is every sentence in every book. Implemented
+    2026-09-20 in `gen-audio.py`.** A7a/A7b describe the defect as a property of bare-word
+    synthesis. It is not: the model is unsettled after **any** sentence-ending full stop, including
+    one in the middle of a single continuous synthesis call, so ordinary multi-sentence page
+    narration carries it too. 75 of the library's 99 pages have two or more sentences.
+    Measured over the 8 books that had already shipped in `af_sarah`, across their 88
+    sentence-opening words: a **phantom word in front of the opening word on 41%** of them
+    ("They sat on the mat." for "Sat on the mat.", "A pat was hot." for "Pat was hot."), and
+    **6 of the 9 sibilant openings with no /s/ in them at all** (median 1,874 Hz where an /s/
+    reads 4,000–6,100). This is also why 8 of the 16 books could not be generated at all: a
+    compressed opening token measured `ms=800 endMs=800`, a zero-width span, and `realign()`
+    correctly refused the page.
+    - **The fix is A7a's carrier, applied per sentence and generalised.** Every sentence is
+      synthesised as `"Listen, {sentence}"` and the carrier is cut back off at the quietest 10 ms
+      frame in front of the payload. A **comma** lead-in, never a full stop: `"Okay. Sat on the
+      mat."` produces the same phantom as the bare sentence does, which is the proof that
+      per-sentence calls were never the cause and that one continuous per-page call cannot fix it.
+    - **A ladder of carriers, because one is not enough.** `"Listen,"` ends in /n/, and before a
+      payload that also opens on a sonorant (`"Woof!"`) the two run together with no boundary to
+      cut at. `"Yes,"`, `"Wait,"`, `"Look,"` and `"Listen to this,"` follow; a sentence that no
+      carrier can cut cleanly aborts the page. Measured on the 8 blocked books' sentences,
+      `"Listen,"` alone covers 26 of 28 and the ladder covers the rest.
+    - **The pause architecture is restored, not inherited.** The cut removes Kokoro's own ~580 ms
+      leading pad along with the carrier. Without putting it back, every pause in the library
+      shortens by a third (a page opened ~580 ms in and sentences sat ~1,850 ms apart). The
+      generator now pads each sentence's lead back to a constant, so the pacing the parent
+      approved by ear is unchanged — and is now deterministic rather than a vendor artefact.
+    - **The cost, so the parent can listen for it.** A payload after a comma is read as a
+      continuation: the opening of each sentence lands **30–65 Hz lower** (≈250 Hz → ≈200 Hz over
+      the first ~900 ms). Every carrier tried behaved the same way, so this is the price of a
+      present consonant, not a bad carrier choice. F1 is where it gets judged.
+    - **A7c's fail-closed rule cannot be the rule for narration.** Refusing every word whose
+      initial grapheme has no class rule would refuse most of the library. The automated gate is
+      therefore: no phantom word in front of the opening token (Whisper + edit distance), plus an
+      onset-centroid assertion for the two classes that separate on measured data — sibilants
+      (4.0–6.1 kHz present, 0.6–2.3 kHz absent) and /m n/ (350–700 Hz present, 1.1–5.9 kHz
+      absent). Four classes measured and rejected as ungateable: **/f/** (the same `fan.` read
+      4,273 Hz on one call and 1,515 Hz on the next with the onset audibly present both times),
+      **/h/**, **voiced /th/** (`"They were scared."` reads 338 Hz when it is completely correct),
+      and stops, liquids and glides. Those fall to the parent's ear, as A7's own gate 1 says.
+    - **The "1.6–2.8x elongated opening word" was a measurement bug, not the defect.** All 26 of
+      the 49 shipped pages showing it are exactly the 26 whose `tokens[0].ms` is `0` — Whisper
+      stretches the word that opens a segment back to the segment boundary, and that boundary sits
+      inside the file's leading silence. A word cannot begin during silence, so `asr_words()` now
+      moves a measured start forward to where sound actually begins. Left alone it would have
+      started the karaoke highlight 580 ms early and made C1's first-word tap play silence.
+    - **What still aborted afterwards was Whisper, not Kokoro, and the gate was not touched.** Six
+      of the sixteen books failed `realign()` on the first full run. Three were stochastic — a
+      zero-width ASR span on audio that measures clean — and a re-synthesis cleared them, so a page
+      is now re-synthesised up to `PAGE_TRIES` times before it aborts. Every Kokoro call is a fresh
+      sample, so that is a different take rather than the same audio measured twice.
+      The other three failed **identically on all four retries**, and all three for one reason:
+      Whisper spells `hare` "hair", `howled` "held", `dal` "doll" and `Nani` "Nanny". The matcher
+      dropped those words, so the token lost its real measurement *and* got a synthetic one — and
+      the synthetic time landed inside the measured span of the word before it (`dal` interpolated
+      to 7,300 ms while `making` was measured to 7,540 ms), which is what failed
+      `endMs <= next.ms`. So `_match_tokens()` now bridges the unambiguous case: one unmatched token
+      with exactly one unclaimed heard word between its matched neighbours **is** that word, however
+      Whisper spelled it. The times stay ASR's and only the spelling is overruled, so those three
+      pages now measure with no interpolated token at all. This is not A3's forbidden "raw
+      positional zip" — that was zipping a vendor's 21 timestamps onto 24 tokens across a page;
+      this is a single hole with a confirmed ASR anchor on each side and exactly one candidate in
+      it. A hole of two or more tokens is still left alone and still fails loud.
   - **Reconcile the three duration numbers before implementation.** v7 says target ~1.0–1.3 s
     trimmed; A7a measured carrier-sliced clips at 555–811 ms; and "a model is deliberately slower
     than narration" implies longer still. These conflict. The carrier-sliced measurement is the real

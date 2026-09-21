@@ -24,55 +24,67 @@
    "tokens": [
     {
      "t": "Pat",
-     "ms": 0
+     "ms": 580,
+     "endMs": 740
     },
     {
      "t": "was",
-     "ms": 340
+     "ms": 740,
+     "endMs": 1000
     },
     {
      "t": "hot.",
-     "ms": 580
+     "ms": 1000,
+     "endMs": 1460
     },
     {
      "t": "The",
-     "ms": 1820
+     "ms": 3590,
+     "endMs": 3620
     },
     {
      "t": "sun",
-     "ms": 2540
+     "ms": 3620,
+     "endMs": 3880
     },
     {
      "t": "was",
-     "ms": 2780
+     "ms": 3880,
+     "endMs": 4120
     },
     {
      "t": "high",
-     "ms": 3040
+     "ms": 4120,
+     "endMs": 4600
     },
     {
      "t": "and",
-     "ms": 4240
+     "ms": 4600,
+     "endMs": 5060
     },
     {
      "t": "her",
-     "ms": 4260
+     "ms": 5060,
+     "endMs": 5280
     },
     {
      "t": "cheeks",
-     "ms": 4420
+     "ms": 5280,
+     "endMs": 5560
     },
     {
      "t": "were",
-     "ms": 4780
+     "ms": 5560,
+     "endMs": 5960
     },
     {
      "t": "pink.",
-     "ms": 5140
+     "ms": 5960,
+     "endMs": 6320
     }
    ],
    "audio": "p1.m4a",
-   "audioMs": 6830
+   "audioMs": 7980
   },
   {
    "art": "🚰",
@@ -82,71 +94,87 @@
    "tokens": [
     {
      "t": "In",
-     "ms": 0
+     "ms": 580,
+     "endMs": 660
     },
     {
      "t": "the",
-     "ms": 240
+     "ms": 660,
+     "endMs": 800
     },
     {
      "t": "garden",
-     "ms": 340
+     "ms": 800,
+     "endMs": 1140
     },
     {
      "t": "a",
-     "ms": 590
+     "ms": 1140,
+     "endMs": 1420
     },
     {
      "t": "tap",
-     "ms": 840
+     "ms": 1420,
+     "endMs": 1680
     },
     {
      "t": "went",
-     "ms": 1180
+     "ms": 1680,
+     "endMs": 2040
     },
     {
      "t": "drip,",
-     "ms": 1860
+     "ms": 2040,
+     "endMs": 2360
     },
     {
      "t": "drip,",
-     "ms": 2960
+     "ms": 2930,
+     "endMs": 3140
     },
     {
      "t": "drip.",
-     "ms": 3320
+     "ms": 3550,
+     "endMs": 3800
     },
     {
      "t": "Pat",
-     "ms": 5440
+     "ms": 5920,
+     "endMs": 6040
     },
     {
      "t": "put",
-     "ms": 5920
+     "ms": 6040,
+     "endMs": 6400
     },
     {
      "t": "a",
-     "ms": 6200
+     "ms": 6400,
+     "endMs": 6580
     },
     {
      "t": "cup",
-     "ms": 6300
+     "ms": 6580,
+     "endMs": 6800
     },
     {
      "t": "under",
-     "ms": 6560
+     "ms": 6800,
+     "endMs": 7180
     },
     {
      "t": "the",
-     "ms": 6840
+     "ms": 7180,
+     "endMs": 7420
     },
     {
      "t": "tap.",
-     "ms": 7060
+     "ms": 7420,
+     "endMs": 7800
     }
    ],
    "audio": "p2.m4a",
-   "audioMs": 8630
+   "audioMs": 9360
   },
   {
    "art": "🧒",
@@ -156,201 +184,246 @@
    "tokens": [
     {
      "t": "Pat",
-     "ms": 400
+     "ms": 570,
+     "endMs": 740
     },
     {
      "t": "sat",
-     "ms": 600
+     "ms": 740,
+     "endMs": 1060
     },
     {
      "t": "on",
-     "ms": 860
+     "ms": 1060,
+     "endMs": 1420
     },
     {
      "t": "the",
-     "ms": 1120
+     "ms": 1420,
+     "endMs": 1560
     },
     {
      "t": "step",
-     "ms": 1220
+     "ms": 1560,
+     "endMs": 1920
     },
     {
      "t": "to",
-     "ms": 1600
+     "ms": 1920,
+     "endMs": 2220
     },
     {
      "t": "wait.",
-     "ms": 1880
+     "ms": 2220,
+     "endMs": 2560
     },
     {
      "t": "Drip.",
-     "ms": 2080
+     "ms": 4750,
+     "endMs": 4900
     },
     {
      "t": "Drip.",
-     "ms": 2280
+     "ms": 7120,
+     "endMs": 7560
     },
     {
      "t": "Drip.",
-     "ms": 2480
+     "ms": 9500,
+     "endMs": 9620
     }
    ],
    "audio": "p3.m4a",
-   "audioMs": 10430
+   "audioMs": 11290
   },
   {
    "art": "💦",
    "tokens": [
     {
      "t": "Then",
-     "ms": 0
+     "ms": 570,
+     "endMs": 700
     },
     {
      "t": "the",
-     "ms": 260
+     "ms": 700,
+     "endMs": 900
     },
     {
      "t": "cup",
-     "ms": 340
+     "ms": 900,
+     "endMs": 1180
     },
     {
      "t": "was",
-     "ms": 580
+     "ms": 1180,
+     "endMs": 1460
     },
     {
      "t": "full!",
-     "ms": 800
+     "ms": 1460,
+     "endMs": 1880
     },
     {
      "t": "Water",
-     "ms": 2300
+     "ms": 4070,
+     "endMs": 4340
     },
     {
      "t": "ran",
-     "ms": 2940
+     "ms": 4340,
+     "endMs": 4740
     },
     {
      "t": "over",
-     "ms": 3360
+     "ms": 4740,
+     "endMs": 5180
     },
     {
      "t": "the",
-     "ms": 3640
+     "ms": 5180,
+     "endMs": 5360
     },
     {
      "t": "top",
-     "ms": 3800
+     "ms": 5360,
+     "endMs": 5720
     },
     {
      "t": "and",
-     "ms": 4160
+     "ms": 5720,
+     "endMs": 6180
     },
     {
      "t": "splashed",
-     "ms": 4760
+     "ms": 6180,
+     "endMs": 6780
     },
     {
      "t": "all",
-     "ms": 5840
+     "ms": 6780,
+     "endMs": 7240
     },
     {
      "t": "over",
-     "ms": 6360
+     "ms": 7240,
+     "endMs": 7620
     },
     {
      "t": "Pat's",
-     "ms": 6660
+     "ms": 7620,
+     "endMs": 8160
     },
     {
      "t": "feet.",
-     "ms": 7260
+     "ms": 8160,
+     "endMs": 8400
     }
    ],
    "audio": "p4.m4a",
-   "audioMs": 8840
+   "audioMs": 10010
   },
   {
    "art": "😆",
    "tokens": [
     {
      "t": "Pat",
-     "ms": 960
+     "ms": 580,
+     "endMs": 740
     },
     {
      "t": "laughed.",
-     "ms": 1160
+     "ms": 740,
+     "endMs": 1080
     },
     {
      "t": "She",
-     "ms": 1360
+     "ms": 3450,
+     "endMs": 3560
     },
     {
      "t": "turned",
-     "ms": 2620
+     "ms": 3560,
+     "endMs": 3900
     },
     {
      "t": "the",
-     "ms": 2860
+     "ms": 3900,
+     "endMs": 4140
     },
     {
      "t": "tap",
-     "ms": 3020
+     "ms": 4140,
+     "endMs": 4360
     },
     {
      "t": "off",
-     "ms": 3260
+     "ms": 4360,
+     "endMs": 4780
     },
     {
      "t": "and",
-     "ms": 3760
+     "ms": 4780,
+     "endMs": 5140
     },
     {
      "t": "gave",
-     "ms": 4400
+     "ms": 5140,
+     "endMs": 5420
     },
     {
      "t": "it",
-     "ms": 4920
+     "ms": 5420,
+     "endMs": 5660
     },
     {
      "t": "a",
-     "ms": 5140
+     "ms": 5660,
+     "endMs": 5820
     },
     {
      "t": "little",
-     "ms": 5200
+     "ms": 5820,
+     "endMs": 6040
     },
     {
      "t": "pat,",
-     "ms": 5380
+     "ms": 6040,
+     "endMs": 6380
     },
     {
      "t": "as",
-     "ms": 5800
+     "ms": 7380,
+     "endMs": 7500
     },
     {
      "t": "if",
-     "ms": 6700
+     "ms": 7500,
+     "endMs": 7680
     },
     {
      "t": "to",
-     "ms": 6880
+     "ms": 7680,
+     "endMs": 7900
     },
     {
      "t": "say",
-     "ms": 7060
+     "ms": 7900,
+     "endMs": 8140
     },
     {
      "t": "thank",
-     "ms": 7420
+     "ms": 8140,
+     "endMs": 8580
     },
     {
      "t": "you.",
-     "ms": 8060
+     "ms": 8580,
+     "endMs": 8920
     }
    ],
    "audio": "p5.m4a",
-   "audioMs": 9560,
+   "audioMs": 10440,
    "magic": [
     "pat"
    ]
@@ -360,103 +433,119 @@
    "tokens": [
     {
      "t": "Then",
-     "ms": 0
+     "ms": 580,
+     "endMs": 700
     },
     {
      "t": "she",
-     "ms": 260
+     "ms": 700,
+     "endMs": 940
     },
     {
      "t": "sat",
-     "ms": 440
+     "ms": 940,
+     "endMs": 1240
     },
     {
      "t": "in",
-     "ms": 700
+     "ms": 1240,
+     "endMs": 1540
     },
     {
      "t": "the",
-     "ms": 980
+     "ms": 1540,
+     "endMs": 1680
     },
     {
      "t": "sun",
-     "ms": 1080
+     "ms": 1680,
+     "endMs": 2020
     },
     {
      "t": "with",
-     "ms": 1420
+     "ms": 2020,
+     "endMs": 2360
     },
     {
      "t": "her",
-     "ms": 2200
+     "ms": 2360,
+     "endMs": 2580
     },
     {
      "t": "cool",
-     "ms": 2380
+     "ms": 2580,
+     "endMs": 2900
     },
     {
      "t": "drink.",
-     "ms": 2680
+     "ms": 2900,
+     "endMs": 3460
     },
     {
      "t": "Drip,",
-     "ms": 4440
+     "ms": 5630,
+     "endMs": 5940
     },
     {
      "t": "drip,",
-     "ms": 5240
+     "ms": 5940,
+     "endMs": 6240
     },
     {
      "t": "drip,",
-     "ms": 5940
+     "ms": 6240,
+     "endMs": 6720
     },
     {
      "t": "said",
-     "ms": 6080
+     "ms": 6720,
+     "endMs": 7200
     },
     {
      "t": "the",
-     "ms": 6780
+     "ms": 7200,
+     "endMs": 7440
     },
     {
      "t": "tap.",
-     "ms": 6980
+     "ms": 7440,
+     "endMs": 7700
     }
    ],
    "audio": "p6.m4a",
-   "audioMs": 8560
+   "audioMs": 9340
   }
  ],
  "moral": {
   "spoken": "A little wait can bring a cool drink.",
   "line": "Pat sat. Tap, tap.",
   "audio": "moral.m4a",
-  "audioMs": 4019
+  "audioMs": 4520
  },
  "prompts": {
   "yes:tap": {
    "audio": "yes-tap.m4a",
-   "ms": 4640
+   "ms": 4880
   },
   "word:tap": {
    "audio": "word-tap.m4a",
-   "ms": 2290
+   "ms": 2390
   },
   "yes:sat": {
    "audio": "yes-sat.m4a",
-   "ms": 4640
+   "ms": 4950
   },
   "word:sat": {
    "audio": "word-sat.m4a",
-   "ms": 2290
+   "ms": 2460
   },
   "yes:pat": {
    "audio": "yes-pat.m4a",
-   "ms": 4640
+   "ms": 4890
   },
   "word:pat": {
    "audio": "word-pat.m4a",
-   "ms": 2290
+   "ms": 2400
   }
  }
 }

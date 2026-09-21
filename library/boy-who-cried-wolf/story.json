@@ -24,82 +24,82 @@
    "tokens": [
     {
      "t": "A",
-     "ms": 600,
-     "endMs": 800
+     "ms": 570,
+     "endMs": 620
     },
     {
      "t": "boy",
-     "ms": 800,
-     "endMs": 1180
+     "ms": 620,
+     "endMs": 940
     },
     {
      "t": "looked",
-     "ms": 1180,
-     "endMs": 1480
+     "ms": 940,
+     "endMs": 1220
     },
     {
      "t": "after",
-     "ms": 1480,
-     "endMs": 2040
+     "ms": 1220,
+     "endMs": 1720
     },
     {
      "t": "sheep",
-     "ms": 2040,
-     "endMs": 2300
+     "ms": 1720,
+     "endMs": 2000
     },
     {
      "t": "on",
-     "ms": 2300,
-     "endMs": 2680
+     "ms": 2000,
+     "endMs": 2340
     },
     {
      "t": "a",
-     "ms": 2680,
-     "endMs": 2780
+     "ms": 2340,
+     "endMs": 2440
     },
     {
      "t": "hill.",
-     "ms": 2780,
-     "endMs": 3120
+     "ms": 2440,
+     "endMs": 2760
     },
     {
      "t": "It",
-     "ms": 5080,
-     "endMs": 5300
+     "ms": 4900,
+     "endMs": 4980
     },
     {
      "t": "was",
-     "ms": 5300,
-     "endMs": 5620
+     "ms": 4980,
+     "endMs": 5160
     },
     {
      "t": "quiet,",
-     "ms": 5620,
-     "endMs": 6200
+     "ms": 5160,
+     "endMs": 5680
     },
     {
      "t": "and",
-     "ms": 6580,
-     "endMs": 6740
+     "ms": 5680,
+     "endMs": 6220
     },
     {
      "t": "he",
-     "ms": 6740,
-     "endMs": 6920
+     "ms": 6220,
+     "endMs": 6440
     },
     {
      "t": "was",
-     "ms": 6920,
-     "endMs": 7100
+     "ms": 6440,
+     "endMs": 6620
     },
     {
      "t": "bored.",
-     "ms": 7100,
-     "endMs": 7500
+     "ms": 6620,
+     "endMs": 6980
     }
    ],
    "audio": "p1.m4a",
-   "audioMs": 9370
+   "audioMs": 8740
   },
   {
    "art": "🐺",
@@ -109,72 +109,72 @@
    "tokens": [
     {
      "t": "For",
-     "ms": 660,
-     "endMs": 860
+     "ms": 580,
+     "endMs": 680
     },
     {
      "t": "fun,",
-     "ms": 860,
-     "endMs": 1160
+     "ms": 680,
+     "endMs": 960
     },
     {
      "t": "he",
-     "ms": 1520,
-     "endMs": 1620
+     "ms": 1340,
+     "endMs": 1440
     },
     {
      "t": "shouted,",
-     "ms": 1620,
-     "endMs": 1920
+     "ms": 1440,
+     "endMs": 1760
     },
     {
      "t": "“Wolf!",
-     "ms": 1920,
-     "endMs": 2620
+     "ms": 1760,
+     "endMs": 2420
     },
     {
      "t": "Wolf!”",
-     "ms": 4940,
-     "endMs": 5260
+     "ms": 4640,
+     "endMs": 4780
     },
     {
      "t": "The",
-     "ms": 5780,
-     "endMs": 6020
+     "ms": 5680,
+     "endMs": 5760
     },
     {
      "t": "village",
-     "ms": 6020,
-     "endMs": 6360
+     "ms": 5760,
+     "endMs": 6080
     },
     {
      "t": "people",
-     "ms": 6360,
-     "endMs": 6800
+     "ms": 6080,
+     "endMs": 6560
     },
     {
      "t": "ran",
-     "ms": 6800,
-     "endMs": 7280
+     "ms": 6560,
+     "endMs": 7020
     },
     {
      "t": "up",
-     "ms": 7280,
-     "endMs": 7620
+     "ms": 7020,
+     "endMs": 7380
     },
     {
      "t": "the",
-     "ms": 7620,
-     "endMs": 7800
+     "ms": 7380,
+     "endMs": 7540
     },
     {
      "t": "hill.",
-     "ms": 7800,
-     "endMs": 8080
+     "ms": 7540,
+     "endMs": 7840
     }
    ],
    "audio": "p2.m4a",
-   "audioMs": 9880
+   "audioMs": 9430
   },
   {
    "art": "😜",
@@ -184,144 +184,144 @@
    "tokens": [
     {
      "t": "There",
-     "ms": 620,
-     "endMs": 880
+     "ms": 580,
+     "endMs": 700
     },
     {
      "t": "was",
-     "ms": 880,
-     "endMs": 1040
+     "ms": 700,
+     "endMs": 900
     },
     {
      "t": "no",
-     "ms": 1040,
-     "endMs": 1380
+     "ms": 900,
+     "endMs": 1220
     },
     {
      "t": "wolf.",
-     "ms": 1380,
-     "endMs": 1940
+     "ms": 1220,
+     "endMs": 1640
     },
     {
      "t": "The",
-     "ms": 4100,
-     "endMs": 4240
+     "ms": 3790,
+     "endMs": 3820
     },
     {
      "t": "boy",
-     "ms": 4240,
-     "endMs": 4520
+     "ms": 3820,
+     "endMs": 4080
     },
     {
      "t": "laughed.",
-     "ms": 4520,
-     "endMs": 5260
+     "ms": 4080,
+     "endMs": 4560
     },
     {
      "t": "He",
-     "ms": 7300,
-     "endMs": 7500
+     "ms": 6820,
+     "endMs": 6920
     },
     {
      "t": "did",
-     "ms": 7500,
-     "endMs": 7760
+     "ms": 6920,
+     "endMs": 7180
     },
     {
      "t": "it",
-     "ms": 7760,
-     "endMs": 7920
+     "ms": 7180,
+     "endMs": 7360
     },
     {
      "t": "again",
-     "ms": 7920,
-     "endMs": 8220
+     "ms": 7360,
+     "endMs": 7600
     },
     {
      "t": "the",
-     "ms": 8220,
-     "endMs": 8600
+     "ms": 7600,
+     "endMs": 7960
     },
     {
      "t": "next",
-     "ms": 8600,
-     "endMs": 8880
+     "ms": 7960,
+     "endMs": 8240
     },
     {
      "t": "day.",
-     "ms": 8880,
-     "endMs": 9340
+     "ms": 8240,
+     "endMs": 8700
     }
    ],
    "audio": "p3.m4a",
-   "audioMs": 11220
+   "audioMs": 10250
   },
   {
    "art": "🐺",
    "tokens": [
     {
      "t": "Then",
-     "ms": 0,
-     "endMs": 840
+     "ms": 580,
+     "endMs": 700
     },
     {
      "t": "a",
-     "ms": 840,
-     "endMs": 1080
+     "ms": 700,
+     "endMs": 860
     },
     {
      "t": "real",
-     "ms": 1080,
-     "endMs": 1420
+     "ms": 860,
+     "endMs": 1180
     },
     {
      "t": "wolf",
-     "ms": 1420,
-     "endMs": 1780
+     "ms": 1180,
+     "endMs": 1600
     },
     {
      "t": "came.",
-     "ms": 1780,
-     "endMs": 2240
+     "ms": 1600,
+     "endMs": 2000
     },
     {
      "t": "The",
-     "ms": 4380,
-     "endMs": 4580
+     "ms": 4210,
+     "endMs": 4240
     },
     {
      "t": "boy",
-     "ms": 4580,
-     "endMs": 4960
+     "ms": 4240,
+     "endMs": 4500
     },
     {
      "t": "shouted,",
-     "ms": 4960,
-     "endMs": 5360
+     "ms": 4500,
+     "endMs": 4920
     },
     {
      "t": "“Wolf!”",
-     "ms": 5360,
-     "endMs": 6180
+     "ms": 4920,
+     "endMs": 5660
     },
     {
      "t": "But",
-     "ms": 6180,
-     "endMs": 6880
+     "ms": 6430,
+     "endMs": 6540
     },
     {
      "t": "nobody",
-     "ms": 6880,
-     "endMs": 7200
+     "ms": 6540,
+     "endMs": 6820
     },
     {
      "t": "came.",
-     "ms": 7200,
-     "endMs": 7800
+     "ms": 6820,
+     "endMs": 7460
     }
    ],
    "audio": "p4.m4a",
-   "audioMs": 9640
+   "audioMs": 9130
   },
   {
    "art": "🐑",
@@ -331,161 +331,161 @@
    "tokens": [
     {
      "t": "The",
-     "ms": 0,
-     "endMs": 680
+     "ms": 580,
+     "endMs": 640
     },
     {
      "t": "wolf",
-     "ms": 680,
-     "endMs": 1080
+     "ms": 640,
+     "endMs": 900
     },
     {
      "t": "chased",
-     "ms": 1080,
-     "endMs": 1480
+     "ms": 900,
+     "endMs": 1260
     },
     {
      "t": "the",
-     "ms": 1480,
-     "endMs": 1940
+     "ms": 1260,
+     "endMs": 1680
     },
     {
      "t": "sheep",
-     "ms": 1940,
-     "endMs": 2180
+     "ms": 1680,
+     "endMs": 1900
     },
     {
      "t": "away.",
-     "ms": 2180,
-     "endMs": 2660
+     "ms": 1900,
+     "endMs": 2460
     },
     {
      "t": "The",
-     "ms": 4820,
-     "endMs": 4960
+     "ms": 4510,
+     "endMs": 4540
     },
     {
      "t": "boy",
-     "ms": 4960,
-     "endMs": 5300
+     "ms": 4540,
+     "endMs": 4820
     },
     {
      "t": "was",
-     "ms": 5300,
-     "endMs": 5580
+     "ms": 4820,
+     "endMs": 5060
     },
     {
      "t": "not",
-     "ms": 5580,
-     "endMs": 5860
+     "ms": 5060,
+     "endMs": 5340
     },
     {
      "t": "happy",
-     "ms": 5860,
-     "endMs": 6380
+     "ms": 5340,
+     "endMs": 5820
     },
     {
      "t": "now.",
-     "ms": 6380,
-     "endMs": 6800
+     "ms": 5830,
+     "endMs": 6260
     }
    ],
    "audio": "p5.m4a",
-   "audioMs": 8530
+   "audioMs": 7800
   },
   {
    "art": "👵",
    "tokens": [
     {
      "t": "“When",
-     "ms": 680,
-     "endMs": 880
+     "ms": 580,
+     "endMs": 700
     },
     {
      "t": "you",
-     "ms": 880,
-     "endMs": 1080
+     "ms": 700,
+     "endMs": 920
     },
     {
      "t": "trick",
-     "ms": 1080,
-     "endMs": 1340
+     "ms": 920,
+     "endMs": 1180
     },
     {
      "t": "people,”",
-     "ms": 1340,
-     "endMs": 1960
+     "ms": 1180,
+     "endMs": 1800
     },
     {
      "t": "said",
-     "ms": 2300,
-     "endMs": 2660
+     "ms": 2260,
+     "endMs": 2460
     },
     {
      "t": "his",
-     "ms": 2660,
-     "endMs": 2900
+     "ms": 2460,
+     "endMs": 2700
     },
     {
      "t": "grandmother,",
-     "ms": 2900,
-     "endMs": 3560
+     "ms": 2700,
+     "endMs": 3360
     },
     {
      "t": "“they",
-     "ms": 4180,
-     "endMs": 4600
+     "ms": 4310,
+     "endMs": 4460
     },
     {
      "t": "stop",
-     "ms": 4600,
-     "endMs": 4920
+     "ms": 4460,
+     "endMs": 4780
     },
     {
      "t": "believing",
-     "ms": 4920,
-     "endMs": 5540
+     "ms": 4780,
+     "endMs": 5420
     },
     {
      "t": "you.”",
-     "ms": 5540,
-     "endMs": 6020
+     "ms": 5420,
+     "endMs": 5900
     }
    ],
    "audio": "p6.m4a",
-   "audioMs": 7600
+   "audioMs": 7400
   }
  ],
  "moral": {
   "spoken": "If you keep telling lies, people will not believe you when it matters.",
   "line": "It is a sad kid.",
   "audio": "moral.m4a",
-  "audioMs": 7450
+  "audioMs": 7260
  },
  "prompts": {
   "yes:ran": {
    "audio": "yes-ran.m4a",
-   "ms": 5530
+   "ms": 4930
   },
   "word:ran": {
    "audio": "word-ran.m4a",
-   "ms": 2720
+   "ms": 2440
   },
   "yes:did": {
    "audio": "yes-did.m4a",
-   "ms": 5360
+   "ms": 4810
   },
   "word:did": {
    "audio": "word-did.m4a",
-   "ms": 2560
+   "ms": 2320
   },
   "yes:not": {
    "audio": "yes-not.m4a",
-   "ms": 5440
+   "ms": 4890
   },
   "word:not": {
    "audio": "word-not.m4a",
-   "ms": 2630
+   "ms": 2400
   }
  }
 }

@@ -24,539 +24,661 @@
    "tokens": [
     {
      "t": "Under",
-     "ms": 0
+     "ms": 580,
+     "endMs": 820
     },
     {
      "t": "the",
-     "ms": 320
+     "ms": 820,
+     "endMs": 1020
     },
     {
      "t": "loose",
-     "ms": 520
+     "ms": 1020,
+     "endMs": 1280
     },
     {
      "t": "brick",
-     "ms": 860
+     "ms": 1280,
+     "endMs": 1760
     },
     {
      "t": "by",
-     "ms": 1480
+     "ms": 1760,
+     "endMs": 2080
     },
     {
      "t": "the",
-     "ms": 2020
+     "ms": 2080,
+     "endMs": 2240
     },
     {
      "t": "back",
-     "ms": 2200
+     "ms": 2240,
+     "endMs": 2560
     },
     {
      "t": "step,",
-     "ms": 2580
+     "ms": 2560,
+     "endMs": 3020
     },
     {
      "t": "Nan",
-     "ms": 3840
+     "ms": 3380,
+     "endMs": 4200
     },
     {
      "t": "found",
-     "ms": 4120
+     "ms": 4200,
+     "endMs": 4660
     },
     {
      "t": "something",
-     "ms": 4620
+     "ms": 4660,
+     "endMs": 5240
     },
     {
      "t": "that",
-     "ms": 5140
+     "ms": 5240,
+     "endMs": 5520
     },
     {
      "t": "had",
-     "ms": 5340
+     "ms": 5520,
+     "endMs": 5720
     },
     {
      "t": "been",
-     "ms": 5440
+     "ms": 5720,
+     "endMs": 5960
     },
     {
      "t": "there",
-     "ms": 5640
+     "ms": 5960,
+     "endMs": 6240
     },
     {
      "t": "a",
-     "ms": 5860
+     "ms": 6240,
+     "endMs": 6440
     },
     {
      "t": "long",
-     "ms": 5980
+     "ms": 6440,
+     "endMs": 6780
     },
     {
      "t": "time.",
-     "ms": 6280
+     "ms": 6780,
+     "endMs": 7480
     }
    ],
    "audio": "p1.m4a",
-   "audioMs": 7960
+   "audioMs": 8980
   },
   {
    "art": "📖",
    "tokens": [
     {
      "t": "It",
-     "ms": 0
+     "ms": 570,
+     "endMs": 640
     },
     {
      "t": "was",
-     "ms": 240
+     "ms": 640,
+     "endMs": 820
     },
     {
      "t": "a",
-     "ms": 380
+     "ms": 820,
+     "endMs": 980
     },
     {
      "t": "flat",
-     "ms": 520
+     "ms": 980,
+     "endMs": 1320
     },
     {
      "t": "tin,",
-     "ms": 980
+     "ms": 1320,
+     "endMs": 1860
     },
     {
      "t": "rusted",
-     "ms": 2420
+     "ms": 2620,
+     "endMs": 3000
     },
     {
      "t": "at",
-     "ms": 3040
+     "ms": 3000,
+     "endMs": 3280
     },
     {
      "t": "the",
-     "ms": 3280
+     "ms": 3280,
+     "endMs": 3440
     },
     {
      "t": "corners,",
-     "ms": 3420
+     "ms": 3440,
+     "endMs": 3820
     },
     {
      "t": "and",
-     "ms": 4900
+     "ms": 4910,
+     "endMs": 5040
     },
     {
      "t": "inside",
-     "ms": 5140
+     "ms": 5040,
+     "endMs": 5560
     },
     {
      "t": "it",
-     "ms": 5880
+     "ms": 5560,
+     "endMs": 5920
     },
     {
      "t": "was",
-     "ms": 6340
+     "ms": 5920,
+     "endMs": 6100
     },
     {
      "t": "a",
-     "ms": 6480
+     "ms": 6100,
+     "endMs": 6260
     },
     {
      "t": "folded",
-     "ms": 6620
+     "ms": 6260,
+     "endMs": 6620
     },
     {
      "t": "piece",
-     "ms": 7080
+     "ms": 6620,
+     "endMs": 7260
     },
     {
      "t": "of",
-     "ms": 7640
+     "ms": 7260,
+     "endMs": 7520
     },
     {
      "t": "paper.",
-     "ms": 7900
+     "ms": 7520,
+     "endMs": 8020
     }
    ],
    "audio": "p2.m4a",
-   "audioMs": 9610
+   "audioMs": 9620
   },
   {
    "art": "📖",
    "tokens": [
     {
      "t": "She",
-     "ms": 0
+     "ms": 580,
+     "endMs": 720
     },
     {
      "t": "opened",
-     "ms": 380
+     "ms": 720,
+     "endMs": 1040
     },
     {
      "t": "it",
-     "ms": 700
+     "ms": 1040,
+     "endMs": 1340
     },
     {
      "t": "very",
-     "ms": 920
+     "ms": 1340,
+     "endMs": 1660
     },
     {
      "t": "carefully.",
-     "ms": 1260
+     "ms": 1660,
+     "endMs": 2400
     },
     {
      "t": "Someone",
-     "ms": 3180
+     "ms": 4660,
+     "endMs": 4880
     },
     {
      "t": "had",
-     "ms": 3800
+     "ms": 4880,
+     "endMs": 5240
     },
     {
      "t": "drawn",
-     "ms": 4140
+     "ms": 5240,
+     "endMs": 5540
     },
     {
      "t": "the",
-     "ms": 4540
+     "ms": 5540,
+     "endMs": 5820
     },
     {
      "t": "garden",
-     "ms": 4840
+     "ms": 5820,
+     "endMs": 6180
     },
     {
      "t": "on",
-     "ms": 5120
+     "ms": 6180,
+     "endMs": 6540
     },
     {
      "t": "it,",
-     "ms": 5520
+     "ms": 6540,
+     "endMs": 6740
     },
     {
      "t": "a",
-     "ms": 6380
+     "ms": 7530,
+     "endMs": 7620
     },
     {
      "t": "map,",
-     "ms": 6580
+     "ms": 7620,
+     "endMs": 7900
     },
     {
      "t": "with",
-     "ms": 7000
+     "ms": 7900,
+     "endMs": 8600
     },
     {
      "t": "a",
-     "ms": 7980
+     "ms": 8600,
+     "endMs": 8760
     },
     {
      "t": "small",
-     "ms": 8100
+     "ms": 8760,
+     "endMs": 9120
     },
     {
      "t": "mark",
-     "ms": 8500
+     "ms": 9120,
+     "endMs": 9660
     },
     {
      "t": "near",
-     "ms": 9080
+     "ms": 9660,
+     "endMs": 10040
     },
     {
      "t": "the",
-     "ms": 9460
+     "ms": 10040,
+     "endMs": 10240
     },
     {
      "t": "old",
-     "ms": 9700
+     "ms": 10240,
+     "endMs": 10480
     },
     {
      "t": "tree.",
-     "ms": 10000
+     "ms": 10480,
+     "endMs": 10940
     }
    ],
    "magic": [
     "map"
    ],
    "audio": "p3.m4a",
-   "audioMs": 11750
+   "audioMs": 12570
   },
   {
    "art": "📖",
    "tokens": [
     {
      "t": "Nan",
-     "ms": 60
+     "ms": 580,
+     "endMs": 700
     },
     {
      "t": "showed",
-     "ms": 260
+     "ms": 700,
+     "endMs": 1240
     },
     {
      "t": "Dad.",
-     "ms": 1280
+     "ms": 1240,
+     "endMs": 1700
     },
     {
      "t": "He",
-     "ms": 2300
+     "ms": 3870,
+     "endMs": 3940
     },
     {
      "t": "looked",
-     "ms": 2540
+     "ms": 3940,
+     "endMs": 4220
     },
     {
      "t": "at",
-     "ms": 2740
+     "ms": 4220,
+     "endMs": 4540
     },
     {
      "t": "it",
-     "ms": 2960
+     "ms": 4540,
+     "endMs": 4660
     },
     {
      "t": "for",
-     "ms": 3060
+     "ms": 4660,
+     "endMs": 4900
     },
     {
      "t": "a",
-     "ms": 3280
+     "ms": 4900,
+     "endMs": 5040
     },
     {
      "t": "while",
-     "ms": 3380
+     "ms": 5040,
+     "endMs": 5320
     },
     {
      "t": "and",
-     "ms": 3860
+     "ms": 5320,
+     "endMs": 5620
     },
     {
      "t": "said,",
-     "ms": 4380
+     "ms": 5620,
+     "endMs": 5960
     },
     {
      "t": "“That",
-     "ms": 5700
+     "ms": 6960,
+     "endMs": 7040
     },
     {
      "t": "is",
-     "ms": 5800
+     "ms": 7040,
+     "endMs": 7280
     },
     {
      "t": "my",
-     "ms": 5920
+     "ms": 7280,
+     "endMs": 7580
     },
     {
      "t": "handwriting.",
-     "ms": 6120
+     "ms": 7580,
+     "endMs": 8000
     },
     {
      "t": "I",
-     "ms": 8160
+     "ms": 10610,
+     "endMs": 10700
     },
     {
      "t": "was",
-     "ms": 8420
+     "ms": 10700,
+     "endMs": 10880
     },
     {
      "t": "seven.”",
-     "ms": 8600
+     "ms": 10900,
+     "endMs": 12980
     }
    ],
    "audio": "p4.m4a",
-   "audioMs": 10600
+   "audioMs": 12980
   },
   {
    "art": "📖",
    "tokens": [
     {
      "t": "They",
-     "ms": 0
+     "ms": 580,
+     "endMs": 700
     },
     {
      "t": "took",
-     "ms": 280
+     "ms": 700,
+     "endMs": 1040
     },
     {
      "t": "the",
-     "ms": 520
+     "ms": 1040,
+     "endMs": 1300
     },
     {
      "t": "spade",
-     "ms": 720
+     "ms": 1300,
+     "endMs": 1780
     },
     {
      "t": "to",
-     "ms": 1240
+     "ms": 1780,
+     "endMs": 2060
     },
     {
      "t": "the",
-     "ms": 1440
+     "ms": 2060,
+     "endMs": 2220
     },
     {
      "t": "old",
-     "ms": 1560
+     "ms": 2220,
+     "endMs": 2500
     },
     {
      "t": "tree",
-     "ms": 1800
+     "ms": 2500,
+     "endMs": 2920
     },
     {
      "t": "and",
-     "ms": 2280
+     "ms": 2920,
+     "endMs": 3700
     },
     {
      "t": "began",
-     "ms": 3100
+     "ms": 3700,
+     "endMs": 4059
     },
     {
      "t": "to",
-     "ms": 3500
+     "ms": 4059,
+     "endMs": 4440
     },
     {
      "t": "dig,",
-     "ms": 3880
+     "ms": 4440,
+     "endMs": 4780
     },
     {
      "t": "and",
-     "ms": 4840
+     "ms": 5860,
+     "endMs": 6020
     },
     {
      "t": "it",
-     "ms": 5280
+     "ms": 6020,
+     "endMs": 6160
     },
     {
      "t": "took",
-     "ms": 5400
+     "ms": 6160,
+     "endMs": 6380
     },
     {
      "t": "much",
-     "ms": 5600
+     "ms": 6380,
+     "endMs": 6720
     },
     {
      "t": "longer",
-     "ms": 5920
+     "ms": 6720,
+     "endMs": 7280
     },
     {
      "t": "than",
-     "ms": 6460
+     "ms": 7280,
+     "endMs": 7780
     },
     {
      "t": "either",
-     "ms": 6840
+     "ms": 7780,
+     "endMs": 8080
     },
     {
      "t": "of",
-     "ms": 7200
+     "ms": 8080,
+     "endMs": 8420
     },
     {
      "t": "them",
-     "ms": 7560
+     "ms": 8420,
+     "endMs": 8620
     },
     {
      "t": "expected.",
-     "ms": 7720
+     "ms": 8620,
+     "endMs": 9240
     }
    ],
    "magic": [
     "dig"
    ],
    "audio": "p5.m4a",
-   "audioMs": 9560
+   "audioMs": 11100
   },
   {
    "art": "📖",
    "tokens": [
     {
      "t": "What",
-     "ms": 0
+     "ms": 580,
+     "endMs": 700
     },
     {
      "t": "they",
-     "ms": 260
+     "ms": 700,
+     "endMs": 940
     },
     {
      "t": "got,",
-     "ms": 420
+     "ms": 940,
+     "endMs": 1180
     },
     {
      "t": "in",
-     "ms": 660
+     "ms": 1720,
+     "endMs": 1820
     },
     {
      "t": "the",
-     "ms": 1580
+     "ms": 1820,
+     "endMs": 1960
     },
     {
      "t": "end,",
-     "ms": 1740
+     "ms": 1960,
+     "endMs": 2360
     },
     {
      "t": "was",
-     "ms": 2160
+     "ms": 2740,
+     "endMs": 2840
     },
     {
      "t": "another",
-     "ms": 2540
+     "ms": 2840,
+     "endMs": 3340
     },
     {
      "t": "tin",
-     "ms": 2970
+     "ms": 3340,
+     "endMs": 3680
     },
     {
      "t": "with",
-     "ms": 3400
+     "ms": 3680,
+     "endMs": 4040
     },
     {
      "t": "four",
-     "ms": 3700
+     "ms": 4040,
+     "endMs": 4440
     },
     {
      "t": "marbles",
-     "ms": 4140
+     "ms": 4440,
+     "endMs": 5040
     },
     {
      "t": "in",
-     "ms": 4920
+     "ms": 5040,
+     "endMs": 5300
     },
     {
      "t": "it,",
-     "ms": 5180
+     "ms": 5300,
+     "endMs": 5440
     },
     {
      "t": "and",
-     "ms": 5380
+     "ms": 6330,
+     "endMs": 6460
     },
     {
      "t": "a",
-     "ms": 5840
+     "ms": 6460,
+     "endMs": 6600
     },
     {
      "t": "note",
-     "ms": 5960
+     "ms": 6600,
+     "endMs": 6880
     },
     {
      "t": "that",
-     "ms": 6320
+     "ms": 6880,
+     "endMs": 7160
     },
     {
      "t": "said:",
-     "ms": 6580
+     "ms": 7160,
+     "endMs": 7580
     },
     {
      "t": "hello,",
-     "ms": 7040
+     "ms": 9660,
+     "endMs": 9960
     },
     {
      "t": "whoever",
-     "ms": 8400
+     "ms": 9960,
+     "endMs": 10700
     },
     {
      "t": "you",
-     "ms": 9180
+     "ms": 10700,
+     "endMs": 11040
     },
     {
      "t": "are.",
-     "ms": 9700
+     "ms": 11040,
+     "endMs": 11320
     }
    ],
    "magic": [
     "got"
    ],
    "audio": "p6.m4a",
-   "audioMs": 11240
+   "audioMs": 12820
   }
  ],
  "moral": {
@@ -568,27 +690,27 @@
  "prompts": {
   "yes:map": {
    "audio": "yes-map.m4a",
-   "ms": 4640
+   "ms": 4860
   },
   "word:map": {
    "audio": "word-map.m4a",
-   "ms": 2290
+   "ms": 2370
   },
   "yes:dig": {
    "audio": "yes-dig.m4a",
-   "ms": 4640
+   "ms": 4840
   },
   "word:dig": {
    "audio": "word-dig.m4a",
-   "ms": 2290
+   "ms": 2340
   },
   "yes:got": {
    "audio": "yes-got.m4a",
-   "ms": 4640
+   "ms": 4860
   },
   "word:got": {
    "audio": "word-got.m4a",
-   "ms": 2290
+   "ms": 2370
   }
  }
 }

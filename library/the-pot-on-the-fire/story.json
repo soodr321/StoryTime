@@ -24,531 +24,643 @@
    "tokens": [
     {
      "t": "Nani",
-     "ms": 180
+     "ms": 580,
+     "endMs": 820
     },
     {
      "t": "set",
-     "ms": 380
+     "ms": 820,
+     "endMs": 1280
     },
     {
      "t": "the",
-     "ms": 800
+     "ms": 1280,
+     "endMs": 1560
     },
     {
      "t": "big",
-     "ms": 1160
+     "ms": 1560,
+     "endMs": 1820
     },
     {
      "t": "black",
-     "ms": 1840
+     "ms": 1820,
+     "endMs": 2200
     },
     {
      "t": "cooking",
-     "ms": 2260
+     "ms": 2200,
+     "endMs": 2700
     },
     {
      "t": "pot",
-     "ms": 2840
+     "ms": 2700,
+     "endMs": 3180
     },
     {
      "t": "on",
-     "ms": 3240
+     "ms": 3180,
+     "endMs": 3460
     },
     {
      "t": "the",
-     "ms": 3400
+     "ms": 3460,
+     "endMs": 3620
     },
     {
      "t": "fire.",
-     "ms": 3560
+     "ms": 3620,
+     "endMs": 4160
     },
     {
      "t": "Tonight",
-     "ms": 4920
+     "ms": 6300,
+     "endMs": 6500
     },
     {
      "t": "she",
-     "ms": 6080
+     "ms": 6500,
+     "endMs": 6960
     },
     {
      "t": "was",
-     "ms": 6340
+     "ms": 6960,
+     "endMs": 7120
     },
     {
      "t": "making",
-     "ms": 6520
+     "ms": 7120,
+     "endMs": 7560
     },
     {
      "t": "dal.",
-     "ms": 6920
+     "ms": 7560,
+     "endMs": 7940
     }
    ],
    "audio": "p1.m4a",
-   "audioMs": 8630
+   "audioMs": 9620
   },
   {
    "art": "📖",
    "tokens": [
     {
      "t": "“Can",
-     "ms": 0
+     "ms": 580,
+     "endMs": 680
     },
     {
      "t": "I",
-     "ms": 200
+     "ms": 680,
+     "endMs": 880
     },
     {
      "t": "stir",
-     "ms": 400
+     "ms": 880,
+     "endMs": 1140
     },
     {
      "t": "the",
-     "ms": 600
+     "ms": 1140,
+     "endMs": 1380
     },
     {
      "t": "pot?”",
-     "ms": 820
+     "ms": 1380,
+     "endMs": 2300
     },
     {
      "t": "asked",
-     "ms": 1740
+     "ms": 2310,
+     "endMs": 2600
     },
     {
      "t": "Nan.",
-     "ms": 2060
+     "ms": 3393,
+     "endMs": 4476
     },
     {
      "t": "Nani",
-     "ms": 3090
+     "ms": 4476,
+     "endMs": 5560
     },
     {
      "t": "gave",
-     "ms": 4120
+     "ms": 5560,
+     "endMs": 5760
     },
     {
      "t": "her",
-     "ms": 4360
+     "ms": 5760,
+     "endMs": 6060
     },
     {
      "t": "the",
-     "ms": 4600
+     "ms": 6060,
+     "endMs": 6240
     },
     {
      "t": "long",
-     "ms": 4760
+     "ms": 6240,
+     "endMs": 6560
     },
     {
      "t": "wooden",
-     "ms": 5120
+     "ms": 6560,
+     "endMs": 6980
     },
     {
      "t": "spoon",
-     "ms": 5520
+     "ms": 6980,
+     "endMs": 7440
     },
     {
      "t": "and",
-     "ms": 6080
+     "ms": 7440,
+     "endMs": 7920
     },
     {
      "t": "let",
-     "ms": 6820
+     "ms": 7920,
+     "endMs": 8200
     },
     {
      "t": "her",
-     "ms": 7080
+     "ms": 8200,
+     "endMs": 8420
     },
     {
      "t": "stir,",
-     "ms": 7240
+     "ms": 8420,
+     "endMs": 8760
     },
     {
      "t": "once",
-     "ms": 8780
+     "ms": 9590,
+     "endMs": 9720
     },
     {
      "t": "around,",
-     "ms": 9080
+     "ms": 9720,
+     "endMs": 10240
     },
     {
      "t": "slowly.",
-     "ms": 10420
+     "ms": 10240,
+     "endMs": 10920
     }
    ],
    "magic": [
     "pot"
    ],
    "audio": "p2.m4a",
-   "audioMs": 12540
+   "audioMs": 12670
   },
   {
    "art": "📖",
    "tokens": [
     {
      "t": "Nan",
-     "ms": 80
+     "ms": 580,
+     "endMs": 680
     },
     {
      "t": "wanted",
-     "ms": 280
+     "ms": 680,
+     "endMs": 1280
     },
     {
      "t": "to",
-     "ms": 500
+     "ms": 1280,
+     "endMs": 1480
     },
     {
      "t": "eat",
-     "ms": 700
+     "ms": 1480,
+     "endMs": 1760
     },
     {
      "t": "it",
-     "ms": 920
+     "ms": 1760,
+     "endMs": 1940
     },
     {
      "t": "right",
-     "ms": 1120
+     "ms": 1940,
+     "endMs": 2200
     },
     {
      "t": "away.",
-     "ms": 1540
+     "ms": 2200,
+     "endMs": 2640
     },
     {
      "t": "She",
-     "ms": 3300
+     "ms": 4830,
+     "endMs": 4960
     },
     {
      "t": "lifted",
-     "ms": 3640
+     "ms": 4960,
+     "endMs": 5300
     },
     {
      "t": "the",
-     "ms": 3980
+     "ms": 5300,
+     "endMs": 5700
     },
     {
      "t": "lid",
-     "ms": 4360
+     "ms": 5700,
+     "endMs": 5980
     },
     {
      "t": "and",
-     "ms": 4680
+     "ms": 5980,
+     "endMs": 6440
     },
     {
      "t": "the",
-     "ms": 5320
+     "ms": 6440,
+     "endMs": 6640
     },
     {
      "t": "steam",
-     "ms": 5460
+     "ms": 6640,
+     "endMs": 6920
     },
     {
      "t": "went",
-     "ms": 5960
+     "ms": 6920,
+     "endMs": 7380
     },
     {
      "t": "up",
-     "ms": 6700
+     "ms": 7380,
+     "endMs": 7680
     },
     {
      "t": "in",
-     "ms": 6980
+     "ms": 7680,
+     "endMs": 7900
     },
     {
      "t": "a",
-     "ms": 7320
+     "ms": 7900,
+     "endMs": 8000
     },
     {
      "t": "cloud.",
-     "ms": 7420
+     "ms": 8000,
+     "endMs": 8280
     },
     {
      "t": "Not",
-     "ms": 8780
+     "ms": 10630,
+     "endMs": 10760
     },
     {
      "t": "yet.",
-     "ms": 9420
+     "ms": 10760,
+     "endMs": 11180
     }
    ],
    "audio": "p3.m4a",
-   "audioMs": 11510
+   "audioMs": 12790
   },
   {
    "art": "📖",
    "tokens": [
     {
      "t": "“Dal",
-     "ms": 120
+     "ms": 580,
+     "endMs": 840
     },
     {
      "t": "is",
-     "ms": 320
+     "ms": 840,
+     "endMs": 1060
     },
     {
      "t": "not",
-     "ms": 500
+     "ms": 1060,
+     "endMs": 1280
     },
     {
      "t": "fast,”",
-     "ms": 780
+     "ms": 1280,
+     "endMs": 1700
     },
     {
      "t": "said",
-     "ms": 1340
+     "ms": 2440,
+     "endMs": 2680
     },
     {
      "t": "Nani.",
-     "ms": 2440
+     "ms": 2680,
+     "endMs": 3000
     },
     {
      "t": "“Go",
-     "ms": 3540
+     "ms": 5260,
+     "endMs": 5420
     },
     {
      "t": "and",
-     "ms": 4100
+     "ms": 5420,
+     "endMs": 5760
     },
     {
      "t": "sit.”",
-     "ms": 4260
+     "ms": 5760,
+     "endMs": 6120
     },
     {
      "t": "So",
-     "ms": 5620
+     "ms": 7300,
+     "endMs": 7360
     },
     {
      "t": "Nan",
-     "ms": 5760
+     "ms": 7360,
+     "endMs": 7720
     },
     {
      "t": "went",
-     "ms": 5900
+     "ms": 7720,
+     "endMs": 8020
     },
     {
      "t": "to",
-     "ms": 6120
+     "ms": 8020,
+     "endMs": 8260
     },
     {
      "t": "sit",
-     "ms": 6300
+     "ms": 8260,
+     "endMs": 8480
     },
     {
      "t": "on",
-     "ms": 6540
+     "ms": 8480,
+     "endMs": 8720
     },
     {
      "t": "the",
-     "ms": 6720
+     "ms": 8720,
+     "endMs": 8860
     },
     {
      "t": "step",
-     "ms": 6820
+     "ms": 8860,
+     "endMs": 9220
     },
     {
      "t": "by",
-     "ms": 7200
+     "ms": 9220,
+     "endMs": 9540
     },
     {
      "t": "the",
-     "ms": 7600
+     "ms": 9540,
+     "endMs": 9700
     },
     {
      "t": "door.",
-     "ms": 7780
+     "ms": 9700,
+     "endMs": 10040
     }
    ],
    "magic": [
     "sit"
    ],
    "audio": "p4.m4a",
-   "audioMs": 9400
+   "audioMs": 11670
   },
   {
    "art": "📖",
    "tokens": [
     {
      "t": "She",
-     "ms": 0
+     "ms": 580,
+     "endMs": 740
     },
     {
      "t": "waited",
-     "ms": 400
+     "ms": 740,
+     "endMs": 1000
     },
     {
      "t": "while",
-     "ms": 660
+     "ms": 1000,
+     "endMs": 1440
     },
     {
      "t": "the",
-     "ms": 980
+     "ms": 1440,
+     "endMs": 1660
     },
     {
      "t": "sun",
-     "ms": 1180
+     "ms": 1660,
+     "endMs": 1960
     },
     {
      "t": "went",
-     "ms": 1520
+     "ms": 1960,
+     "endMs": 2280
     },
     {
      "t": "low.",
-     "ms": 2020
+     "ms": 2280,
+     "endMs": 2720
     },
     {
      "t": "She",
-     "ms": 3680
+     "ms": 4850,
+     "endMs": 4980
     },
     {
      "t": "waited",
-     "ms": 4000
+     "ms": 4980,
+     "endMs": 5260
     },
     {
      "t": "while",
-     "ms": 4260
+     "ms": 5260,
+     "endMs": 5740
     },
     {
      "t": "the",
-     "ms": 4640
+     "ms": 5740,
+     "endMs": 5940
     },
     {
      "t": "smell",
-     "ms": 4800
+     "ms": 5940,
+     "endMs": 6240
     },
     {
      "t": "grew",
-     "ms": 5220
+     "ms": 6240,
+     "endMs": 6640
     },
     {
      "t": "thicker",
-     "ms": 5680
+     "ms": 6640,
+     "endMs": 7100
     },
     {
      "t": "and",
-     "ms": 6420
+     "ms": 7100,
+     "endMs": 7980
     },
     {
      "t": "warmer",
-     "ms": 6840
+     "ms": 7980,
+     "endMs": 8340
     },
     {
      "t": "and",
-     "ms": 7400
+     "ms": 8340,
+     "endMs": 8820
     },
     {
      "t": "better.",
-     "ms": 7900
+     "ms": 8820,
+     "endMs": 9220
     }
    ],
    "audio": "p5.m4a",
-   "audioMs": 9680
+   "audioMs": 10830
   },
   {
    "art": "📖",
    "tokens": [
     {
      "t": "At",
-     "ms": 0
+     "ms": 580,
+     "endMs": 720
     },
     {
      "t": "last",
-     "ms": 300
+     "ms": 720,
+     "endMs": 960
     },
     {
      "t": "Nani",
-     "ms": 710
+     "ms": 960,
+     "endMs": 1460
     },
     {
      "t": "filled",
-     "ms": 1120
+     "ms": 1460,
+     "endMs": 1900
     },
     {
      "t": "a",
-     "ms": 1480
+     "ms": 1900,
+     "endMs": 2120
     },
     {
      "t": "bowl.",
-     "ms": 1840
+     "ms": 2120,
+     "endMs": 2440
     },
     {
      "t": "Nan",
-     "ms": 2770
+     "ms": 4670,
+     "endMs": 4900
     },
     {
      "t": "got",
-     "ms": 3700
+     "ms": 4900,
+     "endMs": 5180
     },
     {
      "t": "the",
-     "ms": 3960
+     "ms": 5180,
+     "endMs": 5420
     },
     {
      "t": "first",
-     "ms": 4140
+     "ms": 5420,
+     "endMs": 5740
     },
     {
      "t": "one,",
-     "ms": 4540
+     "ms": 5740,
+     "endMs": 6140
     },
     {
      "t": "because",
-     "ms": 5360
+     "ms": 6140,
+     "endMs": 6940
     },
     {
      "t": "she",
-     "ms": 5740
+     "ms": 6940,
+     "endMs": 7360
     },
     {
      "t": "had",
-     "ms": 6100
+     "ms": 7360,
+     "endMs": 7540
     },
     {
      "t": "waited",
-     "ms": 6360
+     "ms": 7540,
+     "endMs": 7800
     },
     {
      "t": "the",
-     "ms": 6780
+     "ms": 7800,
+     "endMs": 8200
     },
     {
      "t": "longest.",
-     "ms": 7080
+     "ms": 8200,
+     "endMs": 8740
     }
    ],
    "magic": [
     "got"
    ],
    "audio": "p6.m4a",
-   "audioMs": 9200
+   "audioMs": 10480
   }
  ],
  "moral": {
   "spoken": "Good things take the time they take.",
   "line": "I sit on the mat.",
   "audio": "moral.m4a",
-  "audioMs": 3730
+  "audioMs": 4310
  },
  "prompts": {
   "yes:pot": {
    "audio": "yes-pot.m4a",
-   "ms": 4640
+   "ms": 4850
   },
   "word:pot": {
    "audio": "word-pot.m4a",
-   "ms": 2290
+   "ms": 2360
   },
   "yes:sit": {
    "audio": "yes-sit.m4a",
-   "ms": 4640
+   "ms": 4880
   },
   "word:sit": {
    "audio": "word-sit.m4a",
-   "ms": 2290
+   "ms": 2410
   },
   "yes:got": {
    "audio": "yes-got.m4a",
-   "ms": 4640
+   "ms": 4860
   },
   "word:got": {
    "audio": "word-got.m4a",
-   "ms": 2290
+   "ms": 2370
   }
  }
 }

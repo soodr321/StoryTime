@@ -27,63 +27,77 @@
    "tokens": [
     {
      "t": "A",
-     "ms": 0
+     "ms": 580,
+     "endMs": 660
     },
     {
      "t": "hungry",
-     "ms": 280
+     "ms": 660,
+     "endMs": 1080
     },
     {
      "t": "jackal",
-     "ms": 700
+     "ms": 1080,
+     "endMs": 1800
     },
     {
      "t": "crept",
-     "ms": 1640
+     "ms": 1800,
+     "endMs": 2080
     },
     {
      "t": "into",
-     "ms": 2480
+     "ms": 2080,
+     "endMs": 2640
     },
     {
      "t": "a",
-     "ms": 3020
+     "ms": 2640,
+     "endMs": 2780
     },
     {
      "t": "town",
-     "ms": 3160
+     "ms": 2780,
+     "endMs": 3140
     },
     {
      "t": "to",
-     "ms": 3560
+     "ms": 3140,
+     "endMs": 3420
     },
     {
      "t": "get",
-     "ms": 3960
+     "ms": 3420,
+     "endMs": 3620
     },
     {
      "t": "food.",
-     "ms": 4140
+     "ms": 3620,
+     "endMs": 4000
     },
     {
      "t": "Some",
-     "ms": 5760
+     "ms": 6260,
+     "endMs": 6420
     },
     {
      "t": "dogs",
-     "ms": 6140
+     "ms": 6420,
+     "endMs": 6760
     },
     {
      "t": "saw",
-     "ms": 6420
+     "ms": 6760,
+     "endMs": 7300
     },
     {
      "t": "him.",
-     "ms": 6820
+     "ms": 7300,
+     "endMs": 7660
     }
    ],
    "audio": "p1.m4a",
-   "audioMs": 8200
+   "audioMs": 9180
   },
   {
    "art": "🪣",
@@ -93,209 +107,256 @@
    "tokens": [
     {
      "t": "He",
-     "ms": 0
+     "ms": 580,
+     "endMs": 660
     },
     {
      "t": "ran",
-     "ms": 280
+     "ms": 660,
+     "endMs": 960
     },
     {
      "t": "and",
-     "ms": 620
+     "ms": 960,
+     "endMs": 1380
     },
     {
      "t": "fell",
-     "ms": 1300
+     "ms": 1380,
+     "endMs": 1700
     },
     {
      "t": "into",
-     "ms": 1640
+     "ms": 1700,
+     "endMs": 2120
     },
     {
      "t": "a",
-     "ms": 1920
+     "ms": 2120,
+     "endMs": 2280
     },
     {
      "t": "big",
-     "ms": 2080
+     "ms": 2280,
+     "endMs": 2500
     },
     {
      "t": "pot",
-     "ms": 2580
+     "ms": 2500,
+     "endMs": 2880
     },
     {
      "t": "of",
-     "ms": 2940
+     "ms": 2880,
+     "endMs": 3140
     },
     {
      "t": "blue",
-     "ms": 3160
+     "ms": 3140,
+     "endMs": 3420
     },
     {
      "t": "dye.",
-     "ms": 3420
+     "ms": 3420,
+     "endMs": 3780
     },
     {
      "t": "He",
-     "ms": 4820
+     "ms": 5960,
+     "endMs": 6040
     },
     {
      "t": "came",
-     "ms": 5380
+     "ms": 6040,
+     "endMs": 6280
     },
     {
      "t": "out",
-     "ms": 5620
+     "ms": 6280,
+     "endMs": 6580
     },
     {
      "t": "blue",
-     "ms": 5800
+     "ms": 6580,
+     "endMs": 6860
     },
     {
      "t": "all",
-     "ms": 6240
+     "ms": 6860,
+     "endMs": 7280
     },
     {
      "t": "over!",
-     "ms": 6820
+     "ms": 7280,
+     "endMs": 7740
     }
    ],
    "audio": "p2.m4a",
-   "audioMs": 8700
+   "audioMs": 9300
   },
   {
    "art": "🦊",
    "tokens": [
     {
      "t": "Back",
-     "ms": 0
+     "ms": 580,
+     "endMs": 800
     },
     {
      "t": "in",
-     "ms": 420
+     "ms": 800,
+     "endMs": 1020
     },
     {
      "t": "the",
-     "ms": 620
+     "ms": 1020,
+     "endMs": 1180
     },
     {
      "t": "forest,",
-     "ms": 720
+     "ms": 1180,
+     "endMs": 1620
     },
     {
      "t": "the",
-     "ms": 2060
+     "ms": 2560,
+     "endMs": 2620
     },
     {
      "t": "animals",
-     "ms": 2320
+     "ms": 2620,
+     "endMs": 3120
     },
     {
      "t": "had",
-     "ms": 2860
+     "ms": 3120,
+     "endMs": 3480
     },
     {
      "t": "never",
-     "ms": 3200
+     "ms": 3480,
+     "endMs": 3760
     },
     {
      "t": "seen",
-     "ms": 3540
+     "ms": 3760,
+     "endMs": 4300
     },
     {
      "t": "a",
-     "ms": 4080
+     "ms": 4300,
+     "endMs": 4480
     },
     {
      "t": "blue",
-     "ms": 4340
+     "ms": 4480,
+     "endMs": 4700
     },
     {
      "t": "animal.",
-     "ms": 4660
+     "ms": 4700,
+     "endMs": 5280
     },
     {
      "t": "They",
-     "ms": 6200
+     "ms": 7580,
+     "endMs": 7680
     },
     {
      "t": "were",
-     "ms": 6760
+     "ms": 7680,
+     "endMs": 7880
     },
     {
      "t": "scared.",
-     "ms": 6920
+     "ms": 7880,
+     "endMs": 8280
     }
    ],
    "audio": "p3.m4a",
-   "audioMs": 8840
+   "audioMs": 9990
   },
   {
    "art": "👑",
    "tokens": [
     {
      "t": "“I",
-     "ms": 0
+     "ms": 580,
+     "endMs": 700
     },
     {
      "t": "am",
-     "ms": 320
+     "ms": 700,
+     "endMs": 840
     },
     {
      "t": "your",
-     "ms": 440
+     "ms": 840,
+     "endMs": 1020
     },
     {
      "t": "king,”",
-     "ms": 600
+     "ms": 1020,
+     "endMs": 1800
     },
     {
      "t": "the",
-     "ms": 1760
+     "ms": 1900,
+     "endMs": 1960
     },
     {
      "t": "jackal",
-     "ms": 1920
+     "ms": 1960,
+     "endMs": 2480
     },
     {
      "t": "said.",
-     "ms": 2560
+     "ms": 2480,
+     "endMs": 2960
     },
     {
      "t": "The",
-     "ms": 3820
+     "ms": 4950,
+     "endMs": 5000
     },
     {
      "t": "lion",
-     "ms": 4400
+     "ms": 5000,
+     "endMs": 5280
     },
     {
      "t": "and",
-     "ms": 4840
+     "ms": 5280,
+     "endMs": 5660
     },
     {
      "t": "the",
-     "ms": 5340
+     "ms": 5660,
+     "endMs": 5860
     },
     {
      "t": "tiger",
-     "ms": 5460
+     "ms": 5860,
+     "endMs": 6160
     },
     {
      "t": "bowed",
-     "ms": 5840
+     "ms": 6160,
+     "endMs": 6660
     },
     {
      "t": "to",
-     "ms": 6360
+     "ms": 6660,
+     "endMs": 7000
     },
     {
      "t": "him.",
-     "ms": 6740
+     "ms": 7000,
+     "endMs": 7280
     }
    ],
    "audio": "p4.m4a",
-   "audioMs": 8119
+   "audioMs": 8840
   },
   {
    "art": "🌙",
@@ -305,166 +366,196 @@
    "tokens": [
     {
      "t": "One",
-     "ms": 0
+     "ms": 570,
+     "endMs": 740
     },
     {
      "t": "night,",
-     "ms": 500
+     "ms": 740,
+     "endMs": 1120
     },
     {
      "t": "the",
-     "ms": 1020
+     "ms": 1750,
+     "endMs": 1800
     },
     {
      "t": "other",
-     "ms": 1700
+     "ms": 1800,
+     "endMs": 2100
     },
     {
      "t": "jackals",
-     "ms": 2310
+     "ms": 2100,
+     "endMs": 2700
     },
     {
      "t": "howled",
-     "ms": 2920
+     "ms": 2700,
+     "endMs": 3000
     },
     {
      "t": "at",
-     "ms": 3480
+     "ms": 3000,
+     "endMs": 3300
     },
     {
      "t": "the",
-     "ms": 3560
+     "ms": 3300,
+     "endMs": 3460
     },
     {
      "t": "moon.",
-     "ms": 3700
+     "ms": 3460,
+     "endMs": 3800
     },
     {
      "t": "The",
-     "ms": 4000
+     "ms": 5960,
+     "endMs": 6000
     },
     {
      "t": "blue",
-     "ms": 5440
+     "ms": 6000,
+     "endMs": 6220
     },
     {
      "t": "jackal",
-     "ms": 5760
+     "ms": 6220,
+     "endMs": 6880
     },
     {
      "t": "did",
-     "ms": 6560
+     "ms": 6880,
+     "endMs": 7120
     },
     {
      "t": "too.",
-     "ms": 6780
+     "ms": 7120,
+     "endMs": 7540
     }
    ],
    "audio": "p5.m4a",
-   "audioMs": 8460
+   "audioMs": 9100
   },
   {
    "art": "🐕",
    "tokens": [
     {
      "t": "The",
-     "ms": 0
+     "ms": 580,
+     "endMs": 640
     },
     {
      "t": "animals",
-     "ms": 260
+     "ms": 640,
+     "endMs": 1160
     },
     {
      "t": "heard",
-     "ms": 650
+     "ms": 1160,
+     "endMs": 1560
     },
     {
      "t": "him.",
-     "ms": 1040
+     "ms": 1560,
+     "endMs": 2000
     },
     {
      "t": "“He",
-     "ms": 2520
+     "ms": 4100,
+     "endMs": 4200
     },
     {
      "t": "is",
-     "ms": 2700
+     "ms": 4200,
+     "endMs": 4440
     },
     {
      "t": "just",
-     "ms": 2900
+     "ms": 4440,
+     "endMs": 4700
     },
     {
      "t": "a",
-     "ms": 3160
+     "ms": 4700,
+     "endMs": 4900
     },
     {
      "t": "jackal!”",
-     "ms": 3380
+     "ms": 4900,
+     "endMs": 5520
     },
     {
      "t": "they",
-     "ms": 4820
+     "ms": 6130,
+     "endMs": 6220
     },
     {
      "t": "said,",
-     "ms": 5080
+     "ms": 6220,
+     "endMs": 6580
     },
     {
      "t": "and",
-     "ms": 5420
+     "ms": 6980,
+     "endMs": 7080
     },
     {
      "t": "they",
-     "ms": 5720
+     "ms": 7080,
+     "endMs": 7280
     },
     {
      "t": "chased",
-     "ms": 5840
+     "ms": 7280,
+     "endMs": 7560
     },
     {
      "t": "him",
-     "ms": 6120
+     "ms": 7560,
+     "endMs": 8039
     },
     {
      "t": "away.",
-     "ms": 6480
+     "ms": 8039,
+     "endMs": 8380
     }
    ],
    "audio": "p6.m4a",
-   "audioMs": 8119
+   "audioMs": 10020
   }
  ],
  "moral": {
   "spoken": "Pretending to be someone you are not does not last.",
   "line": "It is not a dog.",
   "audio": "moral.m4a",
-  "audioMs": 5030
+  "audioMs": 5750
  },
  "prompts": {
   "yes:get": {
    "audio": "yes-get.m4a",
-   "ms": 4640
+   "ms": 4800
   },
   "word:get": {
    "audio": "word-get.m4a",
-   "ms": 2290
+   "ms": 2310
   },
   "yes:pot": {
    "audio": "yes-pot.m4a",
-   "ms": 4640
+   "ms": 4850
   },
   "word:pot": {
    "audio": "word-pot.m4a",
-   "ms": 2290
+   "ms": 2360
   },
   "yes:did": {
    "audio": "yes-did.m4a",
-   "ms": 4640
+   "ms": 4810
   },
   "word:did": {
    "audio": "word-did.m4a",
-   "ms": 2290
+   "ms": 2320
   }
  }
 }

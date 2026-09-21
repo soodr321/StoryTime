@@ -24,87 +24,107 @@
    "tokens": [
     {
      "t": "Sam",
-     "ms": 0
+     "ms": 580,
+     "endMs": 780
     },
     {
      "t": "is",
-     "ms": 400
+     "ms": 780,
+     "endMs": 1040
     },
     {
      "t": "a",
-     "ms": 620
+     "ms": 1040,
+     "endMs": 1200
     },
     {
      "t": "small",
-     "ms": 740
+     "ms": 1200,
+     "endMs": 1460
     },
     {
      "t": "brown",
-     "ms": 1100
+     "ms": 1460,
+     "endMs": 1920
     },
     {
      "t": "dog",
-     "ms": 1520
+     "ms": 1920,
+     "endMs": 2440
     },
     {
      "t": "who",
-     "ms": 1980
+     "ms": 2440,
+     "endMs": 2920
     },
     {
      "t": "loves",
-     "ms": 2440
+     "ms": 2920,
+     "endMs": 3200
     },
     {
      "t": "to",
-     "ms": 2760
+     "ms": 3200,
+     "endMs": 3520
     },
     {
      "t": "dig.",
-     "ms": 3040
+     "ms": 3520,
+     "endMs": 3880
     },
     {
      "t": "Dad",
-     "ms": 4200
+     "ms": 6020,
+     "endMs": 6120
     },
     {
      "t": "was",
-     "ms": 4860
+     "ms": 6120,
+     "endMs": 6420
     },
     {
      "t": "digging",
-     "ms": 5140
+     "ms": 6420,
+     "endMs": 6760
     },
     {
      "t": "in",
-     "ms": 5620
+     "ms": 6760,
+     "endMs": 7100
     },
     {
      "t": "the",
-     "ms": 5960
+     "ms": 7100,
+     "endMs": 7240
     },
     {
      "t": "garden,",
-     "ms": 6060
+     "ms": 7240,
+     "endMs": 7640
     },
     {
      "t": "so",
-     "ms": 7100
+     "ms": 8340,
+     "endMs": 8460
     },
     {
      "t": "Sam",
-     "ms": 7420
+     "ms": 8460,
+     "endMs": 8860
     },
     {
      "t": "dug",
-     "ms": 7880
+     "ms": 8860,
+     "endMs": 9160
     },
     {
      "t": "too.",
-     "ms": 8260
+     "ms": 9160,
+     "endMs": 9600
     }
    ],
    "audio": "p1.m4a",
-   "audioMs": 10040
+   "audioMs": 11200
   },
   {
    "art": "🕳️",
@@ -114,67 +134,82 @@
    "tokens": [
     {
      "t": "Sam",
-     "ms": 220
+     "ms": 580,
+     "endMs": 900
     },
     {
      "t": "dug",
-     "ms": 420
+     "ms": 900,
+     "endMs": 1120
     },
     {
      "t": "a",
-     "ms": 1100
+     "ms": 1120,
+     "endMs": 1400
     },
     {
      "t": "pit.",
-     "ms": 1780
+     "ms": 1400,
+     "endMs": 1780
     },
     {
      "t": "He",
-     "ms": 2460
+     "ms": 3840,
+     "endMs": 3920
     },
     {
      "t": "dug",
-     "ms": 2960
+     "ms": 3920,
+     "endMs": 4220
     },
     {
      "t": "and",
-     "ms": 3300
+     "ms": 4220,
+     "endMs": 4580
     },
     {
      "t": "dug",
-     "ms": 3640
+     "ms": 4580,
+     "endMs": 4900
     },
     {
      "t": "until",
-     "ms": 4019
+     "ms": 4900,
+     "endMs": 5600
     },
     {
      "t": "the",
-     "ms": 4720
+     "ms": 5600,
+     "endMs": 6000
     },
     {
      "t": "pit",
-     "ms": 4940
+     "ms": 6000,
+     "endMs": 6280
     },
     {
      "t": "was",
-     "ms": 5260
+     "ms": 6280,
+     "endMs": 6520
     },
     {
      "t": "deeper",
-     "ms": 5620
+     "ms": 6520,
+     "endMs": 6860
     },
     {
      "t": "than",
-     "ms": 6100
+     "ms": 6860,
+     "endMs": 7360
     },
     {
      "t": "Sam!",
-     "ms": 6580
+     "ms": 7360,
+     "endMs": 7740
     }
    ],
    "audio": "p2.m4a",
-   "audioMs": 8360
+   "audioMs": 9440
   },
   {
    "art": "🐕",
@@ -184,162 +219,199 @@
    "tokens": [
     {
      "t": "Sam",
-     "ms": 0
+     "ms": 580,
+     "endMs": 840
     },
     {
      "t": "jumped",
-     "ms": 520
+     "ms": 840,
+     "endMs": 1160
     },
     {
      "t": "in.",
-     "ms": 760
+     "ms": 1160,
+     "endMs": 1700
     },
     {
      "t": "Then",
-     "ms": 1630
+     "ms": 3770,
+     "endMs": 3860
     },
     {
      "t": "he",
-     "ms": 2500
+     "ms": 3860,
+     "endMs": 4080
     },
     {
      "t": "sat",
-     "ms": 2680
+     "ms": 4080,
+     "endMs": 4380
     },
     {
      "t": "at",
-     "ms": 2900
+     "ms": 4380,
+     "endMs": 4660
     },
     {
      "t": "the",
-     "ms": 3140
+     "ms": 4660,
+     "endMs": 4820
     },
     {
      "t": "bottom",
-     "ms": 3160
+     "ms": 4820,
+     "endMs": 5260
     },
     {
      "t": "and",
-     "ms": 3680
+     "ms": 5260,
+     "endMs": 5560
     },
     {
      "t": "looked",
-     "ms": 4460
+     "ms": 5560,
+     "endMs": 5780
     },
     {
      "t": "up.",
-     "ms": 4720
+     "ms": 5780,
+     "endMs": 6180
     },
     {
      "t": "The",
-     "ms": 5100
+     "ms": 8280,
+     "endMs": 8320
     },
     {
      "t": "top",
-     "ms": 6440
+     "ms": 8320,
+     "endMs": 8580
     },
     {
      "t": "was",
-     "ms": 6700
+     "ms": 8580,
+     "endMs": 8900
     },
     {
      "t": "very",
-     "ms": 6960
+     "ms": 8900,
+     "endMs": 9300
     },
     {
      "t": "far",
-     "ms": 7460
+     "ms": 9300,
+     "endMs": 9620
     },
     {
      "t": "away.",
-     "ms": 7800
+     "ms": 9620,
+     "endMs": 10180
     }
    ],
    "audio": "p3.m4a",
-   "audioMs": 9540
+   "audioMs": 11670
   },
   {
    "art": "😟",
    "tokens": [
     {
      "t": "Sam",
-     "ms": 0
+     "ms": 570,
+     "endMs": 840
     },
     {
      "t": "tried",
-     "ms": 380
+     "ms": 840,
+     "endMs": 1240
     },
     {
      "t": "to",
-     "ms": 660
+     "ms": 1240,
+     "endMs": 1520
     },
     {
      "t": "climb",
-     "ms": 880
+     "ms": 1520,
+     "endMs": 1760
     },
     {
      "t": "out.",
-     "ms": 1200
+     "ms": 1760,
+     "endMs": 2300
     },
     {
      "t": "His",
-     "ms": 2820
+     "ms": 4340,
+     "endMs": 4440
     },
     {
      "t": "paws",
-     "ms": 2980
+     "ms": 4440,
+     "endMs": 4860
     },
     {
      "t": "scraped",
-     "ms": 3500
+     "ms": 4860,
+     "endMs": 5640
     },
     {
      "t": "the",
-     "ms": 4600
+     "ms": 5640,
+     "endMs": 5760
     },
     {
      "t": "soft",
-     "ms": 4680
+     "ms": 5760,
+     "endMs": 6040
     },
     {
      "t": "earth,",
-     "ms": 5140
+     "ms": 6040,
+     "endMs": 6540
     },
     {
      "t": "and",
-     "ms": 5660
+     "ms": 7430,
+     "endMs": 7520
     },
     {
      "t": "it",
-     "ms": 6540
+     "ms": 7520,
+     "endMs": 7680
     },
     {
      "t": "slid",
-     "ms": 6660
+     "ms": 7680,
+     "endMs": 8000
     },
     {
      "t": "back",
-     "ms": 7000
+     "ms": 8000,
+     "endMs": 8520
     },
     {
      "t": "down",
-     "ms": 7440
+     "ms": 8520,
+     "endMs": 8880
     },
     {
      "t": "on",
-     "ms": 7860
+     "ms": 8880,
+     "endMs": 9180
     },
     {
      "t": "his",
-     "ms": 8160
+     "ms": 9180,
+     "endMs": 9380
     },
     {
      "t": "nose.",
-     "ms": 8320
+     "ms": 9380,
+     "endMs": 9800
     }
    ],
    "audio": "p4.m4a",
-   "audioMs": 10210
+   "audioMs": 11550
   },
   {
    "art": "👨",
@@ -349,87 +421,107 @@
    "tokens": [
     {
      "t": "Sam",
-     "ms": 220
+     "ms": 580,
+     "endMs": 860
     },
     {
      "t": "barked,",
-     "ms": 420
+     "ms": 860,
+     "endMs": 1480
     },
     {
      "t": "“Woof!",
-     "ms": 1546
+     "ms": 1480,
+     "endMs": 2100
     },
     {
      "t": "Woof!”",
-     "ms": 2673
+     "ms": 4080,
+     "endMs": 4520
     },
     {
      "t": "Dad",
-     "ms": 3800
+     "ms": 5120,
+     "endMs": 5240
     },
     {
      "t": "put",
-     "ms": 4080
+     "ms": 5240,
+     "endMs": 5660
     },
     {
      "t": "down",
-     "ms": 4500
+     "ms": 5660,
+     "endMs": 6000
     },
     {
      "t": "his",
-     "ms": 4960
+     "ms": 6000,
+     "endMs": 6260
     },
     {
      "t": "spade,",
-     "ms": 5260
+     "ms": 6260,
+     "endMs": 6840
     },
     {
      "t": "lifted",
-     "ms": 6440
+     "ms": 7380,
+     "endMs": 7580
     },
     {
      "t": "Sam",
-     "ms": 6920
+     "ms": 7580,
+     "endMs": 8140
     },
     {
      "t": "out",
-     "ms": 7360
+     "ms": 8140,
+     "endMs": 8420
     },
     {
      "t": "of",
-     "ms": 7660
+     "ms": 8420,
+     "endMs": 8620
     },
     {
      "t": "the",
-     "ms": 7760
+     "ms": 8620,
+     "endMs": 8780
     },
     {
      "t": "pit,",
-     "ms": 7840
+     "ms": 8780,
+     "endMs": 9080
     },
     {
      "t": "and",
-     "ms": 8620
+     "ms": 9080,
+     "endMs": 9580
     },
     {
      "t": "gave",
-     "ms": 9000
+     "ms": 9580,
+     "endMs": 9880
     },
     {
      "t": "him",
-     "ms": 9240
+     "ms": 9880,
+     "endMs": 10240
     },
     {
      "t": "a",
-     "ms": 9440
+     "ms": 10240,
+     "endMs": 10380
     },
     {
      "t": "pat.",
-     "ms": 9520
+     "ms": 10380,
+     "endMs": 10740
     }
    ],
    "audio": "p5.m4a",
-   "audioMs": 11120
+   "audioMs": 12350
   },
   {
    "art": "😴",
@@ -439,119 +531,137 @@
    "tokens": [
     {
      "t": "Safe",
-     "ms": 0
+     "ms": 580,
+     "endMs": 840
     },
     {
      "t": "on",
-     "ms": 460
+     "ms": 840,
+     "endMs": 1100
     },
     {
      "t": "the",
-     "ms": 720
+     "ms": 1100,
+     "endMs": 1260
     },
     {
      "t": "grass,",
-     "ms": 820
+     "ms": 1260,
+     "endMs": 1660
     },
     {
      "t": "Sam",
-     "ms": 1780
+     "ms": 2270,
+     "endMs": 2480
     },
     {
      "t": "gave",
-     "ms": 2140
+     "ms": 2480,
+     "endMs": 2860
     },
     {
      "t": "Dad",
-     "ms": 2480
+     "ms": 2860,
+     "endMs": 3240
     },
     {
      "t": "a",
-     "ms": 2860
+     "ms": 3240,
+     "endMs": 3500
     },
     {
      "t": "lick.",
-     "ms": 3020
+     "ms": 3500,
+     "endMs": 3780
     },
     {
      "t": "Then",
-     "ms": 3890
+     "ms": 5940,
+     "endMs": 6040
     },
     {
      "t": "he",
-     "ms": 4760
+     "ms": 6040,
+     "endMs": 6260
     },
     {
      "t": "had",
-     "ms": 4900
+     "ms": 6260,
+     "endMs": 6460
     },
     {
      "t": "a",
-     "ms": 5000
+     "ms": 6460,
+     "endMs": 6600
     },
     {
      "t": "long",
-     "ms": 5120
+     "ms": 6600,
+     "endMs": 6900
     },
     {
      "t": "nap",
-     "ms": 5520
+     "ms": 6900,
+     "endMs": 7300
     },
     {
      "t": "in",
-     "ms": 6040
+     "ms": 7300,
+     "endMs": 7620
     },
     {
      "t": "the",
-     "ms": 6340
+     "ms": 7620,
+     "endMs": 7760
     },
     {
      "t": "sun.",
-     "ms": 6460
+     "ms": 7760,
+     "endMs": 8119
     }
    ],
    "audio": "p6.m4a",
-   "audioMs": 8080
+   "audioMs": 9700
   }
  ],
  "moral": {
   "spoken": "When you are stuck, call out, and someone who loves you will come.",
   "line": "Sam sat in a pit.",
   "audio": "moral.m4a",
-  "audioMs": 5890
+  "audioMs": 6620
  },
  "prompts": {
   "yes:pit": {
    "audio": "yes-pit.m4a",
-   "ms": 4640
+   "ms": 4820
   },
   "word:pit": {
    "audio": "word-pit.m4a",
-   "ms": 2290
+   "ms": 2320
   },
   "yes:sat": {
    "audio": "yes-sat.m4a",
-   "ms": 4640
+   "ms": 4950
   },
   "word:sat": {
    "audio": "word-sat.m4a",
-   "ms": 2290
+   "ms": 2460
   },
   "yes:pat": {
    "audio": "yes-pat.m4a",
-   "ms": 4640
+   "ms": 4890
   },
   "word:pat": {
    "audio": "word-pat.m4a",
-   "ms": 2290
+   "ms": 2400
   },
   "yes:nap": {
    "audio": "yes-nap.m4a",
-   "ms": 4640
+   "ms": 4880
   },
   "word:nap": {
    "audio": "word-nap.m4a",
-   "ms": 2290
+   "ms": 2370
   }
  }
 }

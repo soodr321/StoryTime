@@ -3,12 +3,21 @@
 Generate narration audio + word timings for every story in library/, plus the
 shared narrator prompts, into public/library/<slug>/ and public/prompts/.
 
-  python3 scripts/gen-audio.py            # all stories
-  python3 scripts/gen-audio.py fox-and-crow
+  python3 scripts/gen-audio.py            # the shared prompts and every story
+  python3 scripts/gen-audio.py fox-and-crow   # just that story; public/prompts is left alone
 
 Voice: Kokoro `af_sarah` at speed 0.65 (~108 wpm on a full page), hosted on DeepInfra
 (plan-voice.md A2, resolved 2026-09-20 — chosen by ear from a nine-speed sweep; Apache-2.0
-weights, word timestamps confirmed live). Requires DEEPINFRA_API_KEY, read from the environment
+weights, word timestamps confirmed live).
+
+Every sentence is synthesised behind a carrier lead-in and cut back out (plan-voice.md A7a,
+generalised — see synth_sentence()). Kokoro's acoustic model has not settled when an utterance
+begins, so the first word after ANY sentence-ending full stop comes out with a phantom syllable
+in front of it or with no onset consonant at all. That is not a property of isolated words: it
+happens at every sentence boundary in ordinary page narration too, which is 75 of the library's
+99 pages.
+
+Requires DEEPINFRA_API_KEY, read from the environment
 or from .env.local (gitignored, never committed) — see require_api_key(). Fail loud, not silent:
 no key means this script refuses to generate rather than falling back to another voice
 (principle 4). Audio is a deploy-time artefact: public/library/**/*.m4a and public/prompts/ are
@@ -18,7 +27,7 @@ scripts/fetch-phonemes.py (Wikimedia Commons IPA set, CC BY-SA). The "slide thro
 blend clips are a separate, still-Andrew-voiced pipeline (scripts/gen-blends.py, plan-voice.md
 A7) — not touched here.
 
-Requires: pip install aiohttp ; ffmpeg on PATH (or imageio-ffmpeg).
+Requires: pip install aiohttp numpy ; ffmpeg on PATH (or imageio-ffmpeg).
 """
 import asyncio, base64, json, os, re, shutil, subprocess, sys
 from pathlib import Path
@@ -27,12 +36,37 @@ try:
     import aiohttp
 except ImportError:
     sys.exit("pip install aiohttp")
+try:
+    import numpy as np
+except ImportError:
+    sys.exit("pip install numpy")   # the onset gate measures spectra; faster-whisper already pulls numpy in
 
 ROOT = Path(__file__).resolve().parents[1]
 LIB, PUB = ROOT / "library", ROOT / "public"
 DEEPINFRA_URL = "https://api.deepinfra.com/v1/inference/hexgrad/Kokoro-82M"
 VOICE, SPEED = "af_sarah", 0.65   # plan-voice.md A2 — locked by ear; nothing downstream may override this
 SENTENCE_PAUSE_MS = 420   # a bedtime reader stops at a full stop; the vendor runs sentences together
+SR_SYNTH = 24000          # Kokoro returns 24 kHz mono; keep the intermediates there and resample once, at the end
+SR_ASR = 16000            # what Whisper wants, and what the spectral measurements below use
+
+# The carrier ladder (plan-voice.md A7a, generalised to whole sentences). A comma lead-in keeps the
+# model settled; a full stop does not — "Okay. Sat on the mat." comes out with the same phantom word
+# as "Sat on the mat." does, which is why a single continuous per-page call cannot fix this either.
+# Several carriers because one is not enough: "Listen," ends in /n/, and before a payload that also
+# opens on a sonorant ("Woof!") the two run together with no boundary to cut at. Each entry is
+# (text, word_count); the cut lands between the carrier's last spoken word and the payload's first.
+CARRIERS = (("Listen, ", 1), ("Yes, ", 1), ("Wait, ", 1), ("Look, ", 1), ("Listen to this, ", 3))
+CUT_WINDOW_EXT_MS = 120   # the vendor's word start runs early — for "Drip." the real gap is 40 ms after it
+CUT_QUIET_DB = -30.0      # a cut frame louder than this is inside the carrier, not in the gap after it.
+                          # Measured, not guessed: every cut that left audible carrier in front of the
+                          # payload sat at -18 dB, and every clean one at -27 dB or quieter. It cannot
+                          # be tightened much further — an /s/-initial payload starts with low-energy
+                          # frication, so "Listen, sun." never gets quieter than -34 dB however deep
+                          # the pause really is, and a -45 dB rule refused every carrier for `sun`.
+PAGE_TRIES = 3            # a page whose timings the gate refuses is re-synthesised, not waved through
+LEAD_SILENCE_MS = 580     # Kokoro's own leading pad, measured across the shipped tree (530-630 ms).
+                          # Restored after the cut so the pause architecture is unchanged by this fix:
+                          # a page still opens ~580 ms in and sentences are still ~1,850 ms apart.
 
 _API_KEY = None   # set once by require_api_key() at the top of main(); never guessed
 
@@ -90,13 +124,15 @@ def sentence_offsets(durations_ms, pause_ms):
 
 async def _one(text, voice, speed):
     """
-    One synthesis pass against DeepInfra Kokoro: returns (mp3 bytes, [(word, start_ms)]).
+    One synthesis pass against DeepInfra Kokoro: returns (mp3 bytes, [(word, start_ms, end_ms)]).
     Response shape verified live (plan-voice.md): {"audio": "data:audio/mp3;base64,...", "words":
-    [{"id","start","end","text"}], ...} with start/end in SECONDS. Only the start is kept here —
-    align() (below) only ever consumed a word's start, and realign_from_heard() derives every
-    endMs from ASR, never from the vendor. A fresh session per call: this script makes at most a
-    few hundred calls per run, and a short-lived session avoids any cleanup edge case on the
-    fail-loud abort paths (AbortPage, sys.exit) that skip an orderly close.
+    [{"id","start","end","text"}], ...} with start/end in SECONDS. Punctuation comes back as its own
+    timestamped entry ("," between the carrier and the payload), which callers must skip — anchoring
+    a cut on words[n] rather than on the nth *spoken* word searches the carrier's own vowel tail and
+    concludes, wrongly, that there is no gap to cut in.
+    A fresh session per call: this script makes at most a few hundred calls per run, and a
+    short-lived session avoids any cleanup edge case on the fail-loud abort paths (AbortPage,
+    sys.exit) that skip an orderly close.
     """
     if not _API_KEY:
         raise RuntimeError("require_api_key() must run before any synthesis")
@@ -112,42 +148,272 @@ async def _one(text, voice, speed):
     audio_field = data["audio"]
     b64 = audio_field.split(",", 1)[1] if audio_field.startswith("data:") else audio_field
     buf = base64.b64decode(b64)
-    words = [(w["text"], float(w["start"]) * 1000.0) for w in (data.get("words") or [])]
+    words = [(w["text"], float(w["start"]) * 1000.0, float(w["end"]) * 1000.0) for w in (data.get("words") or [])]
     return buf, words
 
-async def tts(text, out_m4a, voice=VOICE, speed=SPEED):
+# ---------------------------------------------------------------------------------------------
+# Measuring the audio: the instruments the onset gate is built from.
+# ---------------------------------------------------------------------------------------------
+
+def _pcm(path, sr=SR_ASR, start_ms=0.0):
+    """Decode `path` (from `start_ms` on) to a float32 mono numpy array at `sr`."""
+    out = subprocess.run(
+        [FF, "-loglevel", "error", "-ss", f"{start_ms/1000:.4f}", "-i", str(path),
+         "-f", "s16le", "-acodec", "pcm_s16le", "-ar", str(sr), "-ac", "1", "-"],
+        capture_output=True, check=True).stdout
+    return np.frombuffer(out, dtype="<i2").astype(np.float32) / 32768.0
+
+def _rms_db(x, sr=SR_ASR, frame_ms=10):
+    """Per-frame RMS in dBFS. One value per 10 ms — the resolution the cut is chosen at."""
+    f = int(sr * frame_ms / 1000)
+    n = len(x) // f
+    if n == 0: return np.array([-120.0])
+    r = np.sqrt(np.mean(x[:n*f].reshape(n, f) ** 2, axis=1) + 1e-12)
+    return 20 * np.log10(r + 1e-12)
+
+def _speech_onset(x, sr=SR_ASR, floor_db=-42.0, frame_ms=10):
     """
-    Synthesize text → m4a (AAC, plays on iOS). Returns (duration_ms, [(word, start_ms)]).
-    Sentences are synthesised separately and joined with a real pause: read straight through,
-    the voice runs one sentence into the next, which is what made it feel rushed even when the
-    words-per-minute figure looked fine. Each sentence's own vendor word offsets are shifted by
-    sentence_offsets() before being merged, so `words` is already in the final file's timeline.
+    Sample index of the first real speech: the first frame within `floor_db` of the clip's peak.
+    Kokoro pads every synthesis with near-silence, so measuring a spectrum from sample 0 measures
+    the padding.
     """
-    tmp = out_m4a.with_suffix(".mp3")
+    f = int(sr * frame_ms / 1000)
+    db = _rms_db(x, sr, frame_ms)
+    hits = np.nonzero(db > db.max() + floor_db)[0]
+    return int(hits[0] * f) if len(hits) else 0
+
+def _centroids(x, sr=SR_ASR, n_frames=3, frame_ms=20):
+    """
+    Spectral centroid (Hz) of each of the first three 20 ms frames of speech — the measurement
+    A7a used to prove the defect: bare `sat` came out 616 688 969, which is a vowel, so there was
+    no /s/ in it at all; carrier-sliced it is 6122 5969 6291.
+    """
+    i0 = _speech_onset(x, sr)
+    w = int(sr * frame_ms / 1000)
+    freqs = np.fft.rfftfreq(w, 1 / sr)
+    out = []
+    for k in range(n_frames):
+        seg = x[i0 + k*w : i0 + (k+1)*w]
+        if len(seg) < w: out.append(float("nan")); continue
+        mag = np.abs(np.fft.rfft(seg * np.hanning(w)))
+        out.append(float((freqs * mag).sum() / (mag.sum() + 1e-12)))
+    return out
+
+# Only two onset classes are asserted, and only because both separate cleanly on measured data:
+# a sibilant onset reaches 4.0-6.1 kHz within the first two frames when it survives and stays at
+# 0.6-2.3 kHz when it does not, and an /m n/ onset drops to 350-700 Hz somewhere in the first three
+# frames when it survives while a phantom syllable in its place holds 1.1-5.9 kHz throughout.
+#
+# Everything else is left to the phantom check below and to the parent's ear (plan-voice.md A7's
+# rule 1: automation catches regressions, it does not choose). A7c already says centroid cannot
+# judge a vowel-initial word; measurement adds four more classes it cannot judge either:
+#   /f/   labiodental, diffuse and quiet — the same `fan.` measured 4273 Hz on one call and
+#         1515 Hz on the next, with the onset audibly present in both, so a threshold here
+#         would abort books at random;
+#   /h/   breathy, 1.9-4.5 kHz whether or not the defect is present;
+#   /th/  voiced — "They were scared." reads 338 Hz when it is completely correct;
+#   stops, liquids and glides, which have no steady-state onset to measure at all.
+SIBILANT_ONSETS = ("sh", "ss", "s")
+NASAL_ONSETS = ("m", "n")
+SIBILANT_MIN_HZ = 2500.0
+NASAL_MAX_HZ = 900.0
+
+def _onset_rule(word):
+    w = norm(word)
+    if not w: return None
+    for g in SIBILANT_ONSETS:
+        if w.startswith(g): return "sibilant"
+    for g in NASAL_ONSETS:
+        if w.startswith(g): return "nasal"
+    return None
+
+def _cut_point(x, words, n_carrier, sr=SR_ASR):
+    """
+    Where to cut the carrier off its payload: the quietest 10 ms frame between the carrier's last
+    spoken word and the payload's first. Returns (cut_ms, gap_db) with gap_db relative to the
+    clip's loudest frame, or None if the vendor did not report enough spoken words.
+
+    Searching for the energy minimum, rather than trusting the vendor's word boundary, is the load-
+    bearing part: the thing being protected is the payload's first consonant, so a cut that lands
+    even 20 ms late removes exactly what the carrier was added to preserve. The window runs a little
+    PAST the vendor's payload start for the same reason in the other direction — the vendor's start
+    runs early, and for "Drip." the real gap sits 40 ms after the timestamp.
+    """
+    spoken = [i for i, (t, _, _) in enumerate(words) if norm(t)]
+    if len(spoken) <= n_carrier: return None
+    lo = words[spoken[n_carrier-1]][2]
+    hi = words[spoken[n_carrier]][1] + CUT_WINDOW_EXT_MS
+    db = _rms_db(x, sr)
+    a, b = max(0, int(lo // 10)), min(len(db), int(hi // 10) + 1)
+    if b <= a: return None
+    k = a + int(np.argmin(db[a:b]))
+    return k * 10.0, float(db[k] - db.max())
+
+def _onset_verdict(path, tokens):   # -> (reason or None, heard)
+    """
+    Did the payload survive the cut with its first sound intact? Returns (reason, heard): reason is
+    None when it did and a string naming what is wrong when it did not, and `heard` is what Whisper
+    read back, which synth_sentence() uses to pick between takes of a one-word clip.
+    Two independent instruments, because neither is sufficient alone:
+
+    * **No phantom in front.** Whisper localises the defect as an inserted word — bare "Sat on the
+      mat." transcribes as "They sat on the mat." and "Pat was hot." as "A pat was hot." So: align
+      the tokens to what was heard and fail if the first token matched anything but the first thing
+      heard. An unmatched first token is *not* failed on — Whisper mishears "Pat" as "Hat" and
+      spells "Nani" as "Nanny" on perfectly good audio, and a book must not be blocked by that.
+    * **Onset class.** A7a's warning is that Whisper's language prior transcribes an onsetless "at"
+      as "sat", so the phantom check can be fooled exactly where it matters most. The centroid
+      cannot be, for the two classes where it separates (_onset_rule).
+
+    A third instrument — "is there sound before the first word Whisper heard" — is deliberately
+    absent: asr_words() now moves a word start forward out of silence, so it would compare a
+    number with itself. The gap depth at the cut (CUT_QUIET_DB) is what stands in for it.
+    """
+    heard = asr_words(path)
+    if not heard: return "no ASR transcript for this sentence", []
+    first = next((t for t in tokens if norm(t)), None)
+    if first is None: return None, heard
+    pairs = _match_tokens(tokens, heard)
+    ti = next(i for i, t in enumerate(tokens) if norm(t))
+    if ti in pairs and pairs[ti] != 0:
+        return f"phantom before {first!r}: heard {' '.join(w for w, _, _ in heard[:pairs[ti]+1])!r}", heard
+    rule = _onset_rule(first)
+    if rule:
+        c = _centroids(_pcm(path))
+        if rule == "sibilant" and not (max(c[0], c[1]) >= SIBILANT_MIN_HZ):
+            return f"{first!r} has no fricative onset: centroids {c[0]:.0f} {c[1]:.0f} {c[2]:.0f} Hz", heard
+        if rule == "nasal" and not (min(c) <= NASAL_MAX_HZ):   # "man" holds 1540/1417 Hz for two frames and only then drops to 419
+            return f"{first!r} has no nasal onset: centroids {c[0]:.0f} {c[1]:.0f} {c[2]:.0f} Hz", heard
+    return None, heard
+
+async def synth_sentence(text, work, stem, voice=VOICE, speed=SPEED, exact=None):
+    """
+    Synthesise ONE sentence with its onset intact, and return
+    (samples at SR_SYNTH, [(word, start_ms, end_ms)] relative to those samples).
+
+    The sentence is never sent on its own. It goes behind a carrier lead-in ("Listen, ...") which
+    absorbs the unsettled start of the utterance, and the carrier is then cut back out at the
+    energy minimum in front of the payload. If the carrier and the payload ran together with no
+    gap, or the cut did not leave a clean onset behind, the next carrier in the ladder is tried;
+    when the ladder is exhausted the page aborts rather than shipping a word with no first sound
+    (plan-voice.md principle 4 — the same reason realign() refuses a page it cannot measure).
+
+    `exact` is for the one-word clips — `word:{w}` and the word half of `yes:{w}` — where
+    plan-voice.md A7's gate 2 applies: Whisper must read the clip back as the word itself. It is a
+    preference, not a gate, and deliberately so: Whisper spells `sun` as "Son" and `mat` as "Matt"
+    on clips that are perfectly good, so failing on a mismatch would refuse correct audio. Instead
+    every carrier is tried and the first take Whisper reads back correctly wins; if none does, the
+    first take that passed the onset gate ships and the run prints what was heard, because a `bat`
+    that comes back as "that" is exactly the kind of thing the parent should listen to (A7 gate 1:
+    automation catches regressions, it does not choose).
+    """
+    tokens = text.split(" ")
+    reasons, fallback = [], None
+    for carrier, n_carrier in CARRIERS:
+        raw = work / f".{stem}.raw.mp3"
+        buf, words = await _one(carrier + text, voice, speed)
+        raw.write_bytes(buf)
+        try:
+            x16 = _pcm(raw, SR_ASR)
+            found = _cut_point(x16, words, n_carrier)
+            if found is None:
+                reasons.append(f"{carrier!r}: the vendor reported no payload word"); continue
+            cut, gap_db = found
+            if gap_db > CUT_QUIET_DB:
+                reasons.append(f"{carrier!r}: ran into the sentence, gap only {gap_db:.0f} dB"); continue
+            piece = work / f".{stem}.piece.mp3"
+            subprocess.run([FF, "-loglevel", "error", "-y", "-ss", f"{cut/1000:.4f}", "-i", str(raw),
+                            "-c:a", "libmp3lame", "-q:a", "2", "-ar", str(SR_SYNTH), "-ac", "1", str(piece)], check=True)
+            try:
+                bad, heard = _onset_verdict(piece, tokens)
+                if bad:
+                    reasons.append(f"{carrier!r}: {bad}"); continue
+                x = _pcm(piece, SR_SYNTH)
+                payload = [(t, st - cut, en - cut) for t, st, en in words if st >= cut]
+                if exact is None: return x, payload
+                said = " ".join(norm(w) for w, _, _ in heard if norm(w))
+                if said == norm(exact): return x, payload
+                if fallback is None: fallback = (x, payload, said)
+                reasons.append(f"{carrier!r}: heard {said!r}, not {norm(exact)!r}")
+            finally:
+                piece.unlink(missing_ok=True)
+        finally:
+            raw.unlink(missing_ok=True)
+    if fallback is not None:
+        x, payload, said = fallback
+        print(f"    ! {exact!r} ships as the best of {len(CARRIERS)} takes; Whisper reads it back as {said!r} — listen to this one")
+        return x, payload
+    raise AbortPage("no carrier produced a clean onset for " + repr(text[:60]) + " — " + "; ".join(reasons))
+
+def _encode(samples, out_m4a):
+    """Write float32 mono samples at SR_SYNTH to `out_m4a` as AAC, the format the app ships."""
+    pcm16 = np.clip(samples, -1.0, 1.0) * 32767.0
+    subprocess.run([FF, "-loglevel", "error", "-y", "-f", "s16le", "-ar", str(SR_SYNTH), "-ac", "1",
+                    "-i", "pipe:0", "-c:a", "aac", "-b:a", "96k", "-ar", "44100", "-ac", "1", str(out_m4a)],
+                   input=pcm16.astype("<i2").tobytes(), check=True, capture_output=True)
+
+async def tts(text, out_m4a, voice=VOICE, speed=SPEED, exact_word=None):
+    """
+    Synthesize text -> m4a (AAC, plays on iOS). Returns (duration_ms, [(word, start_ms)]).
+
+    Sentences are synthesised separately and joined with a real pause: read straight through, the
+    voice runs one sentence into the next, which is what made it feel rushed even when the
+    words-per-minute figure looked fine. Each sentence goes through synth_sentence(), so each one
+    is carrier-protected and cut — and each is then padded back to LEAD_SILENCE_MS of leading
+    silence, because the cut removes Kokoro's own ~580 ms pad along with the carrier and without
+    that restoration every pause in the library would shorten by a third.
+    Each sentence's own vendor word offsets are shifted into the final file's timeline before being
+    merged, so `words` is already in the final file's timeline (plan-voice.md A3 join-offset rule).
+    """
     parts_text = sentences(text) or [text]
-    raw = [await _one(sent, voice, speed) for sent in parts_text]
-    parts = []
-    for i, (buf, _) in enumerate(raw):
-        piece = out_m4a.parent / f".part{i}.mp3"; piece.write_bytes(buf); parts.append(piece)
-    durations = [_duration_ms(p) for p in parts]
+    pieces, word_sets = [], []
+    for i, sent in enumerate(parts_text):
+        # `Yes! nap.` is two sentences; the preference applies to the one that IS the word
+        want = exact_word if (exact_word and norm(sent) == norm(exact_word)) else None
+        x, payload = await synth_sentence(sent, out_m4a.parent, f"{out_m4a.stem}.s{i}", voice, speed, want)
+        lead_ms = _speech_onset(x, SR_SYNTH) / SR_SYNTH * 1000
+        pad = np.zeros(int(max(0.0, LEAD_SILENCE_MS - lead_ms) * SR_SYNTH / 1000), dtype=np.float32)
+        pieces.append(np.concatenate([pad, x]))
+        word_sets.append([(t, st + len(pad) / SR_SYNTH * 1000) for t, st, _ in payload])
+    durations = [len(pc) / SR_SYNTH * 1000 for pc in pieces]
     offsets = sentence_offsets(durations, SENTENCE_PAUSE_MS)
-    words = [(w, ms + offset) for (_, ws), offset in zip(raw, offsets) for w, ms in ws]
-    # concat with silence between the pieces
-    listing = out_m4a.parent / ".concat.txt"
-    sil = out_m4a.parent / ".sil.mp3"
-    subprocess.run([FF, "-loglevel", "error", "-y", "-f", "lavfi", "-t", f"{SENTENCE_PAUSE_MS/1000}", "-i", "anullsrc=r=24000:cl=mono", "-c:a", "libmp3lame", str(sil)], check=True)
-    lines = []
-    for piece in parts: lines += [f"file '{piece.name}'", f"file '{sil.name}'"]
-    listing.write_text("\n".join(lines))
-    subprocess.run([FF, "-loglevel", "error", "-y", "-f", "concat", "-safe", "0", "-i", str(listing), "-c:a", "aac", "-b:a", "96k", "-ar", "44100", "-ac", "1", str(out_m4a)], check=True, cwd=out_m4a.parent)
-    for f in parts + [listing, sil]: f.unlink(missing_ok=True)
-    tmp.unlink(missing_ok=True)
+    words = [(w, ms + off) for ws, off in zip(word_sets, offsets) for w, ms in ws]
+    join = np.zeros(int(SENTENCE_PAUSE_MS * SR_SYNTH / 1000), dtype=np.float32)
+    out = np.concatenate([p for pc in pieces for p in (pc, join)])   # a join after the last piece too, as before
+    _encode(out, out_m4a)
     return _duration_ms(out_m4a), words
 
 def _duration_ms(path):
     probe = subprocess.run([FF, "-i", str(path)], capture_output=True, text=True).stderr
     m = re.search(r"Duration: (\d+):(\d+):([\d.]+)", probe)
     return int((int(m[1]) * 3600 + int(m[2]) * 60 + float(m[3])) * 1000) if m else 0
+
+def _snap_starts_out_of_silence(path, heard, floor_db=-50.0):
+    """
+    Move each measured word start forward to the first frame that actually has sound in it.
+
+    Whisper stretches the word that OPENS a segment back to the segment boundary, and a segment
+    boundary sits in silence — so the first word of a page was measured as starting at 0 ms in a
+    file whose first 580 ms are digital silence, and came out 1.6-2.8x longer than the page's
+    other words. That reads like the onset defect and is not: it is 26 of the 49 shipped pages,
+    and every one of them is a page whose tokens[0].ms is exactly 0. A word cannot begin during
+    silence, so advancing the start to where sound begins is a measurement correction, not a
+    guess (plan-voice.md principle 6). Nothing moves an end, and nothing moves a start past its
+    own end.
+    """
+    if not heard: return heard
+    db = _rms_db(_pcm(path))
+    quiet = db < db.max() + floor_db
+    out = []
+    for w, st, en in heard:
+        k = int(st // 10)
+        while k < len(quiet) and (k + 1) * 10 <= en and quiet[k]: k += 1
+        moved = max(st, float(k * 10))
+        # A word whose whole span reads as silence tells us nothing, and snapping it to its own end
+        # would manufacture the zero-width span the ms < endMs gate exists to catch. Leave it as
+        # Whisper measured it and let the gate decide.
+        out.append((w, moved if moved < en else st, en))
+    return out
 
 _ASR = None
 def asr_words(path):
@@ -172,7 +438,7 @@ def asr_words(path):
         out = None
     finally:
         wav.unlink(missing_ok=True)
-    return out
+    return _snap_starts_out_of_silence(path, out) if out else out
 
 class AbortPage(Exception):
     """
@@ -201,6 +467,32 @@ def _match_tokens(tokens, heard):
         elif d[i][j] == d[i-1][j-1] + 1: i, j = i-1, j-1
         elif d[i][j] == d[i-1][j] + 1: i -= 1
         else: j -= 1
+    return _bridge_substitutions(pairs, n, m)
+
+def _bridge_substitutions(pairs, n, m):
+    """
+    One unmatched token, bracketed by matched neighbours, with exactly one unclaimed heard word in
+    the same gap: that heard word IS the token, however Whisper spelled it. Pair them.
+
+    Whisper spells `hare` "hair", `howled` "held", `dal` "doll" and `Nani` "Nanny" — homophones and
+    near-homophones of audio that is perfectly correct. Dropping those words costs twice. The token
+    loses its real measurement and gets a synthetic one, and that synthetic time lands *inside* the
+    measured span of the word before it (`dal` interpolated to 7,300 ms while `making` was measured
+    to 7,540 ms), so the page then fails the `endMs <= next.ms` gate and the whole book aborts. Three
+    of the sixteen books aborted for exactly this, identically on every retry.
+
+    This is not the "raw positional zip" A3 forbids — that was zipping a vendor's 21 timestamps onto
+    24 tokens across a whole page. This is a single hole with a confirmed ASR anchor on each side and
+    exactly one candidate inside it, so the correspondence is forced. The times stay ASR's; only the
+    spelling is overruled. A hole of two or more tokens is left alone: the ASR is struggling there
+    and the correspondence is no longer forced, so the page fails loud as before.
+    """
+    for ti in range(n):
+        if ti in pairs: continue
+        lo = pairs.get(ti - 1, -1) if ti > 0 else -1
+        hi = pairs.get(ti + 1, m) if ti + 1 < n else m
+        if (ti > 0 and ti - 1 not in pairs) or (ti + 1 < n and ti + 1 not in pairs): continue
+        if hi - lo == 2: pairs[ti] = lo + 1
     return pairs
 
 def realign_from_heard(tokens, heard, vendor_starts, audio_ms, magic_indices=()):
@@ -326,11 +618,21 @@ async def build_story(slug):
         for i, p in enumerate(story["pages"], 1):
             text = p.pop("text", None) or " ".join(t["t"] for t in p["tokens"])
             toks = text.split(" ")
-            ms, words = await tts(text, staging / f"p{i}.m4a")
-            vendor_starts = align(toks, words)
             magic_idx = [resolve_magic(toks, w) for w in p.get("magic", [])]
             critical = sorted({j for mi in magic_idx if mi >= 0 for j in ((mi,) if mi == 0 else (mi - 1, mi))})
-            starts, ends = realign(toks, vendor_starts, staging / f"p{i}.m4a", critical)
+            for attempt in range(1, PAGE_TRIES + 1):
+                ms, words = await tts(text, staging / f"p{i}.m4a")
+                vendor_starts = align(toks, words)
+                try:
+                    starts, ends = realign(toks, vendor_starts, staging / f"p{i}.m4a", critical)
+                    break
+                except AbortPage as e:
+                    # a retry is a different take, not the same audio measured twice: every Kokoro
+                    # call is a fresh sample, and Whisper's occasional zero-width span or missed
+                    # word does not survive one. The gate is untouched — the synthesis is asked
+                    # again until it satisfies it, and after PAGE_TRIES the page still aborts.
+                    print(f"  {slug} p{i}: retry {attempt}/{PAGE_TRIES} — {e}")
+                    if attempt == PAGE_TRIES: raise
             p["tokens"] = [{"t": t, "ms": s, "endMs": e} for t, s, e in zip(toks, starts, ends)]
             p["audio"], p["audioMs"] = f"p{i}.m4a", ms
             print(f"  {slug} p{i}: {ms} ms, {len(toks)} tokens, ASR-measured")
@@ -341,7 +643,8 @@ async def build_story(slug):
         for p in story["pages"]:
             for w in p.get("magic", []):
                 for key, text in ((f"yes:{w}", f"Yes! {w}."), (f"word:{w}", f"{w}.")):
-                    m, _ = await tts(text, staging / f"{key.replace(':', '-')}.m4a"); story["prompts"][key] = {"audio": f"{key.replace(':', '-')}.m4a", "ms": m}
+                    m, _ = await tts(text, staging / f"{key.replace(':', '-')}.m4a", exact_word=w)
+                    story["prompts"][key] = {"audio": f"{key.replace(':', '-')}.m4a", "ms": m}
         (staging / "story.json").write_text(json.dumps(story, ensure_ascii=False, indent=1))
     except Exception:
         shutil.rmtree(staging, ignore_errors=True)
@@ -361,18 +664,85 @@ SHARED = {
     "done": "Beautiful reading. This story goes on your shelf.",
     "pick": "Pick today's story. One tap.",
 }
+
+def _ts_string_array(path, pattern):
+    """Every quoted string inside each array the regex finds. The .ts files are the source of
+    truth for these word sets (One fact, one home) — copying them into this script would let the
+    two drift, and scripts/prompt-coverage.test.ts reads the same two files to check they have not."""
+    text = Path(path).read_text()
+    out = []
+    for body in re.findall(pattern, text, re.S):
+        out += re.findall(r'"([^"]+)"', body)
+    return out
+
+def prompt_words():
+    """
+    Every word `word:{w}` must be able to say, in order, deduplicated (plan-voice.md A6/C3 + E3).
+
+    The 66 TEACH.*.words chips — `apple`, `ink`, `under` — appear on no page, so they cannot be a
+    narration slice, and they are not blend targets either: they exist so the child hears the sound
+    *inside* a word at normal pace. Plus the eight TRICKY_PHASE2 words, which `Story.tsx:376` and
+    `TeachSound.tsx:37` speak today through the OS voice (C5). This set was deliberately left
+    ungenerated until now, because generating it before the onset fix would have baked the defect
+    into all 74 clips: the form is `f"{w}."`, which is the exact broken pattern.
+    """
+    words = _ts_string_array(ROOT / "src/lib/phonics/teach.ts", r"\bwords:\s*\[(.*?)\]")
+    words += _ts_string_array(ROOT / "src/lib/phonics/learner.ts", r"\bTRICKY_PHASE2\s*=\s*\[(.*?)\]")
+    seen, out = set(), []
+    for w in words:
+        if w.lower() in seen: continue      # `sock` is both s and ck; `off` is both o and ff
+        seen.add(w.lower()); out.append(w)
+    return out
+
 async def build_shared():
-    out = PUB / "prompts"; out.mkdir(parents=True, exist_ok=True); man = {}
-    for k, text in SHARED.items():
-        ms, _ = await tts(text, out / f"{k}.m4a"); man[k] = {"audio": f"{k}.m4a", "ms": ms}
-    (out / "manifest.json").write_text(json.dumps(man, indent=1))
-    print("  shared prompts done (phoneme clips come from scripts/fetch-phonemes.py, not TTS)")
+    """
+    Staged and swapped whole, exactly like build_story() (plan-voice.md A3 "Atomic publish"). The
+    old version wrote each clip straight into public/prompts/ and the manifest at the end, so one
+    word the onset gate would not pass left the published set half new, half old, with a manifest
+    describing neither. There is no partial success here: either every prompt is regenerated in
+    this voice or the published set is left exactly as it was.
+    """
+    final_out = PUB / "prompts"
+    staging = PUB / ".prompts.staging"
+    if staging.exists(): shutil.rmtree(staging)
+    staging.mkdir(parents=True)
+    try:
+        man, failed = {}, []
+        words = prompt_words()
+        for key, text, fname in ([(k, t, f"{k}.m4a") for k, t in SHARED.items()]
+                                 + [(f"word:{w}", f"{w}.", f"word-{w}.m4a") for w in words]):
+            try:
+                ms, _ = await tts(text, staging / fname, exact_word=key[5:] if key.startswith("word:") else None)
+                man[key] = {"audio": fname, "ms": ms}
+            except AbortPage as e:
+                failed.append(f"{key}: {e}")   # keep going: one run should name every prompt it cannot make, not just the first
+        if failed:
+            raise AbortPage(f"{len(failed)} of {len(SHARED) + len(words)} prompts have no clean onset:\n    "
+                            + "\n    ".join(failed))
+        (staging / "manifest.json").write_text(json.dumps(man, indent=1))
+    except Exception:
+        shutil.rmtree(staging, ignore_errors=True)
+        raise
+    if final_out.exists(): shutil.rmtree(final_out)
+    staging.rename(final_out)
+    print(f"  shared prompts done: {len(SHARED)} scripted + {len(words)} word:*  "
+          "(phoneme clips come from scripts/fetch-phonemes.py, not TTS)")
 
 async def main():
     global _API_KEY
     _API_KEY = require_api_key()   # fail loud before anything under public/ is touched (principle 4)
-    slugs = sys.argv[1:] or [p.name for p in LIB.iterdir() if (p / "story.json").exists()]
-    await build_shared()
+    named = sys.argv[1:]
+    slugs = named or [p.name for p in LIB.iterdir() if (p / "story.json").exists()]
+    if named:
+        # public/prompts/ is shared, not per-story: regenerating one book should not spend half an
+        # hour rebuilding 82 clips that have nothing to do with it, nor republish them on a run
+        # whose point was one story.
+        print("(named stories: public/prompts left alone — run with no arguments to rebuild it)")
+    else:
+        try:
+            await build_shared()
+        except AbortPage as e:
+            sys.exit(f"shared prompts aborted: {e}\n(public/prompts left exactly as it was; no story was touched)")
     aborted = []
     for s in slugs:
         print(s)

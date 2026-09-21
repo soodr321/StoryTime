@@ -27,236 +27,236 @@
    "tokens": [
     {
      "t": "A",
-     "ms": 620,
-     "endMs": 820
+     "ms": 570,
+     "endMs": 660
     },
     {
      "t": "monkey",
-     "ms": 820,
-     "endMs": 1340
+     "ms": 660,
+     "endMs": 1100
     },
     {
      "t": "lived",
-     "ms": 1340,
-     "endMs": 1780
+     "ms": 1100,
+     "endMs": 1460
     },
     {
      "t": "in",
-     "ms": 1780,
-     "endMs": 2160
+     "ms": 1460,
+     "endMs": 1800
     },
     {
      "t": "a",
-     "ms": 2160,
-     "endMs": 2260
+     "ms": 1800,
+     "endMs": 1900
     },
     {
      "t": "tree",
-     "ms": 2260,
-     "endMs": 2600
+     "ms": 1900,
+     "endMs": 2220
     },
     {
      "t": "by",
-     "ms": 2600,
-     "endMs": 2940
+     "ms": 2220,
+     "endMs": 2580
     },
     {
      "t": "the",
-     "ms": 2940,
-     "endMs": 3120
+     "ms": 2580,
+     "endMs": 2780
     },
     {
      "t": "river.",
-     "ms": 3120,
-     "endMs": 3480
+     "ms": 2780,
+     "endMs": 3060
     },
     {
      "t": "He",
-     "ms": 4940,
-     "endMs": 5740
+     "ms": 5300,
+     "endMs": 5380
     },
     {
      "t": "sat",
-     "ms": 5740,
-     "endMs": 6200
+     "ms": 5380,
+     "endMs": 5700
     },
     {
      "t": "and",
-     "ms": 6200,
-     "endMs": 6600
+     "ms": 5700,
+     "endMs": 6040
     },
     {
      "t": "ate",
-     "ms": 6600,
-     "endMs": 6800
+     "ms": 6040,
+     "endMs": 6260
     },
     {
      "t": "sweet",
-     "ms": 6800,
-     "endMs": 7220
+     "ms": 6260,
+     "endMs": 6680
     },
     {
      "t": "fruit",
-     "ms": 7220,
-     "endMs": 7560
+     "ms": 6680,
+     "endMs": 7020
     },
     {
      "t": "all",
-     "ms": 7560,
-     "endMs": 7960
+     "ms": 7020,
+     "endMs": 7420
     },
     {
      "t": "day.",
-     "ms": 7960,
-     "endMs": 8340
+     "ms": 7420,
+     "endMs": 7800
     }
    ],
    "audio": "p1.m4a",
-   "audioMs": 10090
+   "audioMs": 9370
   },
   {
    "art": "🐊",
    "tokens": [
     {
      "t": "A",
-     "ms": 0,
-     "endMs": 800
+     "ms": 580,
+     "endMs": 640
     },
     {
      "t": "crocodile",
-     "ms": 800,
-     "endMs": 1600
+     "ms": 640,
+     "endMs": 1420
     },
     {
      "t": "swam",
-     "ms": 1600,
-     "endMs": 2120
+     "ms": 1420,
+     "endMs": 1900
     },
     {
      "t": "by.",
-     "ms": 2120,
-     "endMs": 2400
+     "ms": 1900,
+     "endMs": 2200
     },
     {
      "t": "The",
-     "ms": 3410,
-     "endMs": 4700
+     "ms": 4390,
+     "endMs": 4420
     },
     {
      "t": "monkey",
-     "ms": 4700,
-     "endMs": 5060
+     "ms": 4420,
+     "endMs": 4680
     },
     {
      "t": "gave",
-     "ms": 5060,
-     "endMs": 5560
+     "ms": 4680,
+     "endMs": 5160
     },
     {
      "t": "him",
-     "ms": 5560,
-     "endMs": 5820
+     "ms": 5160,
+     "endMs": 5420
     },
     {
      "t": "fruit,",
-     "ms": 5820,
-     "endMs": 6240
+     "ms": 5420,
+     "endMs": 5840
     },
     {
      "t": "and",
-     "ms": 6820,
-     "endMs": 7020
+     "ms": 5840,
+     "endMs": 6700
     },
     {
      "t": "they",
-     "ms": 7020,
-     "endMs": 7220
+     "ms": 6700,
+     "endMs": 6900
     },
     {
      "t": "became",
-     "ms": 7220,
-     "endMs": 7580
+     "ms": 6900,
+     "endMs": 7300
     },
     {
      "t": "friends.",
-     "ms": 7580,
-     "endMs": 8200
+     "ms": 7300,
+     "endMs": 7900
     }
    ],
    "audio": "p2.m4a",
-   "audioMs": 10140
+   "audioMs": 9670
   },
   {
    "art": "🐊",
    "tokens": [
     {
      "t": "The",
-     "ms": 720,
-     "endMs": 840
+     "ms": 400,
+     "endMs": 600
     },
     {
      "t": "crocodile’s",
-     "ms": 840,
-     "endMs": 1720
+     "ms": 600,
+     "endMs": 1500
     },
     {
      "t": "wife",
-     "ms": 1720,
-     "endMs": 2100
+     "ms": 1500,
+     "endMs": 1840
     },
     {
      "t": "wanted",
-     "ms": 2100,
-     "endMs": 2860
+     "ms": 1840,
+     "endMs": 2460
     },
     {
      "t": "the",
-     "ms": 2860,
-     "endMs": 3140
+     "ms": 2460,
+     "endMs": 2720
     },
     {
      "t": "monkey’s",
-     "ms": 3140,
-     "endMs": 3840
+     "ms": 2720,
+     "endMs": 3380
     },
     {
      "t": "heart.",
-     "ms": 3840,
-     "endMs": 4240
+     "ms": 3380,
+     "endMs": 3720
     },
     {
      "t": "“Bring",
-     "ms": 6400,
-     "endMs": 6680
+     "ms": 5870,
+     "endMs": 6020
     },
     {
      "t": "him",
-     "ms": 6680,
-     "endMs": 6980
+     "ms": 6020,
+     "endMs": 6320
     },
     {
      "t": "to",
-     "ms": 6980,
-     "endMs": 7220
+     "ms": 6320,
+     "endMs": 6540
     },
     {
      "t": "me,”",
-     "ms": 7220,
-     "endMs": 7500
+     "ms": 6540,
+     "endMs": 6800
     },
     {
      "t": "she",
-     "ms": 7800,
-     "endMs": 8020
+     "ms": 7190,
+     "endMs": 7340
     },
     {
      "t": "said.",
-     "ms": 8020,
-     "endMs": 8400
+     "ms": 7340,
+     "endMs": 7740
     }
    ],
    "audio": "p3.m4a",
-   "audioMs": 10070
+   "audioMs": 9240
   },
   {
    "art": "🐊",
@@ -266,154 +266,154 @@
    "tokens": [
     {
      "t": "The",
-     "ms": 0,
-     "endMs": 660
+     "ms": 580,
+     "endMs": 620
     },
     {
      "t": "crocodile",
-     "ms": 660,
-     "endMs": 1540
+     "ms": 620,
+     "endMs": 1340
     },
     {
      "t": "said,",
-     "ms": 1540,
-     "endMs": 1880
+     "ms": 1340,
+     "endMs": 1680
     },
     {
      "t": "“Come",
-     "ms": 2400,
-     "endMs": 2560
+     "ms": 1680,
+     "endMs": 2340
     },
     {
      "t": "to",
-     "ms": 2560,
-     "endMs": 2760
+     "ms": 2340,
+     "endMs": 2580
     },
     {
      "t": "my",
-     "ms": 2760,
-     "endMs": 2940
+     "ms": 2580,
+     "endMs": 2780
     },
     {
      "t": "house.”",
-     "ms": 2940,
-     "endMs": 3420
+     "ms": 2780,
+     "endMs": 3280
     },
     {
      "t": "The",
-     "ms": 4460,
-     "endMs": 4520
+     "ms": 3280,
+     "endMs": 4400
     },
     {
      "t": "monkey",
-     "ms": 4520,
-     "endMs": 4780
+     "ms": 4400,
+     "endMs": 4660
     },
     {
      "t": "got",
-     "ms": 4780,
-     "endMs": 5260
+     "ms": 4660,
+     "endMs": 5180
     },
     {
      "t": "on",
-     "ms": 5260,
-     "endMs": 5560
+     "ms": 5180,
+     "endMs": 5460
     },
     {
      "t": "his",
-     "ms": 5560,
-     "endMs": 5740
+     "ms": 5460,
+     "endMs": 5640
     },
     {
      "t": "back.",
-     "ms": 5740,
-     "endMs": 6180
+     "ms": 5640,
+     "endMs": 6080
     }
    ],
    "audio": "p4.m4a",
-   "audioMs": 7810
+   "audioMs": 7650
   },
   {
    "art": "🐒",
    "tokens": [
     {
      "t": "In",
-     "ms": 0,
-     "endMs": 700
+     "ms": 570,
+     "endMs": 680
     },
     {
      "t": "the",
-     "ms": 700,
-     "endMs": 1040
+     "ms": 680,
+     "endMs": 800
     },
     {
      "t": "middle",
-     "ms": 1040,
-     "endMs": 1340
+     "ms": 800,
+     "endMs": 1140
     },
     {
      "t": "of",
-     "ms": 1340,
-     "endMs": 1580
+     "ms": 1140,
+     "endMs": 1360
     },
     {
      "t": "the",
-     "ms": 1580,
-     "endMs": 1720
+     "ms": 1360,
+     "endMs": 1500
     },
     {
      "t": "river,",
-     "ms": 1720,
-     "endMs": 2080
+     "ms": 1500,
+     "endMs": 1880
     },
     {
      "t": "the",
-     "ms": 2760,
-     "endMs": 2800
+     "ms": 2490,
+     "endMs": 2540
     },
     {
      "t": "crocodile",
-     "ms": 2800,
-     "endMs": 3560
+     "ms": 2540,
+     "endMs": 3320
     },
     {
      "t": "told",
-     "ms": 3560,
-     "endMs": 3860
+     "ms": 3320,
+     "endMs": 3620
     },
     {
      "t": "the",
-     "ms": 3860,
-     "endMs": 4160
+     "ms": 3620,
+     "endMs": 3960
     },
     {
      "t": "truth.",
-     "ms": 4160,
-     "endMs": 4440
+     "ms": 3960,
+     "endMs": 4260
     },
     {
      "t": "The",
-     "ms": 6160,
-     "endMs": 6800
+     "ms": 6560,
+     "endMs": 6600
     },
     {
      "t": "monkey",
-     "ms": 6800,
-     "endMs": 7180
+     "ms": 6600,
+     "endMs": 6840
     },
     {
      "t": "thought",
-     "ms": 7180,
-     "endMs": 7700
+     "ms": 6840,
+     "endMs": 7320
     },
     {
      "t": "fast.",
-     "ms": 7700,
-     "endMs": 8160
+     "ms": 7320,
+     "endMs": 7760
     }
    ],
    "audio": "p5.m4a",
-   "audioMs": 10190
+   "audioMs": 9580
   },
   {
    "art": "🐒",
@@ -423,226 +423,226 @@
    "tokens": [
     {
      "t": "“My",
-     "ms": 700,
-     "endMs": 960
+     "ms": 580,
+     "endMs": 720
     },
     {
      "t": "heart",
-     "ms": 960,
-     "endMs": 1300
+     "ms": 720,
+     "endMs": 1080
     },
     {
      "t": "is",
-     "ms": 1300,
-     "endMs": 1540
+     "ms": 1080,
+     "endMs": 1320
     },
     {
      "t": "in",
-     "ms": 1540,
-     "endMs": 1700
+     "ms": 1320,
+     "endMs": 1480
     },
     {
      "t": "the",
-     "ms": 1700,
-     "endMs": 1860
+     "ms": 1480,
+     "endMs": 1640
     },
     {
      "t": "tree!”",
-     "ms": 1860,
-     "endMs": 2620
+     "ms": 1640,
+     "endMs": 2440
     },
     {
      "t": "he",
-     "ms": 2620,
-     "endMs": 2860
+     "ms": 2530,
+     "endMs": 2660
     },
     {
      "t": "said.",
-     "ms": 2860,
-     "endMs": 3300
+     "ms": 2660,
+     "endMs": 3080
     },
     {
      "t": "The",
-     "ms": 5159,
-     "endMs": 5539
+     "ms": 5130,
+     "endMs": 5160
     },
     {
      "t": "crocodile",
-     "ms": 5539,
-     "endMs": 6300
+     "ms": 5160,
+     "endMs": 5920
     },
     {
      "t": "turned",
-     "ms": 6300,
-     "endMs": 6620
+     "ms": 5920,
+     "endMs": 6220
     },
     {
      "t": "back,",
-     "ms": 6620,
-     "endMs": 7100
+     "ms": 6220,
+     "endMs": 6720
     },
     {
      "t": "and",
-     "ms": 7680,
-     "endMs": 7920
+     "ms": 7460,
+     "endMs": 7560
     },
     {
      "t": "the",
-     "ms": 7920,
-     "endMs": 8119
+     "ms": 7560,
+     "endMs": 7760
     },
     {
      "t": "monkey",
-     "ms": 8119,
-     "endMs": 8520
+     "ms": 7760,
+     "endMs": 8180
     },
     {
      "t": "jumped",
-     "ms": 8520,
-     "endMs": 8900
+     "ms": 8180,
+     "endMs": 8560
     },
     {
      "t": "up",
-     "ms": 8900,
-     "endMs": 9320
+     "ms": 8560,
+     "endMs": 8960
     },
     {
      "t": "and",
-     "ms": 9320,
-     "endMs": 9600
+     "ms": 8960,
+     "endMs": 9220
     },
     {
      "t": "ran.",
-     "ms": 9600,
-     "endMs": 9900
+     "ms": 9220,
+     "endMs": 9540
     }
    ],
    "audio": "p6.m4a",
-   "audioMs": 11800
+   "audioMs": 11250
   },
   {
    "art": "🐒",
    "tokens": [
     {
      "t": "Safe",
-     "ms": 680,
-     "endMs": 940
+     "ms": 570,
+     "endMs": 840
     },
     {
      "t": "in",
-     "ms": 940,
-     "endMs": 1260
+     "ms": 840,
+     "endMs": 1140
     },
     {
      "t": "his",
-     "ms": 1260,
-     "endMs": 1440
+     "ms": 1140,
+     "endMs": 1320
     },
     {
      "t": "tree,",
-     "ms": 1440,
-     "endMs": 1820
+     "ms": 1320,
+     "endMs": 1740
     },
     {
      "t": "the",
-     "ms": 2280,
-     "endMs": 2380
+     "ms": 2180,
+     "endMs": 2260
     },
     {
      "t": "monkey",
-     "ms": 2380,
-     "endMs": 2640
+     "ms": 2260,
+     "endMs": 2480
     },
     {
      "t": "said,",
-     "ms": 2640,
-     "endMs": 3200
+     "ms": 2480,
+     "endMs": 3080
     },
     {
      "t": "“A",
-     "ms": 3800,
-     "endMs": 4280
+     "ms": 4090,
+     "endMs": 4140
     },
     {
      "t": "friend",
-     "ms": 4280,
-     "endMs": 4660
+     "ms": 4140,
+     "endMs": 4480
     },
     {
      "t": "who",
-     "ms": 4660,
-     "endMs": 4940
+     "ms": 4480,
+     "endMs": 4820
     },
     {
      "t": "tricks",
-     "ms": 4940,
-     "endMs": 5240
+     "ms": 4820,
+     "endMs": 5120
     },
     {
      "t": "you",
-     "ms": 5240,
-     "endMs": 5620
+     "ms": 5120,
+     "endMs": 5500
     },
     {
      "t": "is",
-     "ms": 5620,
-     "endMs": 5920
+     "ms": 5500,
+     "endMs": 5780
     },
     {
      "t": "no",
-     "ms": 5920,
-     "endMs": 6140
+     "ms": 5780,
+     "endMs": 6020
     },
     {
      "t": "friend",
-     "ms": 6140,
-     "endMs": 6540
+     "ms": 6020,
+     "endMs": 6420
     },
     {
      "t": "at",
-     "ms": 6540,
-     "endMs": 6820
+     "ms": 6420,
+     "endMs": 6680
     },
     {
      "t": "all.”",
-     "ms": 6820,
-     "endMs": 7120
+     "ms": 6680,
+     "endMs": 7040
     }
    ],
    "audio": "p7.m4a",
-   "audioMs": 8770
+   "audioMs": 8590
   }
  ],
  "moral": {
   "spoken": "Think fast and stay calm when someone tries to trick you.",
   "line": "I can run.",
   "audio": "moral.m4a",
-  "audioMs": 6710
+  "audioMs": 6150
  },
  "prompts": {
   "yes:sat": {
    "audio": "yes-sat.m4a",
-   "ms": 5290
+   "ms": 4950
   },
   "word:sat": {
    "audio": "word-sat.m4a",
-   "ms": 2480
+   "ms": 2460
   },
   "yes:got": {
    "audio": "yes-got.m4a",
-   "ms": 5440
+   "ms": 4860
   },
   "word:got": {
    "audio": "word-got.m4a",
-   "ms": 2630
+   "ms": 2360
   },
   "yes:ran": {
    "audio": "yes-ran.m4a",
-   "ms": 5530
+   "ms": 4930
   },
   "word:ran": {
    "audio": "word-ran.m4a",
-   "ms": 2720
+   "ms": 2440
   }
  }
 }

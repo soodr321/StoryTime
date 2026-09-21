@@ -27,82 +27,82 @@
    "tokens": [
     {
      "t": "All",
-     "ms": 680,
-     "endMs": 900
+     "ms": 580,
+     "endMs": 740
     },
     {
      "t": "summer,",
-     "ms": 900,
-     "endMs": 1380
+     "ms": 740,
+     "endMs": 1100
     },
     {
      "t": "an",
-     "ms": 1820,
-     "endMs": 2020
+     "ms": 1710,
+     "endMs": 1800
     },
     {
      "t": "ant",
-     "ms": 2050,
-     "endMs": 2280
+     "ms": 1875,
+     "endMs": 2040
     },
     {
      "t": "carried",
-     "ms": 2280,
-     "endMs": 2920
+     "ms": 2040,
+     "endMs": 2720
     },
     {
      "t": "seeds",
-     "ms": 2920,
-     "endMs": 3220
+     "ms": 2720,
+     "endMs": 3020
     },
     {
      "t": "to",
-     "ms": 3220,
-     "endMs": 3760
+     "ms": 3020,
+     "endMs": 3560
     },
     {
      "t": "her",
-     "ms": 3760,
-     "endMs": 3940
+     "ms": 3560,
+     "endMs": 3740
     },
     {
      "t": "nest.",
-     "ms": 3940,
-     "endMs": 4300
+     "ms": 3740,
+     "endMs": 4100
     },
     {
      "t": "She",
-     "ms": 6640,
-     "endMs": 6800
+     "ms": 6350,
+     "endMs": 6480
     },
     {
      "t": "worked",
-     "ms": 6800,
-     "endMs": 7100
+     "ms": 6480,
+     "endMs": 6740
     },
     {
      "t": "in",
-     "ms": 7100,
-     "endMs": 7460
+     "ms": 6740,
+     "endMs": 7080
     },
     {
      "t": "the",
-     "ms": 7460,
-     "endMs": 7600
+     "ms": 7080,
+     "endMs": 7220
     },
     {
      "t": "hot",
-     "ms": 7600,
-     "endMs": 7840
+     "ms": 7220,
+     "endMs": 7440
     },
     {
      "t": "sun.",
-     "ms": 7840,
-     "endMs": 8380
+     "ms": 7440,
+     "endMs": 7980
     }
    ],
    "audio": "p1.m4a",
-   "audioMs": 10120
+   "audioMs": 9520
   },
   {
    "art": "🦗",
@@ -112,211 +112,211 @@
    "tokens": [
     {
      "t": "A",
-     "ms": 0,
-     "endMs": 780
+     "ms": 580,
+     "endMs": 620
     },
     {
      "t": "grasshopper",
-     "ms": 780,
-     "endMs": 1640
+     "ms": 620,
+     "endMs": 1460
     },
     {
      "t": "sat",
-     "ms": 1640,
-     "endMs": 2000
+     "ms": 1460,
+     "endMs": 1780
     },
     {
      "t": "in",
-     "ms": 2000,
-     "endMs": 2320
+     "ms": 1780,
+     "endMs": 2100
     },
     {
      "t": "the",
-     "ms": 2320,
-     "endMs": 2440
+     "ms": 2100,
+     "endMs": 2220
     },
     {
      "t": "grass",
-     "ms": 2440,
-     "endMs": 2820
+     "ms": 2220,
+     "endMs": 2620
     },
     {
      "t": "and",
-     "ms": 2820,
-     "endMs": 3240
+     "ms": 2620,
+     "endMs": 3020
     },
     {
      "t": "sang.",
-     "ms": 3240,
-     "endMs": 3620
+     "ms": 3020,
+     "endMs": 3440
     },
     {
      "t": "“Come",
-     "ms": 5960,
-     "endMs": 6180
+     "ms": 5680,
+     "endMs": 5800
     },
     {
      "t": "and",
-     "ms": 6180,
-     "endMs": 6400
+     "ms": 5800,
+     "endMs": 6020
     },
     {
      "t": "play!”",
-     "ms": 6400,
-     "endMs": 6760
+     "ms": 6020,
+     "endMs": 6400
     },
     {
      "t": "he",
-     "ms": 7340,
-     "endMs": 7400
+     "ms": 6840,
+     "endMs": 6900
     },
     {
      "t": "called.",
-     "ms": 7400,
-     "endMs": 7720
+     "ms": 6900,
+     "endMs": 7200
     }
    ],
    "audio": "p2.m4a",
-   "audioMs": 9610
+   "audioMs": 8880
   },
   {
    "art": "🐜",
    "tokens": [
     {
      "t": "“I",
-     "ms": 0,
-     "endMs": 700
+     "ms": 560,
+     "endMs": 680
     },
     {
      "t": "must",
-     "ms": 700,
-     "endMs": 1100
+     "ms": 680,
+     "endMs": 920
     },
     {
      "t": "get",
-     "ms": 1100,
-     "endMs": 1400
+     "ms": 920,
+     "endMs": 1200
     },
     {
      "t": "food",
-     "ms": 1400,
-     "endMs": 1720
+     "ms": 1200,
+     "endMs": 1520
     },
     {
      "t": "for",
-     "ms": 1720,
-     "endMs": 2020
+     "ms": 1520,
+     "endMs": 1880
     },
     {
      "t": "winter,”",
-     "ms": 2020,
-     "endMs": 2320
+     "ms": 1880,
+     "endMs": 2240
     },
     {
      "t": "said",
-     "ms": 2320,
-     "endMs": 3380
+     "ms": 2240,
+     "endMs": 3240
     },
     {
      "t": "the",
-     "ms": 3380,
-     "endMs": 3580
+     "ms": 3240,
+     "endMs": 3460
     },
     {
      "t": "ant,",
-     "ms": 3820,
-     "endMs": 4260
+     "ms": 3775,
+     "endMs": 4310
     },
     {
      "t": "and",
-     "ms": 4260,
-     "endMs": 4540
+     "ms": 4310,
+     "endMs": 4440
     },
     {
      "t": "she",
-     "ms": 4540,
-     "endMs": 4760
+     "ms": 4440,
+     "endMs": 4640
     },
     {
      "t": "kept",
-     "ms": 4760,
-     "endMs": 5000
+     "ms": 4640,
+     "endMs": 4900
     },
     {
      "t": "working.",
-     "ms": 5000,
-     "endMs": 5620
+     "ms": 4900,
+     "endMs": 5520
     }
    ],
    "audio": "p3.m4a",
-   "audioMs": 7330
+   "audioMs": 7170
   },
   {
    "art": "❄️",
    "tokens": [
     {
      "t": "Then",
-     "ms": 680,
-     "endMs": 920
+     "ms": 580,
+     "endMs": 720
     },
     {
      "t": "winter",
-     "ms": 920,
-     "endMs": 1220
+     "ms": 720,
+     "endMs": 1000
     },
     {
      "t": "came.",
-     "ms": 1220,
-     "endMs": 1940
+     "ms": 1000,
+     "endMs": 1680
     },
     {
      "t": "Snow",
-     "ms": 4220,
-     "endMs": 4560
+     "ms": 3840,
+     "endMs": 4140
     },
     {
      "t": "covered",
-     "ms": 4560,
-     "endMs": 5040
+     "ms": 4140,
+     "endMs": 4640
     },
     {
      "t": "the",
-     "ms": 5040,
-     "endMs": 5360
+     "ms": 4640,
+     "endMs": 4900
     },
     {
      "t": "grass.",
-     "ms": 5360,
-     "endMs": 5780
+     "ms": 4900,
+     "endMs": 5320
     },
     {
      "t": "The",
-     "ms": 7960,
-     "endMs": 8119
+     "ms": 7540,
+     "endMs": 7560
     },
     {
      "t": "grasshopper",
-     "ms": 8119,
-     "endMs": 9100
+     "ms": 7560,
+     "endMs": 8440
     },
     {
      "t": "had",
-     "ms": 9100,
-     "endMs": 9380
+     "ms": 8440,
+     "endMs": 8660
     },
     {
      "t": "no",
-     "ms": 9380,
-     "endMs": 9680
+     "ms": 8660,
+     "endMs": 8960
     },
     {
      "t": "food.",
-     "ms": 9680,
-     "endMs": 10060
+     "ms": 8960,
+     "endMs": 9420
     }
    ],
    "audio": "p4.m4a",
-   "audioMs": 12010
+   "audioMs": 11030
   },
   {
    "art": "🐜",
@@ -326,171 +326,171 @@
    "tokens": [
     {
      "t": "He",
-     "ms": 0,
-     "endMs": 660
+     "ms": 580,
+     "endMs": 680
     },
     {
      "t": "knocked",
-     "ms": 660,
-     "endMs": 1060
+     "ms": 680,
+     "endMs": 980
     },
     {
      "t": "on",
-     "ms": 1060,
-     "endMs": 1540
+     "ms": 980,
+     "endMs": 1380
     },
     {
      "t": "the",
-     "ms": 1540,
-     "endMs": 1700
+     "ms": 1380,
+     "endMs": 1540
     },
     {
      "t": "ant’s",
-     "ms": 1890,
-     "endMs": 2240
+     "ms": 1730,
+     "endMs": 2080
     },
     {
      "t": "door.",
-     "ms": 2240,
-     "endMs": 2600
+     "ms": 2080,
+     "endMs": 2440
     },
     {
      "t": "The",
-     "ms": 4660,
-     "endMs": 4760
+     "ms": 4560,
+     "endMs": 4600
     },
     {
      "t": "ant",
-     "ms": 4950,
-     "endMs": 5240
+     "ms": 4740,
+     "endMs": 4920
     },
     {
      "t": "shared",
-     "ms": 5240,
-     "endMs": 5760
+     "ms": 4920,
+     "endMs": 5340
     },
     {
      "t": "her",
-     "ms": 5760,
-     "endMs": 6040
+     "ms": 5340,
+     "endMs": 5580
     },
     {
      "t": "seeds,",
-     "ms": 6040,
-     "endMs": 6460
+     "ms": 5580,
+     "endMs": 6020
     },
     {
      "t": "and",
-     "ms": 7200,
-     "endMs": 7300
+     "ms": 6670,
+     "endMs": 6800
     },
     {
      "t": "he",
-     "ms": 7300,
-     "endMs": 7480
+     "ms": 6800,
+     "endMs": 6980
     },
     {
      "t": "got",
-     "ms": 7480,
-     "endMs": 7680
+     "ms": 6980,
+     "endMs": 7180
     },
     {
      "t": "warm.",
-     "ms": 7680,
-     "endMs": 8200
+     "ms": 7180,
+     "endMs": 7660
     }
    ],
    "audio": "p5.m4a",
-   "audioMs": 9970
+   "audioMs": 9290
   },
   {
    "art": "🦗",
    "tokens": [
     {
      "t": "Next",
-     "ms": 660,
-     "endMs": 940
+     "ms": 580,
+     "endMs": 840
     },
     {
      "t": "summer,",
-     "ms": 940,
-     "endMs": 1540
+     "ms": 840,
+     "endMs": 1340
     },
     {
      "t": "the",
-     "ms": 2200,
-     "endMs": 2240
+     "ms": 2140,
+     "endMs": 2180
     },
     {
      "t": "grasshopper",
-     "ms": 2240,
-     "endMs": 3100
+     "ms": 2180,
+     "endMs": 3040
     },
     {
      "t": "helped",
-     "ms": 3100,
-     "endMs": 3380
+     "ms": 3040,
+     "endMs": 3340
     },
     {
      "t": "the",
-     "ms": 3380,
-     "endMs": 3720
+     "ms": 3340,
+     "endMs": 3680
     },
     {
      "t": "ant",
-     "ms": 3720,
-     "endMs": 4000
+     "ms": 3680,
+     "endMs": 3960
     },
     {
      "t": "dig",
-     "ms": 4000,
-     "endMs": 4400
+     "ms": 3960,
+     "endMs": 4340
     },
     {
      "t": "and",
-     "ms": 4400,
-     "endMs": 4680
+     "ms": 4340,
+     "endMs": 4620
     },
     {
      "t": "carry.",
-     "ms": 4680,
-     "endMs": 5020
+     "ms": 4620,
+     "endMs": 5000
     }
    ],
    "audio": "p6.m4a",
-   "audioMs": 6780
+   "audioMs": 6660
   }
  ],
  "moral": {
   "spoken": "Do the work now, and later you will be glad.",
   "line": "I can dig.",
   "audio": "moral.m4a",
-  "audioMs": 5600
+  "audioMs": 5370
  },
  "prompts": {
   "yes:sun": {
    "audio": "yes-sun.m4a",
-   "ms": 5410
+   "ms": 4920
   },
   "word:sun": {
    "audio": "word-sun.m4a",
-   "ms": 2600
+   "ms": 2430
   },
   "yes:sat": {
    "audio": "yes-sat.m4a",
-   "ms": 5290
+   "ms": 4950
   },
   "word:sat": {
    "audio": "word-sat.m4a",
-   "ms": 2480
+   "ms": 2460
   },
   "yes:got": {
    "audio": "yes-got.m4a",
-   "ms": 5440
+   "ms": 4860
   },
   "word:got": {
    "audio": "word-got.m4a",
-   "ms": 2630
+   "ms": 2370
   }
  }
 }
