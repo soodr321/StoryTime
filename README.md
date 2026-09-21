@@ -19,7 +19,7 @@ Stable URL: **https://soodr321.github.io/StoryTime/** · install with Share → 
 - **Two modes.** *Nani reads* (audio, karaoke) and *I read* (audio off; the grown-up reads, the child taps the pink word). A big-type script tells the grown-up what to do.
 - **Family profiles.** A reader with their own level, and a younger sibling who listens and taps words. Each child resumes exactly where they stopped.
 - **Family stories.** Type or paste a story (one sentence per page), pick an emoji or a camera-roll photo per page, record each page in your own voice (or let the phone read it), and the app suggests magic words at the child's level and checks the read-back line live.
-- **Bedtime mode.** Dim colours, slower voice, no confetti, one story then a closing card until tomorrow.
+- **Bedtime mode.** Dim colours, no confetti, one story then a closing card until tomorrow.
 - **The ending.** "Now go find someone and read them your magic words", with the words shown large.
 
 ## Run locally

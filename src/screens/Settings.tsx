@@ -60,17 +60,8 @@ export function SettingsScreen({ onBack, onAddStory, onSounds, onTeach }: { onBa
       </section>
 
       <section className="pc">
-        <h3>Reading pace</h3>
-        <p className="legend">How fast the recorded voice reads, and how long each sound is stretched when the app slides through a word. Slower is easier for a child following the words with a finger.</p>
-        <div className="row">
-          <button className={"tog rec" + (settings.pace !== "normal" ? " on" : "")} onClick={() => updateSettings({ pace: "slower" })}>Slower</button>
-          <button className={"tog rec" + (settings.pace === "normal" ? " on" : "")} onClick={() => updateSettings({ pace: "normal" })}>Normal</button>
-        </div>
-      </section>
-
-      <section className="pc">
         <h3>Bedtime mode</h3>
-        <label className="switch"><input type="checkbox" checked={settings.bedtime} onChange={(e) => updateSettings({ bedtime: e.target.checked })} /> Dim colours, slower voice, no confetti. One story, then a real book.</label>
+        <label className="switch"><input type="checkbox" checked={settings.bedtime} onChange={(e) => updateSettings({ bedtime: e.target.checked })} /> Dim colours, no confetti. One story, then a real book.</label>
       </section>
 
       <section className="pc">

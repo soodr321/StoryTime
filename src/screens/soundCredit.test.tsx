@@ -23,7 +23,7 @@ vi.mock("../lib/sounds", () => ({
 const fakeFamily = {
   kids: [] as Kid[],
   updateKid: vi.fn(), addKid: vi.fn(), removeKid: vi.fn(),
-  settings: { bedtime: false, readers: [], pace: "normal" } as AppSettings,
+  settings: { bedtime: false, readers: [] } as AppSettings,
   updateSettings: vi.fn(),
   customs: [], removeCustom: vi.fn(),
   activeKid: null, progress: {},
