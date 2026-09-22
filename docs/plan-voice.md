@@ -284,12 +284,34 @@ Four voices, three degraded, plus a fourth surface v1 missed entirely (`public/p
     take `carrier_last_word.end` and `payload_first_word.start`, cut at the **midpoint of that gap**,
     snap to the nearest zero crossing within ±10 ms, and apply a ~3 ms fade-in. The cut then lands
     squarely in the pause, clear of both the carrier's offset and the payload's closure.
-  - **Gate (this is the one that would have caught it):** first-word duration ≥ 180 ms **and**
-    ≥ 0.5 × the median word duration on that page, from the Whisper timings the pipeline already
-    produces. Phoneme-invariant, so it survives vowel-initial words where the centroid gate failed,
+  - **Keep the closure when the payload starts with a stop.** Whisper's word start is the **burst**,
+    not the closure — a /p t k b d g/ word begins with 50–120 ms of near-silence that Whisper does not
+    include. So after taking the midpoint, clamp it: `cut = min(cut, payload_first_word.start − 40 ms)`
+    when the first letter is a stop, if the gap allows. And **never re-trim the payload's leading
+    silence with a dB rule afterwards — that trim *is* the closure.** (Grok, round 7.)
+  - **Gate (this is the one that would have caught it):** a **paired same-token duration ratio** on
+    the FINAL rendered page — `dur(token, sentence-initial) / median(dur(same token, non-initial))
+    ≥ 0.6`. Pairing on the same token is what stops naturally-short words like `a` and `the` from
+    false-positiving, which a global floor cannot do (Grok). Where a token never appears
+    non-initially in that book, fall back to ≥ 180 ms and ≥ 0.5 × the page median (Gemini). Run it on
+    the final audio, not the uncut synth, so that it fails whether the carrier or the cut is at fault.
+    Running the same ratio on the uncut render is **diagnostic**: fail-before-cut blames the carrier,
+    pass-before-cut-and-fail-after blames the cutter. Phoneme-invariant, so it survives vowel-initial words where the centroid gate failed,
     and immune to Whisper's language prior, which transcribes a clipped word correctly but still
     reports its true 90 ms span. On failure, re-render with the next carrier in the ladder; if the
-    ladder is exhausted, abort the page rather than publish it. (Gate and midpoint cut: Gemini.)
+    ladder is exhausted, abort the page rather than publish it. (Midpoint cut: Gemini and Grok
+    independently.)
+  - **Both reviewers diagnosed this wrong, in the same direction, and the reason is worth recording.**
+    Each concluded the carrier had failed — Gemini from the consistency of the ~22% survival ratio,
+    Grok from the claim that the shipped carriers "were never measured." They had been: `Listen,`
+    425 ms, `Yes,` 425 ms, `Wait,` 400 ms, `Look,` 425 ms, against a ~420 ms target. Grok proposed the
+    decisive experiment itself — *Whisper the uncut carrier render and read the first payload word* —
+    and that test returns **long**, which is its own criterion for blaming the cutter. A measurement
+    that takes one API call beat two careful arguments; make the measurement first next time.
+  - **Structural alternative worth trying if the cut stays fragile (Grok):** stop synthesising
+    sentences in isolation. Render `previous_sentence + " and " + current_sentence`, align, and split
+    on the `and`. The preceding sentence is a better carrier than any invented preface, and the
+    payload is then never utterance-initial at all.
 
 ### B. Letter sounds — metadata only
 
