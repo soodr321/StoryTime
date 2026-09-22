@@ -193,7 +193,7 @@ export function StoryScreen({ story, mode, resume, onHome, onAgain }: { story: S
       {inStory && page && (
         <StoryView
           page={page} pageNo={ctx.page} total={story.pages.length} token={listen ? ctx.token : -1} results={ctx.results}
-          slug={story.slug} family={story.tradition === "family"} readMode={!listen} listener={listener} reader={reader} kid={kid.name} stalled={stalled} pageHeld={pageHeld} hideArt={panelOpen} learner={learner} bedtime={bedtime} voiceFollow={!!fam.settings.voiceFollow && !bedtime}
+          slug={story.slug} family={story.tradition === "family"} readMode={!listen} listener={listener} reader={reader} kid={kid.name} stalled={stalled} pageHeld={pageHeld} hideArt={panelOpen} learner={learner} bedtime={bedtime} voiceFollow={!!fam.settings.voiceFollow}
           onRetry={() => { void unlock(); setStalled(false); setRetry((n) => n + 1); }}
           onMagicTap={(w, i, extra) => state === "narrating" && send({ type: "MAGIC_REACHED", word: w, index: i, extra })}
           onWordTap={(tok) => { if (listener || !listen) { if (state === "narrating" && listen && !pageHeld) return; setCaption(tok); const h = speakText(tok, { rate }); playing.current = h; } }}

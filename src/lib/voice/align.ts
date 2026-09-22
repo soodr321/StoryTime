@@ -4,9 +4,15 @@
  * after it. Never jump further, never light the pending child word or anything past it.
  * Interim strings can be revised, so alignment always restarts from the utterance's anchor.
  */
-export const CLOSED = new Set(["a", "an", "the", "to", "of", "and", "in", "on", "at", "it", "is", "was", "he", "she", "we", "i", "you", "they", "his", "her", "its", "up", "so", "as", "but", "or", "for", "with", "had", "has", "not"]);
+export const CLOSED = new Set([
+  "a", "an", "the", "to", "of", "and", "in", "on", "at", "it", "is", "was",
+  "he", "she", "we", "i", "you", "they", "his", "her", "its", "up", "so",
+  "as", "but", "or", "for", "with", "had", "has", "not", "out", "by",
+  "from", "into", "that", "this", "my", "your", "them", "him", "me",
+  "did", "do", "will", "all", "no"
+]);
 
-export const norm = (s: string) => s.toLowerCase().replace(/[^a-z']/g, "");
+export const norm = (s: string) => s.toLowerCase().replace(/['’]/g, "").replace(/[^a-z]/g, "");
 
 /** Levenshtein-ish fuzzy: identical, or one edit for words of 4+ letters (recognisers drop endings). */
 export function matches(heard: string, expected: string): boolean {
@@ -28,10 +34,11 @@ export function align({ tokens, anchor, heard, stopAt }: AlignInput): number {
   let cursor = anchor;
   const limit = stopAt >= 0 ? stopAt : tokens.length;
   for (const h of heard.map(norm).filter(Boolean)) {
-    const n1 = cursor + 1, n2 = cursor + 2;
+    const n1 = cursor + 1, n2 = cursor + 2, n3 = cursor + 3;
     if (n1 >= limit) break;
     if (matches(h, tokens[n1])) { cursor = n1; continue; }
-    if (n2 < limit && CLOSED.has(tokens[n1]) && matches(h, tokens[n2])) { cursor = n2; continue; }
+    if (n2 < limit && matches(h, tokens[n2])) { cursor = n2; continue; }
+    if (n3 < limit && CLOSED.has(tokens[n1]) && CLOSED.has(tokens[n2]) && matches(h, tokens[n3])) { cursor = n3; continue; }
     // no match: a repeated phrase, an aside, or the child's voice; hold position
   }
   return cursor;

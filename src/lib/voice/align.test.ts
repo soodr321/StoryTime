@@ -22,4 +22,20 @@ describe("voice alignment", () => {
     expect(align({ tokens, anchor: -1, heard: ["a", "crow", "found", "a", "big"], stopAt: -1 })).toBeGreaterThan(a);
   });
   it("fuzzy-matches one dropped ending on longer words", () => { expect(matches("cheese", "cheeses")).toBe(true); expect(matches("cat", "cot")).toBe(false); });
+  it("recovers when a content word is clipped or misheard at the start or middle", () => {
+    const dadTokens = ["dad", "said", "he", "was", "going"];
+    expect(align({ tokens: dadTokens, anchor: -1, heard: ["said", "he"], stopAt: -1 })).toBe(2);
+  });
+  it("normalizes contractions and words with straight and curly apostrophes", () => {
+    const apTokens = ["nan", "found", "its", "blue", "ants"];
+    expect(align({ tokens: apTokens, anchor: -1, heard: ["nan", "found", "it's", "blue", "ant’s"], stopAt: -1 })).toBe(4);
+  });
+  it("skips two closed-class words in succession", () => {
+    const phrase = ["the", "cat", "in", "the", "tin"];
+    expect(align({ tokens: phrase, anchor: 1, heard: ["tin"], stopAt: -1 })).toBe(4);
+  });
+  it("never exceeds stopAt even when lookahead could match past it", () => {
+    const phrase = ["dad", "said", "he", "was", "nap"];
+    expect(align({ tokens: phrase, anchor: 1, heard: ["he", "was", "nap"], stopAt: 4 })).toBe(3);
+  });
 });

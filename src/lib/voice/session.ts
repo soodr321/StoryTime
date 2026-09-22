@@ -10,9 +10,9 @@ type Rec = { start: () => void; stop: () => void; abort: () => void; lang: strin
 type RecCtor = new () => Rec;
 
 export const voiceSupported = () => typeof window !== "undefined" && !!((window as unknown as { SpeechRecognition?: RecCtor }).SpeechRecognition || (window as unknown as { webkitSpeechRecognition?: RecCtor }).webkitSpeechRecognition);
-const isIOS = () => typeof navigator !== "undefined" && /iPad|iPhone|iPod/.test(navigator.userAgent);
+export const isIOS = () => typeof navigator !== "undefined" && (/iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1));
 
-let rec: Rec | null = null;
+let activeRec: Rec | null = null;
 let gen = 0;
 
 export interface VoiceHandlers { onState: (s: VoiceState) => void; onHeard: (words: string[], final: boolean) => void }
@@ -23,36 +23,69 @@ export interface VoiceSession { stop: () => void }
 export function startVoice(h: VoiceHandlers, opts: { maxRestarts?: number } = {}): VoiceSession | null {
   const Ctor = (window as unknown as { SpeechRecognition?: RecCtor }).SpeechRecognition || (window as unknown as { webkitSpeechRecognition?: RecCtor }).webkitSpeechRecognition;
   if (!Ctor) { h.onState("unavailable"); return null; }
+
+  // Clean up any previously active recognizer so it never interferes with the new session
+  if (activeRec) {
+    try { activeRec.abort(); } catch { /* idle */ }
+    activeRec = null;
+  }
+
   const my = ++gen; const alive = () => my === gen;
   let restarts = 0; const maxRestarts = opts.maxRestarts ?? 3;
   let progress = false; let watchdog: ReturnType<typeof setTimeout> | null = null;
-  try { rec ??= new Ctor(); } catch { h.onState("unavailable"); return null; }
-  const r = rec;
+
+  let r: Rec;
+  try {
+    r = new Ctor();
+    activeRec = r;
+  } catch {
+    h.onState("unavailable");
+    return null;
+  }
+
   r.lang = "en-US"; r.continuous = !isIOS(); r.interimResults = true; r.maxAlternatives = 1;
   const armWatchdog = () => { if (watchdog) clearTimeout(watchdog); watchdog = setTimeout(() => { if (alive() && !progress) { h.onState("stopped"); try { r.abort(); } catch { /* idle */ } } }, 12000); };   // no result in 12 s: say so instead of a spinning mic
   r.onstart = () => { if (alive()) { h.onState("listening"); armWatchdog(); } };
   r.onresult = (e) => {
     if (!alive()) return;
     progress = true; armWatchdog();
-    let text = ""; let final = false;
-    for (let i = e.resultIndex; i < e.results.length; i++) { text += " " + e.results[i][0].transcript; if (e.results[i].isFinal) final = true; }
+    let text = "";
+    for (let i = e.resultIndex; i < e.results.length; i++) { text += " " + e.results[i][0].transcript; }
+    const last = e.results[e.results.length - 1];
+    const final = !!last?.isFinal;
     h.onHeard(text.trim().split(/\s+/).filter(Boolean), final);
   };
   r.onerror = (e) => {
     if (!alive()) return;
     const code = e.error ?? "";
-    if (code === "not-allowed" || code === "service-not-allowed") { gen++; h.onState("denied"); return; }
-    if (code === "network" || code === "audio-capture") { gen++; h.onState("unavailable"); return; }
+    if (code === "not-allowed" || code === "service-not-allowed") { gen++; if (activeRec === r) activeRec = null; h.onState("denied"); return; }
+    if (code === "network" || code === "audio-capture") { gen++; if (activeRec === r) activeRec = null; h.onState("unavailable"); return; }
     // "no-speech" / "aborted": onend decides
   };
   r.onend = () => {
     if (!alive()) return;
-    if (restarts < maxRestarts) { restarts++; setTimeout(() => { if (!alive()) return; try { r.start(); } catch { h.onState("stopped"); } }, 200); }   // WebKit ends on silence; a short restart keeps a page alive, bounded
-    else { gen++; h.onState("stopped"); }
+    if (restarts < maxRestarts) {
+      restarts++;
+      setTimeout(() => {
+        if (!alive()) return;
+        try { r.start(); } catch { if (activeRec === r) activeRec = null; h.onState("stopped"); }
+      }, 200);
+    } else {
+      gen++;
+      if (activeRec === r) activeRec = null;
+      h.onState("stopped");
+    }
   };
   h.onState("starting");
-  try { r.start(); } catch { gen++; h.onState("stopped"); return null; }
-  const stop = () => { if (!alive()) return; gen++; if (watchdog) clearTimeout(watchdog); try { r.abort(); } catch { /* idle */ } h.onState("off"); };
+  try { r.start(); } catch { gen++; if (activeRec === r) activeRec = null; h.onState("stopped"); return null; }
+  const stop = () => {
+    if (!alive()) return;
+    gen++;
+    if (watchdog) clearTimeout(watchdog);
+    try { r.abort(); } catch { /* idle */ }
+    if (activeRec === r) activeRec = null;
+    h.onState("off");
+  };
   if (typeof document !== "undefined") document.addEventListener("visibilitychange", () => { if (document.hidden) stop(); }, { once: true });
   return { stop };
 }
