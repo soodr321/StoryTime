@@ -38,7 +38,7 @@ export function WelcomeScreen({ onDone }: { onDone: () => void }) {
 
   return (
     <main className="settings welcome">
-      <div className="hero rise"><Mascots /><h1>StoryTime</h1><h2>Nani reads the story.<br />Your child reads the magic words.</h2></div>
+      <div className="hero rise"><Mascots /><h1>StoryTime</h1><h2>We tell the story.<br />Your child reads the magic words.</h2></div>
       <section className="pc rise2">
         <label className="lbl">Who is learning to read? <input value={name} onChange={(e) => setName(e.target.value)} placeholder="first name" /></label>
         <div className="chips">{AVATARS.map((a) => <button key={a} className={"emo" + (avatar === a ? " on" : "")} onClick={() => setAvatar(a)}>{a}</button>)}</div>

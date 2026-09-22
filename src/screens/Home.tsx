@@ -72,7 +72,7 @@ export function HomeScreen({ onStart, onLibrary, onSwitch, onWarmUp, onTeach }: 
           {resumable ? (
             <div className="modes">
               <button className="mode" onClick={() => onStart(today, session!.mode, true)}>
-                <span className="mi">{session!.mode === "listen" ? <SpeakerIcon /> : <BookIcon />}</span><b>Continue</b><small>{session!.mode === "listen" ? "Nani reads" : "I read"} · page {session!.page + 1}</small>
+                <span className="mi">{session!.mode === "listen" ? <SpeakerIcon /> : <BookIcon />}</span><b>Continue</b><small>{session!.mode === "listen" ? "Tell me a story" : "I read"} · page {session!.page + 1}</small>
               </button>
               <button className="mode quiet" onClick={() => setSession(null)}>
                 <span className="mi"><RedoIcon /></span><b>Start over</b><small>Pick a mode again</small>
@@ -90,7 +90,7 @@ export function HomeScreen({ onStart, onLibrary, onSwitch, onWarmUp, onTeach }: 
           ) : (
             <div className="modes rise2">
               <button className="mode" onClick={() => onStart(today, "listen", false)}>
-                <span className="mi">{settings.bedtime ? <MoonIcon /> : <SpeakerIcon />}</span><b>{settings.bedtime ? "Bedtime story" : "Nani reads"}</b>
+                <span className="mi">{settings.bedtime ? <MoonIcon /> : <SpeakerIcon />}</span><b>{settings.bedtime ? "Bedtime story" : "Tell me a story"}</b>
                 <small>{listener ? "Listen and tap the words you like." : "Karaoke story. You read the magic words."}</small>
               </button>
               {!listener && (
