@@ -15,7 +15,9 @@ generalised — see synth_sentence()). Kokoro's acoustic model has not settled w
 begins, so the first word after ANY sentence-ending full stop comes out with a phantom syllable
 in front of it or with no onset consonant at all. That is not a property of isolated words: it
 happens at every sentence boundary in ordinary page narration too, which is 75 of the library's
-99 pages.
+99 pages. The cut itself is alignment-guided, not a dB search (plan-voice.md A7e): a dB-threshold
+search shipped in cae82dd and destroyed the very word the carrier was added to protect, because a
+stop consonant's silent closure looks the same to that search as the gap it was hunting for.
 
 Requires DEEPINFRA_API_KEY, read from the environment
 or from .env.local (gitignored, never committed) — see require_api_key(). Fail loud, not silent:
@@ -29,7 +31,7 @@ A7) — not touched here.
 
 Requires: pip install aiohttp numpy ; ffmpeg on PATH (or imageio-ffmpeg).
 """
-import asyncio, base64, json, os, re, shutil, subprocess, sys
+import asyncio, base64, json, os, re, shutil, statistics, subprocess, sys
 from pathlib import Path
 
 try:
@@ -56,13 +58,10 @@ SR_ASR = 16000            # what Whisper wants, and what the spectral measuremen
 # opens on a sonorant ("Woof!") the two run together with no boundary to cut at. Each entry is
 # (text, word_count); the cut lands between the carrier's last spoken word and the payload's first.
 CARRIERS = (("Listen, ", 1), ("Yes, ", 1), ("Wait, ", 1), ("Look, ", 1), ("Listen to this, ", 3))
-CUT_WINDOW_EXT_MS = 120   # the vendor's word start runs early — for "Drip." the real gap is 40 ms after it
-CUT_QUIET_DB = -30.0      # a cut frame louder than this is inside the carrier, not in the gap after it.
-                          # Measured, not guessed: every cut that left audible carrier in front of the
-                          # payload sat at -18 dB, and every clean one at -27 dB or quieter. It cannot
-                          # be tightened much further — an /s/-initial payload starts with low-energy
-                          # frication, so "Listen, sun." never gets quieter than -34 dB however deep
-                          # the pause really is, and a -45 dB rule refused every carrier for `sun`.
+ZERO_CROSS_WINDOW_MS = 10.0   # A7e: snap the alignment cut to the nearest zero crossing within this
+CUT_FADE_S = 0.003            # A7e: ~3 ms linear fade-in at the cut, so it never starts on a nonzero sample
+FIRST_WORD_MIN_MS = 180.0        # A7e's first-word gate: an absolute floor...
+FIRST_WORD_MEDIAN_RATIO = 0.5    # ...and at least half the page's own median word duration
 PAGE_TRIES = 3            # a page whose timings the gate refuses is re-synthesised, not waved through
 LEAD_SILENCE_MS = 580     # Kokoro's own leading pad, measured across the shipped tree (530-630 ms).
                           # Restored after the cut so the pause architecture is unchanged by this fix:
@@ -227,27 +226,66 @@ def _onset_rule(word):
         if w.startswith(g): return "nasal"
     return None
 
-def _cut_point(x, words, n_carrier, sr=SR_ASR):
+def _alignment_cut_point(heard, n_carrier):
     """
-    Where to cut the carrier off its payload: the quietest 10 ms frame between the carrier's last
-    spoken word and the payload's first. Returns (cut_ms, gap_db) with gap_db relative to the
-    clip's loudest frame, or None if the vendor did not report enough spoken words.
+    Where to cut the carrier off its payload (plan-voice.md A7e): the midpoint between the
+    carrier's last spoken word and the payload's first, both measured by Whisper on the actual
+    carrier+payload render. Returns the cut point in ms, or None if Whisper did not report enough
+    spoken words to find both sides of the gap, or the two sides leave no gap at all — either way
+    the caller should try the next carrier rather than guess.
 
-    Searching for the energy minimum, rather than trusting the vendor's word boundary, is the load-
-    bearing part: the thing being protected is the payload's first consonant, so a cut that lands
-    even 20 ms late removes exactly what the carrier was added to preserve. The window runs a little
-    PAST the vendor's payload start for the same reason in the other direction — the vendor's start
-    runs early, and for "Drip." the real gap sits 40 ms after the timestamp.
+    This replaces a dB-threshold search that was the actual bug behind A7e: cae82dd's cut searched
+    forward for the quietest frame using the VENDOR's (Kokoro's) own word boundaries as the window.
+    A stop consonant begins with a silent closure, and so does the gap after the carrier's comma, so
+    that search routinely walked through the whole gap, through the payload's first word, and
+    latched onto a LATER closure inside a later word — shipping a ~65 ms trailing burst instead of
+    the word the carrier was added to protect. Cutting at the midpoint between two Whisper-measured
+    word boundaries has no "quiet enough" threshold to walk past: it cannot land inside either word,
+    whatever their phonemes are, which is why this is also phoneme-invariant like the gate below.
     """
-    spoken = [i for i, (t, _, _) in enumerate(words) if norm(t)]
+    spoken = [i for i, (w, _, _) in enumerate(heard) if norm(w)]
     if len(spoken) <= n_carrier: return None
-    lo = words[spoken[n_carrier-1]][2]
-    hi = words[spoken[n_carrier]][1] + CUT_WINDOW_EXT_MS
-    db = _rms_db(x, sr)
-    a, b = max(0, int(lo // 10)), min(len(db), int(hi // 10) + 1)
-    if b <= a: return None
-    k = a + int(np.argmin(db[a:b]))
-    return k * 10.0, float(db[k] - db.max())
+    carrier_end = heard[spoken[n_carrier - 1]][2]
+    payload_start = heard[spoken[n_carrier]][1]
+    if payload_start <= carrier_end: return None   # no gap Whisper can see: try the next carrier
+    return (carrier_end + payload_start) / 2.0
+
+def _nearest_zero_crossing(x, sr, center_ms, window_ms=ZERO_CROSS_WINDOW_MS):
+    """
+    Sample index in mono float PCM `x` (at `sr`) nearest to `center_ms` where the waveform crosses
+    zero, searched within +/- `window_ms`. Landing the cut exactly on a zero crossing is what keeps
+    the ~3 ms fade-in (CUT_FADE_S) from starting on a nonzero sample and clicking.
+
+    Falls back to the centre sample when the window has no sign change — true digital silence reads
+    as all-zero, which is already "on" a zero crossing everywhere inside it, so the centre is as
+    good as any other sample in the window.
+    """
+    center = int(round(center_ms * sr / 1000))
+    span = int(round(window_ms * sr / 1000))
+    lo, hi = max(0, center - span), min(len(x) - 1, center + span)
+    if hi <= lo: return center
+    seg = x[lo:hi + 1]
+    signs = np.sign(seg)
+    crossings = [i for i in range(1, len(seg)) if signs[i] == 0 or signs[i] != signs[i - 1]]
+    if not crossings: return center
+    best = min(crossings, key=lambda i: abs((lo + i) - center))
+    return lo + best
+
+def _first_word_ok(duration_ms, context_ms):
+    """
+    plan-voice.md A7e's gate: the payload's first word must last at least FIRST_WORD_MIN_MS AND at
+    least FIRST_WORD_MEDIAN_RATIO of the median word duration measured elsewhere on the same page
+    (`context_ms`) — both straight from Whisper's own span, never a spectral or transcription check.
+    Deliberately phoneme-invariant: A7a already found the onset centroid unusable on vowel-initial
+    payloads, and a transcription check is exactly what the bug hid from — Whisper's language prior
+    transcribes a clipped word correctly while still reporting its true, too-short span, which is
+    what caught this bug in the first place (65 ms measured against a "the" that Whisper spelled
+    perfectly). With no page context yet (a one-word prompt clip, or nothing else on the page has
+    been measured yet), only the absolute floor applies.
+    """
+    if duration_ms < FIRST_WORD_MIN_MS: return False
+    if not context_ms: return True
+    return duration_ms >= FIRST_WORD_MEDIAN_RATIO * statistics.median(context_ms)
 
 def _onset_verdict(path, tokens):   # -> (reason or None, heard)
     """
@@ -267,7 +305,9 @@ def _onset_verdict(path, tokens):   # -> (reason or None, heard)
 
     A third instrument — "is there sound before the first word Whisper heard" — is deliberately
     absent: asr_words() now moves a word start forward out of silence, so it would compare a
-    number with itself. The gap depth at the cut (CUT_QUIET_DB) is what stands in for it.
+    number with itself. The first-word duration gate in synth_sentence() (plan-voice.md A7e, run on
+    this function's `heard` after it returns) is what stands in for it: a cut that clipped into the
+    payload does not just fail to sound right, it measures short.
     """
     heard = asr_words(path)
     if not heard: return "no ASR transcript for this sentence", []
@@ -286,17 +326,26 @@ def _onset_verdict(path, tokens):   # -> (reason or None, heard)
             return f"{first!r} has no nasal onset: centroids {c[0]:.0f} {c[1]:.0f} {c[2]:.0f} Hz", heard
     return None, heard
 
-async def synth_sentence(text, work, stem, voice=VOICE, speed=SPEED, exact=None):
+async def synth_sentence(text, work, stem, voice=VOICE, speed=SPEED, exact=None, page_word_durations=None):
     """
     Synthesise ONE sentence with its onset intact, and return
-    (samples at SR_SYNTH, [(word, start_ms, end_ms)] relative to those samples).
+    (samples at SR_SYNTH, [(word, start_ms, end_ms)] relative to those samples, this sentence's own
+    Whisper-measured word durations in ms).
 
     The sentence is never sent on its own. It goes behind a carrier lead-in ("Listen, ...") which
     absorbs the unsettled start of the utterance, and the carrier is then cut back out at the
-    energy minimum in front of the payload. If the carrier and the payload ran together with no
-    gap, or the cut did not leave a clean onset behind, the next carrier in the ladder is tried;
-    when the ladder is exhausted the page aborts rather than shipping a word with no first sound
-    (plan-voice.md principle 4 — the same reason realign() refuses a page it cannot measure).
+    midpoint of the gap between the carrier's last word and the payload's first — both measured by
+    Whisper on the carrier+payload render (plan-voice.md A7e). If the carrier and the payload ran
+    together with no gap, the cut did not leave a clean onset behind, or the first word came out too
+    short (the gate below), the next carrier in the ladder is tried; when the ladder is exhausted
+    the page aborts rather than shipping a word with no first sound (plan-voice.md principle 4 — the
+    same reason realign() refuses a page it cannot measure).
+
+    `page_word_durations` is the running list of Whisper-measured word durations (ms) from the
+    sentences already synthesised earlier on this same page — tts() accumulates it sentence by
+    sentence. It is the "median word duration on that page" the A7e gate compares the first word
+    against; None/empty for a page's first sentence (which still has its OWN later words as context,
+    folded in below) and for one-word prompt clips, where only the absolute floor applies.
 
     `exact` is for the one-word clips — `word:{w}` and the word half of `yes:{w}` — where
     plan-voice.md A7's gate 2 applies: Whisper must read the clip back as the word itself. It is a
@@ -305,7 +354,8 @@ async def synth_sentence(text, work, stem, voice=VOICE, speed=SPEED, exact=None)
     every carrier is tried and the first take Whisper reads back correctly wins; if none does, the
     first take that passed the onset gate ships and the run prints what was heard, because a `bat`
     that comes back as "that" is exactly the kind of thing the parent should listen to (A7 gate 1:
-    automation catches regressions, it does not choose).
+    automation catches regressions, it does not choose). The duration gate is not relaxed for this
+    preference — a short first word is rejected before `exact` is even considered.
     """
     tokens = text.split(" ")
     reasons, fallback = [], None
@@ -314,36 +364,44 @@ async def synth_sentence(text, work, stem, voice=VOICE, speed=SPEED, exact=None)
         buf, words = await _one(carrier + text, voice, speed)
         raw.write_bytes(buf)
         try:
-            x16 = _pcm(raw, SR_ASR)
-            found = _cut_point(x16, words, n_carrier)
+            heard_raw = asr_words(raw)
+            if not heard_raw:
+                reasons.append(f"{carrier!r}: no ASR transcript for the carrier+payload render"); continue
+            found = _alignment_cut_point(heard_raw, n_carrier)
             if found is None:
-                reasons.append(f"{carrier!r}: the vendor reported no payload word"); continue
-            cut, gap_db = found
-            if gap_db > CUT_QUIET_DB:
-                reasons.append(f"{carrier!r}: ran into the sentence, gap only {gap_db:.0f} dB"); continue
+                reasons.append(f"{carrier!r}: Whisper found no clean gap after the carrier"); continue
+            x16 = _pcm(raw, SR_ASR)
+            cut = _nearest_zero_crossing(x16, SR_ASR, found) / SR_ASR * 1000.0
             piece = work / f".{stem}.piece.mp3"
             subprocess.run([FF, "-loglevel", "error", "-y", "-ss", f"{cut/1000:.4f}", "-i", str(raw),
+                            "-af", f"afade=t=in:st=0:d={CUT_FADE_S}",
                             "-c:a", "libmp3lame", "-q:a", "2", "-ar", str(SR_SYNTH), "-ac", "1", str(piece)], check=True)
             try:
                 bad, heard = _onset_verdict(piece, tokens)
                 if bad:
                     reasons.append(f"{carrier!r}: {bad}"); continue
+                first_dur = heard[0][2] - heard[0][1]
+                context = list(page_word_durations or []) + [en - st for _, st, en in heard[1:]]
+                if not _first_word_ok(first_dur, context):
+                    ref = f"page median {statistics.median(context):.0f} ms" if context else "no page context yet"
+                    reasons.append(f"{carrier!r}: first word only {first_dur:.0f} ms ({ref})"); continue
                 x = _pcm(piece, SR_SYNTH)
                 payload = [(t, st - cut, en - cut) for t, st, en in words if st >= cut]
-                if exact is None: return x, payload
+                durations = [en - st for _, st, en in heard]
+                if exact is None: return x, payload, durations
                 said = " ".join(norm(w) for w, _, _ in heard if norm(w))
-                if said == norm(exact): return x, payload
-                if fallback is None: fallback = (x, payload, said)
+                if said == norm(exact): return x, payload, durations
+                if fallback is None: fallback = (x, payload, durations, said)
                 reasons.append(f"{carrier!r}: heard {said!r}, not {norm(exact)!r}")
             finally:
                 piece.unlink(missing_ok=True)
         finally:
             raw.unlink(missing_ok=True)
     if fallback is not None:
-        x, payload, said = fallback
+        x, payload, durations, said = fallback
         print(f"    ! {exact!r} ships as the best of {len(CARRIERS)} takes; Whisper reads it back as {said!r} — listen to this one")
-        return x, payload
-    raise AbortPage("no carrier produced a clean onset for " + repr(text[:60]) + " — " + "; ".join(reasons))
+        return x, payload, durations
+    raise AbortPage("no carrier produced a clean, full-length onset for " + repr(text[:60]) + " — " + "; ".join(reasons))
 
 def _encode(samples, out_m4a):
     """Write float32 mono samples at SR_SYNTH to `out_m4a` as AAC, the format the app ships."""
@@ -364,13 +422,21 @@ async def tts(text, out_m4a, voice=VOICE, speed=SPEED, exact_word=None):
     that restoration every pause in the library would shorten by a third.
     Each sentence's own vendor word offsets are shifted into the final file's timeline before being
     merged, so `words` is already in the final file's timeline (plan-voice.md A3 join-offset rule).
+
+    `page_word_durations` accumulates each sentence's own Whisper-measured word spans as they are
+    produced, so sentence 2's first-word gate (plan-voice.md A7e) is judged against sentence 1's
+    words too, not just its own — "the median word duration on that page" means the whole page, and
+    sentences are the only thing this function can see becoming a page.
     """
     parts_text = sentences(text) or [text]
     pieces, word_sets = [], []
+    page_word_durations: list[float] = []
     for i, sent in enumerate(parts_text):
         # `Yes! nap.` is two sentences; the preference applies to the one that IS the word
         want = exact_word if (exact_word and norm(sent) == norm(exact_word)) else None
-        x, payload = await synth_sentence(sent, out_m4a.parent, f"{out_m4a.stem}.s{i}", voice, speed, want)
+        x, payload, word_durations = await synth_sentence(
+            sent, out_m4a.parent, f"{out_m4a.stem}.s{i}", voice, speed, want, page_word_durations)
+        page_word_durations.extend(word_durations)
         lead_ms = _speech_onset(x, SR_SYNTH) / SR_SYNTH * 1000
         pad = np.zeros(int(max(0.0, LEAD_SILENCE_MS - lead_ms) * SR_SYNTH / 1000), dtype=np.float32)
         pieces.append(np.concatenate([pad, x]))
