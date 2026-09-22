@@ -16,25 +16,69 @@ const SIDE = 40;          // and this far to the side of a row's first/last word
 export function rows(rects: WordRect[]): WordRect[][] {
   const sorted = [...rects].sort((a, b) => a.top - b.top || a.left - b.left);
   const out: WordRect[][] = [];
-  for (const r of sorted) { const row = out[out.length - 1]; if (row && Math.abs(row[0].top - r.top) <= ROW_TOL) row.push(r); else out.push([r]); }
+  for (const w of sorted) {
+    let found = false;
+    for (const row of out) {
+      const rTop = Math.min(...row.map((x) => x.top));
+      const rBottom = Math.max(...row.map((x) => x.bottom));
+      const overlap = Math.min(rBottom, w.bottom) - Math.max(rTop, w.top);
+      if (overlap > 0 || Math.abs(rTop - w.top) <= ROW_TOL) {
+        row.push(w);
+        found = true;
+        break;
+      }
+    }
+    if (!found) out.push([w]);
+  }
+  for (const row of out) row.sort((a, b) => a.left - b.left);
+  out.sort((a, b) => a[0].top - b[0].top);
   return out;
 }
 
 /** The word under (or just above) a finger at x,y; -1 when the finger is off the text. */
 export function hitWord(rects: WordRect[], x: number, y: number): number {
+  if (!rects.length) return -1;
   const rs = rows(rects);
-  // a finger just under line 1 sits on the top of line 2: it means line 1 unless it is well inside line 2
-  let row: WordRect[] | null = null;
-  for (const r of rs) {
-    const top = Math.min(...r.map((w) => w.top)); const bottom = Math.max(...r.map((w) => w.bottom));
-    if (y < top - ROW_TOL || y > bottom + BELOW) continue;
-    if (!row || (y - top) / Math.max(1, bottom - top) > 0.55) row = r;
+  if (!rs.length) return -1;
+
+  const textTop = Math.min(...rects.map((w) => w.top));
+  const textBottom = Math.max(...rects.map((w) => w.bottom));
+  if (y < textTop - ROW_TOL || y > textBottom + BELOW) return -1;
+
+  // A finger just under line 1 sits on top of line 2: it means line 1 unless it is well inside line 2.
+  // Transition between rows is continuous so there are no dead zones across the gap between rows.
+  let rowIndex = 0;
+  for (let i = 1; i < rs.length; i++) {
+    const nextRow = rs[i];
+    const top = Math.min(...nextRow.map((w) => w.top));
+    const bottom = Math.max(...nextRow.map((w) => w.bottom));
+    if ((y - top) / Math.max(1, bottom - top) > 0.55) {
+      rowIndex = i;
+    }
   }
-  if (!row) return -1;
-  const left = Math.min(...row.map((w) => w.left)); const right = Math.max(...row.map((w) => w.right));
-  if (x < left - SIDE || x > right + SIDE) return -1;
+
+  const row = rs[rowIndex];
+  const rowLeft = Math.min(...row.map((w) => w.left));
+  const rowRight = Math.max(...row.map((w) => w.right));
+
+  const prevRow = rowIndex > 0 ? rs[rowIndex - 1] : null;
+  const prevRight = prevRow ? Math.max(...prevRow.map((w) => w.right)) : rowRight;
+  const prevLeft = prevRow ? Math.min(...prevRow.map((w) => w.left)) : rowLeft;
+
+  const nextRow = rowIndex + 1 < rs.length ? rs[rowIndex + 1] : null;
+  const nextRight = nextRow ? Math.max(...nextRow.map((w) => w.right)) : rowRight;
+  const nextLeft = nextRow ? Math.min(...nextRow.map((w) => w.left)) : rowLeft;
+
+  const allowedLeft = Math.min(rowLeft, prevLeft, nextLeft) - SIDE;
+  const allowedRight = Math.max(rowRight, prevRight, nextRight) + SIDE;
+
+  if (x < allowedLeft || x > allowedRight) return -1;
+
   let best = -1, dist = Infinity;
-  for (const w of row) { const d = x < w.left ? w.left - x : x > w.right ? x - w.right : 0; if (d < dist) { dist = d; best = w.index; } }   // whitespace resolves to the nearer word
+  for (const w of row) {
+    const d = x < w.left ? w.left - x : x > w.right ? x - w.right : 0;
+    if (d < dist) { dist = d; best = w.index; }
+  }
   return best;
 }
 
