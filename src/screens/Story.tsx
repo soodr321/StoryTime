@@ -227,7 +227,7 @@ export function StoryScreen({ story, mode, resume, onHome, onAgain }: { story: S
   );
 }
 
-function StoryView({ page, pageNo, total, slug, family, token, results, readMode, listener, reader, kid, stalled, pageHeld, hideArt, learner, bedtime, voiceFollow, onRetry, onMagicTap, onWordTap, onNext }: {
+export function StoryView({ page, pageNo, total, slug, family, token, results, readMode, listener, reader, kid, stalled, pageHeld, hideArt, learner, bedtime, voiceFollow, onRetry, onMagicTap, onWordTap, onNext }: {
   page: Page; pageNo: number; total: number; slug: string; family: boolean; token: number; results: WordResult[];
   readMode: boolean; listener: boolean; reader: string; kid: string; stalled: boolean; pageHeld: boolean; hideArt: boolean; learner: LearnerModel; bedtime: boolean; voiceFollow: boolean;
   onRetry: () => void; onMagicTap: (w: string, i: number, extra?: boolean) => void; onWordTap: (tok: string) => void; onNext: () => void;
@@ -249,7 +249,14 @@ function StoryView({ page, pageNo, total, slug, family, token, results, readMode
   const blocked = (i: number) => firstIdx.has(i) && !resAt(i);
   const land = (i: number, fresh = false) => {
     if (i < 0) return;
-    setPointer(i);
+    let p = i;
+    for (let j = 0; j <= i; j++) {
+      if (blocked(j)) {
+        p = Math.min(i, j);   // the pink/magic word rule: never light up past an unresolved child word
+        break;
+      }
+    }
+    setPointer(p);
     setCursor((c) => {
       if (!fresh || i <= c) return advanceCursor(c, i, blocked);
       let limit = i; for (let j = c + 1; j <= i; j++) if (blocked(j)) { limit = j - 1; break; }   // never across a word the child still owes
@@ -260,13 +267,21 @@ function StoryView({ page, pageNo, total, slug, family, token, results, readMode
   const EDGE = 18;   // a thumb resting on the bezel while the phone is held in bed is not a reading finger
   const onDown = (e: React.PointerEvent) => {
     if (!readMode) return;
-    if (e.clientX < EDGE || e.clientX > window.innerWidth - EDGE) return;
-    drag.current = { x: e.clientX, y: e.clientY, on: false, rects: [], id: e.pointerId };
+    const isTouch = e.pointerType === "touch";
+    const width = window.innerWidth || document.documentElement?.clientWidth || 0;
+    if (isTouch && width > 2 * EDGE && (e.clientX < EDGE || e.clientX > width - EDGE)) return;
+    drag.current = { x: e.clientX, y: e.clientY, on: false, rects: measure(), id: e.pointerId };
   };
   const onMove = (e: React.PointerEvent) => {
     const d = drag.current; if (!d || !readMode) return;
     let fresh = false;
-    if (!d.on) { if (Math.hypot(e.clientX - d.x, e.clientY - d.y) < 8) return; d.on = true; fresh = true; d.rects = measure(); try { cardRef.current?.setPointerCapture(d.id); } catch { /* not supported */ } }   // a tap stays a tap: the pink button still clicks
+    if (!d.on) {
+      if (Math.hypot(e.clientX - d.x, e.clientY - d.y) < 6) return;
+      d.on = true;
+      fresh = true;
+      if (!d.rects || d.rects.length === 0) d.rects = measure();
+      try { cardRef.current?.setPointerCapture(d.id); } catch { /* not supported */ }
+    }   // a tap stays a tap: the pink button still clicks
     land(hitWord(d.rects, e.clientX, e.clientY), fresh);
   };
   const onUp = () => { drag.current = null; };
