@@ -267,6 +267,30 @@ Four voices, three degraded, plus a fourth surface v1 missed entirely (`public/p
     all: no purge, and never an edge-tts fallback. `deploy-vercel.sh` does not check blends; add it.
   - Bump `AUDIO_V` with this, like every other audio change (E6/G2).
 
+- **A7e. The cut, not the carrier, is what breaks sentence starts. Measured 2026-09-21.**
+  `cae82dd` shipped carrier-and-slice per sentence and the parent still heard the defect at every
+  period. Measurement settles where it lives:
+  - **Synthesis is fine.** Every shipped carrier restores full duration on the payload's first word:
+    `Listen,` 425 ms · `Yes,` 425 ms · `Wait,` 400 ms · `Look,` 425 ms · `And so,` 450 ms, against
+    363 ms bare and a ~420 ms mid-sentence target. The carrier ladder works.
+  - **The published file does not.** Sentence-initial words carry **65 ms of audible audio**
+    (Whisper reports 90 ms) against 300 ms mid-sentence. The word is synthesised whole and then lost.
+  - **Mechanism:** the cut searches forward for a frame below −30 dB. A stop consonant *begins with a
+    silent closure*, and so does the gap after the carrier's comma, so the search walks through the
+    carrier gap, through the payload's first word, and latches onto a later closure — leaving only a
+    trailing burst. That is why the surviving fragment is ~65 ms almost regardless of the word, which
+    superficially resembles the model's own 22% compression signature and misled one reviewer.
+  - **Fix: stop searching for silence. Cut by alignment.** Run Whisper on the carrier+payload render,
+    take `carrier_last_word.end` and `payload_first_word.start`, cut at the **midpoint of that gap**,
+    snap to the nearest zero crossing within ±10 ms, and apply a ~3 ms fade-in. The cut then lands
+    squarely in the pause, clear of both the carrier's offset and the payload's closure.
+  - **Gate (this is the one that would have caught it):** first-word duration ≥ 180 ms **and**
+    ≥ 0.5 × the median word duration on that page, from the Whisper timings the pipeline already
+    produces. Phoneme-invariant, so it survives vowel-initial words where the centroid gate failed,
+    and immune to Whisper's language prior, which transcribes a clipped word correctly but still
+    reports its true 90 ms span. On failure, re-render with the next carrier in the ladder; if the
+    ladder is exhausted, abort the page rather than publish it. (Gate and midpoint cut: Gemini.)
+
 ### B. Letter sounds — metadata only
 
 - **B1.** Do not regenerate, re-cut, re-trim or TTS Kathryn's clips. **Do not run `build-sounds.py`.**
